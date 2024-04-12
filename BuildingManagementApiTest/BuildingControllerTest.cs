@@ -72,8 +72,7 @@ public class BuildingControllerTest
         BuildingResponse resultValue = resultObject.Value as BuildingResponse;
 
         Assert.AreEqual(resultObject.StatusCode, expectedObjResult.StatusCode);
-        //Deberia comparar el objeto refactorizando el equals
-        Assert.AreEqual(resultValue.Name, expectedMappedBuilding.Name);
+        Assert.AreEqual(resultValue, expectedMappedBuilding);
 
     }
 }

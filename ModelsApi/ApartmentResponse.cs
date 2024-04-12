@@ -20,5 +20,23 @@ namespace ModelsApi
             this.Bathrooms = apartment.Bathrooms;
             this.HasTerrace = apartment.HasTerrace;
         }
+
+        public override bool Equals(object apartment)
+        {
+            if (apartment == null || GetType() != apartment.GetType())
+            {
+                return false;
+            }
+
+            ApartmentResponse secondApartment = (ApartmentResponse)apartment;
+
+            // Comparación de propiedades
+            return Floor == secondApartment.Floor &&
+                   Number == secondApartment.Number &&
+                   Owner.Equals(secondApartment.Owner) &&
+                   Rooms == secondApartment.Rooms &&
+                   Bathrooms == secondApartment.Bathrooms &&
+                   HasTerrace == secondApartment.HasTerrace;
+        }
     }
 }

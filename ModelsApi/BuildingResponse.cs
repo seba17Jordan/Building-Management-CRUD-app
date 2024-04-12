@@ -25,5 +25,22 @@ namespace ModelsApi
                 this.Apartments.Add(new ApartmentResponse(apartment));
             }
         }
+
+        public override bool Equals(object building)
+        {
+            if (building == null || GetType() != building.GetType())
+            {
+                return false;
+            }
+            BuildingResponse secondBuilding = (BuildingResponse)building;
+
+            return Id == secondBuilding.Id &&
+                   Name == secondBuilding.Name &&
+                   Address == secondBuilding.Address &&
+                   ConstructionCompany == secondBuilding.ConstructionCompany &&
+                   CommonExpenses == secondBuilding.CommonExpenses &&
+                   Apartments.SequenceEqual(secondBuilding.Apartments);
+        }
+
     }
 }

@@ -19,5 +19,20 @@ namespace ModelsApi
             this.LastName = owner.LastName;
             this.Email = owner.Email;
         }
+
+        public override bool Equals(object owner)
+        {
+            if (owner == null || GetType() != owner.GetType())
+            {
+                return false;
+            }
+
+            OwnerResponse secondOwner = (OwnerResponse)owner;
+
+            // Comparación de propiedades
+            return Name == secondOwner.Name &&
+                   LastName == secondOwner.LastName &&
+                   Email == secondOwner.Email;
+        }
     }
 }
