@@ -18,7 +18,11 @@ namespace BuildingManagementApi.Controllers
         [HttpPost]
         public IActionResult CreateBuilding([FromBody] BuildingRequest buildingToCreate)
         {
-            throw new NotImplementedException();
+            var building = buildingToCreate.ToEntity();
+            var resultObj = _buildingLogic.CreateBuilding(building);
+            var outputResult = new BuildingResponse(resultObj);
+
+            return CreatedAtAction(nameof(CreateBuilding), new { id = outputResult.Id }, outputResult);
         }
     }
 }
