@@ -23,6 +23,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BuildingManagementApi\BuildingManagementApi.csproj" />
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\LogicInterface\LogicInterface.csproj" />
+    <ProjectReference Include="..\ModelsApi\ModelsApi.csproj" />
   </ItemGroup>
 
 </Project>

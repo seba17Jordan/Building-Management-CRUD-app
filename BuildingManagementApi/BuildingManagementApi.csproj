@@ -10,4 +10,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LogicInterface\LogicInterface.csproj" />
+    <ProjectReference Include="..\ModelsApi\ModelsApi.csproj" />
+  </ItemGroup>
+
 </Project>
