@@ -1,0 +1,25 @@
+﻿using LogicInterface;
+using Microsoft.AspNetCore.Mvc;
+using ModelsApi;
+
+namespace BuildingManagementApi.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class AdministratorController : ControllerBase
+    {
+        private readonly IAdministratorLogic _administratorLogic;
+
+        public AdministratorController(IAdministratorLogic administratorLogic)
+        {
+            this._administratorLogic = administratorLogic;
+        }
+
+        [HttpPost]
+        public IActionResult CreateAdministrator([FromBody] AdministratorRequest adminToCreate)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+}
+
