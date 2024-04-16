@@ -44,6 +44,6 @@ public class AdministratorControllerTest
         // Assert
         var createdAdmin = result.Value as AdministratorResponse;
         Assert.IsNotNull(createdAdmin);
-        Assert.AreEqual(expectedAdminResponse.Id, createdAdmin.Id);
+        Assert.AreEqual(expectedAdminResponse, createdAdmin);
     }
 }

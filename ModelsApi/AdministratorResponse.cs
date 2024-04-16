@@ -21,6 +21,17 @@ namespace ModelsApi
             LastName = admin.Lastname;
             Email = admin.Email;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            AdministratorResponse other = (AdministratorResponse)obj;
+            return Id == other.Id && Name == other.Name && LastName == other.LastName && Email == other.Email;
+        }
     }
 }
 
