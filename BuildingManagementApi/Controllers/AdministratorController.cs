@@ -18,7 +18,11 @@ namespace BuildingManagementApi.Controllers
         [HttpPost]
         public IActionResult CreateAdministrator([FromBody] AdministratorRequest adminToCreate)
         {
-            throw new System.NotImplementedException();
+            var admin = adminToCreate.ToEntity(); // Convierte AdministratorRequest a Administrator
+            var resultAdmin = _administratorLogic.CreateAdministrator(admin); // Llama al método de lógica para crear el administrador
+            var response = new AdministratorResponse(resultAdmin); // Convierte Administrator a AdministratorResponse
+
+            return CreatedAtAction(nameof(CreateAdministrator), new { id = response.Id }, response);
         }
     }
 }
