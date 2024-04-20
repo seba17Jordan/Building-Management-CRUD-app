@@ -14,5 +14,6 @@ namespace LogicInterface
         Manager AcceptInvitation(Guid id, string email, string password);
 
         void RejectInvitation(Guid id);
+        void DeleteInvitation(Guid id);
     }
 }

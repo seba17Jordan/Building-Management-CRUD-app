@@ -118,5 +118,31 @@ namespace BuildingManagementApiTests.Controllers
             var resultObject = result as NoContentResult;
             Assert.AreEqual(expectedObjectResult.StatusCode, resultObject.StatusCode);
         }
+
+        [TestMethod]
+        public void DeleteCorrectInvitation()
+        {
+            // Arrange
+            var invitationId = Guid.NewGuid();
+            var invitationToDelete = new Invitation
+            {
+                Id = Guid.NewGuid(),
+                Email = "test@example.com",
+                Name = "name",
+                ExpirationDate = DateTime.UtcNow.AddDays(7)
+            };
+
+            _invitationLogicMock.Setup(l => l.DeleteInvitation(invitationId));
+
+            // Act
+            IActionResult deleteActionResult = _controller.DeleteInvitation(invitationId);
+            var noContentResult = deleteActionResult as NoContentResult;
+
+            // Assert
+            Assert.IsNotNull(noContentResult);
+            Assert.AreEqual(204, noContentResult.StatusCode);
+            _invitationLogicMock.Verify(l => l.DeleteInvitation(invitationId), Times.Once);
+        }
+
     }
 }

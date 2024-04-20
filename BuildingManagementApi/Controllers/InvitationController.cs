@@ -42,5 +42,11 @@ namespace BuildingManagementApi.Controllers
             _invitationLogic.RejectInvitation(id);
             return NoContent();
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteInvitation(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
