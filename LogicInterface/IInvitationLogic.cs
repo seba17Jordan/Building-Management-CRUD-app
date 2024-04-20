@@ -12,5 +12,7 @@ namespace LogicInterface
         Invitation CreateInvitation(Invitation invitation);
 
         Manager AcceptInvitation(Guid id, string email, string password);
+
+        void RejectInvitation(Guid id);
     }
 }

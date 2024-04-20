@@ -35,5 +35,11 @@ namespace BuildingManagementApi.Controllers
             var response = new AcceptInvitationResponse(_invitationLogic.AcceptInvitation(id, request.Email, request.Password));
             return Ok(response);
         }
+
+        [HttpPut("{id}/reject")]
+        public IActionResult RejectInvitation([FromRoute] Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -21,6 +21,7 @@ namespace BuildingManagementApiTests.Controllers
         {
             _invitationLogicMock = new Mock<IInvitationLogic>();
             _controller = new InvitationController(_invitationLogicMock.Object);
+
         }
 
         [TestMethod]
@@ -90,6 +91,32 @@ namespace BuildingManagementApiTests.Controllers
             Assert.AreEqual(manager.Email, responseValue.Email);
             Assert.AreEqual(manager.Name, responseValue.Name);
             Assert.AreEqual(manager.Password, responseValue.Password);   
+        }
+
+        [TestMethod]
+        public void RejectCorrectInvitation()
+        {
+            // Arrange
+            var invitationId = Guid.NewGuid();
+            var invitation = new Invitation
+            {
+                Id = invitationId,
+                Email = "test@example.com",
+                Name = "name",
+                ExpirationDate = DateTime.Now
+            };
+
+            _invitationLogicMock.Setup(l => l.RejectInvitation(invitation.Id));
+            var expectedObjectResult = new NoContentResult();
+
+            // Act
+            var result = _controller.RejectInvitation(invitation.Id);
+
+            // Assert
+            _invitationLogicMock.Verify(l => l.RejectInvitation(invitation.Id), Times.Once);
+            Assert.IsInstanceOfType(result, typeof(NoContentResult));
+            var resultObject = result as NoContentResult;
+            Assert.AreEqual(expectedObjectResult.StatusCode, resultObject.StatusCode);
         }
     }
 }
