@@ -39,7 +39,8 @@ namespace BuildingManagementApi.Controllers
         [HttpPut("{id}/reject")]
         public IActionResult RejectInvitation([FromRoute] Guid id)
         {
-            throw new NotImplementedException();
+            _invitationLogic.RejectInvitation(id);
+            return NoContent();
         }
     }
 }
