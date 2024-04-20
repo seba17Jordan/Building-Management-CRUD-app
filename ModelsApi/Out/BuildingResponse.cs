@@ -1,6 +1,6 @@
 ﻿using Domain;
 
-namespace ModelsApi
+namespace ModelsApi.Out
 {
     public class BuildingResponse
     {
@@ -13,16 +13,16 @@ namespace ModelsApi
 
         public BuildingResponse(Building expectedBuilding)
         {
-            this.Id = expectedBuilding.Id;
-            this.Name = expectedBuilding.Name;
-            this.Address = expectedBuilding.Address;
-            this.ConstructionCompany = expectedBuilding.ConstructionCompany;
-            this.CommonExpenses = expectedBuilding.CommonExpenses;
-            this.Apartments = new List<ApartmentResponse>();
-            
+            Id = expectedBuilding.Id;
+            Name = expectedBuilding.Name;
+            Address = expectedBuilding.Address;
+            ConstructionCompany = expectedBuilding.ConstructionCompany;
+            CommonExpenses = expectedBuilding.CommonExpenses;
+            Apartments = new List<ApartmentResponse>();
+
             foreach (var apartment in expectedBuilding.Apartments)
             {
-                this.Apartments.Add(new ApartmentResponse(apartment));
+                Apartments.Add(new ApartmentResponse(apartment));
             }
         }
 

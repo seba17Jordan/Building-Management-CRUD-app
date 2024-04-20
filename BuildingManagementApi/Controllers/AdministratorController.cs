@@ -1,6 +1,8 @@
 ﻿using LogicInterface;
 using Microsoft.AspNetCore.Mvc;
 using ModelsApi;
+using ModelsApi.In;
+using ModelsApi.Out;
 
 namespace BuildingManagementApi.Controllers
 {

@@ -1,6 +1,6 @@
 ﻿using Domain;
 
-namespace ModelsApi
+namespace ModelsApi.Out
 {
     public class ApartmentResponse
     {
@@ -12,13 +12,14 @@ namespace ModelsApi
         public int Bathrooms { get; set; }
         public bool HasTerrace { get; set; }
 
-        public ApartmentResponse(Apartment apartment) {
-            this.Floor = apartment.Floor;
-            this.Number = apartment.Number;
-            this.Owner = new OwnerResponse(apartment.Owner);
-            this.Rooms = apartment.Rooms;
-            this.Bathrooms = apartment.Bathrooms;
-            this.HasTerrace = apartment.HasTerrace;
+        public ApartmentResponse(Apartment apartment)
+        {
+            Floor = apartment.Floor;
+            Number = apartment.Number;
+            Owner = new OwnerResponse(apartment.Owner);
+            Rooms = apartment.Rooms;
+            Bathrooms = apartment.Bathrooms;
+            HasTerrace = apartment.HasTerrace;
         }
 
         public override bool Equals(object apartment)

@@ -2,7 +2,8 @@
 using Domain;
 using LogicInterface;
 using Microsoft.AspNetCore.Mvc;
-using ModelsApi;
+using ModelsApi.Out;
+using ModelsApi.In;
 using Moq;
 
 namespace BuildingManagementApiTest;

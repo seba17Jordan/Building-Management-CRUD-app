@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ModelsApi
+namespace ModelsApi.Out
 {
     public class OwnerResponse
     {
@@ -15,9 +15,9 @@ namespace ModelsApi
 
         public OwnerResponse(Owner owner)
         {
-            this.Name = owner.Name;
-            this.LastName = owner.LastName;
-            this.Email = owner.Email;
+            Name = owner.Name;
+            LastName = owner.LastName;
+            Email = owner.Email;
         }
 
         public override bool Equals(object owner)

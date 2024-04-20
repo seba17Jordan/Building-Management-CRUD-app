@@ -1,6 +1,6 @@
 ﻿using Domain;
 
-namespace ModelsApi
+namespace ModelsApi.In
 {
     public class BuildingRequest
     {

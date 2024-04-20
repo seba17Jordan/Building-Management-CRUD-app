@@ -1,6 +1,6 @@
 ﻿using Domain;
 
-namespace ModelsApi
+namespace ModelsApi.In
 {
     public class ApartmentRequest
     {
@@ -13,13 +13,14 @@ namespace ModelsApi
 
         public Apartment ToEntity()
         {
-            return new Apartment 
-            { Floor = Floor,
+            return new Apartment
+            {
+                Floor = Floor,
                 Number = Number,
                 Owner = Owner.ToEntity(),
                 Rooms = Rooms,
                 Bathrooms = Bathrooms,
-                HasTerrace = HasTerrace 
+                HasTerrace = HasTerrace
             };
         }
     }

@@ -1,6 +1,6 @@
 ﻿using Domain;
 
-namespace ModelsApi
+namespace ModelsApi.In
 {
     public class OwnerRequest
     {
@@ -11,7 +11,7 @@ namespace ModelsApi
         public Owner ToEntity()
         {
             return new Owner
-            { 
+            {
                 Name = Name,
                 LastName = LastName,
                 Email = Email
