@@ -19,7 +19,13 @@ namespace BuildingManagementApi.Controllers
         [HttpPost]
         public IActionResult CreateInvitation([FromBody] CreateInvitationRequest invitationRequest)
         {
-            throw new NotImplementedException();
+            var invitation = new Invitation(invitationRequest.Email, invitationRequest.Name, invitationRequest.ExpirationDate);
+
+            var createdInvitation = _invitationLogic.CreateInvitation(invitation);
+
+            var response = new CreateInvitationResponse(createdInvitation);
+
+            return CreatedAtAction(nameof(CreateInvitation), new { id = response.Id }, response);
         }
     }
 }
