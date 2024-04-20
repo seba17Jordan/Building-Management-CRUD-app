@@ -23,5 +23,20 @@ namespace ModelsApi.Out
             ExpirationDate = invitation.ExpirationDate;
             State = invitation.State;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            CreateInvitationResponse other = (CreateInvitationResponse)obj;
+            return Id.Equals(other.Id) &&
+                   Email.Equals(other.Email) &&
+                   Name.Equals(other.Name) &&
+                   ExpirationDate.Equals(other.ExpirationDate) &&
+                   State.Equals(other.State);
+        }
     }
 }

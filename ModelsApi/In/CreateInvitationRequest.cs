@@ -17,7 +17,18 @@ namespace ModelsApi.In
 
         public CreateInvitationRequest()
         {
+            State = Status.Pending;
+        }
 
+        public Invitation ToEntity() {
+            return new Invitation()
+            {
+                Id = id,
+                Email = Email,
+                Name = Name,
+                ExpirationDate = ExpirationDate,
+                State = State
+            };
         }
     }
 }

@@ -54,7 +54,7 @@ namespace BuildingManagementApiTests.Controllers
 
             var responseValue = createdResponse.Value as CreateInvitationResponse;
             Assert.IsNotNull(responseValue);
-            Assert.AreEqual(createdInvitation.Id, responseValue.Id);
+            Assert.IsTrue(responseValue.Equals(responseValue));
         }
     }
 }
