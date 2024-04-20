@@ -56,5 +56,40 @@ namespace BuildingManagementApiTests.Controllers
             Assert.IsNotNull(responseValue);
             Assert.IsTrue(responseValue.Equals(responseValue));
         }
+
+        [TestMethod]
+        public void AcceptInvitation_WithValidData_ShouldReturnOkManager()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            var request = new AcceptInvitationRequest
+            {
+                Email = "test@example.com",
+                Password = "password"
+            };
+
+            var manager = new Manager
+            {
+                Email = request.Email,
+                Name = "Test Manager",
+                Password = request.Password
+            };
+
+            _invitationLogicMock.Setup(l => l.AcceptInvitation(id, request.Email, request.Password)).Returns(manager);
+
+            // Act
+            IActionResult actionResult = _controller.AcceptInvitation(id, request);
+            var okResult = actionResult as OkObjectResult;
+
+            // Assert
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var responseValue = okResult.Value as AcceptInvitationResponse;
+            Assert.IsNotNull(responseValue);
+            Assert.AreEqual(manager.Email, responseValue.Email);
+            Assert.AreEqual(manager.Name, responseValue.Name);
+            Assert.AreEqual(manager.Password, responseValue.Password);   
+        }
     }
 }

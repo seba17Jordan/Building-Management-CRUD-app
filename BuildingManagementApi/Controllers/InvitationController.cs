@@ -4,6 +4,7 @@ using ModelsApi.In;
 using ModelsApi.Out;
 using Domain;
 using System;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace BuildingManagementApi.Controllers
 {
@@ -26,6 +27,13 @@ namespace BuildingManagementApi.Controllers
             var response = new CreateInvitationResponse(createdInvitation);
 
             return CreatedAtAction(nameof(CreateInvitation), new { id = response.Id }, response);
+        }
+
+        [HttpPut("{id}/accept")]
+        public IActionResult AcceptInvitation([FromRoute] Guid id, [FromBody] AcceptInvitationRequest request)
+        {
+            throw new NotImplementedException();
+            
         }
     }
 }

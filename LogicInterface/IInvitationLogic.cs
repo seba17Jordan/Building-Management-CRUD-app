@@ -10,5 +10,7 @@ namespace LogicInterface
     public interface IInvitationLogic
     {
         Invitation CreateInvitation(Invitation invitation);
+
+        Manager AcceptInvitation(Guid id, string email, string password);
     }
 }
