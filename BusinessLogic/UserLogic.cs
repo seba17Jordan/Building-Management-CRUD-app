@@ -1,6 +1,7 @@
 ﻿using Domain;
 using IDataAccess;
 using LogicInterface;
+using System.Globalization;
 
 namespace BusinessLogic
 {
@@ -13,7 +14,7 @@ namespace BusinessLogic
         }
 
         public User CreateUser(User user) { 
-            throw new NotImplementedException();
+            return _userRepository.CreateUser(user);
         }
     }
 }
