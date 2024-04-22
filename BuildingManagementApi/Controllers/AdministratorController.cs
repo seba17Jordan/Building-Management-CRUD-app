@@ -1,13 +1,18 @@
 ﻿using LogicInterface;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using ModelsApi;
 using ModelsApi.In;
 using ModelsApi.Out;
+using BuildingManagementApi.Filters;
+using Domain.@enum;
 
 namespace BuildingManagementApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [TypeFilter(typeof(ExceptionFilter))] 
+    [TypeFilter(typeof(AuthenticationFilter))]
     public class AdministratorController : ControllerBase
     {
         private readonly IAdministratorLogic _administratorLogic;
@@ -18,6 +23,7 @@ namespace BuildingManagementApi.Controllers
         }
 
         [HttpPost]
+        [AuthenticationFilter(new Roles[] { Roles.Administrator })]
         public IActionResult CreateAdministrator([FromBody] AdministratorRequest adminToCreate)
         {
             var admin = adminToCreate.ToEntity(); // Convierte AdministratorRequest a Administrator

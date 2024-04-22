@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain
+namespace Domain.@enum
 {
-    public enum Status
+    public enum Roles
     {
-        Pending,
-        Accepted,
-        Rejected,
-        Expired
+        Administrator,
+        Manager,
+        Maintenance
     }
 }
