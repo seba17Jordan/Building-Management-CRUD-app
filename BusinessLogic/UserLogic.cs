@@ -40,7 +40,19 @@ namespace BusinessLogic
 
         public User GetUserById(Guid id)
         {
-            return _userRepository.GetUserById(id);
+            try
+            {
+                if (id == Guid.Empty)
+                {
+                    throw new ArgumentException("Invalid id");
+                }
+
+                return _userRepository.GetUserById(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Unable to get user", ex);
+            }
         }
     }
 }
