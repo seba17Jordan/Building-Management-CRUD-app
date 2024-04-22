@@ -54,5 +54,9 @@ namespace BusinessLogic
                 throw new Exception("Unable to get user", ex);
             }
         }
+
+        public User UpdateUser(User user) {
+            throw new NotImplementedException();
+        }
     }
 }

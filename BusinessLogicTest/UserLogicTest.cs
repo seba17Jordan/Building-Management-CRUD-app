@@ -60,5 +60,51 @@ namespace BusinessLogicTest
             Assert.AreEqual(userId, result.Id);
         }
 
+        [TestMethod]
+        public void UpdateUser_ShouldReturnUpdatedUser()
+        {
+            // Arrange
+            var userId = Guid.NewGuid();
+            var updatedName = "UpdatedName";
+            var updatedEmail = "updated@example.com";
+            var updatedPassword = "updatedPassword";
+            var updatedRole = "UpdatedRole";
+
+            var user = new User
+            {
+                Id = userId,
+                Name = "Federico",
+                Email = "example@hotmail.com",
+                Password = "password",
+                Role = "Admin"
+            };
+
+            var updatedUser = new User
+            {
+                Id = userId,
+                Name = updatedName,
+                Email = updatedEmail,
+                Password = updatedPassword,
+                Role = updatedRole
+            };
+
+            Mock<IUserRepository> userRepositoryMock = new Mock<IUserRepository>();
+            userRepositoryMock.Setup(repo => repo.GetUserById(userId)).Returns(user);
+            userRepositoryMock.Setup(repo => repo.UpdateUser(updatedUser)).Returns(updatedUser);
+
+            UserLogic userLogic = new UserLogic(userRepositoryMock.Object);
+
+            // Act
+            var result = userLogic.UpdateUser(updatedUser);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(userId, result.Id);
+            Assert.AreEqual(updatedName, result.Name);
+            Assert.AreEqual(updatedEmail, result.Email);
+            Assert.AreEqual(updatedPassword, result.Password);
+            Assert.AreEqual(updatedRole, result.Role);
+        }
+
     }
 }
