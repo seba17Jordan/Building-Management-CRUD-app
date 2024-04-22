@@ -55,8 +55,28 @@ namespace BusinessLogic
             }
         }
 
-        public User UpdateUser(User user) { 
-            return _userRepository.UpdateUser(user);
+        public User UpdateUser(User user)
+        {
+            try { 
+                if (user == null)
+                {
+                    throw new ArgumentNullException(nameof(user), "User can't be null");
+                }
+
+                if (string.IsNullOrWhiteSpace(user.Email) ||
+                    string.IsNullOrWhiteSpace(user.Name) ||
+                    string.IsNullOrWhiteSpace(user.Password) ||
+                    string.IsNullOrWhiteSpace(user.Role))
+                {
+                    throw new ArgumentException("Invalid data");
+                }
+
+                return _userRepository.UpdateUser(user);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Unable to update user", ex);
+            }
         }
     }
 }
