@@ -16,7 +16,9 @@ namespace BusinessLogicTest
             {
                 Id = Guid.NewGuid(),
                 Name = "Federico",
-                Email = "test@example.com"
+                Email = "test@example.com",
+                Password = "password",
+                Role = "Admin"
             };
 
             Mock<IUserRepository> logic = new Mock<IUserRepository>(MockBehavior.Strict);
