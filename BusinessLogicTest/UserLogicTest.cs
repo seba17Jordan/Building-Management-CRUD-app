@@ -105,6 +105,5 @@ namespace BusinessLogicTest
             Assert.AreEqual(updatedPassword, result.Password);
             Assert.AreEqual(updatedRole, result.Role);
         }
-
     }
 }

@@ -6,7 +6,6 @@ namespace IDataAccess
     {
        User CreateUser(User user);
        User GetUserById(Guid id);
-
-        User UpdateUser(User user); 
+       User UpdateUser(User user);
     }
 }
