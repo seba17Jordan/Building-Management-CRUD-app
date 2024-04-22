@@ -55,8 +55,8 @@ namespace BusinessLogic
             }
         }
 
-        public User UpdateUser(User user) {
-            throw new NotImplementedException();
+        public User UpdateUser(User user) { 
+            return _userRepository.UpdateUser(user);
         }
     }
 }
