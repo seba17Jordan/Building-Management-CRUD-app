@@ -40,7 +40,7 @@ namespace BusinessLogic
 
         public User GetUserById(Guid id)
         {
-            throw new System.NotImplementedException();
+            return _userRepository.GetUserById(id);
         }
     }
 }
