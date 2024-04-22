@@ -31,7 +31,34 @@ namespace BusinessLogicTest
             // Assert
             logic.VerifyAll();
             Assert.AreEqual(user.Id, result.Id);
-
         }
+
+        [TestMethod]
+        public void GetUserById_ShouldReturnUser()
+        {
+            // Arrange
+            var userId = Guid.NewGuid();
+            var user = new User
+            {
+                Id = userId,
+                Name = "Federico",
+                Email = "example@hotmail.com",
+                Password = "password",
+                Role = "Admin"
+            };
+
+            Mock<IUserRepository> userRepositoryMock = new Mock<IUserRepository>();
+            userRepositoryMock.Setup(repo => repo.GetUserById(userId)).Returns(user);
+
+            UserLogic userLogic = new UserLogic(userRepositoryMock.Object);
+
+            // Act
+            var result = userLogic.GetUserById(userId);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(userId, result.Id);
+        }
+
     }
 }

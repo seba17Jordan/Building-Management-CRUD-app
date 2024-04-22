@@ -37,5 +37,10 @@ namespace BusinessLogic
                 throw new Exception("Unable to create user", ex);
             }
         }
+
+        public User GetUserById(Guid id)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
