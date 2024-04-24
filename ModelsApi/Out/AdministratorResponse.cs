@@ -14,11 +14,11 @@ namespace ModelsApi.Out
         public string LastName { get; set; }
         public string Email { get; set; }
 
-        public AdministratorResponse(Administrator admin)
+        public AdministratorResponse(User admin)
         {
             Id = admin.Id;
             Name = admin.Name;
-            LastName = admin.Lastname;
+            LastName = admin.LastName;
             Email = admin.Email;
         }
 

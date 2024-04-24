@@ -11,7 +11,7 @@ namespace LogicInterface
     {
         Invitation CreateInvitation(Invitation invitation);
 
-        Manager AcceptInvitation(Guid id, string email, string password);
+        User AcceptInvitation(Guid id, string email, string password);
 
         void RejectInvitation(Guid id);
         void DeleteInvitation(Guid id);

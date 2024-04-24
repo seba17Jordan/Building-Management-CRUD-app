@@ -18,7 +18,7 @@ namespace BusinessLogicTest
                 Name = "Federico",
                 Email = "test@example.com",
                 Password = "password",
-                Role = "Admin"
+                Role = Domain.@enum.Roles.Administrator
             };
 
             Mock<IUserRepository> logic = new Mock<IUserRepository>(MockBehavior.Strict);
@@ -44,7 +44,7 @@ namespace BusinessLogicTest
                 Name = "Federico",
                 Email = "example@hotmail.com",
                 Password = "password",
-                Role = "Admin"
+                Role = Domain.@enum.Roles.Administrator
             };
 
             Mock<IUserRepository> userRepositoryMock = new Mock<IUserRepository>();
@@ -68,7 +68,7 @@ namespace BusinessLogicTest
             var updatedName = "UpdatedName";
             var updatedEmail = "updated@example.com";
             var updatedPassword = "updatedPassword";
-            var updatedRole = "UpdatedRole";
+            var updatedRole = Domain.@enum.Roles.Manager;
 
             var user = new User
             {
@@ -76,7 +76,7 @@ namespace BusinessLogicTest
                 Name = "Federico",
                 Email = "example@hotmail.com",
                 Password = "password",
-                Role = "Admin"
+                Role = Domain.@enum.Roles.Administrator
             };
 
             var updatedUser = new User

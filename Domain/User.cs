@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.@enum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,17 +13,11 @@ namespace Domain
         public string Email { get; set; }
         public string Password { get; set; }
         public string Name { get; set; }
-        public string Role { get; set; }
+        public string LastName { get; set; }
+        public Roles Role { get; set; }
 
         public User() { 
             Id = Guid.NewGuid();
-        }
-
-        public User(string name, string email, string password) { 
-            Id = Guid.NewGuid();
-            Name = name;
-            Email = email;
-            Password = password;
         }
     }
 }

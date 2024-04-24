@@ -9,6 +9,6 @@ namespace LogicInterface
 {
     public interface IAdministratorLogic
     {
-        Administrator CreateAdministrator(Administrator admin);
+        User CreateAdministrator(User admin);
     }
 }

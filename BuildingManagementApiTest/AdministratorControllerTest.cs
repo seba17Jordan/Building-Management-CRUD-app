@@ -18,16 +18,16 @@ public class AdministratorControllerTest
         var adminToCreate = new AdministratorRequest
         {
             Name = "John",
-            Lastname = "Doe",
+            LastName = "Doe",
             Email = "john.doe@example.com",
             Password = "strongPassword123"
         };
 
-        var expectedAdmin = new Administrator
+        var expectedAdmin = new User
         {
             Id = Guid.NewGuid(),
             Name = "John",
-            Lastname = "Doe",
+            LastName = "Doe",
             Email = "john.doe@example.com",
             Password = "hashedPassword"
         };
@@ -35,7 +35,7 @@ public class AdministratorControllerTest
         var expectedAdminResponse = new AdministratorResponse(expectedAdmin);
 
         var administratorLogicMock = new Mock<IAdministratorLogic>();
-        administratorLogicMock.Setup(x => x.CreateAdministrator(It.IsAny<Administrator>())).Returns(expectedAdmin);
+        administratorLogicMock.Setup(x => x.CreateAdministrator(It.IsAny<User>())).Returns(expectedAdmin);
 
         var administratorController = new AdministratorController(administratorLogicMock.Object);
 

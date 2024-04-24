@@ -23,8 +23,7 @@ namespace BusinessLogic
 
                 if (string.IsNullOrWhiteSpace(user.Email) ||
                     string.IsNullOrWhiteSpace(user.Name) ||
-                    string.IsNullOrWhiteSpace(user.Password) ||
-                    string.IsNullOrWhiteSpace(user.Role))
+                    string.IsNullOrWhiteSpace(user.Password))
                 {
                     throw new ArgumentException("Invalid data");
                 }
@@ -65,8 +64,7 @@ namespace BusinessLogic
 
                 if (string.IsNullOrWhiteSpace(user.Email) ||
                     string.IsNullOrWhiteSpace(user.Name) ||
-                    string.IsNullOrWhiteSpace(user.Password) ||
-                    string.IsNullOrWhiteSpace(user.Role))
+                    string.IsNullOrWhiteSpace(user.Password))
                 {
                     throw new ArgumentException("Invalid data");
                 }

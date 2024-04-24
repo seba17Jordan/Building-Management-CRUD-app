@@ -12,16 +12,21 @@ namespace ModelsApi.In
         public string Email { get; set; }
         public string Password { get; set; }
         public string Name { get; set; }
-        public string Lastname { get; set; }
+        public string LastName { get; set; }
 
-        public Administrator ToEntity()
+        public User ToEntity()
         {
-            return new Administrator
+            if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(LastName) || string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password))
+            {
+                throw new ArgumentException("There is a missing field in the request's body");
+            }
+
+            return new User
             {
                 Email = Email,
                 Password = Password,
                 Name = Name,
-                Lastname = Lastname
+                LastName = LastName
             };
         }
     }

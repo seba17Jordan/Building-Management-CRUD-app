@@ -69,7 +69,7 @@ namespace BuildingManagementApiTests.Controllers
                 Password = "password"
             };
 
-            var manager = new Manager
+            var manager = new User
             {
                 Email = request.Email,
                 Name = "Test Manager",

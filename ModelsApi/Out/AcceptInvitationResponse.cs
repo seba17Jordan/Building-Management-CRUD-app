@@ -14,7 +14,7 @@ namespace ModelsApi.Out
         public Guid Id { get; set; }
         public string Password { get; set; }
 
-        public AcceptInvitationResponse(Manager manager) {
+        public AcceptInvitationResponse(User manager) {
             Id = manager.Id;
             Name = manager.Name;
             Email = manager.Email;
