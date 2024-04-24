@@ -7,6 +7,7 @@ using ModelsApi.In;
 using ModelsApi.Out;
 using Domain;
 using System;
+using Domain.@enum;
 
 namespace BuildingManagementApiTests.Controllers
 {
@@ -73,7 +74,8 @@ namespace BuildingManagementApiTests.Controllers
             {
                 Email = request.Email,
                 Name = "Test Manager",
-                Password = request.Password
+                Password = request.Password,
+                Role = Roles.Manager
             };
 
             _invitationLogicMock.Setup(l => l.AcceptInvitation(id, request.Email, request.Password)).Returns(manager);
@@ -90,7 +92,8 @@ namespace BuildingManagementApiTests.Controllers
             Assert.IsNotNull(responseValue);
             Assert.AreEqual(manager.Email, responseValue.Email);
             Assert.AreEqual(manager.Name, responseValue.Name);
-            Assert.AreEqual(manager.Password, responseValue.Password);   
+            Assert.AreEqual(manager.Password, responseValue.Password); 
+            Assert.AreEqual(manager.Role, responseValue.Role);
         }
 
         [TestMethod]

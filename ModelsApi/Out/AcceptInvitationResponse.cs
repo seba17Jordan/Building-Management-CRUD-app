@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Domain.@enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +15,14 @@ namespace ModelsApi.Out
         public Guid Id { get; set; }
         public string Password { get; set; }
 
+        public Roles Role { get; set; }
+
         public AcceptInvitationResponse(User manager) {
             Id = manager.Id;
             Name = manager.Name;
             Email = manager.Email;
             Password = manager.Password;
+            Role = manager.Role;
         }
     }
 }
