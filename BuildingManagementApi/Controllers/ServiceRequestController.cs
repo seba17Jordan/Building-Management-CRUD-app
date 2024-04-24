@@ -30,5 +30,13 @@ namespace BuildingManagementApi.Controllers
 
             return CreatedAtAction(nameof(CreateServiceRequest), new { id = response.Id }, response);
         }
+
+        [HttpGet]
+        [AuthenticationFilter([Roles.Manager])]
+        public IActionResult GetAllServiceRequests()
+        {
+            IEnumerable<ServiceRequestResponse> serviceRequests = _serviceRequestLogic.GetAllServiceRequests().Select(sr => new ServiceRequestResponse(sr)).ToList();
+            return Ok(serviceRequests);
+        }
     }
 }

@@ -10,5 +10,7 @@ namespace LogicInterface
     public interface IServiceRequestLogic
     {
         ServiceRequest CreateServiceRequest(ServiceRequest serviceRequest);
+
+        IEnumerable<ServiceRequest> GetAllServiceRequests();
     }
 }

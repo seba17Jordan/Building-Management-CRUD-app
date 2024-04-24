@@ -68,4 +68,50 @@ public class ServiceRequestControllerTest
         Assert.AreEqual(resultObject.StatusCode, expectedObjServiceRequest.StatusCode);
         Assert.AreEqual(resultResponse, expectedServiceRequestResponse);
     }
+
+    [TestMethod]
+    public void GetAllServiceRequestsCorrectTest()
+    {
+        //Arrange
+        IEnumerable<ServiceRequest> expectedServiceRequests = new List<ServiceRequest>
+        {
+            new ServiceRequest
+            {
+                Id = Guid.NewGuid(),
+                Description = "A description",
+                Apartment = new Apartment
+                {
+                    Bathrooms = 2,
+                    Floor = 2,
+                    HasTerrace = true,
+                    Number = 2,
+                    Rooms = 2,
+                    Owner = new Owner { Email = ""}
+                },
+                Category = new Category { Name = "Plumbing" },
+                Status = ServiceRequestStatus.Open
+            }
+        };
+
+        var expectedResponse = expectedServiceRequests.Select(sr => new ServiceRequestResponse(sr)).ToList();
+
+        Mock<IServiceRequestLogic> serviceRequestLogic = new Mock<IServiceRequestLogic>(MockBehavior.Strict);
+        serviceRequestLogic.Setup(serviceRequestLogic => serviceRequestLogic.GetAllServiceRequests()).Returns(expectedServiceRequests);
+        
+        var serviceRequestController = new ServiceRequestController(serviceRequestLogic.Object);
+        
+        OkObjectResult expectedObjResult = new OkObjectResult(expectedResponse);
+
+        // Act
+        var result = serviceRequestController.GetAllServiceRequests();
+
+        // Assert
+        serviceRequestLogic.VerifyAll();
+
+        OkObjectResult resultObj = result as OkObjectResult;
+        List<ServiceRequestResponse> resultResponse = resultObj.Value as List<ServiceRequestResponse>;
+
+        Assert.AreEqual(resultObj.StatusCode, expectedObjResult.StatusCode);
+        Assert.AreEqual(resultResponse.First(), expectedResponse.First());
+    }
 }
