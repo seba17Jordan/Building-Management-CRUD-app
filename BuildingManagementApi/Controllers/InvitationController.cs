@@ -5,6 +5,9 @@ using ModelsApi.Out;
 using Domain;
 using System;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using BuildingManagementApi.Filters;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
+using Domain.@enum;
 
 namespace BuildingManagementApi.Controllers
 {
@@ -18,6 +21,7 @@ namespace BuildingManagementApi.Controllers
         }
 
         [HttpPost]
+        [AuthenticationFilter([Roles.Administrator])]
         public IActionResult CreateInvitation([FromBody] CreateInvitationRequest invitationRequest)
         {
             var invitation = new Invitation(invitationRequest.Email, invitationRequest.Name, invitationRequest.ExpirationDate);
@@ -44,6 +48,7 @@ namespace BuildingManagementApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [AuthenticationFilter([Roles.Administrator])]
         public IActionResult DeleteInvitation(Guid id)
         {
             _invitationLogic.DeleteInvitation(id);
