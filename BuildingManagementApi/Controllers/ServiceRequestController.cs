@@ -33,9 +33,10 @@ namespace BuildingManagementApi.Controllers
 
         [HttpGet]
         [AuthenticationFilter([Roles.Manager])]
-        public IActionResult GetAllServiceRequests()
+        public IActionResult GetAllServiceRequests([FromQuery] string? category)
         {
-            IEnumerable<ServiceRequestResponse> serviceRequests = _serviceRequestLogic.GetAllServiceRequests().Select(sr => new ServiceRequestResponse(sr)).ToList();
+            string categoryOrDefault = category == null ? "" : category;
+            IEnumerable<ServiceRequestResponse> serviceRequests = _serviceRequestLogic.GetAllServiceRequests(categoryOrDefault).Select(sr => new ServiceRequestResponse(sr)).ToList();
             return Ok(serviceRequests);
         }
     }

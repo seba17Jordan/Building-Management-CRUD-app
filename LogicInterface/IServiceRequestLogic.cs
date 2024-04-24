@@ -11,6 +11,6 @@ namespace LogicInterface
     {
         ServiceRequest CreateServiceRequest(ServiceRequest serviceRequest);
 
-        IEnumerable<ServiceRequest> GetAllServiceRequests();
+        IEnumerable<ServiceRequest> GetAllServiceRequests(string category);
     }
 }

@@ -96,14 +96,14 @@ public class ServiceRequestControllerTest
         var expectedResponse = expectedServiceRequests.Select(sr => new ServiceRequestResponse(sr)).ToList();
 
         Mock<IServiceRequestLogic> serviceRequestLogic = new Mock<IServiceRequestLogic>(MockBehavior.Strict);
-        serviceRequestLogic.Setup(serviceRequestLogic => serviceRequestLogic.GetAllServiceRequests()).Returns(expectedServiceRequests);
+        serviceRequestLogic.Setup(serviceRequestLogic => serviceRequestLogic.GetAllServiceRequests(It.IsAny<string>())).Returns(expectedServiceRequests);
         
         var serviceRequestController = new ServiceRequestController(serviceRequestLogic.Object);
         
         OkObjectResult expectedObjResult = new OkObjectResult(expectedResponse);
 
         // Act
-        var result = serviceRequestController.GetAllServiceRequests();
+        var result = serviceRequestController.GetAllServiceRequests("");
 
         // Assert
         serviceRequestLogic.VerifyAll();
