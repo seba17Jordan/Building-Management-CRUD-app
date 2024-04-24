@@ -1,4 +1,6 @@
-﻿using LogicInterface;
+﻿using BuildingManagementApi.Filters;
+using Domain.@enum;
+using LogicInterface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ModelsApi.In;
@@ -7,6 +9,7 @@ using ModelsApi.Out;
 namespace BuildingManagementApi.Controllers
 {
     [Route("api/[controller]")]
+    [TypeFilter(typeof(ExceptionFilter))]
     [ApiController]
     public class MaintenancePersonController : ControllerBase
     {
@@ -18,6 +21,7 @@ namespace BuildingManagementApi.Controllers
         }
 
         [HttpPost]
+        [AuthenticationFilter([Roles.Manager])]
         public IActionResult CreateMaintenancePerson([FromBody] MaintenancePersonRequest maintenancePersonRequest)
         {
             var maintenancePerson = maintenancePersonRequest.ToEntity();
