@@ -12,7 +12,7 @@ namespace BusinessLogicTest
         public void CreateUser_ShouldReturnCreatedUser()
         {
             // Arrange
-            var user = new User
+            var expectedUser = new User
             {
                 Id = Guid.NewGuid(),
                 Name = "Federico",
@@ -21,16 +21,17 @@ namespace BusinessLogicTest
                 Role = Domain.@enum.Roles.Administrator
             };
 
-            Mock<IUserRepository> logic = new Mock<IUserRepository>(MockBehavior.Strict);
-            logic.Setup(l => l.CreateUser(user)).Returns(user);
-            var userLogic = new UserLogic(logic.Object);
+            Mock<IUserRepository> repo = new Mock<IUserRepository>(MockBehavior.Strict);
+            repo.Setup(l => l.CreateUser(It.IsAny<User>())).Returns(expectedUser);
+
+            var userLogic = new UserLogic(repo.Object);
 
             // Act
-            var result = userLogic.CreateUser(user);
+            var result = userLogic.CreateUser(expectedUser);
 
             // Assert
-            logic.VerifyAll();
-            Assert.AreEqual(user.Id, result.Id);
+            repo.VerifyAll();
+            Assert.AreEqual(expectedUser, result);
         }
 
         [TestMethod]
