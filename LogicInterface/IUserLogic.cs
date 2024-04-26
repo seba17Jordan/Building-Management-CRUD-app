@@ -9,5 +9,6 @@ namespace LogicInterface
 {
     public interface IUserLogic
     {
+        User CreateUser(User admin);
     }
 }

@@ -13,13 +13,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogicInterface", "LogicInterface\LogicInterface.csproj", "{93958BC4-7564-4E56-BC18-BC0167E24F9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogicTest", "BusinessLogicTest\BusinessLogicTest.csproj", "{3F4D18B7-63FB-4149-95AB-03B33359F998}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogicTest", "BusinessLogicTest\BusinessLogicTest.csproj", "{3F4D18B7-63FB-4149-95AB-03B33359F998}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogic", "BusinessLogic\BusinessLogic.csproj", "{9B60EC4D-947A-437D-ABF0-6F1C5033C753}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogic", "BusinessLogic\BusinessLogic.csproj", "{9B60EC4D-947A-437D-ABF0-6F1C5033C753}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{7ED7343F-62D0-4CFA-B19F-7237CC8AA0F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{7ED7343F-62D0-4CFA-B19F-7237CC8AA0F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IDataAccess", "IDataAccess\IDataAccess.csproj", "{93429F19-D66B-4242-B5D0-0B187BDFA6B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IDataAccess", "IDataAccess\IDataAccess.csproj", "{93429F19-D66B-4242-B5D0-0B187BDFA6B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerFactory", "ServerFactory\ServerFactory.csproj", "{FEF7BE49-220D-4FBD-8F81-262A806CD081}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{93429F19-D66B-4242-B5D0-0B187BDFA6B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93429F19-D66B-4242-B5D0-0B187BDFA6B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93429F19-D66B-4242-B5D0-0B187BDFA6B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEF7BE49-220D-4FBD-8F81-262A806CD081}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEF7BE49-220D-4FBD-8F81-262A806CD081}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEF7BE49-220D-4FBD-8F81-262A806CD081}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEF7BE49-220D-4FBD-8F81-262A806CD081}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

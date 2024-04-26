@@ -6,7 +6,7 @@ namespace IDataAccess
     {
        User CreateUser(User user);
        bool UserExists(Func<User,bool> predicate);
-       User GetUserById(Guid id);
-       User UpdateUser(User user);
+       //User GetUserById(Guid id);
+       //User UpdateUser(User user);
     }
 }
