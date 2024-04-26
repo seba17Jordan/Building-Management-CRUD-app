@@ -34,17 +34,20 @@ public class AdministratorControllerTest
 
         var expectedAdminResponse = new AdministratorResponse(expectedAdmin);
 
-        var administratorLogicMock = new Mock<IAdministratorLogic>();
-        administratorLogicMock.Setup(x => x.CreateAdministrator(It.IsAny<User>())).Returns(expectedAdmin);
+        Mock<IAdministratorLogic> administratorLogic = new Mock<IAdministratorLogic>(MockBehavior.Strict);
+        administratorLogic.Setup(x => x.CreateAdministrator(It.IsAny<User>())).Returns(expectedAdmin);
+        var administratorController = new AdministratorController(administratorLogic.Object);
 
-        var administratorController = new AdministratorController(administratorLogicMock.Object);
+        var expectedObjAdmin = new CreatedAtActionResult("CreateAdministrator", "CreateAdministrator", new { id = 1 }, expectedAdminResponse);
 
         // Act
         var result = administratorController.CreateAdministrator(adminToCreate) as CreatedAtActionResult;
 
         // Assert
-        var createdAdmin = result.Value as AdministratorResponse;
-        Assert.IsNotNull(createdAdmin);
+        administratorLogic.VerifyAll();
+
+        AdministratorResponse createdAdmin = result.Value as AdministratorResponse;
+        Assert.AreEqual(result.StatusCode, expectedObjAdmin.StatusCode);
         Assert.AreEqual(expectedAdminResponse, createdAdmin);
     }
 }
