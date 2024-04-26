@@ -19,9 +19,14 @@ namespace DataAccess
             return user;
         }
 
+        public User GetUserByEmail(string email)
+        {
+            return _context.Set<User>().FirstOrDefault(u => u.Email == email);
+        }
+
         public bool UserExists(Func<User, bool> predicate)
         {
-            throw new NotImplementedException();
+            return _context.Set<User>().Any(predicate);
         }
     }
 }

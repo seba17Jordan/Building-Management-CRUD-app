@@ -4,8 +4,9 @@ namespace IDataAccess
 {
     public interface IUserRepository
     {
-       User CreateUser(User user);
-       bool UserExists(Func<User,bool> predicate);
+        User CreateUser(User user);
+        User GetUserByEmail(string email);
+        bool UserExists(Func<User,bool> predicate);
        //User GetUserById(Guid id);
        //User UpdateUser(User user);
     }

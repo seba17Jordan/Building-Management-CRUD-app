@@ -33,6 +33,32 @@ namespace DataAccessTest
             Assert.AreEqual(expectedUser, createdUser);
         }
 
+        [TestMethod]
+        public void GetUserByEmailCorrectTest()
+        {
+            // Arrange
+            User expectedUser = new User
+            {
+                Name = "name",
+                LastName = "last name",
+                Email = "mail@gmail.com",
+                Password = "123456",
+                Role = Roles.Administrator
+            };
+
+            var context = CreateDbContext("GetUserByEmailCorrectTest");
+            var userRepository = new UserRepository(context);
+            userRepository.CreateUser(expectedUser);
+            context.SaveChanges();
+
+            // Act
+            User userFound = userRepository.GetUserByEmail("mail@gmail.com");
+            
+
+            // Assert
+            Assert.AreEqual(userFound, expectedUser);
+        }
+
         private DbContext CreateDbContext(string database)
         {
             var options = new DbContextOptionsBuilder<Context>().UseInMemoryDatabase(database).Options;
