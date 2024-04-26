@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.@enum;
 
 namespace ModelsApi.Out
 {
@@ -13,6 +14,7 @@ namespace ModelsApi.Out
         public string Name { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
+        public Roles Role { get; set; }
 
         public AdministratorResponse(User admin)
         {
@@ -20,6 +22,7 @@ namespace ModelsApi.Out
             Name = admin.Name;
             LastName = admin.LastName;
             Email = admin.Email;
+            Role = admin.Role;
         }
 
         public override bool Equals(object obj)
@@ -30,7 +33,7 @@ namespace ModelsApi.Out
             }
 
             AdministratorResponse other = (AdministratorResponse)obj;
-            return Id == other.Id && Name == other.Name && LastName == other.LastName && Email == other.Email;
+            return Id == other.Id && Name == other.Name && LastName == other.LastName && Email == other.Email && Role == other.Role;
         }
     }
 }

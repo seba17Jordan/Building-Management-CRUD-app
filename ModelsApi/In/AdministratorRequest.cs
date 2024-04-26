@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Domain.@enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace ModelsApi.In
         public string Password { get; set; }
         public string Name { get; set; }
         public string LastName { get; set; }
+        public Roles Role { get; set; }
 
         public User ToEntity()
         {
@@ -26,7 +28,8 @@ namespace ModelsApi.In
                 Email = Email,
                 Password = Password,
                 Name = Name,
-                LastName = LastName
+                LastName = LastName,
+                Role = Role
             };
         }
     }

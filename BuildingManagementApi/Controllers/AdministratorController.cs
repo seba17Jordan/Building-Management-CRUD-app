@@ -10,16 +10,15 @@ using Domain.@enum;
 namespace BuildingManagementApi.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/admins")]
     [TypeFilter(typeof(ExceptionFilter))] 
-    [TypeFilter(typeof(AuthenticationFilter))]
     public class AdministratorController : ControllerBase
     {
-        private readonly IAdministratorLogic _administratorLogic;
+        private readonly IUserLogic _userLogic;
 
-        public AdministratorController(IAdministratorLogic administratorLogic)
+        public AdministratorController(IUserLogic userLogic)
         {
-            this._administratorLogic = administratorLogic;
+            _userLogic = userLogic;
         }
 
         [HttpPost]
@@ -27,7 +26,7 @@ namespace BuildingManagementApi.Controllers
         public IActionResult CreateAdministrator([FromBody] AdministratorRequest adminToCreate)
         {
             var admin = adminToCreate.ToEntity();
-            var resultAdmin = _administratorLogic.CreateAdministrator(admin);
+            var resultAdmin = _userLogic.CreateUser(admin);
             var response = new AdministratorResponse(resultAdmin);
 
             return CreatedAtAction(nameof(CreateAdministrator), new { id = response.Id }, response);
