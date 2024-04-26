@@ -1,12 +1,42 @@
+using DataAccess;
+using Domain;
+using Domain.@enum;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
+
 namespace DataAccessTest
 {
     [TestClass]
     public class UserRepositoryTest
     {
         [TestMethod]
-        public void CreateAdministratorUserCorrectTest()
+        public void CreateUserAdministratorCorrectTest()
         {
+            // Arrange
+            var expectedUser = new User
+            {
+                Name = "name",
+                LastName = "last name",
+                Email = "admin@gmail.com",
+                Password = "123456",
+                Role = Roles.Administrator
+            };
+            
+            var context = CreateDbContext("CreateUserAdministratorCorrectTest");
+            var userRepository = new UserRepository(context);
 
+            // Act
+            User createdUser = userRepository.CreateUser(expectedUser);
+            context.SaveChanges();
+
+            // Assert
+            Assert.AreEqual(expectedUser, createdUser);
+        }
+
+        private DbContext CreateDbContext(string database)
+        {
+            var options = new DbContextOptionsBuilder<Context>().UseInMemoryDatabase(database).Options;
+            return new Context(options);
         }
     }
 }
