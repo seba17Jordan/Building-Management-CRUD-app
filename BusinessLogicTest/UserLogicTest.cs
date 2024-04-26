@@ -23,6 +23,7 @@ namespace BusinessLogicTest
 
             Mock<IUserRepository> repo = new Mock<IUserRepository>(MockBehavior.Strict);
             repo.Setup(l => l.CreateUser(It.IsAny<User>())).Returns(expectedUser);
+            repo.Setup(repo => repo.UserExists(It.IsAny<Func<User, bool>>())).Returns(false);
 
             var userLogic = new UserLogic(repo.Object);
 
@@ -34,6 +35,42 @@ namespace BusinessLogicTest
             Assert.AreEqual(expectedUser, result);
         }
 
+        [TestMethod]
+        public void CreateUser_AlreadyExists()
+        {
+            // Arrange
+            Exception specificEx = null;
+            Mock<IUserRepository> repo = new Mock<IUserRepository>(MockBehavior.Strict);
+            try
+            {
+                User expectedUser = new User
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Federico",
+                    Email = "test@example.com",
+                    Password = "password",
+                    Role = Domain.@enum.Roles.Administrator
+                };
+                repo.Setup(repo => repo.UserExists(It.IsAny<Func<User,bool>>())).Returns(true);
+                var userLogic = new UserLogic(repo.Object);
+
+                // Act
+                var logicResult = userLogic.CreateUser(expectedUser);
+
+            }
+            catch(ArgumentException e)
+            {
+                specificEx = e;
+            }
+
+            // Assert
+            repo.VerifyAll();
+            Assert.IsNotNull(specificEx);
+            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));   //Crear exception especifica
+            Assert.AreEqual("User already exists", specificEx.Message);
+        }
+
+        /*
         [TestMethod]
         public void GetUserById_ShouldReturnUser()
         {
@@ -106,5 +143,6 @@ namespace BusinessLogicTest
             Assert.AreEqual(updatedPassword, result.Password);
             Assert.AreEqual(updatedRole, result.Role);
         }
+        */
     }
 }

@@ -26,9 +26,9 @@ namespace BuildingManagementApi.Controllers
         [AuthenticationFilter([Roles.Administrator])]
         public IActionResult CreateAdministrator([FromBody] AdministratorRequest adminToCreate)
         {
-            var admin = adminToCreate.ToEntity(); // Convierte AdministratorRequest a Administrator
-            var resultAdmin = _administratorLogic.CreateAdministrator(admin); // Llama al método de lógica para crear el administrador
-            var response = new AdministratorResponse(resultAdmin); // Convierte Administrator a AdministratorResponse
+            var admin = adminToCreate.ToEntity();
+            var resultAdmin = _administratorLogic.CreateAdministrator(admin);
+            var response = new AdministratorResponse(resultAdmin);
 
             return CreatedAtAction(nameof(CreateAdministrator), new { id = response.Id }, response);
         }
