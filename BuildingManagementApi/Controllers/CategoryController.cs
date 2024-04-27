@@ -2,6 +2,8 @@
 using LogicInterface;
 using ModelsApi.In;
 using ModelsApi.Out;
+using BuildingManagementApi.Filters;
+using Domain.@enum;
 
 namespace BuildingManagementApi.Controllers
 {
@@ -16,6 +18,8 @@ namespace BuildingManagementApi.Controllers
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(AuthenticationFilter))]
+        [AuthorizationFilter(_currentRole = Roles.Administrator)]
         public IActionResult CreateCategory([FromBody] CategoryRequest categoryToCreate)
         {
             var category = categoryToCreate.ToEntity();

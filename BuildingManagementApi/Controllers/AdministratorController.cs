@@ -11,7 +11,7 @@ namespace BuildingManagementApi.Controllers
 {
     [ApiController]
     [Route("api/admins")]
-    //[TypeFilter(typeof(ExceptionFilter))] 
+    [TypeFilter(typeof(ExceptionFilter))] 
     public class AdministratorController : ControllerBase
     {
         private readonly IUserLogic _userLogic;
@@ -22,7 +22,6 @@ namespace BuildingManagementApi.Controllers
         }
 
         [HttpPost]
-        //[AuthenticationFilter([Roles.Administrator])]
         [ServiceFilter(typeof(AuthenticationFilter))]
         [AuthorizationFilter(_currentRole = Roles.Administrator)]
         public IActionResult CreateAdministrator([FromBody] AdministratorRequest adminToCreate)
