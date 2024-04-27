@@ -26,6 +26,10 @@ namespace BusinessLogic
             {
                 throw new ArgumentException("Building invalid address", nameof(building.Address));
             }
+            if (string.IsNullOrWhiteSpace(building.ConstructionCompany))
+            {
+                throw new ArgumentException("Building invalid construction company", nameof(building.ConstructionCompany));
+            }
             return _buildingRepository.CreateBuilding(building);
         }
     }

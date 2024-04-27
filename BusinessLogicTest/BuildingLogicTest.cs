@@ -169,5 +169,54 @@ namespace BusinessLogicTest
             Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));   //Crear exception especifica
             Assert.IsTrue(specificEx.Message.Contains("Building invalid address"));
         }
+
+        [TestMethod]
+        public void CreateBuildingInvalidCompanyThrowArgumentExceptionTestLogic()
+        {
+            // Arrange
+            Exception specificEx = null;
+            Mock<IBuildingRepository> buildingRepo = null;
+            try
+            {
+                //Arrange
+                Building expectedBuilding = new Building()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Name 1",
+                    Address = "Address 1",
+                    ConstructionCompany = "",
+                    CommonExpenses = 100,
+                    Apartments = new List<Apartment>
+                {
+                    new Apartment()
+                    {
+                        Floor = 1,
+                        Number = 101,
+                        Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "jane.doe@example.com" },
+                        Rooms = 3,
+                        Bathrooms = 2,
+                        HasTerrace = true
+                    }
+                }
+                };
+                buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+
+                BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
+
+                // Act
+                Building logicResult = buildingLogic.CreateBuilding(expectedBuilding);
+
+            }
+            catch (ArgumentException e)
+            {
+                specificEx = e;
+            }
+
+            // Assert
+            buildingRepo.VerifyAll();
+            Assert.IsNotNull(specificEx);
+            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));   //Crear exception especifica
+            Assert.IsTrue(specificEx.Message.Contains("Building invalid construction company"));
+        }
     }
 }
