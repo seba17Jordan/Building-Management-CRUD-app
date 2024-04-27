@@ -18,18 +18,13 @@ namespace BusinessLogic
             {
                 throw new ArgumentNullException(nameof(building), "Building is null");
             }
-            if (string.IsNullOrWhiteSpace(building.Name))
+            if (string.IsNullOrWhiteSpace(building.Name) ||
+                string.IsNullOrWhiteSpace(building.Address) ||
+                string.IsNullOrWhiteSpace(building.ConstructionCompany))
             {
-                throw new ArgumentException("Building invalid name", nameof(building.Name));
+                throw new ArgumentException("Building invalid data", nameof(building.Name));
             }
-            if (string.IsNullOrWhiteSpace(building.Address))
-            {
-                throw new ArgumentException("Building invalid address", nameof(building.Address));
-            }
-            if (string.IsNullOrWhiteSpace(building.ConstructionCompany))
-            {
-                throw new ArgumentException("Building invalid construction company", nameof(building.ConstructionCompany));
-            }
+            
             return _buildingRepository.CreateBuilding(building);
         }
     }

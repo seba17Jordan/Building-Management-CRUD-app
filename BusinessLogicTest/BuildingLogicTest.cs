@@ -118,7 +118,7 @@ namespace BusinessLogicTest
             buildingRepo.VerifyAll();
             Assert.IsNotNull(specificEx);
             Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));   //Crear exception especifica
-            Assert.IsTrue(specificEx.Message.Contains("Building invalid name"));
+            Assert.IsTrue(specificEx.Message.Contains("Building invalid data"));
         }
 
         [TestMethod]
@@ -167,7 +167,7 @@ namespace BusinessLogicTest
             buildingRepo.VerifyAll();
             Assert.IsNotNull(specificEx);
             Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));   //Crear exception especifica
-            Assert.IsTrue(specificEx.Message.Contains("Building invalid address"));
+            Assert.IsTrue(specificEx.Message.Contains("Building invalid data"));
         }
 
         [TestMethod]
@@ -216,7 +216,7 @@ namespace BusinessLogicTest
             buildingRepo.VerifyAll();
             Assert.IsNotNull(specificEx);
             Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));   //Crear exception especifica
-            Assert.IsTrue(specificEx.Message.Contains("Building invalid construction company"));
+            Assert.IsTrue(specificEx.Message.Contains("Building invalid data"));
         }
     }
 }
