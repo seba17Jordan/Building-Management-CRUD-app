@@ -18,6 +18,11 @@ namespace DataAccess
             _context = context;
         }
 
+        public void Delete(Session currentSession)
+        {
+            _context.Set<Session>().Remove(currentSession);
+        }
+
         public Session GetSessionByToken(Guid token)
         {
             return _context.Set<Session>().FirstOrDefault(s => s.Token == token);

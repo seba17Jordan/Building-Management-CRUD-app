@@ -11,5 +11,6 @@ namespace LogicInterface
     {
         Guid Authenticate(string email, string password);
         User GetUserByToken(Guid token);
+        void Logout(Guid token);
     }
 }

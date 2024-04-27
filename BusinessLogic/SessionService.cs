@@ -67,5 +67,19 @@ namespace BusinessLogic
 
             return _currentUser;
         }
+
+        public void Logout(Guid token)
+        {
+            if (token == null)
+                throw new ArgumentException("No authorization token");
+
+            var currentSession = _sessionRepository.GetSessionByToken(token);
+
+            if (currentSession != null)
+            {
+                _sessionRepository.Delete(currentSession);
+                _sessionRepository.Save();
+            }
+        }
     }
 }
