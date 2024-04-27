@@ -16,7 +16,7 @@ namespace BusinessLogic
         {
             if (building == null)
             {
-                throw new ArgumentNullException(nameof(building), "Building can't be null");
+                throw new ArgumentNullException(nameof(building), "Building is null");
             }
             return _buildingRepository.CreateBuilding(building);
         }

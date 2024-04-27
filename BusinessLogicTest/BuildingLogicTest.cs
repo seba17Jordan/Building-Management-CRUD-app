@@ -69,7 +69,7 @@ namespace BusinessLogicTest
             buildingRepo.VerifyAll();
             Assert.IsNotNull(specificEx);
             Assert.IsInstanceOfType(specificEx, typeof(ArgumentNullException));   //Crear exception especifica
-            Assert.IsTrue(specificEx.Message.Contains("Building can't be null"));
+            Assert.IsTrue(specificEx.Message.Contains("Building is null"));
         }
     }
 }
