@@ -17,5 +17,10 @@ namespace DataAccess
         {
             throw new NotImplementedException();
         }
+
+        public bool InvitationExists(Func<Invitation, bool> func)
+        {
+            return _context.Set<Invitation>().Any(func);
+        }
     }
 }

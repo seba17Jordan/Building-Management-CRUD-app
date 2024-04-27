@@ -20,6 +20,21 @@ namespace BusinessLogic
 
         public Invitation CreateInvitation(Invitation invitation)
         {
+            if (invitation == null)
+            {
+                throw new ArgumentNullException(nameof(invitation), "Invitation can't be null");
+            }
+
+            if (_invitationRepository.InvitationExists(GetInvitationsByEmail(invitation.Email)))
+            {
+                throw new ArgumentException("Invitation already exists");
+            }
+
+            if (string.IsNullOrWhiteSpace(invitation.Email) ||
+                               string.IsNullOrWhiteSpace(invitation.Name))
+            {
+                throw new ArgumentException("Invalid data");
+            }
             return _invitationRepository.CreateInvitation(invitation);
         }
 
