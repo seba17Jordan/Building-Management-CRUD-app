@@ -69,6 +69,7 @@ public class BuildingControllerTest
 
         //Assert
         buildingLogic.VerifyAll();
+
         CreatedAtActionResult resultObject = finalResult as CreatedAtActionResult;
         BuildingResponse resultValue = resultObject.Value as BuildingResponse;
 

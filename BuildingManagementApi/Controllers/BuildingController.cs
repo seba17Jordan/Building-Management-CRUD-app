@@ -1,4 +1,6 @@
 ﻿
+using BuildingManagementApi.Filters;
+using Domain.@enum;
 using LogicInterface;
 using Microsoft.AspNetCore.Mvc;
 using ModelsApi;
@@ -18,11 +20,13 @@ namespace BuildingManagementApi.Controllers
 
 
         [HttpPost]
+        [ServiceFilter(typeof(AuthenticationFilter))]
+        [AuthorizationFilter(_currentRole = Roles.Manager)]
         public IActionResult CreateBuilding([FromBody] BuildingRequest buildingToCreate)
         {
             var building = buildingToCreate.ToEntity();
             var resultObj = _buildingLogic.CreateBuilding(building);
-            var outputResult = new BuildingResponse(resultObj);
+            BuildingResponse outputResult = new BuildingResponse(resultObj);
 
             return CreatedAtAction(nameof(CreateBuilding), new { id = outputResult.Id }, outputResult);
         }
