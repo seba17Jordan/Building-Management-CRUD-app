@@ -9,6 +9,7 @@ namespace BuildingManagementApi.Controllers
 {
     [ApiController]
     [Route("Api/Categories")]
+    [TypeFilter(typeof(ExceptionFilter))]
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryLogic _categoryLogic;

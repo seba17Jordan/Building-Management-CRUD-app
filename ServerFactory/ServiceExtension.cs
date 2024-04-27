@@ -17,6 +17,9 @@ namespace ServerFactory
             services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<ISessionRepository, SessionRepository>();
 
+            services.AddScoped<ICategoryLogic, CategoryLogic>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+
             services.AddDbContext<DbContext, Context>(o => o.UseSqlServer(connectionString));
             return services;
         }
