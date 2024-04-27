@@ -24,6 +24,11 @@ namespace DataAccess
             return _context.Set<User>().FirstOrDefault(u => u.Email == email);
         }
 
+        public User? GetUserById(Guid currentUserId)
+        {
+            return _context.Set<User>().FirstOrDefault(u => u.Id == currentUserId);
+        }
+
         public bool UserExists(Func<User, bool> predicate)
         {
             return _context.Set<User>().Any(predicate);

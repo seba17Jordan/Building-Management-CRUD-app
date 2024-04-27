@@ -14,7 +14,7 @@ namespace BusinessLogic
     {
         private readonly ISessionRepository _sessionRepository;
         private readonly IUserRepository _userRepository;
-        private Guid? _currentUser;
+        private User? _currentUser;
 
         public SessionService(ISessionRepository sessionRepository, IUserRepository userRepository)
         {
@@ -49,10 +49,10 @@ namespace BusinessLogic
             return actualSession.Token;
         }
 
-        public Guid GetUserByToken(Guid token)
+        public User GetUserByToken(Guid token)
         {
             if (_currentUser != null)
-                return (Guid)_currentUser;
+                return _currentUser;
 
             if (token == null)
                 throw new ArgumentException("No authorization token");
@@ -60,9 +60,12 @@ namespace BusinessLogic
             var currentSession = _sessionRepository.GetSessionByToken(token);
 
             if (currentSession != null)
-                _currentUser = currentSession.UserId;
+            {
+                Guid _currentUserId = currentSession.UserId;
+                _currentUser = _userRepository.GetUserById(_currentUserId);
+            }
 
-            return (Guid)_currentUser;
+            return _currentUser;
         }
     }
 }

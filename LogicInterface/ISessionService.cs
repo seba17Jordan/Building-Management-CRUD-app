@@ -10,6 +10,6 @@ namespace LogicInterface
     public interface ISessionService
     {
         Guid Authenticate(string email, string password);
-        Guid GetUserByToken(Guid token);
+        User GetUserByToken(Guid token);
     }
 }
