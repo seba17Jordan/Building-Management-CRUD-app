@@ -11,6 +11,9 @@ using Domain.@enum;
 
 namespace BuildingManagementApi.Controllers
 {
+    [ApiController]
+    [Route("api/invitations")]
+    [TypeFilter(typeof(ExceptionFilter))]
     public class InvitationController : ControllerBase
     {
         private readonly IInvitationLogic _invitationLogic;
@@ -21,7 +24,8 @@ namespace BuildingManagementApi.Controllers
         }
 
         [HttpPost]
-        //[AuthenticationFilter([Roles.Administrator])]
+        [ServiceFilter(typeof(AuthenticationFilter))]
+        [AuthorizationFilter(_currentRole = Roles.Administrator)]
         public IActionResult CreateInvitation([FromBody] CreateInvitationRequest invitationRequest)
         {
             var invitation = new Invitation(invitationRequest.Email, invitationRequest.Name, invitationRequest.ExpirationDate);
