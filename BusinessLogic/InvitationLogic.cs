@@ -20,7 +20,7 @@ namespace BusinessLogic
 
         public Invitation CreateInvitation(Invitation invitation)
         {
-            throw new NotImplementedException();
+            return _invitationRepository.CreateInvitation(invitation);
         }
 
         public void DeleteInvitation(Guid id)
