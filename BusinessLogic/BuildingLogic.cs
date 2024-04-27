@@ -18,6 +18,10 @@ namespace BusinessLogic
             {
                 throw new ArgumentNullException(nameof(building), "Building is null");
             }
+            if (string.IsNullOrWhiteSpace(building.Name))
+            {
+                throw new ArgumentException("Building invalid name", nameof(building.Name));
+            }
             return _buildingRepository.CreateBuilding(building);
         }
     }
