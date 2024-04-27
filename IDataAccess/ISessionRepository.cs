@@ -9,6 +9,7 @@ namespace IDataAccess
 {
     public interface ISessionRepository
     {
+        Session GetSessionByToken(Guid token);
         void Insert(Session actualSession);
         void Save();
     }

@@ -1,3 +1,4 @@
+using BuildingManagementApi.Filters;
 using ServerFactory;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddServices(builder.Configuration.GetConnectionString("BuildingManagement"));
+//Filters
+builder.Services.AddScoped<AuthenticationFilter>();
 
 var app = builder.Build();
 

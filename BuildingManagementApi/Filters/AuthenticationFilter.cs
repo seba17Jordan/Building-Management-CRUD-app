@@ -6,54 +6,38 @@ using System.Diagnostics.Eventing.Reader;
 
 namespace BuildingManagementApi.Filters
 {
-    public class AuthenticationFilter : Attribute, IActionFilter
+    public class AuthenticationFilter : Attribute, IAuthorizationFilter
     {
-        private readonly IAuthenticationServiceLogic _userService;
-        public List<Roles> Roles { get; set; }
+        private readonly ISessionService _sessionService; //Ver si agrego al context o factory
 
-        public AuthenticationFilter(Roles[] roles)
+        public AuthenticationFilter(ISessionService sessionService)
         {
-            Roles = new List<Roles>(roles);
+            _sessionService = sessionService;
         }
 
-        public void OnActionExecuted(ActionExecutedContext context)
+        public void OnAuthorization(AuthorizationFilterContext context)
         {
+            //Desde aca mando el token a quien lo va a usar
+            var authHeader = context.HttpContext.Request.Headers["Authorization"].ToString();
+            Guid token = Guid.Empty;
 
-        }
-
-        public void OnActionExecuting(ActionExecutingContext context)
-        {
-            string header = context.HttpContext.Request.Headers["Authorization"];
-            Guid token = Guid.Parse(header);
-            if (header is null)
+            if (string.IsNullOrEmpty(authHeader) || !Guid.TryParse(authHeader, out token))
             {
-                context.Result = new ObjectResult("Authorization header is required.")
+                context.Result = new ObjectResult(new { Message = "No authorization header" })
                 {
                     StatusCode = 401
                 };
             }
             else
             {
-                if (Roles.Count > 0)
+                var currentUserId = _sessionService.GetUserByToken(token);
+
+                if (currentUserId == null)
                 {
-                    var authenticationService = (IAuthenticationServiceLogic)context.HttpContext.RequestServices.GetService(typeof(IAuthenticationServiceLogic));
-                    var role = authenticationService.GetUserRole(token);
-                    if (!Roles.Contains(role))
-                    {
-                        context.Result = new ObjectResult("Unauthorized")
-                        {
-                            StatusCode = 403
-                        };
-                        return;
-                    }
-                }
-                else
-                {
-                    context.Result = new ObjectResult("Unauthorized")
+                    context.Result = new ObjectResult(new { Message = "Unauthorized" })
                     {
                         StatusCode = 403
                     };
-                    return;
                 }
             }
         }

@@ -18,6 +18,11 @@ namespace DataAccess
             _context = context;
         }
 
+        public Session GetSessionByToken(Guid token)
+        {
+            return _context.Set<Session>().FirstOrDefault(s => s.Token == token);
+        }
+
         public void Insert(Session actualSession)
         {
             _context.Entry(actualSession.User).State = EntityState.Unchanged;

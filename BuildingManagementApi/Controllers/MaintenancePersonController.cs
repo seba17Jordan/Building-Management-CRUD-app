@@ -21,7 +21,7 @@ namespace BuildingManagementApi.Controllers
         }
 
         [HttpPost]
-        [AuthenticationFilter([Roles.Manager])]
+        //[AuthenticationFilter([Roles.Manager])]
         public IActionResult CreateMaintenancePerson([FromBody] MaintenancePersonRequest maintenancePersonRequest)
         {
             var maintenancePerson = maintenancePersonRequest.ToEntity();

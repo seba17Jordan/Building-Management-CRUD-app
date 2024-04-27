@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,5 +10,6 @@ namespace LogicInterface
     public interface ISessionService
     {
         Guid Authenticate(string email, string password);
+        Guid GetUserByToken(Guid token);
     }
 }

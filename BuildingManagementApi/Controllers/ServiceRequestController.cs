@@ -21,7 +21,7 @@ namespace BuildingManagementApi.Controllers
         }
 
         [HttpPost]
-        [AuthenticationFilter([Roles.Manager])]
+        //[AuthenticationFilter([Roles.Manager])]
         public IActionResult CreateServiceRequest([FromBody] ServiceRequestRequest serviceRequestToCreate)
         {
             var serviceRequest = serviceRequestToCreate.ToEntity();
@@ -32,7 +32,7 @@ namespace BuildingManagementApi.Controllers
         }
 
         [HttpGet]
-        [AuthenticationFilter([Roles.Manager])]
+        //[AuthenticationFilter([Roles.Manager])]
         public IActionResult GetAllServiceRequests([FromQuery] string? category)
         {
             string categoryOrDefault = category == null ? "" : category;
