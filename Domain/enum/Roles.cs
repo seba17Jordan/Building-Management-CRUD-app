@@ -8,8 +8,8 @@ namespace Domain.@enum
 {
     public enum Roles
     {
-        Administrator,
-        Manager,
-        Maintenance
+        Administrator, //0
+        Manager, //1
+        Maintenance //2
     }
 }

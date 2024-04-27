@@ -6,14 +6,9 @@ using System.Diagnostics.Eventing.Reader;
 
 namespace BuildingManagementApi.Filters
 {
-    public class AuthenticationFilter : Attribute, IAuthorizationFilter
+    public class AuthorizationFilter : Attribute, IAuthorizationFilter
     {
-        private readonly ISessionService _sessionService; //Ver si agrego al context o factory
-
-        public AuthenticationFilter(ISessionService sessionService)
-        {
-            _sessionService = sessionService;
-        }
+        public Roles _currentRole { get; set; } 
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
@@ -28,18 +23,27 @@ namespace BuildingManagementApi.Filters
                     StatusCode = 401
                 };
             }
-            else
-            {
-                var currentUser = _sessionService.GetUserByToken(token);
+            
+            var _sessionService = (ISessionService)context.HttpContext.RequestServices.GetService(typeof(ISessionService));
+            var currentUser = _sessionService.GetUserByToken(token);
 
-                if (currentUser == null)
+            if (currentUser == null)
+            {
+                context.Result = new ObjectResult(new { Message = "User not found" })
                 {
-                    context.Result = new ObjectResult(new { Message = "User not found" })
-                    {
-                        StatusCode = 403
-                    };
-                }
+                    StatusCode = 403
+                };
             }
+
+            if (currentUser.Role != _currentRole)
+            {
+                context.Result = new ObjectResult(new { Message = "User not authorized" })
+                {
+                    StatusCode = 403
+                };
+            }
+            
         }
     }
 }
+

@@ -24,6 +24,7 @@ namespace BuildingManagementApi.Controllers
         [HttpPost]
         //[AuthenticationFilter([Roles.Administrator])]
         [ServiceFilter(typeof(AuthenticationFilter))]
+        [AuthorizationFilter(_currentRole = Roles.Administrator)]
         public IActionResult CreateAdministrator([FromBody] AdministratorRequest adminToCreate)
         {
             var admin = adminToCreate.ToEntity();
