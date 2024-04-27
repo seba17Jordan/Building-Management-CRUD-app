@@ -14,7 +14,7 @@ namespace BusinessLogic
         }
         public Building CreateBuilding(Building building)
         {
-            throw new NotImplementedException();
+            return _buildingRepository.CreateBuilding(building);
         }
     }
 }
