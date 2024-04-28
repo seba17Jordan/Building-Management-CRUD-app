@@ -405,5 +405,71 @@ namespace BusinessLogicTest
             Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
             Assert.IsTrue(specificEx.Message.Contains("Building not found"));
         }
+
+        [TestMethod]
+        public void UpdateBuildingNameTestLogic()
+        {
+            //Arrange
+            Building building = new Building()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Building 1",
+                Address = "Address 1",
+                ConstructionCompany = "Construction Company 1",
+                CommonExpenses = 100,
+                Apartments = new List<Apartment>
+                {
+                    new Apartment()
+                    {
+                        Floor = 1,
+                        Number = 101,
+                        Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "jane.doe@example.com" },
+                        Rooms = 3,
+                        Bathrooms = 2,
+                        HasTerrace = true
+                    }
+                }
+            };
+
+            Building updates = new Building()
+            {
+                Name = "Building 2",
+            };
+
+            Building expectedBuilding = new Building()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Building 2",
+                Address = "Address 1",
+                ConstructionCompany = "Construction Company 1",
+                CommonExpenses = 100,
+                Apartments = new List<Apartment>
+                {
+                    new Apartment()
+                    {
+                        Floor = 1,
+                        Number = 101,
+                        Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "jane.doe@example.com" },
+                        Rooms = 3,
+                        Bathrooms = 2,
+                        HasTerrace = true
+                    }
+                }
+            };
+
+            Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+            buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(building);
+            buildingRepo.Setup(l => l.UpdateBuilding(It.IsAny<Building>()));
+            buildingRepo.Setup(l => l.Save());
+
+            BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
+
+            //Act
+            Building logicResult = buildingLogic.UpdateBuildingById(building.Id, updates);
+
+            //Assert
+            buildingRepo.VerifyAll();
+            Assert.AreEqual(logicResult, expectedBuilding);
+        }
     }
 }

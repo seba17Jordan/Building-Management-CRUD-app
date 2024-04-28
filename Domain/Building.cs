@@ -13,5 +13,20 @@ namespace Domain
         public Building()
         {
         }
+
+        public override bool Equals(object building)
+        {
+            if (building == null || GetType() != building.GetType())
+            {
+                return false;
+            }
+            Building secondBuilding = (Building)building;
+
+            return Name == secondBuilding.Name &&
+                   Address == secondBuilding.Address &&
+                   ConstructionCompany == secondBuilding.ConstructionCompany &&
+                   CommonExpenses == secondBuilding.CommonExpenses &&
+                   Apartments.SequenceEqual(secondBuilding.Apartments);
+        }
     }
 }

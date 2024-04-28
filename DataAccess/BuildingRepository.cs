@@ -39,5 +39,10 @@ namespace DataAccess
         {
             _context.SaveChanges();
         }
+
+        public void UpdateBuilding(Building buildingToUpdate)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

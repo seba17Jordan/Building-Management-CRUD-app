@@ -122,7 +122,7 @@ public class BuildingControllerTest
     }
 
     [TestMethod]
-    public void UpdateBuildingCorrectTest()
+    public void UpdateBuildingCorrectTestController()
     {
         //Arrange
         Building building = new Building()
@@ -197,6 +197,5 @@ public class BuildingControllerTest
         Assert.AreEqual(resultObject.StatusCode, expectedObjResult.StatusCode);
         Assert.AreEqual(resultValue, expectedMappedBuilding);
     }
-
 
 }

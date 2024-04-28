@@ -58,7 +58,14 @@ namespace BusinessLogic
 
         public Building UpdateBuildingById(Guid id, Building building)
         {
-            throw new NotImplementedException();
+            Building buildingToUpdate = _buildingRepository.GetBuildingById(id);
+
+            buildingToUpdate.Name = building.Name;
+
+            _buildingRepository.UpdateBuilding(buildingToUpdate);
+            _buildingRepository.Save();
+
+            return buildingToUpdate;
         }
     }
 }

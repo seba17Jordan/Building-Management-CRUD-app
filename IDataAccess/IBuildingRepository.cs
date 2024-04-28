@@ -9,5 +9,6 @@ namespace IDataAccess
         void DeleteBuilding(Building building);
         Building GetBuildingById(Guid id);
         void Save();
+        void UpdateBuilding(Building buildingToUpdate);
     }
 }
