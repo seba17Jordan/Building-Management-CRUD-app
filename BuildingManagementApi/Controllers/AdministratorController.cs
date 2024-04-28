@@ -28,7 +28,7 @@ namespace BuildingManagementApi.Controllers
         {
             var admin = adminToCreate.ToEntity();
             var resultAdmin = _userLogic.CreateUser(admin);
-            var response = new AdministratorResponse(resultAdmin);
+            AdministratorResponse response = new AdministratorResponse(resultAdmin);
 
             return CreatedAtAction(nameof(CreateAdministrator), new { id = response.Id }, response);
         }

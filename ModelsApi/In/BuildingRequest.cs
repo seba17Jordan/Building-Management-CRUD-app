@@ -4,11 +4,11 @@ namespace ModelsApi.In
 {
     public class BuildingRequest
     {
-        public string Name { get; set; }
-        public string Address { get; set; }
-        public string ConstructionCompany { get; set; }
-        public int CommonExpenses { get; set; }
-        public List<ApartmentRequest> Apartments { get; set; }
+        public string? Name { get; set; }
+        public string? Address { get; set; }
+        public string? ConstructionCompany { get; set; }
+        public int? CommonExpenses { get; set; }
+        public List<ApartmentRequest>? Apartments { get; set; }
 
         public Building ToEntity()
         {
@@ -17,7 +17,7 @@ namespace ModelsApi.In
                 Name = Name,
                 Address = Address,
                 ConstructionCompany = ConstructionCompany,
-                CommonExpenses = CommonExpenses,
+                CommonExpenses = (int)CommonExpenses,
                 Apartments = new List<Apartment>()
             };
 
