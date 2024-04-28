@@ -43,7 +43,6 @@ namespace DataAccess
         public void UpdateBuilding(Building buildingToUpdate)
         {
             _context.Set<Building>().Update(buildingToUpdate);
-            _context.SaveChanges();
         }
     }
 }
