@@ -256,5 +256,43 @@ namespace BusinessLogicTest
             Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
             Assert.IsTrue(specificEx.Message.Contains("Building must have at least one apartment"));
         }
+
+        [TestMethod]
+        public void CreateBuildingInvalidExpensesThrowArgumentExceptionTestLogic()
+        {
+            // Arrange
+            Exception specificEx = null;
+            Mock<IBuildingRepository> buildingRepo = null;
+            try
+            {
+                //Arrange
+                Building expectedBuilding = new Building()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Name 1",
+                    Address = "Address 1",
+                    ConstructionCompany = "Company",
+                    CommonExpenses = -100,
+                    Apartments = new List<Apartment>()
+                };
+                buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+
+                BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
+
+                // Act
+                Building logicResult = buildingLogic.CreateBuilding(expectedBuilding);
+
+            }
+            catch (ArgumentException e)
+            {
+                specificEx = e;
+            }
+
+            // Assert
+            buildingRepo.VerifyAll();
+            Assert.IsNotNull(specificEx);
+            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
+            Assert.IsTrue(specificEx.Message.Contains("Common expenses must be greater than 0"));
+        }
     }
 }

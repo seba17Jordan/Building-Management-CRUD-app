@@ -24,11 +24,10 @@ namespace BusinessLogic
             {
                 throw new ArgumentException("Building invalid data", nameof(building.Name));
             }
-            /*if (building.CommonExpenses < 0)
+            if (building.CommonExpenses < 0)
             {
                 throw new ArgumentException("Common expenses must be greater than 0", nameof(building.CommonExpenses));
             }
-            */
             if (building.Apartments.Count == 0 || building.Apartments == null)
             {
                 throw new ArgumentException("Building must have at least one apartment", nameof(building.Apartments));
