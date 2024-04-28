@@ -20,10 +20,14 @@ namespace ModelsApi.Out
             CommonExpenses = (int)expectedBuilding.CommonExpenses;
             Apartments = new List<ApartmentResponse>();
 
-            foreach (var apartment in expectedBuilding.Apartments)
+            if (expectedBuilding.Apartments != null)
             {
-                Apartments.Add(new ApartmentResponse(apartment));
+                foreach (var apartment in expectedBuilding.Apartments)
+                {
+                    Apartments.Add(new ApartmentResponse(apartment));
+                }
             }
+            
         }
 
         public override bool Equals(object building)

@@ -9,6 +9,9 @@ using ModelsApi.Out;
 
 namespace BuildingManagementApi.Controllers
 {
+    [ApiController]
+    [Route("api/buildings")]
+    [TypeFilter(typeof(ExceptionFilter))]
     public class BuildingController : ControllerBase
     {
         private readonly IBuildingLogic _buildingLogic;
@@ -34,7 +37,7 @@ namespace BuildingManagementApi.Controllers
         [HttpDelete("{id}")]
         [ServiceFilter(typeof(AuthenticationFilter))]
         [AuthorizationFilter(_currentRole = Roles.Manager)]
-        public IActionResult DeleteBuildingById(Guid id)
+        public IActionResult DeleteBuildingById([FromRoute] Guid id)
         {
             _buildingLogic.DeleteBuildingById(id);
             return NoContent();
@@ -43,7 +46,7 @@ namespace BuildingManagementApi.Controllers
         [HttpPatch("{id}")]
         [ServiceFilter(typeof(AuthenticationFilter))]
         [AuthorizationFilter(_currentRole = Roles.Manager)]
-        public IActionResult UpdateBuildingById(Guid id, [FromBody] BuildingRequest buildingUpdates)
+        public IActionResult UpdateBuildingById([FromRoute] Guid id, [FromBody] BuildingRequest buildingUpdates)
         {
             var building = buildingUpdates.ToEntity();
             var logicBuilding = _buildingLogic.UpdateBuildingById(id, building);

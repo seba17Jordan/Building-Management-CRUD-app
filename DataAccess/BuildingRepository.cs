@@ -25,9 +25,21 @@ namespace DataAccess
             return building;
         }
 
+        //nuevo
+        public void DeleteApartment(Apartment apartment)
+        {
+            _context.Set<Apartment>().Remove(apartment);
+        }
+
         public void DeleteBuilding(Building building)
         {
             _context.Set<Building>().Remove(building);
+        }
+
+        //nuevo
+        public void DeleteOwner(Owner owner)
+        {
+            throw new System.NotImplementedException();
         }
 
         public Building GetBuildingById(Guid id)

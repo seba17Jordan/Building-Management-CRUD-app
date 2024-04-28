@@ -52,6 +52,21 @@ namespace BusinessLogic
             {
                 throw new ArgumentException("Building not found", nameof(id));
             }
+            
+            if (building.Apartments != null)
+            {
+                foreach (var apartment in building.Apartments)
+                {
+                    if (apartment.Owner != null)
+                    {
+                        _buildingRepository.DeleteOwner(apartment.Owner);
+                    }
+                    _buildingRepository.DeleteApartment(apartment);
+                }
+                building.Apartments.Clear();
+                building.Apartments = null;
+            }
+
             _buildingRepository.DeleteBuilding(building);
             _buildingRepository.Save();
         }
@@ -90,7 +105,7 @@ namespace BusinessLogic
                 buildingToUpdate.CommonExpenses = building.CommonExpenses;
             }
 
-            if (building.Apartments != null)
+            if (building.Apartments != null && building.Apartments.Count >=1)
             {
                 buildingToUpdate.Apartments = building.Apartments;
             }

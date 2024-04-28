@@ -1,4 +1,5 @@
 ﻿using Domain;
+using System.Collections.Generic;
 
 namespace ModelsApi.In
 {
@@ -12,15 +13,28 @@ namespace ModelsApi.In
 
         public Building ToEntity()
         {
-            var building = new Building
-            {
-                Name = Name,
-                Address = Address,
-                ConstructionCompany = ConstructionCompany,
-                CommonExpenses = (int)CommonExpenses,
-                Apartments = new List<Apartment>()
-            };
+            var building = new Building();
 
+            if (Name != null)
+            {
+                building.Name = Name;
+            }
+
+            if (Address != null)
+            {
+                building.Address = Address;
+            }
+
+            if (ConstructionCompany != null)
+            {
+                building.ConstructionCompany = ConstructionCompany;
+            }
+
+            if (CommonExpenses != null)
+            {
+                building.CommonExpenses = CommonExpenses.Value;
+            }
+        
             if (Apartments != null)
             {
                 foreach (var apartmentReq in Apartments)

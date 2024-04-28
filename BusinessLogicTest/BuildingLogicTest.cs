@@ -356,6 +356,44 @@ namespace BusinessLogicTest
         }
 
         [TestMethod]
+        public void DeleteBuildingByIdWithApartmentAndOwnerCorrectTestLogic()
+        {
+            // Arrange
+            Building expectedBuilding = new Building()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Name 1",
+                Address = "Address 1",
+                ConstructionCompany = "",
+                CommonExpenses = 100,
+                Apartments = new List<Apartment>
+                {
+                    new Apartment()
+                    {
+                        Floor = 1,
+                        Number = 101,
+                        Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "jane.doe@example.com" },
+                        Rooms = 3,
+                        Bathrooms = 2,
+                        HasTerrace = true
+                    }
+                }
+            };
+
+            Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+            buildingRepo.Setup(l => l.DeleteBuilding(It.IsAny<Building>()));
+            buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(new Building());
+            buildingRepo.Setup(l => l.Save());
+            BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
+
+            // Act
+            buildingLogic.DeleteBuildingById(expectedBuilding.Id);
+
+            // Assert
+            buildingRepo.VerifyAll();
+        }
+
+        [TestMethod]
         public void DeleteBuildingByIdEmptyIdShouldThrowExceptionTestLogic()
         {
             // Arrange

@@ -12,10 +12,19 @@ namespace DataAccess
     { 
         public DbSet<User> Users { get; set; }
         public DbSet<Building> Buildings { get; set; }
+        public DbSet<Apartment> Apartments { get; set; }
+        public DbSet<Owner> Owners { get; set; }
         public DbSet<Session> Sessions { get; set; }
 
         public DbSet<Invitation> Invitations { get; set; }
         public DbSet<Category> Categories { get; set; }
         public Context(DbContextOptions options) : base(options) { }
+
+        /*protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Building>().HasMany(b => b.Apartments).WithOne(b => b.Building);
+        }
+        */
     }
 }
