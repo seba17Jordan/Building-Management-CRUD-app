@@ -10,6 +10,6 @@ namespace IDataAccess
     public interface IInvitationRepository
     {
         public Invitation CreateInvitation(Invitation invitation);
-        bool InvitationExists(Func<Invitation, bool> func);
+        bool InvitationExists(string email);
     }
 }

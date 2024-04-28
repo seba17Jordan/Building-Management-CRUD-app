@@ -25,7 +25,7 @@ namespace BusinessLogic
                 throw new ArgumentNullException(nameof(invitation), "Invitation can't be null");
             }
 
-            if (_invitationRepository.InvitationExists(GetInvitationsByEmail(invitation.Email)))
+            if (_invitationRepository.InvitationExists(invitation.Email))
             {
                 throw new ArgumentException("Invitation already exists");
             }
@@ -46,11 +46,6 @@ namespace BusinessLogic
         public void RejectInvitation(Guid id)
         {
             throw new NotImplementedException();
-        }
-
-        private Func<Invitation, bool> GetInvitationsByEmail(string email)
-        {
-            return (Invitation i) => email == "" || i.Email == email;
         }
     }
 }

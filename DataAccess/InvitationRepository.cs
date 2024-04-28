@@ -21,9 +21,9 @@ namespace DataAccess
             return invitation;
         }
 
-        public bool InvitationExists(Func<Invitation, bool> func)
+        public bool InvitationExists(string email)
         {
-            return _context.Set<Invitation>().Any(func);
+            return _context.Set<Invitation>().Any(i => i.Email == email);
         }
     }
 }
