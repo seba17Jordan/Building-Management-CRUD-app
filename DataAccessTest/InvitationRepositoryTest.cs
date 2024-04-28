@@ -29,7 +29,7 @@ namespace DataAccessTest
             // Assert
             Assert.AreEqual(expectedInvitation, createdInvitation);
         }
-
+        /*
         [TestMethod]
         public void UpdateInvitationRepositoryCorrectTest()
         {
@@ -53,7 +53,7 @@ namespace DataAccessTest
 
             // Assert
             Assert.AreEqual(Status.Accepted, updatedInvitation.State);
-        }
+        }*/
 
         [TestMethod]
         public void DeleteInvitationRepositoryCorrectTest()

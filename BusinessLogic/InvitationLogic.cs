@@ -91,7 +91,25 @@ namespace BusinessLogic
 
         public void RejectInvitation(Guid id)
         {
-            throw new NotImplementedException();
+            if (id == Guid.Empty)
+            {
+                throw new ArgumentException("Invalid id");
+            }
+
+            Invitation invitation = _invitationRepository.GetInvitationById(id);
+
+            if (invitation == null)
+            {
+                throw new ArgumentException("Invitation not found");
+            }
+
+            if (invitation.State != Status.Pending)
+            {
+                throw new InvalidOperationException("You can only reject a pending invitation");
+            }
+
+            invitation.State = Status.Rejected;
+            _invitationRepository.UpdateInvitation(invitation);
         }
     }
 }

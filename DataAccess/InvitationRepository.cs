@@ -31,11 +31,10 @@ namespace DataAccess
             return invitation;
         }
 
-        public Invitation UpdateInvitation(Invitation invitation)
+        public void UpdateInvitation(Invitation invitation)
         {
             _context.Set<Invitation>().Update(invitation);
             _context.SaveChanges();
-            return invitation;
         }
 
         public bool InvitationExists(string email)

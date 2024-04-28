@@ -29,29 +29,32 @@ namespace BusinessLogicTest
             // Assert
             Assert.AreEqual(invitation, result);
         }
-        /*
+        
         [TestMethod]
-        public void UpdateInvitationStateLogicTest()
+        public void RejectInvitationStateLogicTest()
         {
             // Arrange
-            var mockInvitationRepository = new Mock<IInvitationRepository>();
-            
-            var invitationLogic = new InvitationLogic(mockInvitationRepository.Object);
-
             Invitation invitation = new Invitation()
             {
+                Id = Guid.NewGuid(),
                 Name = "John Doe",
                 Email = "johndoe@example.com",
-                ExpirationDate = DateTime.Now.AddDays(6)
+                ExpirationDate = DateTime.Now.AddDays(6),
+                State = Status.Pending
             };
 
+            var mockInvitationRepository = new Mock<IInvitationRepository>();
+            
+            InvitationLogic invitationLogic = new InvitationLogic(mockInvitationRepository.Object);
             mockInvitationRepository.Setup(x => x.GetInvitationById(It.IsAny<Guid>())).Returns(invitation);
-            mockInvitationRepository.Setup(x => x.UpdateInvitation(invitation)).Returns(invitation);
+            mockInvitationRepository.Setup(x => x.UpdateInvitation(It.IsAny<Invitation>()));
+            
             // Act
-            var result = invitationLogic.UpdateInvitationState(Guid.NewGuid(), Status.Accepted);
+            invitationLogic.RejectInvitation(invitation.Id);
+            
             // Assert
-            Assert.AreEqual(Status.Accepted, result.State);
-        }*/
+            Assert.AreEqual(Status.Rejected, invitation.State);
+        }
 
         [TestMethod]
         public void DeleteInvitationLogicTest()
