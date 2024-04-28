@@ -117,7 +117,7 @@ namespace BusinessLogicTest
             // Assert
             buildingRepo.VerifyAll();
             Assert.IsNotNull(specificEx);
-            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));   //Crear exception especifica
+            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
             Assert.IsTrue(specificEx.Message.Contains("Building invalid data"));
         }
 
@@ -166,7 +166,7 @@ namespace BusinessLogicTest
             // Assert
             buildingRepo.VerifyAll();
             Assert.IsNotNull(specificEx);
-            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));   //Crear exception especifica
+            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
             Assert.IsTrue(specificEx.Message.Contains("Building invalid data"));
         }
 
@@ -215,8 +215,46 @@ namespace BusinessLogicTest
             // Assert
             buildingRepo.VerifyAll();
             Assert.IsNotNull(specificEx);
-            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));   //Crear exception especifica
+            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
             Assert.IsTrue(specificEx.Message.Contains("Building invalid data"));
+        }
+
+        [TestMethod]
+        public void CreateBuildingNoApartmentsThrowArgumentExceptionTestLogic()
+        {
+            // Arrange
+            Exception specificEx = null;
+            Mock<IBuildingRepository> buildingRepo = null;
+            try
+            {
+                //Arrange
+                Building expectedBuilding = new Building()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Name 1",
+                    Address = "Address 1",
+                    ConstructionCompany = "Company",
+                    CommonExpenses = 100,
+                    Apartments = new List<Apartment>()
+                };
+                buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+
+                BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
+
+                // Act
+                Building logicResult = buildingLogic.CreateBuilding(expectedBuilding);
+
+            }
+            catch (ArgumentException e)
+            {
+                specificEx = e;
+            }
+
+            // Assert
+            buildingRepo.VerifyAll();
+            Assert.IsNotNull(specificEx);
+            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
+            Assert.IsTrue(specificEx.Message.Contains("Building must have at least one apartment"));
         }
     }
 }
