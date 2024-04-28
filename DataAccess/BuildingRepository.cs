@@ -15,7 +15,7 @@ namespace DataAccess
 
         public bool BuildingNameExists(string name)
         {
-            throw new NotImplementedException();
+            return _context.Set<Building>().Any(b => b.Name == name);
         }
 
         public Building CreateBuilding(Building building)
