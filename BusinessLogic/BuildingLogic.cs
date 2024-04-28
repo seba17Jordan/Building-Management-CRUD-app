@@ -59,6 +59,11 @@ namespace BusinessLogic
         public Building UpdateBuildingById(Guid id, Building building)
         {
             Building buildingToUpdate = _buildingRepository.GetBuildingById(id);
+            
+            if (_buildingRepository.BuildingNameExists(building.Name))
+            {
+                throw new ArgumentException("Building with same name already exists");
+            }
 
             buildingToUpdate.Name = building.Name;
 

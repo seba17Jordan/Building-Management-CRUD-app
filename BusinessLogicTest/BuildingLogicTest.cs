@@ -459,6 +459,7 @@ namespace BusinessLogicTest
 
             Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
             buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(building);
+            buildingRepo.Setup(l => l.BuildingNameExists(It.IsAny<string>())).Returns(false);
             buildingRepo.Setup(l => l.UpdateBuilding(It.IsAny<Building>()));
             buildingRepo.Setup(l => l.Save());
 
@@ -471,5 +472,52 @@ namespace BusinessLogicTest
             buildingRepo.VerifyAll();
             Assert.AreEqual(logicResult, expectedBuilding);
         }
+
+        [TestMethod]
+        public void UpdateBuildingNameRepeatedShouldThrowExceptionTestLogic()
+        {
+            // Arrange
+            Exception specificEx = null;
+            Mock<IBuildingRepository> buildingRepo = null;
+            try
+            {
+                //Arrange
+                Building building = new Building()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Name 1",
+                    Address = "Address 1",
+                    ConstructionCompany = "Company",
+                    CommonExpenses = -100,
+                    Apartments = new List<Apartment>()
+                };
+
+                Building updates = new Building()
+                {
+                    Name = "Name 2",
+                };
+
+                buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+                buildingRepo.Setup(l => l.BuildingNameExists(It.IsAny<string>())).Returns(true);
+                buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(building);
+
+                BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
+
+                // Act
+                Building logicResult = buildingLogic.UpdateBuildingById(building.Id, updates);
+
+            }
+            catch (ArgumentException e)
+            {
+                specificEx = e;
+            }
+
+            // Assert
+            buildingRepo.VerifyAll();
+            Assert.IsNotNull(specificEx);
+            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
+            Assert.IsTrue(specificEx.Message.Contains("Building with same name already exists"));
+        }
+
     }
 }
