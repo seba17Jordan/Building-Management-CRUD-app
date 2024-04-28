@@ -10,7 +10,7 @@ namespace DataAccessTest
     public class InvitationRepositoryTest
     {
         [TestMethod]
-        public void CreateInvitationCorrectTest()
+        public void CreateInvitationRepositoryCorrectTest()
         {
             var expectedInvitation = new Invitation()
             {

@@ -16,7 +16,9 @@ namespace DataAccess
 
         public Invitation CreateInvitation(Invitation invitation)
         {
-            throw new System.NotImplementedException();
+            _context.Set<Invitation>().Add(invitation);
+            _context.SaveChanges();
+            return invitation;
         }
 
         public bool InvitationExists(Func<Invitation, bool> func)
