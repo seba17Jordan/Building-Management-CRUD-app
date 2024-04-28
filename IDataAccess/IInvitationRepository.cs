@@ -13,5 +13,7 @@ namespace IDataAccess
         Invitation GetInvitationById(Guid id);
         bool InvitationExists(string email);
         Invitation UpdateInvitation(Invitation invitation);
+
+        void DeleteInvitation(Guid id);
     }
 }

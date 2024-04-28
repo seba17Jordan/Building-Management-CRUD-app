@@ -55,6 +55,30 @@ namespace DataAccessTest
             Assert.AreEqual(Status.Accepted, updatedInvitation.State);
         }
 
+        [TestMethod]
+        public void DeleteInvitationRepositoryCorrectTest()
+        {
+            var expectedInvitation = new Invitation()
+            {
+                Name = "John Doe",
+                Email = "johndoe@example.com",
+                ExpirationDate = DateTime.Now.AddDays(6)
+            };
+
+            var context = CreateDbContext("DeleteInvitationCorrectTest");
+            var invitationRepository = new InvitationRepository(context);
+
+            // Act
+            Invitation createdInvitation = invitationRepository.CreateInvitation(expectedInvitation);
+            context.SaveChanges();
+
+            invitationRepository.DeleteInvitation(createdInvitation.Id);
+            context.SaveChanges();
+
+            // Assert
+            Assert.IsFalse(context.Set<Invitation>().Any(i => i.Id == createdInvitation.Id));
+        }
+
         private DbContext CreateDbContext(string database)
         {
             var options = new DbContextOptionsBuilder<Context>().UseInMemoryDatabase(database).Options;

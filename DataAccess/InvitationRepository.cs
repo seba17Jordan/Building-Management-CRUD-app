@@ -42,5 +42,10 @@ namespace DataAccess
         {
             return _context.Set<Invitation>().Any(i => i.Email == email);
         }
+
+        public void DeleteInvitation(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

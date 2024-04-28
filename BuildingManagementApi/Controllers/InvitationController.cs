@@ -52,11 +52,11 @@ namespace BuildingManagementApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        //[AuthenticationFilter([Roles.Administrator])]
-        public IActionResult DeleteInvitation(Guid id)
+        [AuthorizationFilter(_currentRole = Roles.Administrator)]
+        public IActionResult DeleteInvitation([FromRoute]Guid id)
         {
             _invitationLogic.DeleteInvitation(id);
-            return NoContent();
+            return Ok();
         }
     }
 }

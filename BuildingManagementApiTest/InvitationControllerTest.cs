@@ -142,12 +142,10 @@ namespace BuildingManagementApiTests.Controllers
 
             // Act
             IActionResult deleteActionResult = _controller.DeleteInvitation(invitationId);
-            var noContentResult = deleteActionResult as NoContentResult;
 
             // Assert
-            Assert.IsNotNull(noContentResult);
-            Assert.AreEqual(204, noContentResult.StatusCode);
             _invitationLogicMock.Verify(l => l.DeleteInvitation(invitationId), Times.Once);
+            Assert.IsInstanceOfType(deleteActionResult, typeof(OkResult));
         }
 
     }
