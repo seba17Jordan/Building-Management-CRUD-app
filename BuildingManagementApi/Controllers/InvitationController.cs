@@ -29,21 +29,28 @@ namespace BuildingManagementApi.Controllers
         public IActionResult CreateInvitation([FromBody] InvitationRequest invitationRequest)
         {
             var invitation = invitationRequest.ToEntity();
-
             var createdInvitation = _invitationLogic.CreateInvitation(invitation);
-
             var response = new InvitationResponse(createdInvitation);
 
             return CreatedAtAction(nameof(CreateInvitation), new { id = response.Id }, response);
         }
 
         [HttpPatch("{id}")]
-        public IActionResult UpdateInvitationState([FromRoute] Guid id, [FromBody] InvitationRequest request)
+        public IActionResult RejectInvitationState([FromRoute] Guid id)
         {
-            var invitationLogic = _invitationLogic.UpdateInvitationState(id, request.State);
-            InvitationResponse response = new InvitationResponse(invitationLogic);
-            return Ok(response);
+            _invitationLogic.RejectInvitation(id);
+            return Ok("Invitation Rejected");
         }
+
+        /*[HttpPost("{id}")]
+        public IActionResult AcceptInvitation([FromRoute] Guid id, [FromBody] ManagerRequest request)
+        {
+            //creo manager
+            var manager = request.ToEntity();
+            var createdManager = _invitationLogic.AcceptInvitation(id, manager);
+            var response = new ManagerResponse(createdManager);
+            return CreatedAtAction(nameof(AcceptInvitation), new { id = response.Id }, response);
+        }*/
 
         [HttpDelete("{id}")]
         [ServiceFilter(typeof(AuthenticationFilter))]

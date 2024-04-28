@@ -29,7 +29,7 @@ namespace BusinessLogicTest
             // Assert
             Assert.AreEqual(invitation, result);
         }
-
+        /*
         [TestMethod]
         public void UpdateInvitationStateLogicTest()
         {
@@ -51,7 +51,7 @@ namespace BusinessLogicTest
             var result = invitationLogic.UpdateInvitationState(Guid.NewGuid(), Status.Accepted);
             // Assert
             Assert.AreEqual(Status.Accepted, result.State);
-        }
+        }*/
 
         [TestMethod]
         public void DeleteInvitationLogicTest()

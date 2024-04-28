@@ -11,9 +11,6 @@ namespace LogicInterface
     public interface IInvitationLogic
     {
         Invitation CreateInvitation(Invitation invitation);
-
-        Invitation UpdateInvitationState(Guid id, Status state);
-
         void RejectInvitation(Guid id);
         void DeleteInvitation(Guid id);
     }

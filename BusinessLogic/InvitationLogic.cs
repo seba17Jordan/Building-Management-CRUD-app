@@ -20,6 +20,7 @@ namespace BusinessLogic
             return _invitationRepository.GetInvitationById(id);
         }
 
+        /*
         public Invitation UpdateInvitationState(Guid id, Status status)
         {
             Invitation invitation = GetInvitationById(id);
@@ -45,6 +46,7 @@ namespace BusinessLogic
             invitation.State = status;
             return _invitationRepository.UpdateInvitation(invitation);
         }
+        */
 
         public Invitation CreateInvitation(Invitation invitation)
         {

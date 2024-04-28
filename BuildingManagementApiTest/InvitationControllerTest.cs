@@ -60,42 +60,33 @@ namespace BuildingManagementApiTests.Controllers
         }
 
         [TestMethod]
-        public void UpdateInvitationState_WithValidData()
+        public void RejectInvitationState_WithValidData()
         {
             // Arrange
-            var invitationId = Guid.NewGuid();
             var invitation = new Invitation
             {
-                Id = invitationId,
                 Email = "test@example.com",
                 Name = "name",
-                ExpirationDate = DateTime.Now
+                ExpirationDate = DateTime.Now,
+                State = Status.Pending
             };
 
-            var request = new InvitationRequest
+            _invitationLogicMock.Setup(l => l.RejectInvitation(It.IsAny<Guid>())).Callback<Guid>(id =>
             {
-                State = Status.Accepted
-            };
+                invitation.State = Status.Rejected;
+            });
 
-            var updatedInvitation = new Invitation
-            {
-                Id = invitationId,
-                Email = invitation.Email,
-                Name = invitation.Name,
-                ExpirationDate = invitation.ExpirationDate,
-                State = request.State
-            };
-
-            _invitationLogicMock.Setup(l => l.UpdateInvitationState(invitationId, request.State)).Returns(updatedInvitation);
             // Act
-            IActionResult actionResult = _controller.UpdateInvitationState(invitationId, request);
+            IActionResult actionResult = _controller.RejectInvitationState(invitation.Id);
             var okResult = actionResult as OkObjectResult;
-            Assert.IsNotNull(okResult);
-            Assert.AreEqual(200, okResult.StatusCode);
+
+            // Assert
+            OkObjectResult objectResult = actionResult as OkObjectResult;
             var responseValue = okResult.Value as InvitationResponse;
-            Assert.IsNotNull(responseValue);
-            Assert.AreEqual(invitationId, responseValue.Id);
-            Assert.AreEqual(request.State, responseValue.State);
+
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(objectResult.StatusCode, okResult.StatusCode);
+            Assert.AreEqual(invitation.State, Status.Rejected);
         }
         
 
