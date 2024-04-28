@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ModelsApi.Out
 {
-    public class CreateInvitationResponse
+    public class InvitationResponse
     {
         public string Email { get; set; }
         public string Name { get; set; }
@@ -16,7 +16,7 @@ namespace ModelsApi.Out
         public Guid Id { get; set; }
         public Status State { get; set; }
 
-        public CreateInvitationResponse(Invitation invitation)
+        public InvitationResponse(Invitation invitation)
         {
             Id = invitation.Id;
             Email = invitation.Email;
@@ -32,7 +32,7 @@ namespace ModelsApi.Out
                 return false;
             }
 
-            CreateInvitationResponse other = (CreateInvitationResponse)obj;
+            InvitationResponse other = (InvitationResponse)obj;
             return Id.Equals(other.Id) &&
                    Email.Equals(other.Email) &&
                    Name.Equals(other.Name) &&

@@ -8,7 +8,7 @@ using Domain.@enum;
 namespace BuildingManagementApi.Controllers
 {
     [ApiController]
-    [Route("Api/Categories")]
+    [Route("api/categories")]
     [TypeFilter(typeof(ExceptionFilter))]
     public class CategoryController : ControllerBase
     {
