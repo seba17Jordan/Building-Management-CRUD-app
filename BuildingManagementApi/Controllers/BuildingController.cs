@@ -40,5 +40,17 @@ namespace BuildingManagementApi.Controllers
             return NoContent();
         }
 
+        [HttpPatch("{id}")]
+        [ServiceFilter(typeof(AuthenticationFilter))]
+        [AuthorizationFilter(_currentRole = Roles.Manager)]
+        public IActionResult UpdateBuildingById(Guid id, [FromBody] BuildingRequest buildingUpdates)
+        {
+            var building = buildingUpdates.ToEntity();
+            var logicBuilding = _buildingLogic.UpdateBuildingById(id, building);
+            BuildingResponse response = new BuildingResponse(logicBuilding);
+
+            return Ok(response);
+        }
+
     }
 }

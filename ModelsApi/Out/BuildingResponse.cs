@@ -17,7 +17,7 @@ namespace ModelsApi.Out
             Name = expectedBuilding.Name;
             Address = expectedBuilding.Address;
             ConstructionCompany = expectedBuilding.ConstructionCompany;
-            CommonExpenses = expectedBuilding.CommonExpenses;
+            CommonExpenses = (int)expectedBuilding.CommonExpenses;
             Apartments = new List<ApartmentResponse>();
 
             foreach (var apartment in expectedBuilding.Apartments)

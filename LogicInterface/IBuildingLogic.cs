@@ -11,5 +11,6 @@ namespace LogicInterface
     {
         Building CreateBuilding(Building building);
         void DeleteBuildingById(Guid id);
+        Building UpdateBuildingById(Guid id, Building building);
     }
 }

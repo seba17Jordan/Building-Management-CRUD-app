@@ -55,5 +55,10 @@ namespace BusinessLogic
             _buildingRepository.DeleteBuilding(building);
             _buildingRepository.Save();
         }
+
+        public Building UpdateBuildingById(Guid id, Building building)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
