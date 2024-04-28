@@ -14,9 +14,16 @@ namespace BusinessLogic
             _invitationRepository = invitationRepository;
         }
 
+        public Invitation GetInvitationById(Guid id)
+        {
+            return _invitationRepository.GetInvitationById(id);
+        }
+
         public Invitation UpdateInvitationState(Guid id, Status status)
         {
-            throw new NotImplementedException();
+            Invitation invitation = GetInvitationById(id);
+            invitation.State = status;
+            return _invitationRepository.UpdateInvitation(invitation);
         }
 
         public Invitation CreateInvitation(Invitation invitation)

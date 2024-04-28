@@ -10,6 +10,8 @@ namespace IDataAccess
     public interface IInvitationRepository
     {
         public Invitation CreateInvitation(Invitation invitation);
+        Invitation GetInvitationById(Guid id);
         bool InvitationExists(string email);
+        Invitation UpdateInvitation(Invitation invitation);
     }
 }
