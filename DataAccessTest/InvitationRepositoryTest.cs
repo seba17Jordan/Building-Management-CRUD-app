@@ -29,31 +29,32 @@ namespace DataAccessTest
             // Assert
             Assert.AreEqual(expectedInvitation, createdInvitation);
         }
-        /*
+
         [TestMethod]
         public void UpdateInvitationRepositoryCorrectTest()
         {
             var expectedInvitation = new Invitation()
             {
+                Id = Guid.NewGuid(),
                 Name = "John Doe",
                 Email = "johndoe@example.com",
                 ExpirationDate = DateTime.Now.AddDays(6)
             };
 
-            var context = CreateDbContext("UpdateInvitationCorrectTest");
+            var context = CreateDbContext("UpdateInvitationRepositoryCorrectTest");
             var invitationRepository = new InvitationRepository(context);
 
             // Act
             Invitation createdInvitation = invitationRepository.CreateInvitation(expectedInvitation);
             context.SaveChanges();
 
-            createdInvitation.State = Status.Accepted;
-            Invitation updatedInvitation = invitationRepository.UpdateInvitation(createdInvitation);
+            createdInvitation.State = Status.Rejected;
+            invitationRepository.UpdateInvitation(createdInvitation);
             context.SaveChanges();
 
             // Assert
-            Assert.AreEqual(Status.Accepted, updatedInvitation.State);
-        }*/
+            Assert.AreEqual(Status.Rejected, createdInvitation.State);
+        }
 
         [TestMethod]
         public void DeleteInvitationRepositoryCorrectTest()
