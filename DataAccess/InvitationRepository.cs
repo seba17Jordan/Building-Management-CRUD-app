@@ -1,6 +1,7 @@
 ﻿using Domain;
 using IDataAccess;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 
 namespace DataAccess
 {
@@ -15,14 +16,12 @@ namespace DataAccess
 
         public Invitation CreateInvitation(Invitation invitation)
         {
-            _context.Set<Invitation>().Add(invitation);
-            _context.SaveChanges();
-            return invitation;
+            throw new System.NotImplementedException();
         }
 
         public bool InvitationExists(Func<Invitation, bool> func)
         {
-            throw new NotImplementedException();
+            return _context.Set<Invitation>().Any(func);
         }
     }
 }
