@@ -11,6 +11,8 @@ namespace DataAccess
     public class Context : DbContext
     { 
         public DbSet<User> Users { get; set; }
+
+        public DbSet<Building> Buildings { get; set; }
         public DbSet<Session> Sessions { get; set; }
         public Context(DbContextOptions options) : base(options) { }
     }

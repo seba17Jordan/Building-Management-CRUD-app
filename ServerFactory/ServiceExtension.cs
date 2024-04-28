@@ -14,6 +14,9 @@ namespace ServerFactory
             services.AddScoped<IUserLogic, UserLogic>();
             services.AddScoped<IUserRepository, UserRepository>();
 
+            services.AddScoped<IBuildingLogic, BuildingLogic>();
+            services.AddScoped<IBuildingRepository, BuildingRepository>();
+
             services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<ISessionRepository, SessionRepository>();
 

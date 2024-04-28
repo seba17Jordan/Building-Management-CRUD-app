@@ -2,6 +2,7 @@
 {
     public class Apartment
     {
+        public Guid Id { get; set; }
         public int Floor { get; set; }
         public int Number { get; set; }
         public Owner Owner { get; set; }
