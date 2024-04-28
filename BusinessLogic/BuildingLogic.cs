@@ -43,6 +43,10 @@ namespace BusinessLogic
 
         public void DeleteBuildingById(Guid id)
         {
+            if (id == Guid.Empty)
+            {
+                throw new ArgumentException("Id is empty", nameof(id));
+            }
             Building building = _buildingRepository.GetBuildingById(id);
             _buildingRepository.DeleteBuilding(building);
             _buildingRepository.Save();

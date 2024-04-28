@@ -354,5 +354,30 @@ namespace BusinessLogicTest
             // Assert
             buildingRepo.VerifyAll();
         }
+
+        [TestMethod]
+        public void DeleteBuildingByIdEmptyIdShouldThrowExceptionTestLogic()
+        {
+            // Arrange
+            Exception specificEx = null;
+            Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+            BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
+
+            try
+            {
+                // Act
+                buildingLogic.DeleteBuildingById(Guid.Empty);
+            }
+            catch (ArgumentException e)
+            {
+                specificEx = e;
+            }
+
+            // Assert
+            buildingRepo.VerifyAll();
+            Assert.IsNotNull(specificEx);
+            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
+            Assert.IsTrue(specificEx.Message.Contains("Id is empty"));
+        }
     }
 }
