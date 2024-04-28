@@ -67,6 +67,15 @@ namespace BusinessLogic
 
         public void DeleteInvitation(Guid id)
         {
+            if (id == Guid.Empty)
+            {
+                throw new ArgumentException("Invalid id");
+            }
+
+            if (_invitationRepository.GetInvitationById(id) == null)
+            {
+                throw new ArgumentException("Invitation not found");
+            }
             _invitationRepository.DeleteInvitation(id);
         }
 
