@@ -65,7 +65,35 @@ namespace BusinessLogic
                 throw new ArgumentException("Building with same name already exists");
             }
 
-            buildingToUpdate.Name = building.Name;
+            if (buildingToUpdate == null)
+            {
+                throw new ArgumentException("Building not found", nameof(id));
+            }
+
+            if (building.Name != null)
+            {
+                buildingToUpdate.Name = building.Name;
+            }
+
+            if (building.Address != null)
+            {
+                buildingToUpdate.Address = building.Address;
+            }
+
+            if (building.ConstructionCompany != null)
+            {
+                buildingToUpdate.ConstructionCompany = building.ConstructionCompany;
+            }
+
+            if (building.CommonExpenses != null)
+            {
+                buildingToUpdate.CommonExpenses = building.CommonExpenses;
+            }
+
+            if (building.Apartments != null)
+            {
+                buildingToUpdate.Apartments = building.Apartments;
+            }
 
             _buildingRepository.UpdateBuilding(buildingToUpdate);
             _buildingRepository.Save();
