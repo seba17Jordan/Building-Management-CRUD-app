@@ -9,10 +9,12 @@ namespace BusinessLogic
     public class InvitationLogic : IInvitationLogic
     {
         private readonly IInvitationRepository _invitationRepository;
+        private readonly IUserRepository _userRepository;
 
-        public InvitationLogic(IInvitationRepository invitationRepository)
+        public InvitationLogic(IInvitationRepository invitationRepository, IUserRepository userRepository)
         {
             _invitationRepository = invitationRepository;
+            _userRepository = userRepository;
         }
 
         public Invitation GetInvitationById(Guid id)
@@ -114,7 +116,35 @@ namespace BusinessLogic
 
         public User AcceptInvitation(Guid guid, User managerToCreate)
         {
-            throw new NotImplementedException();
+            if (guid == Guid.Empty)
+            {
+                throw new ArgumentException("Invalid id");
+            }
+
+            Invitation invitation = _invitationRepository.GetInvitationById(guid);
+
+            if (invitation == null)
+            {
+                throw new ArgumentException("Invitation not found");
+            }
+
+            if (invitation.State != Status.Pending)
+            {
+                throw new InvalidOperationException("You can only accept a pending invitation");
+            }
+
+            if(invitation.Email != managerToCreate.Email)
+            {
+                throw new InvalidOperationException("The email of the invitation and the email of the user do not match");
+            }
+
+            invitation.State = Status.Accepted;
+            _invitationRepository.UpdateInvitation(invitation);
+
+            //Ahora creo el manager
+            managerToCreate.Name = invitation.Name;
+            managerToCreate.Role = Roles.Manager;
+            return _userRepository.CreateUser(managerToCreate);
         }
     }
 }

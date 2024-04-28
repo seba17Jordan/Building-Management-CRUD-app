@@ -14,7 +14,8 @@ namespace BusinessLogicTest
         {
             // Arrange
             var mockInvitationRepository = new Mock<IInvitationRepository>();
-            var invitationLogic = new InvitationLogic(mockInvitationRepository.Object);
+            var mockUserRepository = new Mock<IUserRepository>();
+            var invitationLogic = new InvitationLogic(mockInvitationRepository.Object, mockUserRepository.Object);
 
             var invitation = new Invitation()
             {
@@ -44,8 +45,9 @@ namespace BusinessLogicTest
             };
 
             var mockInvitationRepository = new Mock<IInvitationRepository>();
+            var mockUserRepository = new Mock<IUserRepository>();
             
-            InvitationLogic invitationLogic = new InvitationLogic(mockInvitationRepository.Object);
+            InvitationLogic invitationLogic = new InvitationLogic(mockInvitationRepository.Object, mockUserRepository.Object);
             mockInvitationRepository.Setup(x => x.GetInvitationById(It.IsAny<Guid>())).Returns(invitation);
             mockInvitationRepository.Setup(x => x.UpdateInvitation(It.IsAny<Invitation>()));
             
@@ -61,7 +63,9 @@ namespace BusinessLogicTest
         {
             // Arrange
             var mockInvitationRepository = new Mock<IInvitationRepository>();
-            var invitationLogic = new InvitationLogic(mockInvitationRepository.Object);
+            var mockUserRepository = new Mock<IUserRepository>();
+
+            var invitationLogic = new InvitationLogic(mockInvitationRepository.Object, mockUserRepository.Object);
 
             // Mock the behavior of GetInvitationById to return an invitation
             var invitationId = Guid.NewGuid();
@@ -80,6 +84,55 @@ namespace BusinessLogicTest
 
             // Assert
             mockInvitationRepository.Verify(x => x.DeleteInvitation(invitationId), Times.Once);
+        }
+
+        [TestMethod]
+        public void AcceptInvitationLogicTest()
+        {
+            // Arrange
+            Invitation invitation = new Invitation()
+            {
+                Id = Guid.NewGuid(),
+                Name = "John",
+                Email = "mail@gmail.com",
+                ExpirationDate = DateTime.Now.AddDays(6),
+                State = Status.Pending
+            };
+
+            User managerToCreate = new User()
+            {
+                Id = Guid.NewGuid(),
+                Email = "mail@gmail.com",
+                Password = "password"
+            };
+
+            User expectedManager = new User()
+            {
+                Id = Guid.NewGuid(),
+                Email = "mail@gmail.com",
+                Password = "password",
+                Role = Roles.Manager,
+                Name = "John"
+            };
+
+            var mockInvitationRepository = new Mock<IInvitationRepository>();
+            var mockUserRepository = new Mock<IUserRepository>();
+
+            mockInvitationRepository.Setup(x => x.GetInvitationById(invitation.Id)).Returns(invitation);
+            mockInvitationRepository.Setup(x => x.UpdateInvitation(invitation));
+            mockUserRepository.Setup(x => x.CreateUser(It.IsAny<User>())).Returns(expectedManager);
+
+            InvitationLogic invitationLogic = new InvitationLogic(mockInvitationRepository.Object, mockUserRepository.Object);
+            
+
+            // Act
+            User result = invitationLogic.AcceptInvitation(invitation.Id, managerToCreate);
+
+            // Assert
+            mockInvitationRepository.Verify();
+            mockUserRepository.Verify();
+            Assert.AreEqual(Status.Accepted, invitation.State);
+            Assert.AreEqual(expectedManager, result);
         }
     }
 }
