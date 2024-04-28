@@ -113,6 +113,41 @@ namespace DataAccessTest
             Assert.AreEqual(createdBuilding, buildingRepo.GetBuildingById(createdBuilding.Id));
         }
 
+        [TestMethod]
+        public void DeleteBuildingTestDataAccess()
+        {
+            // Arrange
+            Building expectedBuilding = new Building()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Building 1",
+                Address = "Address 1",
+                ConstructionCompany = "Construction Company 1",
+                CommonExpenses = 100,
+                Apartments = new List<Apartment>
+                {
+                    new Apartment()
+                    {
+                        Floor = 1,
+                        Number = 101,
+                        Owner = new Owner { Name = "Jane", LastName = "Doe", Email = ""}
+                    }
+                }
+            };
+            var context = CreateDbContext("DeleteBuildingTestDataAccess");
+            var buildingRepo = new BuildingRepository(context);
+
+            // Act
+            Building createdBuilding = buildingRepo.CreateBuilding(expectedBuilding);
+            context.SaveChanges();
+            buildingRepo.DeleteBuilding(createdBuilding);
+            context.SaveChanges();
+
+            // Assert
+            Assert.IsNull(buildingRepo.GetBuildingById(createdBuilding.Id));
+        }
+
+
         private DbContext CreateDbContext(string database)
         {
             var options = new DbContextOptionsBuilder<Context>().UseInMemoryDatabase(database).Options;

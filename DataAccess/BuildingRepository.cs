@@ -27,7 +27,7 @@ namespace DataAccess
 
         public void DeleteBuilding(Building building)
         {
-            throw new NotImplementedException();
+            _context.Set<Building>().Remove(building);
         }
 
         public Building GetBuildingById(Guid id)
