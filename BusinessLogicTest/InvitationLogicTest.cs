@@ -51,5 +51,30 @@ namespace BusinessLogicTest
             // Assert
             Assert.AreEqual(Status.Accepted, result.State);
         }
+
+        [TestMethod]
+        public void DeleteInvitationLogicTest()
+        {
+            // Arrange
+            var mockInvitationRepository = new Mock<IInvitationRepository>();
+            var invitationLogic = new InvitationLogic(mockInvitationRepository.Object);
+
+            // Mock the behavior of GetInvitationById to return an invitation
+            var invitationId = Guid.NewGuid();
+            Invitation invitation = new Invitation()
+            {
+                Id = invitationId,
+                Name = "John Doe",
+                Email = "johndoe@example.com",
+                ExpirationDate = DateTime.Now.AddDays(6)
+            };
+            mockInvitationRepository.Setup(x => x.GetInvitationById(invitationId)).Returns(invitation);
+
+            // Act
+            invitationLogic.DeleteInvitation(invitationId);
+
+            // Assert
+            mockInvitationRepository.Verify(x => x.DeleteInvitation(invitationId), Times.Once);
+        }
     }
 }
