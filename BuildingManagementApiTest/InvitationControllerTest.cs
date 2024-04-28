@@ -88,7 +88,57 @@ namespace BuildingManagementApiTests.Controllers
             Assert.AreEqual(objectResult.StatusCode, okResult.StatusCode);
             Assert.AreEqual(invitation.State, Status.Rejected);
         }
-        
+
+        [TestMethod]
+        public void AcceptInvitation_WithValidDataCreatesManagerTest()
+        {
+            // Arrange
+            Invitation invitation = new Invitation
+            {
+                Id = Guid.NewGuid(),
+                Email = "mail@gmial.com",
+                Name = "name",
+                ExpirationDate = DateTime.UtcNow.AddDays(7)
+            };
+
+            UserLoginRequest managerRequest = new UserLoginRequest
+            {
+                Email = "mail@gmail.com",
+                Password = "password"
+            };
+
+            User manager = new User
+            {
+                Id = Guid.NewGuid(),
+                Email = managerRequest.Email,
+                Password = managerRequest.Password
+            };
+
+            User createdManager = new User
+            {
+                Id = Guid.NewGuid(),
+                Email = managerRequest.Email,
+                Name = invitation.Name,
+                Password = managerRequest.Password,
+                Role = Roles.Manager
+            };
+
+            UserResponse userResponse = new UserResponse(createdManager);
+
+            _invitationLogicMock.Setup(l => l.AcceptInvitation(It.IsAny<Guid>(), It.IsAny<User>())).Returns(createdManager);
+
+            // Act
+            IActionResult actionResult = _controller.AcceptInvitation(invitation.Id, managerRequest);
+            var createdResponse = actionResult as CreatedAtActionResult;
+
+            Assert.IsNotNull(createdResponse);
+            Assert.AreEqual(201, createdResponse.StatusCode);
+
+            var responseValue = createdResponse.Value as UserResponse;
+            Assert.IsNotNull(responseValue);
+            Assert.AreEqual(responseValue, userResponse);
+        }
+
 
         [TestMethod]
         public void DeleteCorrectInvitation()

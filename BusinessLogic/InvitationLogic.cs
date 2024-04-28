@@ -111,5 +111,10 @@ namespace BusinessLogic
             invitation.State = Status.Rejected;
             _invitationRepository.UpdateInvitation(invitation);
         }
+
+        public User AcceptInvitation(Guid guid, User managerToCreate)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
