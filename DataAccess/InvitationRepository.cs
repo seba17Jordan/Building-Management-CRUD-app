@@ -45,7 +45,8 @@ namespace DataAccess
 
         public void DeleteInvitation(Guid id)
         {
-            throw new NotImplementedException();
+            _context.Set<Invitation>().Remove(GetInvitationById(id));
+            _context.SaveChanges();
         }
     }
 }
