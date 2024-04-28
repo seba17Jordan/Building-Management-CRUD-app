@@ -26,9 +26,9 @@ namespace BuildingManagementApi.Controllers
         [HttpPost]
         [ServiceFilter(typeof(AuthenticationFilter))]
         [AuthorizationFilter(_currentRole = Roles.Administrator)]
-        public IActionResult CreateInvitation([FromBody] CreateInvitationRequest invitationRequest)
+        public IActionResult CreateInvitation([FromBody] InvitationRequest invitationRequest)
         {
-            var invitation = new Invitation(invitationRequest.Email, invitationRequest.Name, invitationRequest.ExpirationDate);
+            var invitation = invitationRequest.ToEntity();
 
             var createdInvitation = _invitationLogic.CreateInvitation(invitation);
 
@@ -37,18 +37,12 @@ namespace BuildingManagementApi.Controllers
             return CreatedAtAction(nameof(CreateInvitation), new { id = response.Id }, response);
         }
 
-        [HttpPut("{id}")]
-        public IActionResult UpdateInvitationState([FromRoute] Guid id, [FromBody] UpdateInvitationStateRequest request)
+        [HttpPatch("{id}")]
+        public IActionResult UpdateInvitationState([FromRoute] Guid id, [FromBody] InvitationRequest request)
         {
-            InvitationResponse response = new InvitationResponse(_invitationLogic.UpdateInvitationState(id, request.Status));
+            var invitationLogic = _invitationLogic.UpdateInvitationState(id, request.State);
+            InvitationResponse response = new InvitationResponse(invitationLogic);
             return Ok(response);
-        }
-
-        [HttpPut("{id}/reject")]
-        public IActionResult RejectInvitation([FromRoute] Guid id)
-        {
-            _invitationLogic.RejectInvitation(id);
-            return NoContent();
         }
 
         [HttpDelete("{id}")]

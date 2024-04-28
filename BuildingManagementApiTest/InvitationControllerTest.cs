@@ -29,7 +29,7 @@ namespace BuildingManagementApiTests.Controllers
         public void CreateInvitation_WithValidData_ShouldReturnCreatedResponse()
         {
             // Arrange
-            var request = new CreateInvitationRequest
+            var request = new InvitationRequest
             {
                 Email = "test@example.com",
                 Name = "Test Name",
@@ -41,7 +41,7 @@ namespace BuildingManagementApiTests.Controllers
                 Id = Guid.NewGuid(),
                 Email = request.Email,
                 Name = request.Name,
-                ExpirationDate = request.ExpirationDate
+                ExpirationDate = (DateTime)request.ExpirationDate
             };
 
             _invitationLogicMock.Setup(l => l.CreateInvitation(It.IsAny<Invitation>())).Returns(createdInvitation);
@@ -72,9 +72,9 @@ namespace BuildingManagementApiTests.Controllers
                 ExpirationDate = DateTime.Now
             };
 
-            var request = new UpdateInvitationStateRequest
+            var request = new InvitationRequest
             {
-                Status = Status.Accepted
+                State = Status.Accepted
             };
 
             var updatedInvitation = new Invitation
@@ -83,10 +83,10 @@ namespace BuildingManagementApiTests.Controllers
                 Email = invitation.Email,
                 Name = invitation.Name,
                 ExpirationDate = invitation.ExpirationDate,
-                State = request.Status
+                State = request.State
             };
 
-            _invitationLogicMock.Setup(l => l.UpdateInvitationState(invitationId, request.Status)).Returns(updatedInvitation);
+            _invitationLogicMock.Setup(l => l.UpdateInvitationState(invitationId, request.State)).Returns(updatedInvitation);
             // Act
             IActionResult actionResult = _controller.UpdateInvitationState(invitationId, request);
             var okResult = actionResult as OkObjectResult;
@@ -95,35 +95,9 @@ namespace BuildingManagementApiTests.Controllers
             var responseValue = okResult.Value as InvitationResponse;
             Assert.IsNotNull(responseValue);
             Assert.AreEqual(invitationId, responseValue.Id);
-            Assert.AreEqual(request.Status, responseValue.State);
+            Assert.AreEqual(request.State, responseValue.State);
         }
         
-
-        [TestMethod]
-        public void RejectCorrectInvitation()
-        {
-            // Arrange
-            var invitationId = Guid.NewGuid();
-            var invitation = new Invitation
-            {
-                Id = invitationId,
-                Email = "test@example.com",
-                Name = "name",
-                ExpirationDate = DateTime.Now
-            };
-
-            _invitationLogicMock.Setup(l => l.RejectInvitation(invitation.Id));
-            var expectedObjectResult = new NoContentResult();
-
-            // Act
-            var result = _controller.RejectInvitation(invitation.Id);
-
-            // Assert
-            _invitationLogicMock.Verify(l => l.RejectInvitation(invitation.Id), Times.Once);
-            Assert.IsInstanceOfType(result, typeof(NoContentResult));
-            var resultObject = result as NoContentResult;
-            Assert.AreEqual(expectedObjectResult.StatusCode, resultObject.StatusCode);
-        }
 
         [TestMethod]
         public void DeleteCorrectInvitation()

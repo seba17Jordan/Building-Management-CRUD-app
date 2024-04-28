@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace ModelsApi.In
 {
-    public class CreateInvitationRequest
+    public class InvitationRequest
     {
-        public string Email { get; set; }
-        public string Name { get; set; }
-        public DateTime ExpirationDate { get; set; }
-        public Guid id { get; set; }
+        public string? Email { get; set; }
+        public string? Name { get; set; }
+        public DateTime? ExpirationDate { get; set; }
+        public Guid? id { get; set; }
         public Status State { get; set; }
 
-        public CreateInvitationRequest()
+        public InvitationRequest()
         {
             State = Status.Pending;
         }
@@ -24,11 +24,10 @@ namespace ModelsApi.In
         public Invitation ToEntity() {
             return new Invitation()
             {
-                Id = id,
                 Email = Email,
                 Name = Name,
-                ExpirationDate = ExpirationDate,
-                State = State
+                ExpirationDate = (DateTime)ExpirationDate,
+                State = Status.Pending
             };
         }
     }
