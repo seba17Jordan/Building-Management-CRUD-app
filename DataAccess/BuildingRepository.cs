@@ -12,6 +12,12 @@ namespace DataAccess
         {
             _context = context;
         }
+
+        public bool BuildingNameExists(string name)
+        {
+            throw new NotImplementedException();
+        }
+
         public Building CreateBuilding(Building building)
         {
             _context.Set<Building>().Add(building);

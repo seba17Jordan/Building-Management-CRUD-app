@@ -24,6 +24,12 @@ namespace BusinessLogic
             {
                 throw new ArgumentException("Building invalid data", nameof(building.Name));
             }
+            
+            if (_buildingRepository.BuildingNameExists(building.Name))
+            {
+                throw new ArgumentException("Building with same name already exists");
+            }
+
             if (building.CommonExpenses < 0)
             {
                 throw new ArgumentException("Common expenses must be greater than 0", nameof(building.CommonExpenses));

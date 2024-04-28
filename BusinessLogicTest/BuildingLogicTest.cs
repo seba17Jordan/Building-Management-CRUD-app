@@ -35,6 +35,7 @@ namespace BusinessLogicTest
 
             Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
             buildingRepo.Setup(l => l.CreateBuilding(It.IsAny<Building>())).Returns(expectedBuilding);
+            buildingRepo.Setup(l => l.BuildingNameExists(It.IsAny<string>())).Returns(false);
 
             BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
 
@@ -238,6 +239,7 @@ namespace BusinessLogicTest
                     Apartments = new List<Apartment>()
                 };
                 buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+                buildingRepo.Setup(l => l.BuildingNameExists(It.IsAny<string>())).Returns(false);
 
                 BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
 
@@ -276,6 +278,7 @@ namespace BusinessLogicTest
                     Apartments = new List<Apartment>()
                 };
                 buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+                buildingRepo.Setup(l => l.BuildingNameExists(It.IsAny<string>())).Returns(false);
 
                 BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
 
@@ -293,6 +296,45 @@ namespace BusinessLogicTest
             Assert.IsNotNull(specificEx);
             Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
             Assert.IsTrue(specificEx.Message.Contains("Common expenses must be greater than 0"));
+        }
+
+        [TestMethod]
+        public void CreateBuildingRepeatedNameThrowArgumentExceptionTestLogic()
+        {
+            // Arrange
+            Exception specificEx = null;
+            Mock<IBuildingRepository> buildingRepo = null;
+            try
+            {
+                //Arrange
+                Building expectedBuilding = new Building()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Name 1",
+                    Address = "Address 1",
+                    ConstructionCompany = "Company",
+                    CommonExpenses = -100,
+                    Apartments = new List<Apartment>()
+                };
+                buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+                buildingRepo.Setup(l => l.BuildingNameExists(It.IsAny<string>())).Returns(true);
+
+                BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
+
+                // Act
+                Building logicResult = buildingLogic.CreateBuilding(expectedBuilding);
+
+            }
+            catch (ArgumentException e)
+            {
+                specificEx = e;
+            }
+
+            // Assert
+            buildingRepo.VerifyAll();
+            Assert.IsNotNull(specificEx);
+            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
+            Assert.IsTrue(specificEx.Message.Contains("Building with same name already exists"));
         }
     }
 }
