@@ -30,5 +30,15 @@ namespace BuildingManagementApi.Controllers
 
             return CreatedAtAction(nameof(CreateBuilding), new { id = outputResult.Id }, outputResult);
         }
+
+        [HttpDelete("{id}")]
+        [ServiceFilter(typeof(AuthenticationFilter))]
+        [AuthorizationFilter(_currentRole = Roles.Manager)]
+        public IActionResult DeleteBuildingById(Guid id)
+        {
+            _buildingLogic.DeleteBuilding(id);
+            return NoContent();
+        }
+
     }
 }

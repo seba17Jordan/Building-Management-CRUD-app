@@ -40,5 +40,10 @@ namespace BusinessLogic
             }
             return _buildingRepository.CreateBuilding(building);
         }
+
+        public void DeleteBuilding(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

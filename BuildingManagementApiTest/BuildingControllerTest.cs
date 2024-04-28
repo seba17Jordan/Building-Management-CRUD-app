@@ -77,4 +77,47 @@ public class BuildingControllerTest
         Assert.AreEqual(resultValue, expectedMappedBuilding);
 
     }
+
+    [TestMethod]
+    public void DeleteBuildingByIdCorrectTest()
+    {
+        //Arrange
+        Building buildingToDelete = new Building()
+        {
+            Id = Guid.NewGuid(),
+            Name = "New Building",
+            Address = "Address 1",
+            ConstructionCompany = "Construction Company",
+            CommonExpenses = 100,
+            Apartments = new List<Apartment>
+            {
+                new Apartment()
+                {
+                    Floor = 1,
+                    Number = 101,
+                    Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "jane.doe@example.com" },
+                    Rooms = 3,
+                    Bathrooms = 2,
+                    HasTerrace = true
+                }
+            }
+        };
+
+        Mock<IBuildingLogic> buildingLogic = new Mock<IBuildingLogic>(MockBehavior.Strict);
+        buildingLogic.Setup(buildingLogic => buildingLogic.DeleteBuilding(buildingToDelete.Id));
+        
+        BuildingController buildingController = new BuildingController(buildingLogic.Object);
+
+        var expectedObjResult = new NoContentResult();
+
+        //Act
+        var finalResult = buildingController.DeleteBuildingById(buildingToDelete.Id);
+
+        //Assert
+        buildingLogic.VerifyAll();
+
+        NoContentResult resultObject = finalResult as NoContentResult;
+
+        Assert.IsNotNull(resultObject);
+    }
 }
