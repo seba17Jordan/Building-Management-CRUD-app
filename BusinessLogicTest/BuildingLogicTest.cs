@@ -379,5 +379,31 @@ namespace BusinessLogicTest
             Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
             Assert.IsTrue(specificEx.Message.Contains("Id is empty"));
         }
+
+        [TestMethod]
+        public void DeleteBuildingByIdNotFoundShouldThrowExceptionTestLogic()
+        {
+            // Arrange
+            Exception specificEx = null;
+            Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+            buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns((Building)null);
+            BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
+
+            try
+            {
+                // Act
+                buildingLogic.DeleteBuildingById(Guid.NewGuid());
+            }
+            catch (ArgumentException e)
+            {
+                specificEx = e;
+            }
+
+            // Assert
+            buildingRepo.VerifyAll();
+            Assert.IsNotNull(specificEx);
+            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
+            Assert.IsTrue(specificEx.Message.Contains("Building not found"));
+        }
     }
 }
