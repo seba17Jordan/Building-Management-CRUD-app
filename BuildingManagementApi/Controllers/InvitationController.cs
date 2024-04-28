@@ -52,6 +52,7 @@ namespace BuildingManagementApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ServiceFilter(typeof(AuthenticationFilter))]
         [AuthorizationFilter(_currentRole = Roles.Administrator)]
         public IActionResult DeleteInvitation([FromRoute]Guid id)
         {
