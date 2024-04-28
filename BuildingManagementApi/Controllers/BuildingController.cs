@@ -36,7 +36,7 @@ namespace BuildingManagementApi.Controllers
         [AuthorizationFilter(_currentRole = Roles.Manager)]
         public IActionResult DeleteBuildingById(Guid id)
         {
-            _buildingLogic.DeleteBuilding(id);
+            _buildingLogic.DeleteBuildingById(id);
             return NoContent();
         }
 

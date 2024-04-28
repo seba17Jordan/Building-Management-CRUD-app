@@ -79,7 +79,7 @@ public class BuildingControllerTest
     }
 
     [TestMethod]
-    public void DeleteBuildingByIdCorrectTest()
+    public void DeleteBuildingByIdCorrectTestController()
     {
         //Arrange
         Building buildingToDelete = new Building()
@@ -104,7 +104,7 @@ public class BuildingControllerTest
         };
 
         Mock<IBuildingLogic> buildingLogic = new Mock<IBuildingLogic>(MockBehavior.Strict);
-        buildingLogic.Setup(buildingLogic => buildingLogic.DeleteBuilding(buildingToDelete.Id));
+        buildingLogic.Setup(buildingLogic => buildingLogic.DeleteBuildingById(buildingToDelete.Id));
         
         BuildingController buildingController = new BuildingController(buildingLogic.Object);
 

@@ -336,5 +336,23 @@ namespace BusinessLogicTest
             Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
             Assert.IsTrue(specificEx.Message.Contains("Building with same name already exists"));
         }
+
+        [TestMethod]
+        public void DeleteBuildingByIdCorrectTestLogic()
+        {
+            // Arrange
+            Guid expectedId = Guid.NewGuid();
+            Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+            buildingRepo.Setup(l => l.DeleteBuilding(It.IsAny<Building>()));
+            buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(new Building());
+            buildingRepo.Setup(l => l.Save());
+            BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
+
+            // Act
+            buildingLogic.DeleteBuildingById(expectedId);
+
+            // Assert
+            buildingRepo.VerifyAll();
+        }
     }
 }

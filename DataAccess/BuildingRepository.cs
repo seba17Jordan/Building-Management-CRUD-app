@@ -24,5 +24,20 @@ namespace DataAccess
             _context.SaveChanges();
             return building;
         }
+
+        public void DeleteBuilding(Building building)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Building GetBuildingById(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Save()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
