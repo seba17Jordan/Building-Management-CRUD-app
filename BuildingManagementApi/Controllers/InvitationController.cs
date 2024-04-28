@@ -32,15 +32,15 @@ namespace BuildingManagementApi.Controllers
 
             var createdInvitation = _invitationLogic.CreateInvitation(invitation);
 
-            var response = new CreateInvitationResponse(createdInvitation);
+            var response = new InvitationResponse(createdInvitation);
 
             return CreatedAtAction(nameof(CreateInvitation), new { id = response.Id }, response);
         }
 
-        [HttpPut("{id}/accept")]
-        public IActionResult AcceptInvitation([FromRoute] Guid id, [FromBody] AcceptInvitationRequest request)
+        [HttpPut("{id}")]
+        public IActionResult UpdateInvitationState([FromRoute] Guid id, [FromBody] UpdateInvitationStateRequest request)
         {
-            var response = new AcceptInvitationResponse(_invitationLogic.AcceptInvitation(id, request.Email, request.Password));
+            InvitationResponse response = new InvitationResponse(_invitationLogic.UpdateInvitationState(id, request.Status));
             return Ok(response);
         }
 

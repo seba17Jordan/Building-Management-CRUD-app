@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Domain.@enum;
 using IDataAccess;
 using LogicInterface;
 using System.Globalization;
@@ -13,7 +14,7 @@ namespace BusinessLogic
             _invitationRepository = invitationRepository;
         }
 
-        public User AcceptInvitation(Guid id, string email, string password)
+        public Invitation UpdateInvitationState(Guid id, Status status)
         {
             throw new NotImplementedException();
         }

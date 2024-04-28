@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Domain.@enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace LogicInterface
     {
         Invitation CreateInvitation(Invitation invitation);
 
-        User AcceptInvitation(Guid id, string email, string password);
+        Invitation UpdateInvitationState(Guid id, Status state);
 
         void RejectInvitation(Guid id);
         void DeleteInvitation(Guid id);

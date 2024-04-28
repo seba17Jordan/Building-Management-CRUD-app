@@ -54,47 +54,50 @@ namespace BuildingManagementApiTests.Controllers
             Assert.IsNotNull(createdResponse);
             Assert.AreEqual(201, createdResponse.StatusCode);
 
-            var responseValue = createdResponse.Value as CreateInvitationResponse;
+            var responseValue = createdResponse.Value as InvitationResponse;
             Assert.IsNotNull(responseValue);
             Assert.IsTrue(responseValue.Equals(responseValue));
         }
 
         [TestMethod]
-        public void AcceptInvitation_WithValidData_ShouldReturnOkManager()
+        public void UpdateInvitationState_WithValidData()
         {
             // Arrange
-            var id = Guid.NewGuid();
-            var request = new AcceptInvitationRequest
+            var invitationId = Guid.NewGuid();
+            var invitation = new Invitation
             {
+                Id = invitationId,
                 Email = "test@example.com",
-                Password = "password"
+                Name = "name",
+                ExpirationDate = DateTime.Now
             };
 
-            var manager = new User
+            var request = new UpdateInvitationStateRequest
             {
-                Email = request.Email,
-                Name = "Test Manager",
-                Password = request.Password,
-                Role = Roles.Manager
+                Status = Status.Accepted
             };
 
-            _invitationLogicMock.Setup(l => l.AcceptInvitation(id, request.Email, request.Password)).Returns(manager);
+            var updatedInvitation = new Invitation
+            {
+                Id = invitationId,
+                Email = invitation.Email,
+                Name = invitation.Name,
+                ExpirationDate = invitation.ExpirationDate,
+                State = request.Status
+            };
 
+            _invitationLogicMock.Setup(l => l.UpdateInvitationState(invitationId, request.Status)).Returns(updatedInvitation);
             // Act
-            IActionResult actionResult = _controller.AcceptInvitation(id, request);
+            IActionResult actionResult = _controller.UpdateInvitationState(invitationId, request);
             var okResult = actionResult as OkObjectResult;
-
-            // Assert
             Assert.IsNotNull(okResult);
             Assert.AreEqual(200, okResult.StatusCode);
-
-            var responseValue = okResult.Value as AcceptInvitationResponse;
+            var responseValue = okResult.Value as InvitationResponse;
             Assert.IsNotNull(responseValue);
-            Assert.AreEqual(manager.Email, responseValue.Email);
-            Assert.AreEqual(manager.Name, responseValue.Name);
-            Assert.AreEqual(manager.Password, responseValue.Password); 
-            Assert.AreEqual(manager.Role, responseValue.Role);
+            Assert.AreEqual(invitationId, responseValue.Id);
+            Assert.AreEqual(request.Status, responseValue.State);
         }
+        
 
         [TestMethod]
         public void RejectCorrectInvitation()
