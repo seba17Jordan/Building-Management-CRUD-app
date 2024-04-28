@@ -134,5 +134,6 @@ namespace BusinessLogicTest
             Assert.AreEqual(Status.Accepted, invitation.State);
             Assert.AreEqual(expectedManager, result);
         }
+
     }
 }

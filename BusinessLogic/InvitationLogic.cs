@@ -141,9 +141,11 @@ namespace BusinessLogic
             invitation.State = Status.Accepted;
             _invitationRepository.UpdateInvitation(invitation);
 
-            //Ahora creo el manager
+            //Ahora creo el manager y lo retorno
             managerToCreate.Name = invitation.Name;
             managerToCreate.Role = Roles.Manager;
+            managerToCreate.LastName = "";
+
             return _userRepository.CreateUser(managerToCreate);
         }
     }
