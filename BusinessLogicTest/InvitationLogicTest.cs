@@ -35,6 +35,7 @@ namespace BusinessLogicTest
         {
             // Arrange
             var mockInvitationRepository = new Mock<IInvitationRepository>();
+            
             var invitationLogic = new InvitationLogic(mockInvitationRepository.Object);
 
             Invitation invitation = new Invitation()
@@ -66,7 +67,8 @@ namespace BusinessLogicTest
                 Id = invitationId,
                 Name = "John Doe",
                 Email = "johndoe@example.com",
-                ExpirationDate = DateTime.Now.AddDays(6)
+                ExpirationDate = DateTime.Now.AddDays(6),
+                State = Status.Rejected
             };
             mockInvitationRepository.Setup(x => x.GetInvitationById(invitationId)).Returns(invitation);
 

@@ -9,11 +9,10 @@ namespace BusinessLogic
     public class InvitationLogic : IInvitationLogic
     {
         private readonly IInvitationRepository _invitationRepository;
-        private readonly IUserRepository _userRepository;
-        public InvitationLogic(IInvitationRepository invitationRepository,IUserRepository userRepository)
+
+        public InvitationLogic(IInvitationRepository invitationRepository)
         {
             _invitationRepository = invitationRepository;
-            _userRepository = userRepository;
         }
 
         public Invitation GetInvitationById(Guid id)
@@ -64,10 +63,7 @@ namespace BusinessLogic
             {
                 throw new ArgumentException("Invalid data");
             }
-            if (_userRepository.GetUserByEmail(invitation.Email) == null)
-            {
-                throw new InvalidOperationException("El usuario asociado a la invitación no existe.");
-            }
+            
             return _invitationRepository.CreateInvitation(invitation);
         }
 
