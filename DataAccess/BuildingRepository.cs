@@ -32,12 +32,12 @@ namespace DataAccess
 
         public Building GetBuildingById(Guid id)
         {
-            throw new NotImplementedException();
+            return _context.Set<Building>().Find(id);
         }
 
         public void Save()
         {
-            throw new NotImplementedException();
+            _context.SaveChanges();
         }
     }
 }
