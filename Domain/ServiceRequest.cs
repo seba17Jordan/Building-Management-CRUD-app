@@ -11,8 +11,8 @@ namespace Domain
     {
         public Guid Id { get; set; }
         public string Description { get; set; }
-        public Apartment Apartment { get; set; }
-        public Category Category { get; set; }
+        public Guid Apartment { get; set; }
+        public Guid Category { get; set; }
         public ServiceRequestStatus Status { get; set; }
 
         public ServiceRequest() { }

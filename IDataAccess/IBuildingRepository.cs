@@ -8,6 +8,7 @@ namespace IDataAccess
         Building CreateBuilding(Building building);
         void DeleteApartment(Apartment apartment);
         void DeleteBuilding(Building building);
+        bool ExistApartment(Guid apartment);
         Building GetBuildingById(Guid id);
         void Save();
         void UpdateBuilding(Building buildingToUpdate);

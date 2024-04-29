@@ -6,8 +6,8 @@ namespace ModelsApi.In
     public class ServiceRequestRequest
     {
         public string Description { get; set; }
-        public ApartmentRequest Apartment { get; set; }
-        public CategoryRequest Category { get; set; }
+        public Guid Apartment { get; set; }
+        public Guid Category { get; set; }
         public ServiceRequestStatus Status { get; set; }
 
         public ServiceRequest ToEntity()
@@ -15,8 +15,8 @@ namespace ModelsApi.In
             var serviceRequest = new ServiceRequest
             {
                 Description = Description,
-                Apartment = Apartment.ToEntity(),
-                Category = Category.ToEntity(),
+                Apartment = Apartment,
+                Category = Category,
                 Status = Status
             };
 

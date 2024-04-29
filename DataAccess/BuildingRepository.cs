@@ -43,6 +43,11 @@ namespace DataAccess
                 .FirstOrDefault(b => b.Id == id);
         }
 
+        public bool ExistApartment(Guid id)
+        {
+            return _context.Set<Apartment>().Any(a => a.Id == id);
+        }
+
         public void Save()
         {
             _context.SaveChanges();

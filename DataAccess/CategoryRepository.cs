@@ -19,8 +19,13 @@ namespace DataAccess
             _context.SaveChanges();
             return category;
         }
+        
+        public bool FindCategoryById(Guid id)
+        {
+            return _context.Set<Category>().Any(c => c.Id == id);
+        }
 
-        public bool CategoryExists(string name)
+        public bool FindCategoryByName(string name)
         {
             return _context.Set<Category>().Any(c => c.Name == name);
         }

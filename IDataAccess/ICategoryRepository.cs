@@ -9,7 +9,8 @@ namespace IDataAccess
 {
     public interface ICategoryRepository
     {
-        bool CategoryExists(string name);
+        bool FindCategoryByName(string name);
         Category CreateCategory(Category category);
+        bool FindCategoryById(Guid category);
     }
 }
