@@ -235,6 +235,36 @@ namespace DataAccessTest
             Assert.AreEqual(0, createdBuilding.Apartments.Count);
         }
 
+        [TestMethod]
+        public void ExistApartmentFromBuildingTestDataAccess()
+        {
+            // Arrange
+            Apartment apartment = new Apartment()
+            {
+                Id = Guid.NewGuid(),
+                Floor = 1,
+                Number = 101,
+                Owner = new Owner { Name = "Jane", LastName = "Doe", Email = ""}
+            };
+            var context = CreateDbContext("ExistApartmentFromBuildingTestDataAccess");
+            var buildingRepo = new BuildingRepository(context);
+
+            // Act
+            buildingRepo.CreateBuilding(new Building()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Building 1",
+                Address = "Address 1",
+                ConstructionCompany = "Construction Company 1",
+                CommonExpenses = 100,
+                Apartments = new List<Apartment> { apartment }
+            });
+            context.SaveChanges();
+
+            // Assert
+            Assert.IsTrue(buildingRepo.ExistApartment(apartment.Id));
+        }
+
         private DbContext CreateDbContext(string database)
         {
             var options = new DbContextOptionsBuilder<Context>().UseInMemoryDatabase(database).Options;
