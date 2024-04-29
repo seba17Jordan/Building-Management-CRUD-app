@@ -30,7 +30,7 @@ namespace DataAccessTest
         }
 
         [TestMethod]
-        public void CreateCategoryExistsTest()
+        public void CategoryNameExistsTest()
         {
             // Arrange
             var expectedCategory = new Category
@@ -46,7 +46,7 @@ namespace DataAccessTest
             context.SaveChanges();
 
             // Assert
-            Assert.ThrowsException<ArgumentException>(() => categoryRepository.CreateCategory(expectedCategory));
+            Assert.IsTrue(categoryRepository.FindCategoryByName(expectedCategory.Name));
         }
 
         [TestMethod]
