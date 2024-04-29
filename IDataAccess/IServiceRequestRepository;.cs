@@ -5,12 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogicInterface
+namespace IDataAccess
 {
-    public interface IServiceRequestLogic
+    public interface IServiceRequestRepository
     {
         ServiceRequest CreateServiceRequest(ServiceRequest serviceRequest);
-
-        //IEnumerable<ServiceRequest> GetAllServiceRequests(string category);
     }
 }
