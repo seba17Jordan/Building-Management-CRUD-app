@@ -21,7 +21,7 @@ namespace ModelsApi.Out
             Name = maintenancePerson.Name;
             LastName = maintenancePerson.LastName;
             Email = maintenancePerson.Email;
-            Roles = Roles.Maintenance;
+            Roles = maintenancePerson.Role;
         }
 
         public override bool Equals(object obj)

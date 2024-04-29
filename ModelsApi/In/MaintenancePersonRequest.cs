@@ -20,7 +20,7 @@ namespace ModelsApi.In
                 Password = Password,
                 Name = Name,
                 LastName = LastName,
-                Role = Role
+                Role = Roles.Maintenance
             };
 
             return maintenancePerson;
