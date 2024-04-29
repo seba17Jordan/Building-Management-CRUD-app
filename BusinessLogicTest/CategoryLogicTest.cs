@@ -20,7 +20,7 @@ namespace BusinessLogicTest
 
             Mock<ICategoryRepository> repo = new Mock<ICategoryRepository>(MockBehavior.Strict);
             repo.Setup(l => l.CreateCategory(It.IsAny<Category>())).Returns(expectedCategory);
-            repo.Setup(repo => repo.CategoryExists(It.IsAny<string>())).Returns(false);
+            repo.Setup(repo => repo.FindCategoryByName(It.IsAny<string>())).Returns(false);
 
             var categoryLogic = new CategoryLogic(repo.Object);
 

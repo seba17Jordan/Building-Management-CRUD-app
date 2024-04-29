@@ -15,19 +15,23 @@ public class ServiceRequestControllerTest
     [TestMethod]
     public void CreateServiceRequestCorrectTest()
     {
+        Category category = new Category { Name = "Category 1" };
+
+        Apartment apartment = new Apartment()
+        {
+            Floor = 1,
+            Number = 101,
+            Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "jane.doe@example.com" },
+            Rooms = 3,
+            Bathrooms = 2,
+            HasTerrace = true
+        };
         //Arrange
         var serviceRequestToCreate = new ServiceRequestRequest
         {
             Description = "A description",
-            Apartment = new ApartmentRequest {
-                Bathrooms = 2,
-                Floor = 2,
-                HasTerrace = true,
-                Number = 2,
-                Rooms = 2,
-                Owner = new OwnerRequest { Email = "example@gmail.com", LastName = "Doe", Name = "John" }
-            },
-            Category = new CategoryRequest { Name = "Plumbing" },
+            Apartment = apartment.Id,
+            Category = category.Id,
             Status = ServiceRequestStatus.Open
         };
 
@@ -35,16 +39,8 @@ public class ServiceRequestControllerTest
         {
             Id = Guid.NewGuid(),  
             Description = "A description",
-            Apartment = new Apartment
-            {
-                Bathrooms = 2,
-                Floor = 2,
-                HasTerrace = true,
-                Number = 2,
-                Rooms = 2,
-                Owner = new Owner { Email = "example@gmail.com", LastName = "Doe", Name = "John" }
-            },
-            Category = new Category { Name = "Plumbing" },
+            Apartment = apartment.Id,
+            Category = category.Id,
             Status = ServiceRequestStatus.Open
         };
 
@@ -72,6 +68,18 @@ public class ServiceRequestControllerTest
     [TestMethod]
     public void GetAllServiceRequestsCorrectTest()
     {
+        Category category = new Category { Name = "Category 1" };
+
+        Apartment apartment = new Apartment()
+        {
+            Floor = 1,
+            Number = 101,
+            Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "jane.doe@example.com" },
+            Rooms = 3,
+            Bathrooms = 2,
+            HasTerrace = true
+        };
+
         //Arrange
         IEnumerable<ServiceRequest> expectedServiceRequests = new List<ServiceRequest>
         {
@@ -79,16 +87,8 @@ public class ServiceRequestControllerTest
             {
                 Id = Guid.NewGuid(),
                 Description = "A description",
-                Apartment = new Apartment
-                {
-                    Bathrooms = 2,
-                    Floor = 2,
-                    HasTerrace = true,
-                    Number = 2,
-                    Rooms = 2,
-                    Owner = new Owner { Email = ""}
-                },
-                Category = new Category { Name = "Plumbing" },
+                Apartment = apartment.Id,
+                Category = category.Id,
                 Status = ServiceRequestStatus.Open
             }
         };

@@ -12,22 +12,26 @@ namespace DataAccessTest
         [TestMethod]
         public void CreateServiceRequestCorrectTestDataAccess()
         {
+            Category category = new Category { Name = "Category 1" };
+
+            Apartment apartment = new Apartment()
+            {
+                Floor = 1,
+                Number = 101,
+                Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "jane.doe@example.com" },
+                Rooms = 3,
+                Bathrooms = 2,
+                HasTerrace = true
+            };
+
             // Arrange
             ServiceRequest expectedServiceRequest = new ServiceRequest()
             {
                 Id = Guid.NewGuid(),
                 Description = "Description 1",
                 Status = ServiceRequestStatus.Open,
-                Category = new Category { Name = "Category 1" },
-                Apartment = new Apartment()
-                {
-                    Floor = 1,
-                    Number = 101,
-                    Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "jane.doe@example.com" },
-                    Rooms = 3,
-                    Bathrooms = 2,
-                    HasTerrace = true
-                }
+                Category = category.Id,
+                Apartment = apartment.Id
             };
 
             var context = CreateDbContext("CreateServiceRequestCorrectTestDataAccess");
@@ -44,22 +48,26 @@ namespace DataAccessTest
         [TestMethod]
         public void ServiceRequestExistsTestDataAccess()
         {
+            Category category = new Category { Name = "Category 1" };
+
+            Apartment apartment = new Apartment()
+            {
+                Floor = 1,
+                Number = 101,
+                Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "jane.doe@example.com" },
+                Rooms = 3,
+                Bathrooms = 2,
+                HasTerrace = true
+            };
+
             // Arrange
             ServiceRequest expectedServiceRequest = new ServiceRequest()
             {
                 Id = Guid.NewGuid(),
                 Description = "Description 1",
                 Status = ServiceRequestStatus.Open,
-                Category = new Category { Name = "Category 1" },
-                Apartment = new Apartment()
-                {
-                    Floor = 1,
-                    Number = 101,
-                    Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "jane.doe@example.com" },
-                    Rooms = 3,
-                    Bathrooms = 2,
-                    HasTerrace = true
-                }
+                Category = category.Id,
+                Apartment = apartment.Id
             };
 
             var context = CreateDbContext("ServiceRequestExistsTestDataAccess");
