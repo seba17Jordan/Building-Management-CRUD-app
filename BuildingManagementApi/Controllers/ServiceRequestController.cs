@@ -39,5 +39,16 @@ namespace BuildingManagementApi.Controllers
             IEnumerable<ServiceRequestResponse> serviceRequests = _serviceRequestLogic.GetAllServiceRequests(categoryOrDefault).Select(sr => new ServiceRequestResponse(sr)).ToList();
             return Ok(serviceRequests);
         }
+
+        [HttpPut("{id}")]
+        [ServiceFilter(typeof(AuthenticationFilter))]
+        //[AuthenticationFilter([Roles.Manager])]
+        public IActionResult AssignRequestToMaintainancePerson([FromRoute] Guid requestId, [FromBody] Guid maintainancePersonId)
+        {
+            var serviceRequest = _serviceRequestLogic.AssignRequestToMaintainancePerson(requestId, maintainancePersonId);
+            ServiceRequestResponse response = new ServiceRequestResponse(serviceRequest);
+
+            return Ok(response);
+        }
     }
 }

@@ -16,6 +16,12 @@ namespace BusinessLogic
             _buildingRepository = buildingRepository;
             _categoryRepository = categoryRepository;
         }
+
+        public ServiceRequest AssignRequestToMaintainancePerson(Guid serviceRequestId, Guid maintainancePersonId)
+        {
+            throw new NotImplementedException();
+        }
+
         public ServiceRequest CreateServiceRequest(ServiceRequest serviceRequest)
         {
             if (serviceRequest == null)

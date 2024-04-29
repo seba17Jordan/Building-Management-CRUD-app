@@ -114,4 +114,74 @@ public class ServiceRequestControllerTest
         Assert.AreEqual(resultObj.StatusCode, expectedObjResult.StatusCode);
         Assert.AreEqual(resultResponse.First(), expectedResponse.First());
     }
+
+    [TestMethod]
+    public void AssignRequestToMaintainancePersonCorrectTestController()
+    {
+        Category category = new Category { Name = "Category 1" };
+
+        Apartment apartment = new Apartment()
+        {
+            Floor = 1,
+            Number = 101,
+            Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "" },
+            Rooms = 3,
+            Bathrooms = 2,
+            HasTerrace = true
+        };
+
+        User maintenancePerson = new User
+        {
+            Email = "maintainance@gmail.com",
+            Password = "123456",
+            Name = "John",
+            LastName = "Doe",
+            Role = Roles.Maintenance
+        };
+
+        ServiceRequest serviceRequest = new ServiceRequest
+        {
+            Id = Guid.NewGuid(),
+            Description = "A description",
+            Apartment = apartment.Id,
+            Category = category.Id,
+            Status = ServiceRequestStatus.Open
+        };
+
+        ServiceRequest expectedServiceRequest = new ServiceRequest
+        {
+            Id = Guid.NewGuid(),
+            Description = "A description",
+            Apartment = apartment.Id,
+            Category = category.Id,
+            MaintainancePersonId = maintenancePerson.Id,
+            Status = ServiceRequestStatus.Attending
+        };
+
+        ServiceRequestResponse expectedServiceRequestResponse = new ServiceRequestResponse(expectedServiceRequest);
+
+        Mock<IServiceRequestLogic> serviceRequestLogic = new Mock<IServiceRequestLogic>(MockBehavior.Strict);
+        serviceRequestLogic.Setup(serviceRequestLogic => serviceRequestLogic.AssignRequestToMaintainancePerson(It.IsAny<Guid>(), It.IsAny<Guid>()))
+        .Returns(expectedServiceRequest).Callback<Guid, Guid>((requestId, maintenancePersonId) =>
+        {
+            serviceRequest.Status = ServiceRequestStatus.Attending;
+            serviceRequest.MaintainancePersonId = maintenancePersonId;
+        });
+
+        ServiceRequestController serviceRequestController = new ServiceRequestController(serviceRequestLogic.Object);
+        OkObjectResult expectedObjResult = new OkObjectResult(expectedServiceRequestResponse);
+
+        // Act
+        var controllerResult = serviceRequestController.AssignRequestToMaintainancePerson(serviceRequest.Id, maintenancePerson.Id);
+
+        // Assert
+        serviceRequestLogic.VerifyAll();
+
+        OkObjectResult resultObj = controllerResult as OkObjectResult;
+        ServiceRequestResponse resultResponse = resultObj.Value as ServiceRequestResponse;
+
+        Assert.IsNotNull(resultResponse);
+        Assert.AreEqual(resultObj.StatusCode, expectedObjResult.StatusCode);
+        Assert.AreEqual(resultResponse, expectedServiceRequestResponse);
+    }
 }

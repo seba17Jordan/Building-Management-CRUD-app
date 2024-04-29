@@ -9,6 +9,7 @@ namespace LogicInterface
 {
     public interface IServiceRequestLogic
     {
+        ServiceRequest AssignRequestToMaintainancePerson(Guid serviceRequestId, Guid maintainancePersonId);
         ServiceRequest CreateServiceRequest(ServiceRequest serviceRequest);
 
         IEnumerable<ServiceRequest> GetAllServiceRequests(string category);
