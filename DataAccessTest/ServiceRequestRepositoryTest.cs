@@ -82,6 +82,43 @@ namespace DataAccessTest
 
         }
 
+        [TestMethod]
+        public void GetServiceRequestByIdTestDataAccess()
+        {
+            Category category = new Category { Name = "Category 1" };
+
+            Apartment apartment = new Apartment()
+            {
+                Floor = 1,
+                Number = 101,
+                Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "email@gmail.com" },
+                Rooms = 3,
+                Bathrooms = 2,
+                HasTerrace = true
+            };
+
+            ServiceRequest expectedServiceRequest = new ServiceRequest()
+            {
+                Id = Guid.NewGuid(),
+                Description = "Description 1",
+                Status = ServiceRequestStatus.Open,
+                Category = category.Id,
+                Apartment = apartment.Id
+            };
+
+            var context = CreateDbContext("GetServiceRequestByIdTestDataAccess");
+            var serviceRequestRepo = new ServiceRequestRepository(context);
+
+            context.Set<ServiceRequest>().Add(expectedServiceRequest);
+            context.SaveChanges();
+
+            // Act
+            ServiceRequest serviceRequest = serviceRequestRepo.GetServiceRequestById(expectedServiceRequest.Id);
+
+            // Assert
+            Assert.AreEqual(expectedServiceRequest, serviceRequest);
+        }
+
         private DbContext CreateDbContext(string database)
         {
             var options = new DbContextOptionsBuilder<Context>().UseInMemoryDatabase(database).Options;

@@ -22,7 +22,7 @@ namespace DataAccess
 
         public ServiceRequest GetServiceRequestById(Guid serviceRequestId)
         {
-            throw new NotImplementedException();
+            return _context.Set<ServiceRequest>().Find(serviceRequestId);
         }
 
         public bool ServiceRequestExists(Guid id)
