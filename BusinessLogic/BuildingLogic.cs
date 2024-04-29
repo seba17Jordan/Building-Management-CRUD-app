@@ -66,7 +66,7 @@ namespace BusinessLogic
                 building.Apartments.Clear();
                 building.Apartments = null;
             }
-
+            _buildingRepository.Save();
             _buildingRepository.DeleteBuilding(building);
             _buildingRepository.Save();
         }

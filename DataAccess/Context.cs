@@ -13,7 +13,6 @@ namespace DataAccess
         public DbSet<User> Users { get; set; }
         public DbSet<Building> Buildings { get; set; }
         public DbSet<Apartment> Apartments { get; set; }
-        public DbSet<Owner> Owners { get; set; }
         public DbSet<Session> Sessions { get; set; }
 
         public DbSet<Invitation> Invitations { get; set; }
