@@ -49,6 +49,26 @@ namespace DataAccessTest
             Assert.ThrowsException<ArgumentException>(() => categoryRepository.CreateCategory(expectedCategory));
         }
 
+        [TestMethod]
+        public void FindCategoryByIdCorrectTest()
+        {
+            // Arrange
+            var expectedCategory = new Category
+            {
+                Name = "category"
+            };
+
+            var context = CreateDbContext("FindCategoryByIdCorrectTest");
+            var categoryRepository = new CategoryRepository(context);
+
+            // Act
+            Category createdCategory = categoryRepository.CreateCategory(expectedCategory);
+            context.SaveChanges();
+
+            // Assert
+            Assert.IsTrue(categoryRepository.FindCategoryById(createdCategory.Id));
+        }
+
         private DbContext CreateDbContext(string database)
         {
             var options = new DbContextOptionsBuilder<Context>().UseInMemoryDatabase(database).Options;
