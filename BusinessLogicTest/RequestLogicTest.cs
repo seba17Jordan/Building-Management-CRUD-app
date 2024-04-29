@@ -54,7 +54,7 @@ namespace BusinessLogicTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))] // Ajusta el tipo de excepción esperado
+        [ExpectedException(typeof(ArgumentNullException))]
         public void CreateServiceRequestNullServiceRequestTestLogic()
         {
             //Arrange
