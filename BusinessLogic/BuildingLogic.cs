@@ -107,7 +107,20 @@ namespace BusinessLogic
 
             if (building.Apartments != null && building.Apartments.Count >=1)
             {
-                buildingToUpdate.Apartments = building.Apartments;
+                buildingToUpdate.Apartments.Clear();
+                foreach (var apartment in building.Apartments)
+                {
+                    var conedApartment = new Apartment
+                    {
+                        Number = apartment.Number,
+                        Floor = apartment.Floor,
+                        Owner = apartment.Owner,
+                        Rooms = apartment.Rooms,
+                        Bathrooms = apartment.Bathrooms,
+                        HasTerrace = apartment.HasTerrace,
+                    };
+                    buildingToUpdate.Apartments.Add(conedApartment);
+                }
             }
 
             _buildingRepository.UpdateBuilding(buildingToUpdate);
