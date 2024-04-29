@@ -32,5 +32,23 @@ namespace BusinessLogicTest
             serviceRequestRepo.VerifyAll();
             Assert.AreEqual(logicResult, expectedServiceRequest);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))] // Ajusta el tipo de excepción esperado
+        public void CreateServiceRequestNullServiceRequestTestLogic()
+        {
+            //Arrange
+            ServiceRequest expectedServiceRequest = null;
+
+            Mock<IServiceRequestRepository> serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
+            serviceRequestRepo.Setup(l => l.CreateServiceRequest(It.IsAny<ServiceRequest>())).Returns(expectedServiceRequest);
+
+            RequestLogic requestLogic = new RequestLogic(serviceRequestRepo.Object);
+
+            //Act
+            ServiceRequest logicResult = requestLogic.CreateServiceRequest(expectedServiceRequest);
+            serviceRequestRepo.VerifyAll();
+        }
+
     }
 }
