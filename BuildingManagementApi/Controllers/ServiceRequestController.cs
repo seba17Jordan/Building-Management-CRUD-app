@@ -8,8 +8,8 @@ using ModelsApi.Out;
 
 namespace BuildingManagementApi.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/serviceRequest")]
     [TypeFilter(typeof(ExceptionFilter))]
     public class ServiceRequestController : ControllerBase
     {

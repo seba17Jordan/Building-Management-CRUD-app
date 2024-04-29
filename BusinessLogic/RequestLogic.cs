@@ -32,5 +32,9 @@ namespace BusinessLogic
             return _serviceRequestRepository.CreateServiceRequest(serviceRequest);
         }
 
+        public IEnumerable<ServiceRequest> GetAllServiceRequests(string category)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
