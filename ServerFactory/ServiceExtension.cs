@@ -26,6 +26,9 @@ namespace ServerFactory
             services.AddScoped<IInvitationLogic, InvitationLogic>();
             services.AddScoped<IInvitationRepository, InvitationRepository>();
 
+            services.AddScoped<IServiceRequestLogic, RequestLogic>();
+            services.AddScoped<IServiceRequestRepository, ServiceRequestRepository>();
+
             services.AddDbContext<DbContext, Context>(o => o.UseSqlServer(connectionString));
             return services;
         }

@@ -1,19 +1,24 @@
 ﻿using Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using IDataAccess;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace DataAccess
 {
-    public class ServiceRequestRepository
+    public class ServiceRequestRepository : IServiceRequestRepository
     {
-        public ServiceRequestRepository() { }
+        private readonly DbContext _context;
+
+        public ServiceRequestRepository(DbContext context)
+        {
+            _context = context;
+        }
 
         public ServiceRequest CreateServiceRequest(ServiceRequest serviceRequest)
         {
-            throw new NotImplementedException();
+            _context.Set<ServiceRequest>().Add(serviceRequest);
+            _context.SaveChanges();
+            return serviceRequest;
         }
     }
 }
