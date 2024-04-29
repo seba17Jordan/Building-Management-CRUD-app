@@ -34,8 +34,8 @@ public class MaintenanceControllerTest
 
         var expectedMaintenancePersonResponse = new MaintenancePersonResponse(expectedMaintenancePerson);
 
-        var maintenancePersonLogicMock = new Mock<IMaintenancePersonLogic>();
-        maintenancePersonLogicMock.Setup(x => x.CreateMaintenancePerson(It.IsAny<User>())).Returns(expectedMaintenancePerson);
+        var maintenancePersonLogicMock = new Mock<IUserLogic>();
+        maintenancePersonLogicMock.Setup(m => m.CreateUser(It.IsAny<User>())).Returns(expectedMaintenancePerson);
 
         var maintenancePersonController = new MaintenancePersonController(maintenancePersonLogicMock.Object);
 

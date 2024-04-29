@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Domain.@enum;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,12 +13,15 @@ namespace ModelsApi.Out
         public string LastName { get; set; }
         public string Email { get; set; }
 
+        public Roles Roles { get; set; }
+
         public MaintenancePersonResponse(User maintenancePerson)
         {
             Id = maintenancePerson.Id;
             Name = maintenancePerson.Name;
             LastName = maintenancePerson.LastName;
             Email = maintenancePerson.Email;
+            Roles = Roles.Maintenance;
         }
 
         public override bool Equals(object obj)

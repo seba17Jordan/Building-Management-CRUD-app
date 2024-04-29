@@ -1,35 +1,37 @@
-﻿using BuildingManagementApi.Filters;
-using Domain.@enum;
-using LogicInterface;
-using Microsoft.AspNetCore.Http;
+﻿using LogicInterface;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using ModelsApi;
 using ModelsApi.In;
 using ModelsApi.Out;
+using BuildingManagementApi.Filters;
+using Domain.@enum;
 
 namespace BuildingManagementApi.Controllers
 {
-    [Route("api/[controller]")]
-    [TypeFilter(typeof(ExceptionFilter))]
     [ApiController]
+    [Route("api/maintenance")]
+    [TypeFilter(typeof(ExceptionFilter))]
     public class MaintenancePersonController : ControllerBase
     {
-        private readonly IMaintenancePersonLogic _maintenancePersonLogic;
+        private readonly IUserLogic _userLogic;
 
-        public MaintenancePersonController(IMaintenancePersonLogic maintenancePersonLogic)
+        public MaintenancePersonController(IUserLogic userLogic)
         {
-            _maintenancePersonLogic = maintenancePersonLogic;
+            _userLogic = userLogic;
         }
 
         [HttpPost]
-        //[AuthenticationFilter([Roles.Manager])]
-        public IActionResult CreateMaintenancePerson([FromBody] MaintenancePersonRequest maintenancePersonRequest)
+        [ServiceFilter(typeof(AuthenticationFilter))]
+        [AuthorizationFilter(_currentRole = Roles.Manager)]
+        public IActionResult CreateMaintenancePerson([FromBody] MaintenancePersonRequest maintenancePersonToCreate)
         {
-            var maintenancePerson = maintenancePersonRequest.ToEntity();
-            var createdMaintenancePerson = _maintenancePersonLogic.CreateMaintenancePerson(maintenancePerson);
-            var outputResult = new MaintenancePersonResponse(createdMaintenancePerson);
+            var maintenancePerson = maintenancePersonToCreate.ToEntity();
+            var resultMaintenance = _userLogic.CreateUser(maintenancePerson);
+            MaintenancePersonResponse response = new MaintenancePersonResponse(resultMaintenance);
 
-            return CreatedAtAction(nameof(CreateMaintenancePerson), new { id = outputResult.Id }, outputResult);
+            return CreatedAtAction(nameof(CreateMaintenancePerson), new { id = response.Id }, response);
         }
-
     }
 }
+

@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Domain.@enum;
 
 namespace ModelsApi.In
 {
@@ -9,6 +10,8 @@ namespace ModelsApi.In
         public string Name { get; set; }
         public string LastName { get; set; }
 
+        public Roles Role { get; set; }
+
         public User ToEntity()
         {
             var maintenancePerson = new User
@@ -16,7 +19,8 @@ namespace ModelsApi.In
                 Email = Email,
                 Password = Password,
                 Name = Name,
-                LastName = LastName
+                LastName = LastName,
+                Role = Role
             };
 
             return maintenancePerson;
