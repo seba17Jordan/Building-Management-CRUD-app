@@ -10,5 +10,7 @@ namespace IDataAccess
     public interface IServiceRequestRepository
     {
         ServiceRequest CreateServiceRequest(ServiceRequest serviceRequest);
+        ServiceRequest GetServiceRequestById(Guid serviceRequestId);
+        void UpdateServiceRequest(ServiceRequest serviceRequest);
     }
 }

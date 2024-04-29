@@ -18,5 +18,20 @@ namespace Domain
         public Guid? MaintainancePersonId { get; set; }
 
         public ServiceRequest() { }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+            ServiceRequest serviceRequest = (ServiceRequest)obj;
+            return Id == serviceRequest.Id &&
+                Description == serviceRequest.Description &&
+                Apartment == serviceRequest.Apartment &&
+                Category == serviceRequest.Category &&
+                Status == serviceRequest.Status &&
+                MaintainancePersonId == serviceRequest.MaintainancePersonId;
+        }
     }
 }

@@ -20,9 +20,19 @@ namespace DataAccess
             return serviceRequest;
         }
 
+        public ServiceRequest GetServiceRequestById(Guid serviceRequestId)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool ServiceRequestExists(Guid id)
         {
             return _context.Set<ServiceRequest>().Any(sr => sr.Id == id);
+        }
+
+        public void UpdateServiceRequest(ServiceRequest serviceRequest)
+        {
+            throw new NotImplementedException();
         }
     }
 }

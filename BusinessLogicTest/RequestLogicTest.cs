@@ -3,6 +3,7 @@ using Domain;
 using Moq;
 using BusinessLogic;
 using IDataAccess;
+using Domain.@enum;
 namespace BusinessLogicTest
 {
     [TestClass]
@@ -39,11 +40,13 @@ namespace BusinessLogicTest
             Mock<IServiceRequestRepository> serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
             Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
             Mock<ICategoryRepository> categoryRepo = new Mock<ICategoryRepository>(MockBehavior.Strict);
+            Mock<IUserRepository> userRepository = new Mock<IUserRepository>(MockBehavior.Strict);
+
             serviceRequestRepo.Setup(l => l.CreateServiceRequest(It.IsAny<ServiceRequest>())).Returns(expectedServiceRequest);
             buildingRepo.Setup(l => l.ExistApartment(It.IsAny<Guid>())).Returns(true);
             categoryRepo.Setup(l => l.FindCategoryById(It.IsAny<Guid>())).Returns(true);
 
-            RequestLogic requestLogic = new RequestLogic(serviceRequestRepo.Object,buildingRepo.Object, categoryRepo.Object);
+            RequestLogic requestLogic = new RequestLogic(serviceRequestRepo.Object,buildingRepo.Object, categoryRepo.Object, userRepository.Object);
 
             //Act
             ServiceRequest logicResult = requestLogic.CreateServiceRequest(expectedServiceRequest);
@@ -63,13 +66,63 @@ namespace BusinessLogicTest
             Mock<IServiceRequestRepository> serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
             Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
             Mock<ICategoryRepository> categoryRepo = new Mock<ICategoryRepository>(MockBehavior.Strict);
+            Mock<IUserRepository> userRepository = new Mock<IUserRepository>(MockBehavior.Strict);
+
             serviceRequestRepo.Setup(l => l.CreateServiceRequest(It.IsAny<ServiceRequest>())).Returns(expectedServiceRequest);
 
-            RequestLogic requestLogic = new RequestLogic(serviceRequestRepo.Object, buildingRepo.Object, categoryRepo.Object);
+            RequestLogic requestLogic = new RequestLogic(serviceRequestRepo.Object, buildingRepo.Object, categoryRepo.Object, userRepository.Object);
 
             //Act
             ServiceRequest logicResult = requestLogic.CreateServiceRequest(expectedServiceRequest);
             serviceRequestRepo.VerifyAll();
+        }
+
+        [TestMethod]
+        public void AssigRequestToMaintainancePersonCorrectTestLogic()
+        {
+            //Arrange
+            ServiceRequest serviceRequest = new ServiceRequest()
+            {
+                Id = Guid.NewGuid(),
+                Description = "Service Request 1",
+                Category = Guid.NewGuid(),
+                Apartment = Guid.NewGuid(),
+                Status = ServiceRequestStatus.Open
+            };
+            Guid maintainancePersonId = Guid.NewGuid();
+
+            ServiceRequest expectedServiceRequest = new ServiceRequest()
+            {
+                Id = serviceRequest.Id,
+                Description = serviceRequest.Description,
+                Category = serviceRequest.Category,
+                Apartment = serviceRequest.Apartment,
+                Status = ServiceRequestStatus.Attending,
+                MaintainancePersonId = maintainancePersonId
+            };
+
+            Mock<IServiceRequestRepository> serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
+            Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+            Mock<ICategoryRepository> categoryRepo = new Mock<ICategoryRepository>(MockBehavior.Strict);
+            Mock<IUserRepository> userRepository = new Mock<IUserRepository>(MockBehavior.Strict);
+
+            userRepository.Setup(l => l.GetUserById(It.IsAny<Guid>())).Returns(new User { Role = Roles.Maintenance });
+            serviceRequestRepo.Setup(l => l.GetServiceRequestById(It.IsAny<Guid>())).Returns(serviceRequest);
+            serviceRequestRepo.Setup(l => l.UpdateServiceRequest(It.IsAny<ServiceRequest>())).Callback<ServiceRequest>((ServiceRequest) =>
+            {
+                serviceRequest.Status = ServiceRequestStatus.Attending;
+                serviceRequest.MaintainancePersonId = maintainancePersonId;
+            });
+
+
+            RequestLogic requestLogic = new RequestLogic(serviceRequestRepo.Object, buildingRepo.Object, categoryRepo.Object, userRepository.Object);
+
+            //Act
+            ServiceRequest logicResult = requestLogic.AssignRequestToMaintainancePerson(expectedServiceRequest.Id, maintainancePersonId);
+
+            //Assert
+            serviceRequestRepo.VerifyAll();
+            Assert.AreEqual(logicResult, expectedServiceRequest);
         }
 
     }
