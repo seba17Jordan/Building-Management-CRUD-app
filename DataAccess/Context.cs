@@ -23,8 +23,9 @@ namespace DataAccess
         /*protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Building>().HasMany(b => b.Apartments).WithOne(b => b.Building);
+            //modelBuilder.Entity<Apartment>().HasOne(model => model.Owner).WithMany().OnDelete(DeleteBehavior.Restrict);
         }
         */
+        
     }
 }

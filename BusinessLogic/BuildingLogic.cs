@@ -59,7 +59,7 @@ namespace BusinessLogic
                 {
                     if (apartment.Owner != null)
                     {
-                        _buildingRepository.DeleteOwner(apartment.Owner);
+                        apartment.Owner = null;
                     }
                     _buildingRepository.DeleteApartment(apartment);
                 }

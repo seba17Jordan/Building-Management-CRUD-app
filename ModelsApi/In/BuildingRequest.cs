@@ -14,6 +14,7 @@ namespace ModelsApi.In
         public Building ToEntity()
         {
             var building = new Building();
+            building.Apartments = new List<Apartment>();
 
             if (Name != null)
             {

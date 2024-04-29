@@ -36,12 +36,6 @@ namespace DataAccess
             _context.Set<Building>().Remove(building);
         }
 
-        //nuevo
-        public void DeleteOwner(Owner owner)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public Building GetBuildingById(Guid id)
         {
             return _context.Set<Building>().Find(id);

@@ -60,9 +60,9 @@ public class BuildingControllerTest
 
         Mock<IBuildingLogic> buildingLogic = new Mock<IBuildingLogic>(MockBehavior.Strict);
         buildingLogic.Setup(buildingLogic => buildingLogic.CreateBuilding(It.IsAny<Building>())).Returns(expectedBuilding);
-        var buildingController = new BuildingController(buildingLogic.Object);
-
-        var expectedObjResult = new CreatedAtActionResult("CreateBuilding", "CreateBuilding", new {id = 3 } , expectedMappedBuilding);
+        
+        BuildingController buildingController = new BuildingController(buildingLogic.Object);
+        CreatedAtActionResult expectedObjResult = new CreatedAtActionResult("CreateBuilding", "CreateBuilding", new {id = 3 } , expectedMappedBuilding);
 
         //Act
         var finalResult = buildingController.CreateBuilding(buildingToCreate);
@@ -74,6 +74,7 @@ public class BuildingControllerTest
         BuildingResponse resultValue = resultObject.Value as BuildingResponse;
 
         Assert.AreEqual(resultObject.StatusCode, expectedObjResult.StatusCode);
+        Assert.AreEqual(resultValue, expectedMappedBuilding);
         Assert.AreEqual(resultValue, expectedMappedBuilding);
 
     }
