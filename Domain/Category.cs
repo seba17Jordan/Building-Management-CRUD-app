@@ -12,5 +12,16 @@ namespace Domain
         public string Name { get; set; }
 
         public Category() { }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+            Category category = (Category)obj;
+            return Id == category.Id &&
+                Name == category.Name;
+        }
     }
 }

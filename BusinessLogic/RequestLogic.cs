@@ -85,7 +85,7 @@ namespace BusinessLogic
             Category cat = _categoryRepository.GetCategoryById(serviceRequest.Category);
             serviceRequest.CategoryName = cat.Name;
 
-            serviceRequest.Status = Domain.@enum.ServiceRequestStatus.Open;
+            serviceRequest.Status = ServiceRequestStatus.Open;
             return _serviceRequestRepository.CreateServiceRequest(serviceRequest);
         }
 
