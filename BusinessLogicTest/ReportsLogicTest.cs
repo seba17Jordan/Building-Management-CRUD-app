@@ -13,6 +13,13 @@ namespace BusinessLogicTest
         public void CreateReportBuildingTestCorrect()
         {
             // Arrange
+
+            Building building = new Building
+            {
+                Id = Guid.NewGuid(),
+                Name = "BuildingName"
+            };
+
             Guid managerId = Guid.NewGuid();
             IEnumerable<(string, int, int, int)> reportInfo = new List<(string, int, int, int)>
             {
@@ -30,11 +37,7 @@ namespace BusinessLogicTest
 
             BuildingRepository.Setup(p => p.GetAllBuildings(managerId)).Returns(new List<Building>
             {
-                new Building
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "BuildingName"
-                }
+                building
             });
 
             ServiceRequestRepository.Setup(p => p.GetAllServiceRequests("")).Returns(new List<ServiceRequest>
@@ -62,7 +65,7 @@ namespace BusinessLogicTest
             ReportLogic reportLogic = new ReportLogic(ServiceRequestRepository.Object, BuildingRepository.Object, UserRepository.Object);
 
             // Act
-            var result = reportLogic.GetReport(managerId, "");
+            var result = reportLogic.GetReport(managerId, "BuildingName");
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedResponse.First().Item1, result.First().Item1);
             Assert.AreEqual(expectedResponse.First().Item2, result.First().Item2);
