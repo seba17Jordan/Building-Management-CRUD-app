@@ -1,7 +1,10 @@
 ﻿using BuildingManagementApi.Filters;
+using BusinessLogic;
+using DataAccess;
 using Domain.@enum;
 using LogicInterface;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ModelsApi;
 using ModelsApi.In;
 using ModelsApi.Out;
@@ -14,20 +17,21 @@ namespace BuildingManagementApi.Controllers
     public class ReportController : ControllerBase
     {
         private readonly IReportLogic _reportLogic;
+        private readonly ISessionService _sessionService;
 
-        public ReportController(IReportLogic reportLogic)
+        public ReportController(IReportLogic reportLogic, ISessionService sessionService)
         {
             _reportLogic = reportLogic;
+            _sessionService = sessionService;
         }
 
         [HttpGet]
         //[AuthorizationFilter(_currentRole = Roles.Manager)]
         public IActionResult GetReport([FromQuery] string? param)
         {
-            //var userId = Guid.Parse(HttpContext.Items["UserId"] as string);
-            // Hardcodear un valor Guid
-            Guid userId = new Guid("38352B3A-31A1-43E6-8A81-76B97A8F3A1A");
-            var reportInfo = _reportLogic.GetReport(userId, param);
+            string token = Request.Headers["Authorization"].ToString();
+            var user = _sessionService.GetUserByToken(Guid.Parse(token));
+            var reportInfo = _reportLogic.GetReport(user.Id, param);
             var response = reportInfo.Select(t => new ReportResponse(t));
             return Ok(response);
         }
