@@ -242,8 +242,8 @@ public class ServiceRequestControllerTest
         ServiceRequestResponse expectedServiceRequestResponse = new ServiceRequestResponse(expectedServiceRequest);
 
         Mock<IServiceRequestLogic> serviceRequestLogic = new Mock<IServiceRequestLogic>(MockBehavior.Strict);
-        serviceRequestLogic.Setup(serviceRequestLogic => serviceRequestLogic.UpdateServiceRequestStatus(It.IsAny<Guid>(), It.IsAny<Decimal>()))
-        .Returns(expectedServiceRequest).Callback<Guid, Guid>((requestId, maintenancePersonId) =>
+        serviceRequestLogic.Setup(serviceRequestLogic => serviceRequestLogic.UpdateServiceRequestStatus(It.IsAny<Guid>(), It.IsAny<decimal>()))
+        .Returns(expectedServiceRequest).Callback<Guid, decimal?>((requestId, maintenancePersonId) =>
         {
             serviceRequest.Status = ServiceRequestStatus.Attending;
             serviceRequest.TotalCost = 100;
