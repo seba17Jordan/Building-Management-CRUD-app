@@ -192,7 +192,7 @@ namespace BusinessLogicTest
                 Description = serviceRequest.Description,
                 Category = serviceRequest.Category,
                 Apartment = serviceRequest.Apartment,
-                Status = ServiceRequestStatus.Attending
+                Status = ServiceRequestStatus.Attending,
             };
 
             Mock<IServiceRequestRepository> serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
@@ -207,6 +207,47 @@ namespace BusinessLogicTest
 
             //Act
             ServiceRequest logicResult = requestLogic.UpdateServiceRequestStatus(expectedServiceRequest.Id, null);
+
+            //Assert
+            serviceRequestRepo.VerifyAll();
+            Assert.AreEqual(logicResult, expectedServiceRequest);
+        }
+
+        [TestMethod]
+        public void UpdateServiceRequestToRejectedCorrectTestLogic()
+        {
+            //Arrange
+            ServiceRequest serviceRequest = new ServiceRequest()
+            {
+                Id = Guid.NewGuid(),
+                Description = "Service Request 1",
+                Category = Guid.NewGuid(),
+                Apartment = Guid.NewGuid(),
+                Status = ServiceRequestStatus.Attending
+            };
+
+            ServiceRequest expectedServiceRequest = new ServiceRequest()
+            {
+                Id = serviceRequest.Id,
+                Description = serviceRequest.Description,
+                Category = serviceRequest.Category,
+                Apartment = serviceRequest.Apartment,
+                Status = ServiceRequestStatus.Closed,
+                TotalCost = 100
+            };
+
+            Mock<IServiceRequestRepository> serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
+            Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+            Mock<ICategoryRepository> categoryRepo = new Mock<ICategoryRepository>(MockBehavior.Strict);
+            Mock<IUserRepository> userRepository = new Mock<IUserRepository>(MockBehavior.Strict);
+
+            serviceRequestRepo.Setup(l => l.UpdateServiceRequest(It.IsAny<ServiceRequest>()));
+            serviceRequestRepo.Setup(l => l.GetServiceRequestById(It.IsAny<Guid>())).Returns(serviceRequest);
+
+            RequestLogic requestLogic = new RequestLogic(serviceRequestRepo.Object, buildingRepo.Object, categoryRepo.Object, userRepository.Object);
+
+            //Act
+            ServiceRequest logicResult = requestLogic.UpdateServiceRequestStatus(expectedServiceRequest.Id, 100);
 
             //Assert
             serviceRequestRepo.VerifyAll();
