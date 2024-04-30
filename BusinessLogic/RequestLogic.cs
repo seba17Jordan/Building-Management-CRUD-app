@@ -86,7 +86,7 @@ namespace BusinessLogic
 
         public IEnumerable<ServiceRequest> GetAllServiceRequests(string category)
         {
-            throw new NotImplementedException();
+            return _serviceRequestRepository.GetAllServiceRequests(category);
         }
     }
 }

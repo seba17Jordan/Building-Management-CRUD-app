@@ -125,5 +125,50 @@ namespace BusinessLogicTest
             Assert.AreEqual(logicResult, expectedServiceRequest);
         }
 
+        [TestMethod]
+        public void GetAllServiceRequestsCorrectTestLogic()
+        {
+            Category category = new Category { Name = "Category 1" };
+
+            Apartment apartment = new Apartment()
+            {
+                Floor = 1,
+                Number = 101,
+                Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "jane.doe@example.com" },
+                Rooms = 3,
+                Bathrooms = 2,
+                HasTerrace = true
+            };
+
+            //Arrange
+            IEnumerable<ServiceRequest> expectedServiceRequests = new List<ServiceRequest>
+        {
+            new ServiceRequest
+            {
+                Id = Guid.NewGuid(),
+                Description = "A description",
+                Apartment = apartment.Id,
+                Category = category.Id,
+                Status = ServiceRequestStatus.Open
+            }
+        };
+
+            Mock<IServiceRequestRepository> serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
+            Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+            Mock<ICategoryRepository> categoryRepo = new Mock<ICategoryRepository>(MockBehavior.Strict);
+            Mock<IUserRepository> userRepository = new Mock<IUserRepository>(MockBehavior.Strict);
+
+            serviceRequestRepo.Setup(repo => repo.GetAllServiceRequests(It.IsAny<string>())).Returns(expectedServiceRequests);
+
+            RequestLogic serviceRequestController = new RequestLogic(serviceRequestRepo.Object, buildingRepo.Object, categoryRepo.Object, userRepository.Object);
+
+            //Act
+            IEnumerable<ServiceRequest> logicResult = serviceRequestController.GetAllServiceRequests("");
+
+            //Assert
+            serviceRequestRepo.VerifyAll();
+            Assert.AreEqual(logicResult, expectedServiceRequests);
+        }
+
     }
 }
