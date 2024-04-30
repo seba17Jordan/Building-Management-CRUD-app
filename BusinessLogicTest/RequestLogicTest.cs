@@ -46,6 +46,8 @@ namespace BusinessLogicTest
             buildingRepo.Setup(l => l.ExistApartment(It.IsAny<Guid>())).Returns(true);
             categoryRepo.Setup(l => l.FindCategoryById(It.IsAny<Guid>())).Returns(true);
             categoryRepo.Setup(l => l.GetCategoryById(It.IsAny<Guid>())).Returns(category);
+            buildingRepo.Setup(l => l.GetApartmentById(It.IsAny<Guid>())).Returns(apartment);
+            buildingRepo.Setup(l => l.GetBuildingIdByApartmentId(It.IsAny<Apartment>())).Returns(new Guid());
 
             RequestLogic requestLogic = new RequestLogic(serviceRequestRepo.Object,buildingRepo.Object, categoryRepo.Object, userRepository.Object);
 
