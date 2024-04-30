@@ -254,5 +254,55 @@ namespace BusinessLogicTest
             Assert.AreEqual(logicResult, expectedServiceRequest);
         }
 
+        [TestMethod]
+     
+        public void CantCloseRequestThatIsNotAttendingTestLogic()
+        {
+            // Arrange
+            Exception specificEx = null;
+            Mock<IServiceRequestRepository> serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
+            Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+            Mock<ICategoryRepository> categoryRepo = new Mock<ICategoryRepository>(MockBehavior.Strict);
+            Mock<IUserRepository> userRepository = new Mock<IUserRepository>(MockBehavior.Strict);
+            RequestLogic requestLogic = new RequestLogic(serviceRequestRepo.Object, buildingRepo.Object, categoryRepo.Object, userRepository.Object);
+            try
+            {
+                ServiceRequest serviceRequest = new ServiceRequest()
+                {
+                    Id = Guid.NewGuid(),
+                    Description = "Service Request 1",
+                    Category = Guid.NewGuid(),
+                    Apartment = Guid.NewGuid(),
+                    Status = ServiceRequestStatus.Open
+                };
+
+                ServiceRequest expectedServiceRequest = new ServiceRequest()
+                {
+                    Id = serviceRequest.Id,
+                    Description = serviceRequest.Description,
+                    Category = serviceRequest.Category,
+                    Apartment = serviceRequest.Apartment,
+                    Status = ServiceRequestStatus.Closed,
+                    TotalCost = 100
+                };
+
+                serviceRequestRepo.Setup(l => l.GetServiceRequestById(It.IsAny<Guid>())).Returns(serviceRequest);
+
+                // Act
+                ServiceRequest logicResult = requestLogic.UpdateServiceRequestStatus(expectedServiceRequest.Id, 100);
+
+            }
+            catch (ArgumentException e)
+            {
+                specificEx = e;
+            }
+
+            // Assert
+            serviceRequestRepo.VerifyAll();
+            Assert.IsNotNull(specificEx);
+            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
+            Assert.IsTrue(specificEx.Message.Contains("Service request is not attending"));
+        }
+
     }
 }
