@@ -37,7 +37,7 @@ public class ServiceRequestControllerTest
 
         var expectedServiceRequest = new ServiceRequest
         {
-            Id = Guid.NewGuid(),  
+            Id = Guid.NewGuid(),
             Description = "A description",
             Apartment = apartment.Id,
             Category = category.Id,
@@ -97,9 +97,9 @@ public class ServiceRequestControllerTest
 
         Mock<IServiceRequestLogic> serviceRequestLogic = new Mock<IServiceRequestLogic>(MockBehavior.Strict);
         serviceRequestLogic.Setup(serviceRequestLogic => serviceRequestLogic.GetAllServiceRequests(It.IsAny<string>())).Returns(expectedServiceRequests);
-        
+
         var serviceRequestController = new ServiceRequestController(serviceRequestLogic.Object);
-        
+
         OkObjectResult expectedObjResult = new OkObjectResult(expectedResponse);
 
         // Act
@@ -229,10 +229,9 @@ public class ServiceRequestControllerTest
             Category = category.Id,
             MaintainancePersonId = maintenancePerson.Id,
             Status = ServiceRequestStatus.Attending,
-            TotalCost = 100,
             //fecha especifica
             StartDate = new DateTime(2024, 4, 30)
-    };
+        };
 
         UpdateServiceRequestStatusRequest updateServiceRequestStatusRequest = new UpdateServiceRequestStatusRequest
         {
@@ -246,7 +245,6 @@ public class ServiceRequestControllerTest
         .Returns(expectedServiceRequest).Callback<Guid, decimal?>((requestId, maintenancePersonId) =>
         {
             serviceRequest.Status = ServiceRequestStatus.Attending;
-            serviceRequest.TotalCost = 100;
             serviceRequest.StartDate = new DateTime(2024, 4, 30);
         });
 
@@ -265,5 +263,83 @@ public class ServiceRequestControllerTest
         Assert.IsNotNull(resultResponse);
         Assert.AreEqual(resultObj.StatusCode, expectedObjResult.StatusCode);
         Assert.AreEqual(resultResponse, expectedServiceRequestResponse);
+    }
+
+    [TestMethod]
+    public void UpdateServiceRequestToFinishedTestController()
+    {
+        Category category = new Category { Name = "Category 1" };
+
+        Apartment apartment = new Apartment()
+        {
+            Floor = 1,
+            Number = 101,
+            Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "" },
+            Rooms = 3,
+            Bathrooms = 2,
+            HasTerrace = true
+        };
+
+        User maintenancePerson = new User
+        {
+            Email = "maintainance@gmail.com",
+            Password = "123456",
+            Name = "John",
+            LastName = "Doe",
+            Role = Roles.Maintenance
+        };
+
+        ServiceRequest serviceRequest = new ServiceRequest
+        {
+            Id = Guid.NewGuid(),
+            Description = "A description",
+            Apartment = apartment.Id,
+            Category = category.Id,
+            MaintainancePersonId = maintenancePerson.Id,
+            Status = ServiceRequestStatus.Attending,
+            StartDate = new DateTime(2024, 4, 30)
+        };
+
+        ServiceRequest expectedServiceRequest = new ServiceRequest
+        {
+            Id = Guid.NewGuid(),
+            Description = "A description",
+            Apartment = apartment.Id,
+            Category = category.Id,
+            MaintainancePersonId = maintenancePerson.Id,
+            Status = ServiceRequestStatus.Closed,
+            TotalCost = 100,
+            StartDate = new DateTime(2024, 4, 30),
+            EndDate = new DateTime(2024, 5, 30)
+        };
+
+        UpdateServiceRequestStatusRequest updateServiceRequestStatusRequest = new UpdateServiceRequestStatusRequest { };
+        ServiceRequestResponse expectedServiceRequestResponse = new ServiceRequestResponse(expectedServiceRequest);
+
+        Mock<IServiceRequestLogic> serviceRequestLogic = new Mock<IServiceRequestLogic>(MockBehavior.Strict);
+        serviceRequestLogic.Setup(serviceRequestLogic => serviceRequestLogic.UpdateServiceRequestStatus(It.IsAny<Guid>(), It.IsAny<decimal?>()))
+        .Returns(expectedServiceRequest).Callback<Guid, decimal?>((requestId, maintenancePersonId) =>
+        {
+            serviceRequest.Status = ServiceRequestStatus.Closed;
+            serviceRequest.EndDate = new DateTime(2024, 5, 30);
+            serviceRequest.TotalCost = 100;
+        });
+
+        ServiceRequestController serviceRequestController = new ServiceRequestController(serviceRequestLogic.Object);
+        OkObjectResult expectedObjResult = new OkObjectResult(expectedServiceRequestResponse);
+
+        // Act
+        var controllerResult = serviceRequestController.UpdateServiceRequestStatus(serviceRequest.Id, updateServiceRequestStatusRequest);
+
+        // Assert
+        serviceRequestLogic.VerifyAll();
+
+        OkObjectResult resultObj = controllerResult as OkObjectResult;
+        ServiceRequestResponse resultResponse = resultObj.Value as ServiceRequestResponse;
+        
+        Assert.IsNotNull(resultResponse);
+        Assert.AreEqual(resultObj.StatusCode, expectedObjResult.StatusCode);
+        Assert.AreEqual(resultResponse, expectedServiceRequestResponse);
+
     }
 }
