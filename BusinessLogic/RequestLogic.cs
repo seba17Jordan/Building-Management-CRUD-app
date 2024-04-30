@@ -51,7 +51,6 @@ namespace BusinessLogic
                 throw new ArgumentException("Service request is not open", nameof(serviceRequest));
             }
 
-            serviceRequest.Status = ServiceRequestStatus.Attending;
             serviceRequest.MaintainancePersonId = maintainancePersonId;
             _serviceRequestRepository.UpdateServiceRequest(serviceRequest);
             return serviceRequest;
@@ -97,7 +96,47 @@ namespace BusinessLogic
 
         public ServiceRequest UpdateServiceRequestStatus(Guid id, decimal? totalCost)
         {
-            throw new NotImplementedException();
+            ServiceRequest serviceRequest = _serviceRequestRepository.GetServiceRequestById(id);
+            
+            if (serviceRequest == null)
+            {
+                throw new ArgumentException("Service request does not exist", nameof(serviceRequest));
+            }
+
+            //Recibir el id de la persona por parametro y validar que es la misma que tiene esta solicitud asignada
+            /*
+            if(serviceRequest.MaintainancePersonId != currentPersonId)
+            {
+                throw new ArgumentException("Service request is not assigned to the current maintainance person", nameof(serviceRequest));
+            }
+            */
+
+            if (totalCost != null) //quiere cerrar
+            {
+                if (serviceRequest.Status != ServiceRequestStatus.Attending)
+                {
+                    throw new ArgumentException("Service request is not attending", nameof(serviceRequest));
+                }
+
+                if (totalCost < 0)
+                {
+                    throw new ArgumentException("Total cost is negative", nameof(totalCost));
+                }
+                serviceRequest.TotalCost = totalCost;
+                serviceRequest.Status = ServiceRequestStatus.Closed;
+                serviceRequest.EndDate = DateTime.Now;
+            }
+            else //quiere aceptar
+            { 
+                if (serviceRequest.Status != ServiceRequestStatus.Open)
+                {
+                    throw new ArgumentException("Service request is not open", nameof(serviceRequest));
+                }
+                serviceRequest.Status = ServiceRequestStatus.Attending;
+                serviceRequest.StartDate = DateTime.Now;
+            }
+            _serviceRequestRepository.UpdateServiceRequest(serviceRequest);
+            return serviceRequest;
         }
     }
 }
