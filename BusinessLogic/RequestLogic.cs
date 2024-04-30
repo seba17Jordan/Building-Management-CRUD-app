@@ -84,7 +84,8 @@ namespace BusinessLogic
             //Documentar
             Category cat = _categoryRepository.GetCategoryById(serviceRequest.Category);
             serviceRequest.CategoryName = cat.Name;
-
+            Apartment apartment = _buildingRepository.GetApartmentById(serviceRequest.Apartment);
+            serviceRequest.BuildingId = _buildingRepository.GetBuildingIdByApartmentId(apartment);
             serviceRequest.Status = ServiceRequestStatus.Open;
             return _serviceRequestRepository.CreateServiceRequest(serviceRequest);
         }

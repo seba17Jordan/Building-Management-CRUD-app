@@ -27,7 +27,8 @@
                    Owner.Equals(secondApartment.Owner) &&
                    Rooms == secondApartment.Rooms &&
                    Bathrooms == secondApartment.Bathrooms &&
-                   HasTerrace == secondApartment.HasTerrace;
+                   HasTerrace == secondApartment.HasTerrace &&
+                   BuildingId == secondApartment.BuildingId;
         }
     }
 }
