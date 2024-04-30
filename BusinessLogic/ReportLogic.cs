@@ -28,6 +28,23 @@ namespace BusinessLogic
         {
             List<Building> buildings = _buildingRepository.GetAllBuildings(userId);
 
+            if (param != null)
+            {
+                bool HasBuilding = false;
+                foreach (var building in buildings)
+                {
+                    if (building.Name == param)
+                    {
+                        HasBuilding = true;
+                        buildings = new List<Building> { building };
+                        break;
+                    }
+                }
+                if (!HasBuilding) { 
+                    throw new InvalidOperationException("Manager does not have any assigned buildings with name.");
+                }
+            }
+
             if (buildings == null || !buildings.Any())
             {
                 throw new InvalidOperationException("Manager does not have any assigned buildings.");
