@@ -51,5 +51,15 @@ namespace BuildingManagementApi.Controllers
 
             return Ok(response);
         }
+
+        [HttpPatch("{id}")]
+        [ServiceFilter(typeof(AuthenticationFilter))]
+        //[AuthenticationFilter([Roles.Manager])]
+        public IActionResult UpdateServiceRequestStatus([FromRoute] Guid id, [FromBody] UpdateServiceRequestStatusRequest updateServiceRequestStatusRequest)
+        {
+            var serviceRequest = _serviceRequestLogic.UpdateServiceRequestStatus(id, updateServiceRequestStatusRequest.TotalCost);
+            ServiceRequestResponse response = new ServiceRequestResponse(serviceRequest);
+            return Ok(response);
+        }
     }
 }

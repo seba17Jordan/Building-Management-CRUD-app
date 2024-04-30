@@ -94,5 +94,10 @@ namespace BusinessLogic
         {
             return _serviceRequestRepository.GetAllServiceRequests(category);
         }
+
+        public ServiceRequest UpdateServiceRequestStatus(Guid id, decimal? totalCost)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
