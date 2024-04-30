@@ -29,5 +29,10 @@ namespace DataAccess
         {
             return _context.Set<Category>().Any(c => c.Name == name);
         }
+
+        public Category GetCategoryById(Guid category)
+        {
+            return _context.Set<Category>().Find(category);
+        }
     }
 }

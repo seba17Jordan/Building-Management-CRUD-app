@@ -12,5 +12,6 @@ namespace IDataAccess
         bool FindCategoryByName(string name);
         Category CreateCategory(Category category);
         bool FindCategoryById(Guid category);
+        Category GetCategoryById(Guid category);
     }
 }

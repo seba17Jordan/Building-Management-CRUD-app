@@ -69,6 +69,26 @@ namespace DataAccessTest
             Assert.IsTrue(categoryRepository.FindCategoryById(createdCategory.Id));
         }
 
+        [TestMethod]
+        public void GetCategoryByIdCorrectTest()
+        {
+            // Arrange
+            var expectedCategory = new Category
+            {
+                Name = "category"
+            };
+
+            var context = CreateDbContext("GetCategoryByIdCorrectTest");
+            var categoryRepository = new CategoryRepository(context);
+
+            // Act
+            Category createdCategory = categoryRepository.CreateCategory(expectedCategory);
+            context.SaveChanges();
+
+            // Assert
+            Assert.AreEqual(expectedCategory, categoryRepository.GetCategoryById(createdCategory.Id));
+        }
+
         private DbContext CreateDbContext(string database)
         {
             var options = new DbContextOptionsBuilder<Context>().UseInMemoryDatabase(database).Options;

@@ -80,6 +80,11 @@ namespace BusinessLogic
             if (!_categoryRepository.FindCategoryById(serviceRequest.Category)) { 
                 throw new ArgumentException("Category does not exist", nameof(serviceRequest.Category));
             }
+
+            //Documentar
+            Category cat = _categoryRepository.GetCategoryById(serviceRequest.Category);
+            serviceRequest.CategoryName = cat.Name;
+
             serviceRequest.Status = Domain.@enum.ServiceRequestStatus.Open;
             return _serviceRequestRepository.CreateServiceRequest(serviceRequest);
         }

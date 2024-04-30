@@ -12,7 +12,7 @@ namespace ModelsApi.In
 
         public ServiceRequest ToEntity()
         {
-            var serviceRequest = new ServiceRequest
+            ServiceRequest serviceRequest = new ServiceRequest
             {
                 Description = Description,
                 Apartment = Apartment,
