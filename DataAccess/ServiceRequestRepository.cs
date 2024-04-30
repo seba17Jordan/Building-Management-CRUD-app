@@ -32,7 +32,8 @@ namespace DataAccess
 
         public void UpdateServiceRequest(ServiceRequest serviceRequest)
         {
-            throw new NotImplementedException();
+            _context.Set<ServiceRequest>().Update(serviceRequest);
+            _context.SaveChanges();
         }
     }
 }
