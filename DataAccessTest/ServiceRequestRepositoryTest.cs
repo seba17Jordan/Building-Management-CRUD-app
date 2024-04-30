@@ -217,6 +217,58 @@ namespace DataAccessTest
             Assert.AreEqual(serviceRequest2, serviceRequestsList[1]);
         }
 
+        [TestMethod]
+        public void GetAllServiceRequestsFilterByNameTestDataAccess()
+        {
+            Category category1 = new Category { Name = "Category 1" };
+            Category category2 = new Category { Name = "Category 2" };
+
+            Apartment apartment = new Apartment()
+            {
+                Floor = 1,
+                Number = 101,
+                Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "" },
+                Rooms = 3,
+                Bathrooms = 2,
+                HasTerrace = true
+            };
+
+            ServiceRequest serviceRequest1 = new ServiceRequest()
+            {
+                Id = Guid.NewGuid(),
+                Description = "Description 1",
+                Status = ServiceRequestStatus.Open,
+                Category = category1.Id,
+                CategoryName = category1.Name,
+                Apartment = apartment.Id
+            };
+
+            ServiceRequest serviceRequest2 = new ServiceRequest()
+            {
+                Id = Guid.NewGuid(),
+                Description = "Description 2",
+                Status = ServiceRequestStatus.Open,
+                Category = category2.Id,
+                CategoryName = category2.Name,
+                Apartment = apartment.Id
+            };
+
+            var context = CreateDbContext("GetAllServiceRequestsFilterByNameTestDataAccess");
+            var serviceRequestRepo = new ServiceRequestRepository(context);
+
+            context.Set<ServiceRequest>().Add(serviceRequest1);
+            context.Set<ServiceRequest>().Add(serviceRequest2);
+            context.SaveChanges();
+
+            // Act
+            IEnumerable<ServiceRequest> serviceRequests = serviceRequestRepo.GetAllServiceRequests("Category 1");
+            List<ServiceRequest> serviceRequestsList = serviceRequests.ToList();
+
+            // Assert
+            Assert.AreEqual(1, serviceRequestsList.Count);
+            Assert.AreEqual(serviceRequest1, serviceRequestsList[0]);
+        }
+
         private DbContext CreateDbContext(string database)
         {
             var options = new DbContextOptionsBuilder<Context>().UseInMemoryDatabase(database).Options;
