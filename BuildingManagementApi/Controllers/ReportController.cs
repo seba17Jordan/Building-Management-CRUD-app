@@ -26,7 +26,7 @@ namespace BuildingManagementApi.Controllers
         {
             //var userId = Guid.Parse(HttpContext.Items["UserId"] as string);
             // Hardcodear un valor Guid
-            Guid userId = new Guid("e8ad103f-2223-413d-9ab0-e40ffb5fd1c3");
+            Guid userId = new Guid("38352B3A-31A1-43E6-8A81-76B97A8F3A1A");
             var reportInfo = _reportLogic.GetReport(userId, param);
             var response = reportInfo.Select(t => new ReportResponse(t));
             return Ok(response);
