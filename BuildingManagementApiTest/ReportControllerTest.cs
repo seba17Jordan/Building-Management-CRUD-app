@@ -14,7 +14,7 @@ namespace BuildingManagementApiTest;
 public class ReportControllerTest
 {
     [TestMethod]
-    public void GetReportCorrectTest()
+    public void GetReportCorrectControllerTest()
     {
         // Arrange
         Guid managerId = Guid.NewGuid();

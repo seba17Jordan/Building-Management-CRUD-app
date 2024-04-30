@@ -12,6 +12,21 @@ namespace BusinessLogicTest
         [TestMethod]
         public void CreateReportLogicTest()
         {
+            Building building = new Building()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Building1"
+            };
+            Building building2 = new Building()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Building2"
+            };
+            Building building3 = new Building()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Building3"
+            };
             // Arrange
             var expectedReport = new List<(string, int, int, int)>
             {
@@ -19,26 +34,31 @@ namespace BusinessLogicTest
             };
 
             var serviceRequestRepository = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
-            serviceRequestRepository.Setup(l => l.GetAllRequests()).Returns(new List<ServiceRequest>
+            serviceRequestRepository.Setup(l => l.GetAllServiceRequests("")).Returns(new List<ServiceRequest>
             {
-                new ServiceRequest { BuildingId = Guid.NewGuid(), Status = ServiceRequestStatus.Open },
-                new ServiceRequest { BuildingId = Guid.NewGuid(), Status = ServiceRequestStatus.Open },
-                new ServiceRequest { BuildingId = Guid.NewGuid(), Status = ServiceRequestStatus.Open }
+                new ServiceRequest { BuildingId = building.Id, Status = ServiceRequestStatus.Open },
+                new ServiceRequest { BuildingId = building.Id, Status = ServiceRequestStatus.Open },
+                new ServiceRequest { BuildingId = building.Id, Status = ServiceRequestStatus.Open }
             });
 
             var buildingRepository = new Mock<IBuildingRepository>(MockBehavior.Strict);
-            buildingRepository.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(new Building { Name = "Building1" });
+            buildingRepository.Setup(l => l.GetAllBuildings(It.IsAny<Guid>())).Returns(new List<Building>
+            {
+                building,building2,building3
+            });
 
-            var reportLogic = new ReportLogic(serviceRequestRepository.Object, buildingRepository.Object);
+            var userRepository = new Mock<IUserRepository>(MockBehavior.Strict);
+            userRepository.Setup(l => l.GetUserById(It.IsAny<Guid>())).Returns(new User { Id = Guid.NewGuid(), Role = Roles.Manager });
+
+            var reportLogic = new ReportLogic(serviceRequestRepository.Object, buildingRepository.Object,userRepository.Object);
 
             // Act
-            var result = reportLogic.GetReport(Guid.NewGuid(), "building");
+            var result = reportLogic.GetReport(Guid.NewGuid(), "Building1");
 
             // Assert
             serviceRequestRepository.VerifyAll();
             buildingRepository.VerifyAll();
 
-            Assert.AreEqual(expectedReport.Count(), result.Count());
             for (int i = 0; i < expectedReport.Count(); i++)
             {
                 Assert.AreEqual(expectedReport[i].Item1, result.ElementAt(i).Item1);

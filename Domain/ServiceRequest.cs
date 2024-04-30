@@ -16,6 +16,8 @@ namespace Domain
         public string CategoryName { get; set; }
         public ServiceRequestStatus Status { get; set; }
 
+        public Guid BuildingId { get; set; }
+
         public Guid? MaintainancePersonId { get; set; }
 
         public ServiceRequest() { }
