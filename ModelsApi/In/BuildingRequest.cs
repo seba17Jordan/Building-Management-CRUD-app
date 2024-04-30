@@ -11,6 +11,8 @@ namespace ModelsApi.In
         public int? CommonExpenses { get; set; }
         public List<ApartmentRequest>? Apartments { get; set; }
 
+        public Guid managerId { get; set; }
+
         public Building ToEntity()
         {
             var building = new Building();
@@ -42,6 +44,9 @@ namespace ModelsApi.In
                 {
                     building.Apartments.Add(apartmentReq.ToEntity());
                 }
+            }
+            if (managerId != null) { 
+                building.managerId = managerId;
             }
 
             return building;

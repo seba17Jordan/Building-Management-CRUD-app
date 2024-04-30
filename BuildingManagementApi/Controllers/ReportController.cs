@@ -24,15 +24,12 @@ namespace BuildingManagementApi.Controllers
         //[AuthorizationFilter(_currentRole = Roles.Manager)]
         public IActionResult GetReport([FromQuery] string? param)
         {
-            if (!string.IsNullOrEmpty(param))
-            {
-                var userId = Guid.Parse(HttpContext.Items["UserId"] as string);
-                var reportInfo = _reportLogic.GetReport(userId, param);
-                var response = reportInfo.Select(t => new ReportResponse(t));
-                return Ok(response);
-            }
-
-            return NoContent();
+            //var userId = Guid.Parse(HttpContext.Items["UserId"] as string);
+            // Hardcodear un valor Guid
+            Guid userId = new Guid("e8ad103f-2223-413d-9ab0-e40ffb5fd1c3");
+            var reportInfo = _reportLogic.GetReport(userId, param);
+            var response = reportInfo.Select(t => new ReportResponse(t));
+            return Ok(response);
         }
     }
 }

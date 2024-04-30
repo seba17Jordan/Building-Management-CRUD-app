@@ -10,7 +10,7 @@ namespace Domain
         public int? CommonExpenses { get; set; }
         public List<Apartment>? Apartments { get; set; }
 
-        public User manager { get; set; }
+        public Guid managerId { get; set; }
 
         public Building()
         {

@@ -49,7 +49,7 @@ namespace DataAccess
         }
 
         public List<Building> GetAllBuildings(Guid id) { 
-            return _context.Set<Building>().Where(b => b.manager.Id == id).ToList();
+            return _context.Set<Building>().Where(b => b.managerId == id).ToList();
         }
 
         public void Save()
