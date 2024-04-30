@@ -158,6 +158,8 @@ public class ServiceRequestControllerTest
             Status = ServiceRequestStatus.Attending
         };
 
+        IdRequest idRequest = new IdRequest { Id = maintenancePerson.Id };
+
         ServiceRequestResponse expectedServiceRequestResponse = new ServiceRequestResponse(expectedServiceRequest);
 
         Mock<IServiceRequestLogic> serviceRequestLogic = new Mock<IServiceRequestLogic>(MockBehavior.Strict);
@@ -172,7 +174,7 @@ public class ServiceRequestControllerTest
         OkObjectResult expectedObjResult = new OkObjectResult(expectedServiceRequestResponse);
 
         // Act
-        var controllerResult = serviceRequestController.AssignRequestToMaintainancePerson(serviceRequest.Id, maintenancePerson.Id);
+        var controllerResult = serviceRequestController.AssignRequestToMaintainancePerson(serviceRequest.Id, idRequest);
 
         // Assert
         serviceRequestLogic.VerifyAll();

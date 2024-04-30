@@ -40,12 +40,13 @@ namespace BuildingManagementApi.Controllers
             return Ok(serviceRequests);
         }
 
-        [HttpPut("{id}")]
+        [HttpPatch("{id}")]
         [ServiceFilter(typeof(AuthenticationFilter))]
         //[AuthenticationFilter([Roles.Manager])]
-        public IActionResult AssignRequestToMaintainancePerson([FromRoute] Guid requestId, [FromBody] Guid maintainancePersonId)
+        public IActionResult AssignRequestToMaintainancePerson([FromRoute] Guid id, [FromBody] IdRequest maintainancePersonId)
         {
-            var serviceRequest = _serviceRequestLogic.AssignRequestToMaintainancePerson(requestId, maintainancePersonId);
+
+            var serviceRequest = _serviceRequestLogic.AssignRequestToMaintainancePerson(id, maintainancePersonId.Id);
             ServiceRequestResponse response = new ServiceRequestResponse(serviceRequest);
 
             return Ok(response);
