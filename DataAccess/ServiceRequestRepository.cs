@@ -20,9 +20,9 @@ namespace DataAccess
             return serviceRequest;
         }
 
-        public IEnumerable<ServiceRequest> GetAllServiceRequests(string category)
+        public IEnumerable<ServiceRequest> GetAllServiceRequests(string categoryName)
         {
-            throw new NotImplementedException();
+            return _context.Set<ServiceRequest>().Where(sr => categoryName == "" || sr.CategoryName == categoryName).ToList();
         }
 
         public ServiceRequest GetServiceRequestById(Guid serviceRequestId)

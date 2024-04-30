@@ -13,6 +13,7 @@ namespace Domain
         public string Description { get; set; }
         public Guid Apartment { get; set; }
         public Guid Category { get; set; }
+        public string CategoryName { get; set; }
         public ServiceRequestStatus Status { get; set; }
 
         public Guid? MaintainancePersonId { get; set; }
