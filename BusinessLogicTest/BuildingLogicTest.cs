@@ -119,7 +119,7 @@ namespace BusinessLogicTest
             buildingRepo.VerifyAll();
             Assert.IsNotNull(specificEx);
             Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
-            Assert.IsTrue(specificEx.Message.Contains("Building invalid data"));
+            Assert.IsTrue(specificEx.Message.Contains("There are empty fields"));
         }
 
         [TestMethod]
@@ -168,7 +168,7 @@ namespace BusinessLogicTest
             buildingRepo.VerifyAll();
             Assert.IsNotNull(specificEx);
             Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
-            Assert.IsTrue(specificEx.Message.Contains("Building invalid data"));
+            Assert.IsTrue(specificEx.Message.Contains("There are empty fields"));
         }
 
         [TestMethod]
@@ -217,7 +217,7 @@ namespace BusinessLogicTest
             buildingRepo.VerifyAll();
             Assert.IsNotNull(specificEx);
             Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
-            Assert.IsTrue(specificEx.Message.Contains("Building invalid data"));
+            Assert.IsTrue(specificEx.Message.Contains("There are empty fields"));
         }
 
         [TestMethod]
@@ -239,7 +239,6 @@ namespace BusinessLogicTest
                     Apartments = new List<Apartment>()
                 };
                 buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
-                buildingRepo.Setup(l => l.BuildingNameExists(It.IsAny<string>())).Returns(false);
 
                 BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
 
@@ -268,6 +267,16 @@ namespace BusinessLogicTest
             try
             {
                 //Arrange
+                Apartment apt = new Apartment()
+                {
+                    Floor = 1,
+                    Number = 101,
+                    Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "dadae@gmai.com" },
+                    Rooms = 3,
+                    Bathrooms = 2,
+                    HasTerrace = true
+                };
+
                 Building expectedBuilding = new Building()
                 {
                     Id = Guid.NewGuid(),
@@ -276,9 +285,11 @@ namespace BusinessLogicTest
                     ConstructionCompany = "Company",
                     CommonExpenses = -100,
                     Apartments = new List<Apartment>()
+                    {
+                        apt
+                    }
                 };
                 buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
-                buildingRepo.Setup(l => l.BuildingNameExists(It.IsAny<string>())).Returns(false);
 
                 BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
 
@@ -307,14 +318,28 @@ namespace BusinessLogicTest
             try
             {
                 //Arrange
+
+                Apartment apt = new Apartment()
+                {
+                    Floor = 1,
+                    Number = 101,
+                    Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "dadae@gmai.com" },
+                    Rooms = 3,
+                    Bathrooms = 2,
+                    HasTerrace = true
+                };
+
                 Building expectedBuilding = new Building()
                 {
                     Id = Guid.NewGuid(),
                     Name = "Name 1",
                     Address = "Address 1",
                     ConstructionCompany = "Company",
-                    CommonExpenses = -100,
+                    CommonExpenses = 100,
                     Apartments = new List<Apartment>()
+                    {
+                        apt
+                    }
                 };
                 buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
                 buildingRepo.Setup(l => l.BuildingNameExists(It.IsAny<string>())).Returns(true);

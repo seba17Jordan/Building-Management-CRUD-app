@@ -12,8 +12,24 @@ namespace Domain
 
         public Guid managerId { get; set; }
 
-        public Building()
+        public Building() { }
+
+        public void SelfValidate()
         {
+            if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Address) || string.IsNullOrWhiteSpace(ConstructionCompany))
+            {
+                throw new ArgumentException("There are empty fields");
+            }
+
+            if (CommonExpenses < 0)
+            {
+                throw new ArgumentException("Common expenses must be greater than 0");
+            }
+
+            if (Apartments == null || Apartments.Count == 0)
+            {
+                throw new ArgumentException("Building must have at least one apartment");
+            }
         }
 
         public override bool Equals(object building)
