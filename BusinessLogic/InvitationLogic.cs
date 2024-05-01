@@ -29,15 +29,11 @@ namespace BusinessLogic
                 throw new ArgumentNullException(nameof(invitation), "Invitation can't be null");
             }
 
+            invitation.SelfValidate();
+
             if (_invitationRepository.InvitationExists(invitation.Email))
             {
-                throw new ArgumentException("Invitation already exists");
-            }
-
-            if (string.IsNullOrWhiteSpace(invitation.Email) ||
-                               string.IsNullOrWhiteSpace(invitation.Name))
-            {
-                throw new ArgumentException("Invalid data");
+                throw new ArgumentException("Invitation with same Email already exists");
             }
             
             return _invitationRepository.CreateInvitation(invitation);

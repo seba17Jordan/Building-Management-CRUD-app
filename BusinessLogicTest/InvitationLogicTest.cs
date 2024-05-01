@@ -135,5 +135,42 @@ namespace BusinessLogicTest
             Assert.AreEqual(expectedManager, result);
         }
 
+        [TestMethod]
+        public void CreateInvitation_InvalidEmail()
+        {
+            // Arrange
+            Exception specificEx = null;
+            Mock<IUserRepository> repo = new Mock<IUserRepository>(MockBehavior.Strict);
+            try
+            {
+                Invitation invitation = new Invitation()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "John",
+                    Email = "magailcom",
+                    ExpirationDate = DateTime.Now.AddDays(6),
+                    State = Status.Pending
+                };
+
+                var mockInvitationRepository = new Mock<IInvitationRepository>();
+                var mockUserRepository = new Mock<IUserRepository>();
+
+                InvitationLogic invitationLogic = new InvitationLogic(mockInvitationRepository.Object, mockUserRepository.Object);
+
+                // Act
+                invitationLogic.CreateInvitation(invitation);
+            }
+            catch (ArgumentException e)
+            {
+                specificEx = e;
+            }
+
+            // Assert
+            repo.VerifyAll();
+            Assert.IsNotNull(specificEx);
+            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
+            Assert.IsTrue(specificEx.Message.Contains("Invalid email format"));
+        }
+
     }
 }

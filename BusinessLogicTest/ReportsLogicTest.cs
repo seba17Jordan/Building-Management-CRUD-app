@@ -91,7 +91,7 @@ namespace BusinessLogicTest
             {
                 Role = Roles.Maintenance,
                 Id = Guid.NewGuid(),
-                Name = "SDEFD"
+                Name = "Mantenimiento"
             };
 
             Apartment apartment = new Apartment
@@ -126,7 +126,7 @@ namespace BusinessLogicTest
 
             IEnumerable<(string, int, int, int, string)> expectedResponse = new List<(string, int, int, int, string)>
             {
-                 ("BuildingName", 0, 0, 1, "5hs")
+                 ("Mantenimiento", 0, 0, 1, "5hs")
             };
 
             var UserRepository = new Mock<IUserRepository>();
