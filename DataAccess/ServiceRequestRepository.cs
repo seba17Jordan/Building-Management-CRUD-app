@@ -53,7 +53,7 @@ namespace DataAccess
 
         public List<ServiceRequest> GetServiceRequestsByBuilding(Guid buildingId)
         {
-            throw new NotImplementedException(); //TEST
+            return _context.Set<ServiceRequest>().Where(sr => sr.BuildingId == buildingId).ToList();
         }
     }
 }
