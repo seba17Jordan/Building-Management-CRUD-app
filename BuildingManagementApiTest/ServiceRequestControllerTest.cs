@@ -47,8 +47,10 @@ public class ServiceRequestControllerTest
         var expectedServiceRequestResponse = new ServiceRequestResponse(expectedServiceRequest);
 
         Mock<IServiceRequestLogic> serviceRequestLogic = new Mock<IServiceRequestLogic>(MockBehavior.Strict);
+        Mock<ISessionService> sessionService = new Mock<ISessionService>(MockBehavior.Strict);
+
         serviceRequestLogic.Setup(serviceRequestLogic => serviceRequestLogic.CreateServiceRequest(It.IsAny<ServiceRequest>())).Returns(expectedServiceRequest);
-        var serviceRequestController = new ServiceRequestController(serviceRequestLogic.Object);
+        var serviceRequestController = new ServiceRequestController(serviceRequestLogic.Object, sessionService.Object);
 
         var expectedObjServiceRequest = new CreatedAtActionResult("CreateServiceRequest", "CreateServiceRequest", new { id = 1 }, expectedServiceRequestResponse);
 
@@ -96,9 +98,11 @@ public class ServiceRequestControllerTest
         var expectedResponse = expectedServiceRequests.Select(sr => new ServiceRequestResponse(sr)).ToList();
 
         Mock<IServiceRequestLogic> serviceRequestLogic = new Mock<IServiceRequestLogic>(MockBehavior.Strict);
+        Mock<ISessionService> sessionService = new Mock<ISessionService>(MockBehavior.Strict);
+
         serviceRequestLogic.Setup(serviceRequestLogic => serviceRequestLogic.GetAllServiceRequests(It.IsAny<string>())).Returns(expectedServiceRequests);
 
-        var serviceRequestController = new ServiceRequestController(serviceRequestLogic.Object);
+        var serviceRequestController = new ServiceRequestController(serviceRequestLogic.Object, sessionService.Object);
 
         OkObjectResult expectedObjResult = new OkObjectResult(expectedResponse);
 
@@ -163,6 +167,8 @@ public class ServiceRequestControllerTest
         ServiceRequestResponse expectedServiceRequestResponse = new ServiceRequestResponse(expectedServiceRequest);
 
         Mock<IServiceRequestLogic> serviceRequestLogic = new Mock<IServiceRequestLogic>(MockBehavior.Strict);
+        Mock<ISessionService> sessionService = new Mock<ISessionService>(MockBehavior.Strict);
+
         serviceRequestLogic.Setup(serviceRequestLogic => serviceRequestLogic.AssignRequestToMaintainancePerson(It.IsAny<Guid>(), It.IsAny<Guid>()))
         .Returns(expectedServiceRequest).Callback<Guid, Guid>((requestId, maintenancePersonId) =>
         {
@@ -170,7 +176,7 @@ public class ServiceRequestControllerTest
             serviceRequest.MaintainancePersonId = maintenancePersonId;
         });
 
-        ServiceRequestController serviceRequestController = new ServiceRequestController(serviceRequestLogic.Object);
+        ServiceRequestController serviceRequestController = new ServiceRequestController(serviceRequestLogic.Object, sessionService.Object);
         OkObjectResult expectedObjResult = new OkObjectResult(expectedServiceRequestResponse);
 
         // Act
@@ -241,14 +247,19 @@ public class ServiceRequestControllerTest
         ServiceRequestResponse expectedServiceRequestResponse = new ServiceRequestResponse(expectedServiceRequest);
 
         Mock<IServiceRequestLogic> serviceRequestLogic = new Mock<IServiceRequestLogic>(MockBehavior.Strict);
-        serviceRequestLogic.Setup(serviceRequestLogic => serviceRequestLogic.UpdateServiceRequestStatus(It.IsAny<Guid>(), It.IsAny<decimal>()))
-        .Returns(expectedServiceRequest).Callback<Guid, decimal?>((requestId, maintenancePersonId) =>
+        Mock<ISessionService> sessionService = new Mock<ISessionService>(MockBehavior.Strict);
+
+        serviceRequestLogic.Setup(serviceRequestLogic => serviceRequestLogic.UpdateServiceRequestStatus(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<decimal?>()))
+        .Returns(expectedServiceRequest)
+        .Callback((Guid requestId, Guid maintenancePersonId, decimal? totalCost) =>
         {
-            serviceRequest.Status = ServiceRequestStatus.Attending;
-            serviceRequest.StartDate = new DateTime(2024, 4, 30);
+            expectedServiceRequest.Status = ServiceRequestStatus.Closed;
+            expectedServiceRequest.TotalCost = 100;
+            expectedServiceRequest.EndDate = new DateTime(2024, 5, 30);
         });
 
-        ServiceRequestController serviceRequestController = new ServiceRequestController(serviceRequestLogic.Object);
+
+        ServiceRequestController serviceRequestController = new ServiceRequestController(serviceRequestLogic.Object, sessionService.Object);
         OkObjectResult expectedObjResult = new OkObjectResult(expectedServiceRequestResponse);
 
         // Act
@@ -317,15 +328,19 @@ public class ServiceRequestControllerTest
         ServiceRequestResponse expectedServiceRequestResponse = new ServiceRequestResponse(expectedServiceRequest);
 
         Mock<IServiceRequestLogic> serviceRequestLogic = new Mock<IServiceRequestLogic>(MockBehavior.Strict);
-        serviceRequestLogic.Setup(serviceRequestLogic => serviceRequestLogic.UpdateServiceRequestStatus(It.IsAny<Guid>(), It.IsAny<decimal?>()))
-        .Returns(expectedServiceRequest).Callback<Guid, decimal?>((requestId, maintenancePersonId) =>
+        Mock<ISessionService> sessionService = new Mock<ISessionService>(MockBehavior.Strict);
+
+        serviceRequestLogic.Setup(serviceRequestLogic => serviceRequestLogic.UpdateServiceRequestStatus(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<decimal?>()))
+        .Returns(expectedServiceRequest)
+        .Callback((Guid requestId, Guid maintenancePersonId, decimal? totalCost) =>
         {
-            serviceRequest.Status = ServiceRequestStatus.Closed;
-            serviceRequest.EndDate = new DateTime(2024, 5, 30);
-            serviceRequest.TotalCost = 100;
+            expectedServiceRequest.Status = ServiceRequestStatus.Closed;
+            expectedServiceRequest.TotalCost = 100;
+            expectedServiceRequest.EndDate = new DateTime(2024, 5, 30);
         });
 
-        ServiceRequestController serviceRequestController = new ServiceRequestController(serviceRequestLogic.Object);
+
+        ServiceRequestController serviceRequestController = new ServiceRequestController(serviceRequestLogic.Object, sessionService.Object);
         OkObjectResult expectedObjResult = new OkObjectResult(expectedServiceRequestResponse);
 
         // Act

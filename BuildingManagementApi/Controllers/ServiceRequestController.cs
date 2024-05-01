@@ -1,4 +1,5 @@
 ﻿using BuildingManagementApi.Filters;
+using BusinessLogic;
 using Domain.@enum;
 using LogicInterface;
 using Microsoft.AspNetCore.Http;
@@ -14,10 +15,12 @@ namespace BuildingManagementApi.Controllers
     public class ServiceRequestController : ControllerBase
     {
         private readonly IServiceRequestLogic _serviceRequestLogic;
+        private readonly ISessionService _sessionService;
 
-        public ServiceRequestController(IServiceRequestLogic serviceRequestLogic)
+        public ServiceRequestController(IServiceRequestLogic serviceRequestLogic, ISessionService sessionService)
         {
             _serviceRequestLogic = serviceRequestLogic;
+            _sessionService = sessionService;
         }
 
         [HttpPost]
@@ -57,7 +60,11 @@ namespace BuildingManagementApi.Controllers
         //[AuthenticationFilter([Roles.Manager])]
         public IActionResult UpdateServiceRequestStatus([FromRoute] Guid id, [FromBody] UpdateServiceRequestStatusRequest updateServiceRequestStatusRequest)
         {
-            var serviceRequest = _serviceRequestLogic.UpdateServiceRequestStatus(id, updateServiceRequestStatusRequest.TotalCost);
+            //Para asegurar que quien actualiza el estado de la solicitud sea el mismo usuario de mantenimiento que la tiene asignada
+            string token = Request.Headers["Authorization"].ToString();
+            var maintenanceUser = _sessionService.GetUserByToken(Guid.Parse(token));
+
+            var serviceRequest = _serviceRequestLogic.UpdateServiceRequestStatus(id, maintenanceUser.Id, updateServiceRequestStatusRequest.TotalCost);
             ServiceRequestResponse response = new ServiceRequestResponse(serviceRequest);
             return Ok(response);
         }

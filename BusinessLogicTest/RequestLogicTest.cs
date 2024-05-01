@@ -177,13 +177,20 @@ namespace BusinessLogicTest
         public void UpdateServiceRequestToAcceptedCorrectTestLogic()
         {
             //Arrange
+            User maintenancePerson = new User()
+            {
+                Id = Guid.NewGuid(),
+                Role = Roles.Maintenance
+            };
+
             ServiceRequest serviceRequest = new ServiceRequest()
             {
                 Id = Guid.NewGuid(),
                 Description = "Service Request 1",
                 Category = Guid.NewGuid(),
                 Apartment = Guid.NewGuid(),
-                Status = ServiceRequestStatus.Open
+                Status = ServiceRequestStatus.Open,
+                MaintainancePersonId = maintenancePerson.Id
             };
 
             ServiceRequest expectedServiceRequest = new ServiceRequest()
@@ -193,6 +200,7 @@ namespace BusinessLogicTest
                 Category = serviceRequest.Category,
                 Apartment = serviceRequest.Apartment,
                 Status = ServiceRequestStatus.Attending,
+                MaintainancePersonId = maintenancePerson.Id
             };
 
             Mock<IServiceRequestRepository> serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
@@ -206,7 +214,7 @@ namespace BusinessLogicTest
             RequestLogic requestLogic = new RequestLogic(serviceRequestRepo.Object, buildingRepo.Object, categoryRepo.Object, userRepository.Object);
 
             //Act
-            ServiceRequest logicResult = requestLogic.UpdateServiceRequestStatus(expectedServiceRequest.Id, null);
+            ServiceRequest logicResult = requestLogic.UpdateServiceRequestStatus(expectedServiceRequest.Id, maintenancePerson.Id, null);
 
             //Assert
             serviceRequestRepo.VerifyAll();
@@ -217,13 +225,20 @@ namespace BusinessLogicTest
         public void UpdateServiceRequestToRejectedCorrectTestLogic()
         {
             //Arrange
+            User maintenancePerson = new User()
+            {
+                Id = Guid.NewGuid(),
+                Role = Roles.Maintenance
+            };
+
             ServiceRequest serviceRequest = new ServiceRequest()
             {
                 Id = Guid.NewGuid(),
                 Description = "Service Request 1",
                 Category = Guid.NewGuid(),
                 Apartment = Guid.NewGuid(),
-                Status = ServiceRequestStatus.Attending
+                Status = ServiceRequestStatus.Attending,
+                MaintainancePersonId = maintenancePerson.Id
             };
 
             ServiceRequest expectedServiceRequest = new ServiceRequest()
@@ -233,7 +248,8 @@ namespace BusinessLogicTest
                 Category = serviceRequest.Category,
                 Apartment = serviceRequest.Apartment,
                 Status = ServiceRequestStatus.Closed,
-                TotalCost = 100
+                TotalCost = 100,
+                MaintainancePersonId = maintenancePerson.Id
             };
 
             Mock<IServiceRequestRepository> serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
@@ -247,7 +263,7 @@ namespace BusinessLogicTest
             RequestLogic requestLogic = new RequestLogic(serviceRequestRepo.Object, buildingRepo.Object, categoryRepo.Object, userRepository.Object);
 
             //Act
-            ServiceRequest logicResult = requestLogic.UpdateServiceRequestStatus(expectedServiceRequest.Id, 100);
+            ServiceRequest logicResult = requestLogic.UpdateServiceRequestStatus(expectedServiceRequest.Id, maintenancePerson.Id, 100);
 
             //Assert
             serviceRequestRepo.VerifyAll();
@@ -267,13 +283,20 @@ namespace BusinessLogicTest
             RequestLogic requestLogic = new RequestLogic(serviceRequestRepo.Object, buildingRepo.Object, categoryRepo.Object, userRepository.Object);
             try
             {
+                User maitenancePerson = new User()
+                {
+                    Id = Guid.NewGuid(),
+                    Role = Roles.Maintenance
+                };
+
                 ServiceRequest serviceRequest = new ServiceRequest()
                 {
                     Id = Guid.NewGuid(),
                     Description = "Service Request 1",
                     Category = Guid.NewGuid(),
                     Apartment = Guid.NewGuid(),
-                    Status = ServiceRequestStatus.Open
+                    Status = ServiceRequestStatus.Open,
+                    MaintainancePersonId = maitenancePerson.Id
                 };
 
                 ServiceRequest expectedServiceRequest = new ServiceRequest()
@@ -283,13 +306,14 @@ namespace BusinessLogicTest
                     Category = serviceRequest.Category,
                     Apartment = serviceRequest.Apartment,
                     Status = ServiceRequestStatus.Closed,
-                    TotalCost = 100
+                    TotalCost = 100,
+                    MaintainancePersonId = maitenancePerson.Id
                 };
 
                 serviceRequestRepo.Setup(l => l.GetServiceRequestById(It.IsAny<Guid>())).Returns(serviceRequest);
 
                 // Act
-                ServiceRequest logicResult = requestLogic.UpdateServiceRequestStatus(expectedServiceRequest.Id, 100);
+                ServiceRequest logicResult = requestLogic.UpdateServiceRequestStatus(expectedServiceRequest.Id, maitenancePerson.Id, 100);
 
             }
             catch (ArgumentException e)

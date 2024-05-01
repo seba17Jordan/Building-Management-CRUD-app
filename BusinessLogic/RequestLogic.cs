@@ -94,7 +94,7 @@ namespace BusinessLogic
             return _serviceRequestRepository.GetAllServiceRequests(category);
         }
 
-        public ServiceRequest UpdateServiceRequestStatus(Guid id, decimal? totalCost)
+        public ServiceRequest UpdateServiceRequestStatus(Guid id, Guid maintenanceUserId, decimal? totalCost)
         {
             ServiceRequest serviceRequest = _serviceRequestRepository.GetServiceRequestById(id);
             
@@ -104,12 +104,11 @@ namespace BusinessLogic
             }
 
             //Recibir el id de la persona por parametro y validar que es la misma que tiene esta solicitud asignada
-            /*
-            if(serviceRequest.MaintainancePersonId != currentPersonId)
+            
+            if(serviceRequest.MaintainancePersonId != maintenanceUserId)
             {
                 throw new ArgumentException("Service request is not assigned to the current maintainance person", nameof(serviceRequest));
             }
-            */
 
             if (totalCost != null) //quiere cerrar
             {

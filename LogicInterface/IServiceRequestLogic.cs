@@ -12,6 +12,6 @@ namespace LogicInterface
         ServiceRequest AssignRequestToMaintainancePerson(Guid serviceRequestId, Guid maintainancePersonId);
         ServiceRequest CreateServiceRequest(ServiceRequest serviceRequest);
         IEnumerable<ServiceRequest> GetAllServiceRequests(string category);
-        ServiceRequest UpdateServiceRequestStatus(Guid id, decimal? totalCost);
+        ServiceRequest UpdateServiceRequestStatus(Guid id, Guid maintenanceUserId, decimal? totalCost);
     }
 }
