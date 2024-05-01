@@ -77,7 +77,7 @@ public class ReportControllerTest
         var reportLogic = new Mock<IReportLogic>();
         var sessionLogic = new Mock<ISessionService>();
 
-        reportLogic.Setup(p => p.GetMaintenanceReport(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid?>())).Returns(reportInfo);
+        reportLogic.Setup(p => p.GetMaintenanceReport(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<string?>())).Returns(reportInfo);
         sessionLogic.Setup(p => p.GetUserByToken(It.IsAny<Guid>())).Returns(new User { Id = Guid.NewGuid(), Role = Roles.Manager });
 
         var controller = new ReportController(reportLogic.Object, sessionLogic.Object);

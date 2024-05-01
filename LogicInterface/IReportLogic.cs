@@ -8,7 +8,7 @@ namespace LogicInterface
 {
     public interface IReportLogic
     {
-        IEnumerable<(string, int, int, int, string)> GetMaintenanceReport(string buildingName, Guid id, Guid? maintenance);
+        IEnumerable<(string, int, int, int, string)> GetMaintenanceReport(string buildingName, Guid id, string? maintenanceName);
         public IEnumerable<(string, int, int, int)> GetReport(Guid userId, string param);
     }
 }

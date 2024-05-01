@@ -76,7 +76,83 @@ namespace BusinessLogicTest
             Assert.AreEqual(expectedResponse.First().Item2, result.First().Item2);
             Assert.AreEqual(expectedResponse.First().Item3, result.First().Item3);
             Assert.AreEqual(expectedResponse.First().Item4, result.First().Item4);
+        }
 
+        [TestMethod]
+        public void GetMaintenanceReportCorrectTestLogic()
+        {
+            User manager = new User
+            {
+                Id = Guid.NewGuid(),
+                Role = Roles.Manager
+            };
+
+            User maintenancePerson = new User
+            {
+                Role = Roles.Maintenance,
+                Id = Guid.NewGuid(),
+                Name = "SDEFD"
+            };
+
+            Apartment apartment = new Apartment
+            {
+                Id = Guid.NewGuid()
+            };
+
+            Building building = new Building
+            {
+                Id = Guid.NewGuid(),
+                Name = "BuildingName",
+                Apartments = new List<Apartment>
+                {
+                    apartment
+                }
+            };
+
+            Category category = new Category { Name = "CategoryName" };
+
+            ServiceRequest serviceRequest = new ServiceRequest
+            {
+                Id = Guid.NewGuid(),
+                BuildingId = building.Id,
+                Apartment = apartment.Id,
+                Status = ServiceRequestStatus.Closed,
+                Category = category.Id,
+                MaintainancePersonId = maintenancePerson.Id,
+                ManagerId = manager.Id,
+                StartDate = new DateTime(2022, 4, 25, 10, 0, 0),
+                EndDate = new DateTime(2022, 4, 25, 15, 0, 0)
+        };
+
+            IEnumerable<(string, int, int, int, string)> expectedResponse = new List<(string, int, int, int, string)>
+            {
+                 ("BuildingName", 0, 0, 1, "5hs")
+            };
+
+            var UserRepository = new Mock<IUserRepository>();
+            var BuildingRepository = new Mock<IBuildingRepository>();
+            var ServiceRequestRepository = new Mock<IServiceRequestRepository>();
+
+            BuildingRepository.Setup(p => p.GetBuildingByName(It.IsAny<string>())).Returns(building);
+            UserRepository.Setup(p => p.GetUserByName(It.IsAny<string>())).Returns(maintenancePerson);
+            ServiceRequestRepository.Setup(p => p.GetServiceRequestsByBuilding(It.IsAny<Guid>())).Returns(new List<ServiceRequest>
+            {
+                serviceRequest
+            });
+            UserRepository.Setup(p => p.GetUserById(It.IsAny<Guid>())).Returns(maintenancePerson);
+
+
+            ReportLogic reportLogic = new ReportLogic(ServiceRequestRepository.Object, BuildingRepository.Object, UserRepository.Object);
+
+            // Act
+            var result = reportLogic.GetMaintenanceReport("BuildingName", manager.Id, "dac");
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(expectedResponse.First().Item1, result.First().Item1);
+            Assert.AreEqual(expectedResponse.First().Item2, result.First().Item2);
+            Assert.AreEqual(expectedResponse.First().Item3, result.First().Item3);
+            Assert.AreEqual(expectedResponse.First().Item4, result.First().Item4);
+            Assert.AreEqual(expectedResponse.First().Item5, result.First().Item5);
         }
     }
 }

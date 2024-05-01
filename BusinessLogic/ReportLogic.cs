@@ -24,9 +24,71 @@ namespace BusinessLogic
             _userRepository = userRepository;
         }
 
-        public IEnumerable<(string, int, int, int, string)> GetMaintenanceReport(string buildingName, Guid id, Guid? maintenance)
+        public IEnumerable<(string, int, int, int, string)> GetMaintenanceReport(string buildingName, Guid Managerid, string? maintenanceName)
         {
-            throw new NotImplementedException();
+            Building currentBuilding = _buildingRepository.GetBuildingByName(buildingName); //TEST
+
+            IEnumerable<ServiceRequest> serviceRequests = _serviceRequestRepository.GetServiceRequestsByBuilding(currentBuilding.Id); //TEST
+
+            User maintenancePerson = _userRepository.GetUserByName(maintenanceName); //TEST
+
+            if (maintenancePerson == null)
+            {
+                throw new InvalidOperationException("Maintenance person does not exist.");
+            }
+
+            //Filtro
+            if (!string.IsNullOrEmpty(maintenanceName))
+            {
+                serviceRequests = serviceRequests.Where(sr => sr.MaintainancePersonId == maintenancePerson.Id); //TEST
+            }
+
+            //Agrupamos, suponemos nombre unico
+            var groupedRequests = serviceRequests.GroupBy(sr => sr.MaintainancePersonId);
+
+            List<(string, int, int, int, string)> reportList = new List<(string, int, int, int, string)>();
+
+            
+            foreach (var serviceRequestGroup in groupedRequests)
+            {
+                double averageCompletionTime = 0;
+                averageCompletionTime = CalculateAverageCompletionTime(serviceRequestGroup);
+
+                Guid MaintenancePerson = (Guid)serviceRequestGroup.Key;
+                string maintenancePersonName = _userRepository.GetUserById(MaintenancePerson).Name;
+                int OpenRequests = serviceRequestGroup.Count(sr => sr.Status == ServiceRequestStatus.Open);
+                int AttendingRequests = serviceRequestGroup.Count(sr => sr.Status == ServiceRequestStatus.Attending);
+                int ClosedRequests = serviceRequestGroup.Count(sr => sr.Status == ServiceRequestStatus.Closed);
+                string AverageCompletionTime = averageCompletionTime.ToString() + "hs";
+
+                reportList.Add(("BuildingName", OpenRequests, AttendingRequests, ClosedRequests, AverageCompletionTime));
+
+            }
+            
+            return reportList;
+        }
+
+        private double CalculateAverageCompletionTime(IEnumerable<ServiceRequest> serviceRequests)
+        {
+            double totalHours = 0;
+            int totalRequests = 0;
+
+            foreach (var request in serviceRequests)
+            {
+                if (request.Status == ServiceRequestStatus.Closed)
+                {
+                    TimeSpan difference = (TimeSpan)(request.EndDate - request.StartDate);
+                    totalHours += difference.TotalHours;
+                    totalRequests++;
+                }
+            }
+
+            if (totalRequests == 0)
+            {
+                return 0;
+            }
+
+            return totalHours / totalRequests;
         }
 
         public IEnumerable<(string, int, int, int)> GetReport(Guid userId, string param)

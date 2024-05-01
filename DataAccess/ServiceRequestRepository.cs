@@ -50,5 +50,10 @@ namespace DataAccess
         {
             return _context.Set<ServiceRequest>().ToList();
         }
+
+        public List<ServiceRequest> GetServiceRequestsByBuilding(Guid buildingId)
+        {
+            throw new NotImplementedException(); //TEST
+        }
     }
 }

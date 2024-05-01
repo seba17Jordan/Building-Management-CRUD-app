@@ -12,6 +12,7 @@ namespace IDataAccess
         List<Building> GetAllBuildings(Guid userId);
         Apartment GetApartmentById(Guid apartment);
         Building GetBuildingById(Guid id);
+        Building GetBuildingByName(string buildingName);
         Guid GetBuildingIdByApartmentId(Apartment apartment);
         void Save();
         void UpdateBuilding(Building buildingToUpdate);

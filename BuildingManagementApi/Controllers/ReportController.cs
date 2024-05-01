@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ModelsApi;
 using ModelsApi.In;
 using ModelsApi.Out;
+using System.Globalization;
 
 namespace BuildingManagementApi.Controllers
 {
@@ -40,12 +41,12 @@ namespace BuildingManagementApi.Controllers
         [HttpGet]
         //[ServiceFilter(typeof(AuthenticationFilter))]
         //[AuthorizationFilter(_currentRole = Roles.Manager)]
-        public IActionResult GetMaintenanceReport([FromRoute] string buildingName, [FromQuery] Guid? maintenance)
+        public IActionResult GetMaintenanceReport([FromRoute] string buildingName, [FromQuery] string? maintenanceName)
         {
             string token = Request.Headers["Authorization"].ToString();
             var manager = _sessionService.GetUserByToken(Guid.Parse(token));
 
-            var reportInfo = _reportLogic.GetMaintenanceReport(buildingName, manager.Id, maintenance);
+            var reportInfo = _reportLogic.GetMaintenanceReport(buildingName, manager.Id, maintenanceName);
             var response = reportInfo.Select(t => new MaintenanceReportResponse(t));
             return Ok(response);
         }
