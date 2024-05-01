@@ -15,6 +15,7 @@ namespace Domain
         public Guid Category { get; set; }
         public string CategoryName { get; set; }
         public ServiceRequestStatus Status { get; set; }
+
         public Guid BuildingId { get; set; }
         public Guid ManagerId { get; set; }
 
@@ -24,6 +25,14 @@ namespace Domain
         public DateTime? EndDate { get; set; }
 
         public ServiceRequest() { }
+
+        public void SelfValidate()
+        {
+            if (string.IsNullOrWhiteSpace(Description) || Apartment == Guid.Empty || Category == Guid.Empty)
+            {
+                throw new ArgumentException("There are empty fields");
+            }
+        }
 
         public override bool Equals(object? obj)
         {

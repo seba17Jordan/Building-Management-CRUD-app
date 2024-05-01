@@ -22,9 +22,9 @@ namespace BusinessLogic
 
         public ServiceRequest AssignRequestToMaintainancePerson(Guid serviceRequestId, Guid maintainancePersonId)
         {
-            if(maintainancePersonId == null || serviceRequestId == null)
+            if(maintainancePersonId == Guid.Empty || serviceRequestId == Guid.Empty)
             {
-                throw new ArgumentNullException("id is null");
+                throw new ArgumentNullException("Missing Id");
             }
 
             User maintainancePerson = _userRepository.GetUserById(maintainancePersonId);
@@ -62,17 +62,9 @@ namespace BusinessLogic
             {
                 throw new ArgumentNullException(nameof(serviceRequest), "Service request is null");
             }
-            if (string.IsNullOrWhiteSpace(serviceRequest.Description)) { 
-                throw new ArgumentException("Service request description is empty", nameof(serviceRequest.Description));
-            }
-            if(serviceRequest.Apartment == null)
-            {
-                throw new ArgumentException("Service request must have an apartment", nameof(serviceRequest.Apartment));
-            }
-            if(serviceRequest.Category == null)
-            {
-                throw new ArgumentException("Service request must have a category", nameof(serviceRequest.Category));
-            }
+
+            serviceRequest.SelfValidate();
+            
             if (!_buildingRepository.ExistApartment(serviceRequest.Apartment)) { 
                 throw new ArgumentException("Apartment does not exist", nameof(serviceRequest.Apartment));
             }

@@ -28,12 +28,21 @@ namespace BusinessLogic
         {
             Building currentBuilding = _buildingRepository.GetBuildingByName(buildingName); 
 
-            IEnumerable<ServiceRequest> serviceRequests = _serviceRequestRepository.GetServiceRequestsByBuilding(currentBuilding.Id); //TEST
+            if (currentBuilding == null)
+            {
+                throw new InvalidOperationException("Building not found.");
+            }
 
-            User maintenancePerson = _userRepository.GetUserByName(maintenanceName); 
+            IEnumerable<ServiceRequest> serviceRequests = _serviceRequestRepository.GetServiceRequestsByBuilding(currentBuilding.Id);
 
             if (!string.IsNullOrEmpty(maintenanceName))
             {
+                User maintenancePerson = _userRepository.GetUserByName(maintenanceName);
+
+                if (maintenancePerson == null)
+                {
+                    throw new InvalidOperationException("Maintenance person not found.");
+                }
                 serviceRequests = serviceRequests.Where(sr => sr.MaintainancePersonId == maintenancePerson.Id); 
             }
 
@@ -116,7 +125,7 @@ namespace BusinessLogic
             {
 
                 IEnumerable<ServiceRequest> requests = _serviceRequestRepository.GetAllServiceRequests()
-                    .Where(req => req.BuildingId == building.Id);
+                .Where(req => req.BuildingId == building.Id);
 
                 string buildingName = building.Name ?? "Unknown";
                 int openCount = requests.Count(req => req.Status == ServiceRequestStatus.Open);

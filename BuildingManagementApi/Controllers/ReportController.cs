@@ -32,8 +32,9 @@ namespace BuildingManagementApi.Controllers
         public IActionResult GetReport([FromQuery] string? building)
         {
             string token = Request.Headers["Authorization"].ToString();
-            var user = _sessionService.GetUserByToken(Guid.Parse(token));
-            var reportInfo = _reportLogic.GetReport(user.Id, building);
+            var manager = _sessionService.GetUserByToken(Guid.Parse(token));
+
+            var reportInfo = _reportLogic.GetReport(manager.Id, building);
             var response = reportInfo.Select(t => new ReportResponse(t));
             return Ok(response);
         }

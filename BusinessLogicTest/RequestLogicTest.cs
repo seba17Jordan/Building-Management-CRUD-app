@@ -20,6 +20,7 @@ namespace BusinessLogicTest
 
             Apartment apartment = new Apartment()
             {
+                Id = Guid.NewGuid(),
                 Floor = 1,
                 Number = 101,
                 Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "jane.doe@example.com" },

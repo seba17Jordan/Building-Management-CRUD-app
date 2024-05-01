@@ -48,8 +48,8 @@ namespace DataAccess
             return _context.Set<Apartment>().Any(a => a.Id == id);
         }
 
-        public List<Building> GetAllBuildings(Guid id) { 
-            return _context.Set<Building>().Where(b => b.managerId == id).ToList();
+        public List<Building> GetAllBuildings(Guid managerId) { 
+            return _context.Set<Building>().Where(b => b.managerId == managerId).ToList();
         }
 
         public void Save()
