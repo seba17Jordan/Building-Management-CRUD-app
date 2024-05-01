@@ -12,6 +12,19 @@
 
         public Apartment() { }
 
+        public void SelfValidate()
+        {
+            if (Floor < 0 || Number < 0 || Rooms < 0 || Bathrooms < 0)
+            {
+                throw new ArgumentException("All apartment fields must be grater than zero");
+            }
+
+            if (Owner == null)
+            {
+                throw new ArgumentException("Owner must be set in all apartments");
+            }
+        }
+
         public override bool Equals(object apartment)
         {
             if (apartment == null || GetType() != apartment.GetType())
@@ -21,7 +34,6 @@
 
             Apartment secondApartment = (Apartment)apartment;
 
-            // Comparación de propiedades
             return Floor == secondApartment.Floor &&
                    Number == secondApartment.Number &&
                    Owner.Equals(secondApartment.Owner) &&
@@ -29,5 +41,7 @@
                    Bathrooms == secondApartment.Bathrooms &&
                    HasTerrace == secondApartment.HasTerrace;
         }
+
+        
     }
 }

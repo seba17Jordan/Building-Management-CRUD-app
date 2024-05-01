@@ -20,6 +20,12 @@ namespace BusinessLogic
             }
 
             building.SelfValidate();
+
+            foreach (var apartment in building.Apartments)
+            {
+                apartment.SelfValidate();
+                apartment.Owner.SelfValidate();
+            }
             
             if (_buildingRepository.BuildingNameExists(building.Name))
             {
@@ -35,7 +41,9 @@ namespace BusinessLogic
             {
                 throw new ArgumentException("Id is empty", nameof(id));
             }
+
             Building building = _buildingRepository.GetBuildingById(id);
+            
             if (building == null)
             {
                 throw new ArgumentException("Building not found", nameof(id));
@@ -63,7 +71,7 @@ namespace BusinessLogic
         {
             Building buildingToUpdate = _buildingRepository.GetBuildingById(id);
             
-            if (_buildingRepository.BuildingNameExists(building.Name))
+            if (_buildingRepository.BuildingNameExists(building.Name)) //ver si name es distinto de null
             {
                 throw new ArgumentException("Building with same name already exists");
             }

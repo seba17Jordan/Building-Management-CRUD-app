@@ -582,5 +582,57 @@ namespace BusinessLogicTest
             Assert.IsTrue(specificEx.Message.Contains("Building with same name already exists"));
         }
 
+        [TestMethod]
+        public void CreateBuildingWrongApartmentInfoThrowArgumentExceptionTestLogic()
+        {
+            // Arrange
+            Exception specificEx = null;
+            Mock<IBuildingRepository> buildingRepo = null;
+            try
+            {
+                //Arrange
+
+                Apartment apt = new Apartment()
+                {
+                    Floor = -1,
+                    Number = 101,
+                    Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "dadae@gmai.com" },
+                    Rooms = 1,
+                    Bathrooms = 2,
+                    HasTerrace = true
+                };
+
+                Building expectedBuilding = new Building()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Name 1",
+                    Address = "Address 1",
+                    ConstructionCompany = "Company",
+                    CommonExpenses = 100,
+                    Apartments = new List<Apartment>()
+                    {
+                        apt
+                    }
+                };
+                buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+
+                BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
+
+                // Act
+                Building logicResult = buildingLogic.CreateBuilding(expectedBuilding);
+
+            }
+            catch (ArgumentException e)
+            {
+                specificEx = e;
+            }
+
+            // Assert
+            buildingRepo.VerifyAll();
+            Assert.IsNotNull(specificEx);
+            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
+            Assert.IsTrue(specificEx.Message.Contains("All apartment fields must be grater than zero"));
+        }
+
     }
 }
