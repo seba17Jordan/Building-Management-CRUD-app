@@ -38,9 +38,9 @@ namespace BuildingManagementApi.Controllers
             return Ok(response);
         }
 
-        [HttpGet]
-        //[ServiceFilter(typeof(AuthenticationFilter))]
-        //[AuthorizationFilter(_currentRole = Roles.Manager)]
+        [HttpGet("{buildingName}")]
+        [ServiceFilter(typeof(AuthenticationFilter))]
+        [AuthorizationFilter(_currentRole = Roles.Manager)]
         public IActionResult GetMaintenanceReport([FromRoute] string buildingName, [FromQuery] string? maintenanceName)
         {
             string token = Request.Headers["Authorization"].ToString();

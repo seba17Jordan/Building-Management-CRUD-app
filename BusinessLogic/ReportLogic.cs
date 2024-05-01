@@ -32,11 +32,6 @@ namespace BusinessLogic
 
             User maintenancePerson = _userRepository.GetUserByName(maintenanceName); //TEST
 
-            if (maintenancePerson == null)
-            {
-                throw new InvalidOperationException("Maintenance person does not exist.");
-            }
-
             //Filtro
             if (!string.IsNullOrEmpty(maintenanceName))
             {
@@ -61,7 +56,7 @@ namespace BusinessLogic
                 int ClosedRequests = serviceRequestGroup.Count(sr => sr.Status == ServiceRequestStatus.Closed);
                 string AverageCompletionTime = averageCompletionTime.ToString() + "hs";
 
-                reportList.Add(("BuildingName", OpenRequests, AttendingRequests, ClosedRequests, AverageCompletionTime));
+                reportList.Add((maintenancePersonName, OpenRequests, AttendingRequests, ClosedRequests, AverageCompletionTime));
 
             }
             

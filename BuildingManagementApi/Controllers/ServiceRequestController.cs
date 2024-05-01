@@ -40,7 +40,7 @@ namespace BuildingManagementApi.Controllers
             return CreatedAtAction(nameof(CreateServiceRequest), new { id = response.Id }, response);
         }
 
-        [HttpGet]
+        [HttpGet("manager-requests")]
         [ServiceFilter(typeof(AuthenticationFilter))]
         [AuthorizationFilter(_currentRole = Roles.Manager)]
         public IActionResult GetAllServiceRequestsManager([FromQuery] string? category)
@@ -65,7 +65,7 @@ namespace BuildingManagementApi.Controllers
             return Ok(serviceRequests);
         }
 
-        [HttpPatch("{id}")]
+        [HttpPatch("{id}/assign-request")]
         [ServiceFilter(typeof(AuthenticationFilter))]
         [AuthorizationFilter(_currentRole = Roles.Manager)]
         public IActionResult AssignRequestToMaintainancePerson([FromRoute] Guid id, [FromBody] IdRequest maintainancePersonId)
