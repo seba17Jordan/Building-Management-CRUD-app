@@ -50,47 +50,5 @@ namespace BusinessLogic
             string emailRegexPattern = @"^\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b$";
             return Regex.IsMatch(email, emailRegexPattern, RegexOptions.IgnoreCase);
         }
-
-        /*
-        public User GetUserById(Guid id)
-        {
-            try
-            {
-                if (id == Guid.Empty)
-                {
-                    throw new ArgumentException("Invalid id");
-                }
-
-                return _userRepository.GetUserById(id);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Unable to get user", ex);
-            }
-        }
-
-        public User UpdateUser(User user)
-        {
-            try { 
-                if (user == null)
-                {
-                    throw new ArgumentNullException(nameof(user), "User can't be null");
-                }
-
-                if (string.IsNullOrWhiteSpace(user.Email) ||
-                    string.IsNullOrWhiteSpace(user.Name) ||
-                    string.IsNullOrWhiteSpace(user.Password))
-                {
-                    throw new ArgumentException("Invalid data");
-                }
-
-                return _userRepository.UpdateUser(user);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Unable to update user", ex);
-            }
-        }
-        */
     }
 }
