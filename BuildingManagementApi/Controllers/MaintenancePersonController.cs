@@ -10,7 +10,7 @@ using Domain.@enum;
 namespace BuildingManagementApi.Controllers
 {
     [ApiController]
-    [Route("api/maintenance")]
+    [Route("api/maintenances")]
     [TypeFilter(typeof(ExceptionFilter))]
     public class MaintenancePersonController : ControllerBase
     {

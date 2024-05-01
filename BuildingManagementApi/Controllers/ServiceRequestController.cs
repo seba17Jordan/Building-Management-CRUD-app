@@ -78,7 +78,7 @@ namespace BuildingManagementApi.Controllers
 
         [HttpPatch("{id}")]
         [ServiceFilter(typeof(AuthenticationFilter))]
-        //[AuthorizationFilter(_currentRole = Roles.Maintenance)]
+        [AuthorizationFilter(_currentRole = Roles.Maintenance)]
         public IActionResult UpdateServiceRequestStatus([FromRoute] Guid id, [FromBody] UpdateServiceRequestStatusRequest updateServiceRequestStatusRequest)
         {
             //Para asegurar que quien actualiza el estado de la solicitud sea el mismo usuario de mantenimiento que la tiene asignada

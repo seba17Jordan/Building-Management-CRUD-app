@@ -26,19 +26,17 @@ namespace BusinessLogic
 
         public IEnumerable<(string, int, int, int, string)> GetMaintenanceReport(string buildingName, Guid Managerid, string? maintenanceName)
         {
-            Building currentBuilding = _buildingRepository.GetBuildingByName(buildingName); //TEST
+            Building currentBuilding = _buildingRepository.GetBuildingByName(buildingName); 
 
             IEnumerable<ServiceRequest> serviceRequests = _serviceRequestRepository.GetServiceRequestsByBuilding(currentBuilding.Id); //TEST
 
-            User maintenancePerson = _userRepository.GetUserByName(maintenanceName); //TEST
+            User maintenancePerson = _userRepository.GetUserByName(maintenanceName); 
 
-            //Filtro
             if (!string.IsNullOrEmpty(maintenanceName))
             {
-                serviceRequests = serviceRequests.Where(sr => sr.MaintainancePersonId == maintenancePerson.Id); //TEST
+                serviceRequests = serviceRequests.Where(sr => sr.MaintainancePersonId == maintenancePerson.Id); 
             }
 
-            //Agrupamos, suponemos nombre unico
             var groupedRequests = serviceRequests.GroupBy(sr => sr.MaintainancePersonId);
 
             List<(string, int, int, int, string)> reportList = new List<(string, int, int, int, string)>();
@@ -116,12 +114,9 @@ namespace BusinessLogic
 
             foreach (var building in buildings)
             {
-                // Obtener las solicitudes filtradas por el edificio actual
+
                 IEnumerable<ServiceRequest> requests = _serviceRequestRepository.GetAllServiceRequests()
                     .Where(req => req.BuildingId == building.Id);
-
-                // Agrupar las solicitudes por BuildingId
-                //var requestsByBuilding = requests.GroupBy(req => req.BuildingId);
 
                 string buildingName = building.Name ?? "Unknown";
                 int openCount = requests.Count(req => req.Status == ServiceRequestStatus.Open);
