@@ -70,6 +70,41 @@ namespace BusinessLogicTest
             Assert.AreEqual("User already exists", specificEx.Message);
         }
 
+        [TestMethod]
+        public void CreateUser_InvalidEmail()
+        {
+            // Arrange
+            Exception specificEx = null;
+            Mock<IUserRepository> repo = new Mock<IUserRepository>(MockBehavior.Strict);
+            try
+            {
+                User expectedUser = new User
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Federico",
+                    Email = "testexample.com",
+                    Password = "password",
+                    Role = Domain.@enum.Roles.Administrator
+                };
+                repo.Setup(repo => repo.UserExists(It.IsAny<Func<User,bool>>())).Returns(false);
+                var userLogic = new UserLogic(repo.Object);
+
+                // Act
+                var logicResult = userLogic.CreateUser(expectedUser);
+
+            }
+            catch(ArgumentException e)
+            {
+                specificEx = e;
+            }
+
+            // Assert
+            repo.VerifyAll();
+            Assert.IsNotNull(specificEx);
+            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));   //Crear exception especifica
+            Assert.IsTrue(specificEx.Message.Contains("Invalid email format"));
+        }       
+
         /*
         [TestMethod]
         public void GetUserById_ShouldReturnUser()
