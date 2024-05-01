@@ -269,6 +269,80 @@ namespace DataAccessTest
             Assert.AreEqual(serviceRequest1, serviceRequestsList[0]);
         }
 
+        [TestMethod]
+        public void GetAllServiceRequestsByMaintenanceUserIdTestDataAccess()
+        {
+
+            User maintenancePerson1 = new User()
+            {
+                Id = Guid.NewGuid(),
+                Name = "John",
+                LastName = "Doe",
+                Email = "xs@gmail.com",
+                Role = Roles.Maintenance
+            };
+
+            User maintenancePerson2 = new User()
+            {
+                Id = Guid.NewGuid(),
+                Name = "John",
+                LastName = "Doe",
+                Email = "aeda@gmail.com",
+                Role = Roles.Maintenance
+            };
+
+            Category category = new Category { Name = "Category 1" };
+
+            Apartment apartment = new Apartment()
+            {
+                Floor = 1,
+                Number = 101,
+                Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "xd@gmial.com" },
+                Rooms = 3,
+                Bathrooms = 2,
+                HasTerrace = true
+            };
+
+            ServiceRequest serviceRequest1 = new ServiceRequest()
+            {
+                Id = Guid.NewGuid(),
+                Description = "Description 1",
+                Status = ServiceRequestStatus.Open,
+                Category = category.Id,
+                CategoryName = category.Name,
+                Apartment = apartment.Id,
+                MaintainancePersonId = maintenancePerson1.Id
+            };
+
+            ServiceRequest serviceRequest2 = new ServiceRequest()
+            {
+                Id = Guid.NewGuid(),
+                Description = "Description 2",
+                Status = ServiceRequestStatus.Open,
+                Category = category.Id,
+                CategoryName = category.Name,
+                Apartment = apartment.Id,
+                MaintainancePersonId  = maintenancePerson2.Id
+            };
+
+            var context = CreateDbContext("GetAllServiceRequestsByMaintenanceUserIdTestDataAccess");
+            var serviceRequestRepo = new ServiceRequestRepository(context);
+
+            context.Set<ServiceRequest>().Add(serviceRequest1);
+            context.Set<ServiceRequest>().Add(serviceRequest2);
+            context.SaveChanges();
+
+            // Act
+            IEnumerable<ServiceRequest> serviceRequests = serviceRequestRepo.GetAllServiceRequestsByMaintenanceUserId(maintenancePerson1.Id);
+            List<ServiceRequest> serviceRequestsList = serviceRequests.ToList();
+
+            // Assert
+            Assert.AreEqual(1, serviceRequestsList.Count);
+            Assert.AreEqual(serviceRequest1, serviceRequestsList[0]);
+
+
+        }
+
         private DbContext CreateDbContext(string database)
         {
             var options = new DbContextOptionsBuilder<Context>().UseInMemoryDatabase(database).Options;

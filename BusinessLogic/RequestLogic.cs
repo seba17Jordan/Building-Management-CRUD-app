@@ -96,7 +96,7 @@ namespace BusinessLogic
 
         public IEnumerable<ServiceRequest> GetAllServiceRequestsMaintenance(Guid maintenanceUserId)
         {
-            return _serviceRequestRepository.GetAllServiceRequestsByUserId(maintenanceUserId);
+            return _serviceRequestRepository.GetAllServiceRequestsByMaintenanceUserId(maintenanceUserId);
         }
 
         public ServiceRequest UpdateServiceRequestStatus(Guid id, Guid maintenanceUserId, decimal? totalCost)

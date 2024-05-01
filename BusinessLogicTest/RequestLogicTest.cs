@@ -370,7 +370,7 @@ namespace BusinessLogicTest
             Mock<ICategoryRepository> categoryRepo = new Mock<ICategoryRepository>(MockBehavior.Strict);
             Mock<IUserRepository> userRepository = new Mock<IUserRepository>(MockBehavior.Strict);
 
-            serviceRequestRepo.Setup(repo => repo.GetAllServiceRequestsByUserId(It.IsAny<Guid>())).Returns(expectedServiceRequests);
+            serviceRequestRepo.Setup(repo => repo.GetAllServiceRequestsByMaintenanceUserId(It.IsAny<Guid>())).Returns(expectedServiceRequests);
 
             RequestLogic serviceRequestController = new RequestLogic(serviceRequestRepo.Object, buildingRepo.Object, categoryRepo.Object, userRepository.Object);
 

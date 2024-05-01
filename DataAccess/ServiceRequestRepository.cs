@@ -25,9 +25,9 @@ namespace DataAccess
             return _context.Set<ServiceRequest>().Where(sr => categoryName == "" || sr.CategoryName == categoryName).ToList();
         }
 
-        public IEnumerable<ServiceRequest> GetAllServiceRequestsByUserId(Guid maintenanceUserId)
+        public IEnumerable<ServiceRequest> GetAllServiceRequestsByMaintenanceUserId(Guid maintenanceUserId)
         {
-            throw new NotImplementedException();
+            return _context.Set<ServiceRequest>().Where(sr => sr.MaintainancePersonId == maintenanceUserId).ToList();
         }
 
         public ServiceRequest GetServiceRequestById(Guid serviceRequestId)
