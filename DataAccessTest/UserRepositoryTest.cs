@@ -86,6 +86,30 @@ namespace DataAccessTest
             Assert.AreEqual(userFound, expectedUser);
         }
 
+        [TestMethod]
+        public void GetUserByNameCorrectTest()
+        {
+            // Arrange
+            User expectedUser = new User
+            {
+                Name = "name",
+                LastName = "last name",
+                Email = "sfd@gmial.com",
+                Password = "123456"
+            };
+
+            var context = CreateDbContext("GetUserByNameCorrectTest");
+            var userRepository = new UserRepository(context);
+            userRepository.CreateUser(expectedUser);
+            context.SaveChanges();
+
+            // Act
+            User userFound = userRepository.GetUserByName("name");
+
+            // Assert
+            Assert.AreEqual(userFound, expectedUser);
+        }
+
         private DbContext CreateDbContext(string database)
         {
             var options = new DbContextOptionsBuilder<Context>().UseInMemoryDatabase(database).Options;

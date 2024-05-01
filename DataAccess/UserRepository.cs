@@ -29,9 +29,9 @@ namespace DataAccess
             return _context.Set<User>().FirstOrDefault(u => u.Id == currentUserId);
         }
 
-        public User GetUserByName(string? maintenanceName)
+        public User GetUserByName(string? name)
         {
-            throw new NotImplementedException(); //TEST
+            return _context.Set<User>().FirstOrDefault(u => u.Name == name);
         }
 
         public bool UserExists(Func<User, bool> predicate)
