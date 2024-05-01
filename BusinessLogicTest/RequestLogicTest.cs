@@ -327,6 +327,5 @@ namespace BusinessLogicTest
             Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
             Assert.IsTrue(specificEx.Message.Contains("Service request is not attending"));
         }
-
     }
 }

@@ -94,6 +94,11 @@ namespace BusinessLogic
             return _serviceRequestRepository.GetAllServiceRequests(category);
         }
 
+        public IEnumerable<ServiceRequest> GetAllServiceRequestsMaintenance(Guid maintenanceUserId)
+        {
+            throw new NotImplementedException();
+        }
+
         public ServiceRequest UpdateServiceRequestStatus(Guid id, Guid maintenanceUserId, decimal? totalCost)
         {
             ServiceRequest serviceRequest = _serviceRequestRepository.GetServiceRequestById(id);
@@ -103,8 +108,7 @@ namespace BusinessLogic
                 throw new ArgumentException("Service request does not exist", nameof(serviceRequest));
             }
 
-            //Recibir el id de la persona por parametro y validar que es la misma que tiene esta solicitud asignada
-            
+            //Solo puedo aceptar o cerrar las solicitudes asignadas para mi
             if(serviceRequest.MaintainancePersonId != maintenanceUserId)
             {
                 throw new ArgumentException("Service request is not assigned to the current maintainance person", nameof(serviceRequest));

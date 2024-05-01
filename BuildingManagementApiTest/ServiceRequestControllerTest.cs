@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using ModelsApi.In;
 using ModelsApi.Out;
 using Moq;
+using Newtonsoft.Json.Linq;
 
 namespace BuildingManagementApiTest;
 
@@ -366,5 +367,71 @@ public class ServiceRequestControllerTest
         Assert.AreEqual(resultObj.StatusCode, expectedObjResult.StatusCode);
         Assert.AreEqual(resultResponse, expectedServiceRequestResponse);
 
+    }
+
+    [TestMethod]
+    public void GetAllServiceRequestsMaintenanceCorrectTest()
+    {
+        string token = "b4d9e6a4-466c-4a4f-91ea-6d7e7997584e";
+        User maintenancePerson = new User
+        {
+            Email = "maintenance@gmail.com",
+            Password = "123456",
+            Name = "John",
+            LastName = "Doe",
+            Role = Roles.Maintenance
+        };
+
+        Category category = new Category { Name = "Category 1" };
+
+        Apartment apartment = new Apartment()
+        {
+            Floor = 1,
+            Number = 101,
+            Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "" },
+            Rooms = 3,
+            Bathrooms = 2,
+            HasTerrace = true
+        };
+
+        ServiceRequest serviceRequest = new ServiceRequest
+        {
+            Id = Guid.NewGuid(),
+            Description = "A description",
+            Apartment = apartment.Id,
+            Category = category.Id,
+            MaintainancePersonId = maintenancePerson.Id,
+            Status = ServiceRequestStatus.Open
+        };
+
+        IEnumerable<ServiceRequest> expectedServiceRequests = new List<ServiceRequest>
+        {
+            serviceRequest
+        };
+
+        var expectedResponse = expectedServiceRequests.Select(sr => new ServiceRequestResponse(sr)).ToList();
+
+        Mock<IServiceRequestLogic> serviceRequestLogic = new Mock<IServiceRequestLogic>(MockBehavior.Strict);
+        Mock<ISessionService> sessionService = new Mock<ISessionService>(MockBehavior.Strict);
+
+        serviceRequestLogic.Setup(serviceRequestLogic => serviceRequestLogic.GetAllServiceRequestsMaintenance(It.IsAny<Guid>())).Returns(expectedServiceRequests);
+        sessionService.Setup(p => p.GetUserByToken(It.IsAny<Guid>())).Returns(maintenancePerson);
+
+        ServiceRequestController serviceRequestController = new ServiceRequestController(serviceRequestLogic.Object, sessionService.Object);
+        serviceRequestController.ControllerContext.HttpContext = new DefaultHttpContext();
+        serviceRequestController.ControllerContext.HttpContext.Request.Headers["Authorization"] = token;
+
+        OkObjectResult expectedObjResult = new OkObjectResult(expectedResponse);
+
+        // Act
+        var result = serviceRequestController.GetAllServiceRequestsMaintenance();
+
+        // Assert
+        serviceRequestLogic.VerifyAll();
+        OkObjectResult resultObj = result as OkObjectResult;
+        List<ServiceRequestResponse> resultResponse = resultObj.Value as List<ServiceRequestResponse>;
+        Assert.IsNotNull(resultResponse);
+        Assert.AreEqual(resultObj.StatusCode, expectedObjResult.StatusCode);
+        Assert.AreEqual(resultResponse.First(), expectedResponse.First());
     }
 }
