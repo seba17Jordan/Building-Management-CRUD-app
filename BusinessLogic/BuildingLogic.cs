@@ -70,11 +70,6 @@ namespace BusinessLogic
         public Building UpdateBuildingById(Guid id, Building building)
         {
             Building buildingToUpdate = _buildingRepository.GetBuildingById(id);
-            
-            if (_buildingRepository.BuildingNameExists(building.Name)) //ver si name es distinto de null
-            {
-                throw new ArgumentException("Building with same name already exists");
-            }
 
             if (buildingToUpdate == null)
             {
@@ -83,6 +78,10 @@ namespace BusinessLogic
 
             if (building.Name != null)
             {
+                if (_buildingRepository.BuildingNameExists(building.Name))
+                {
+                    throw new ArgumentException("Building with same name already exists");
+                }
                 buildingToUpdate.Name = building.Name;
             }
 
@@ -101,12 +100,12 @@ namespace BusinessLogic
                 buildingToUpdate.CommonExpenses = building.CommonExpenses;
             }
 
-            if (building.Apartments != null && building.Apartments.Count >=1)
+            if (building.Apartments != null && building.Apartments.Count >=1) //se cambian todos los apartamentos de una
             {
                 buildingToUpdate.Apartments.Clear();
                 foreach (var apartment in building.Apartments)
                 {
-                    var conedApartment = new Apartment
+                    var clonedApartment = new Apartment
                     {
                         Number = apartment.Number,
                         Floor = apartment.Floor,
@@ -115,7 +114,7 @@ namespace BusinessLogic
                         Bathrooms = apartment.Bathrooms,
                         HasTerrace = apartment.HasTerrace,
                     };
-                    buildingToUpdate.Apartments.Add(conedApartment);
+                    buildingToUpdate.Apartments.Add(clonedApartment);
                 }
             }
 

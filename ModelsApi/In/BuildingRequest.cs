@@ -11,7 +11,7 @@ namespace ModelsApi.In
         public int? CommonExpenses { get; set; }
         public List<ApartmentRequest>? Apartments { get; set; }
 
-        public Guid managerId { get; set; }
+        public Guid managerId { get; set; } //sacar esto, obtenerlo del token
 
         public Building ToEntity()
         {
