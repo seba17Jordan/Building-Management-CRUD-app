@@ -32,6 +32,8 @@ namespace BuildingManagementApi.Controllers
             var managerUser = _sessionService.GetUserByToken(Guid.Parse(token));
 
             var serviceRequest = serviceRequestToCreate.ToEntity();
+            serviceRequest.ManagerId = managerUser.Id;
+
             var createdServiceRequest = _serviceRequestLogic.CreateServiceRequest(serviceRequest);
             ServiceRequestResponse response = new ServiceRequestResponse(createdServiceRequest);
 
@@ -41,14 +43,14 @@ namespace BuildingManagementApi.Controllers
         [HttpGet]
         [ServiceFilter(typeof(AuthenticationFilter))]
         [AuthorizationFilter(_currentRole = Roles.Manager)]
-        public IActionResult GetAllServiceRequests([FromQuery] string? category)
+        public IActionResult GetAllServiceRequestsManager([FromQuery] string? category)
         {
             //Agregar id a partir del token para que solo vea las que el asigno
-            //string token = Request.Headers["Authorization"].ToString();
-            //var maintenanceUser = _sessionService.GetUserByToken(Guid.Parse(token));
+            string token = Request.Headers["Authorization"].ToString();
+            var maintenanceUser = _sessionService.GetUserByToken(Guid.Parse(token));
 
             string categoryOrDefault = category == null ? "" : category;
-            IEnumerable<ServiceRequestResponse> serviceRequests = _serviceRequestLogic.GetAllServiceRequests(categoryOrDefault).Select(sr => new ServiceRequestResponse(sr)).ToList();
+            IEnumerable<ServiceRequestResponse> serviceRequests = _serviceRequestLogic.GetAllServiceRequestsManager(categoryOrDefault, maintenanceUser.Id).Select(sr => new ServiceRequestResponse(sr)).ToList();
             return Ok(serviceRequests);
         }
 

@@ -131,6 +131,12 @@ namespace BusinessLogicTest
         [TestMethod]
         public void GetAllServiceRequestsCorrectTestLogic()
         {
+            User manager = new User()
+            {
+                Id = Guid.NewGuid(),
+                Role = Roles.Manager
+            };
+
             Category category = new Category { Name = "Category 1" };
 
             Apartment apartment = new Apartment()
@@ -161,12 +167,12 @@ namespace BusinessLogicTest
             Mock<ICategoryRepository> categoryRepo = new Mock<ICategoryRepository>(MockBehavior.Strict);
             Mock<IUserRepository> userRepository = new Mock<IUserRepository>(MockBehavior.Strict);
 
-            serviceRequestRepo.Setup(repo => repo.GetAllServiceRequests(It.IsAny<string>())).Returns(expectedServiceRequests);
+            serviceRequestRepo.Setup(repo => repo.GetAllServiceRequestsManager(It.IsAny<string>(), It.IsAny<Guid>())).Returns(expectedServiceRequests);
 
             RequestLogic serviceRequestController = new RequestLogic(serviceRequestRepo.Object, buildingRepo.Object, categoryRepo.Object, userRepository.Object);
 
             //Act
-            IEnumerable<ServiceRequest> logicResult = serviceRequestController.GetAllServiceRequests("");
+            IEnumerable<ServiceRequest> logicResult = serviceRequestController.GetAllServiceRequestsManager("", manager.Id);
 
             //Assert
             serviceRequestRepo.VerifyAll();

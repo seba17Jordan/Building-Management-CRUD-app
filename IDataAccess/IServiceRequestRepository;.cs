@@ -10,8 +10,9 @@ namespace IDataAccess
     public interface IServiceRequestRepository
     {
         ServiceRequest CreateServiceRequest(ServiceRequest serviceRequest);
-        IEnumerable<ServiceRequest> GetAllServiceRequests(string category);
+        IEnumerable<ServiceRequest> GetAllServiceRequestsManager(string category, Guid managerId);
         IEnumerable<ServiceRequest> GetAllServiceRequestsByMaintenanceUserId(Guid maintenanceUserId);
+        IEnumerable<ServiceRequest> GetAllServiceRequests();
         ServiceRequest GetServiceRequestById(Guid serviceRequestId);
         void UpdateServiceRequest(ServiceRequest serviceRequest);
     }

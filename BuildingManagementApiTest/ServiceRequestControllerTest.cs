@@ -81,8 +81,16 @@ public class ServiceRequestControllerTest
     }
 
     [TestMethod]
-    public void GetAllServiceRequestsCorrectTest()
+    public void GetAllServiceRequestsManagerCorrectTest()//-------------------------------------------------------------------
     {
+        string token = "b4d9e6a4-466c-4a4f-91ea-6d7e7997584e";
+
+        User manager = new User
+        {
+            Email = "akjn@gmail.com",
+            Role = Roles.Manager
+        };
+
         Category category = new Category { Name = "Category 1" };
 
         Apartment apartment = new Apartment()
@@ -113,14 +121,17 @@ public class ServiceRequestControllerTest
         Mock<IServiceRequestLogic> serviceRequestLogic = new Mock<IServiceRequestLogic>(MockBehavior.Strict);
         Mock<ISessionService> sessionService = new Mock<ISessionService>(MockBehavior.Strict);
 
-        serviceRequestLogic.Setup(serviceRequestLogic => serviceRequestLogic.GetAllServiceRequests(It.IsAny<string>())).Returns(expectedServiceRequests);
+        serviceRequestLogic.Setup(serviceRequestLogic => serviceRequestLogic.GetAllServiceRequestsManager(It.IsAny<string>(),It.IsAny<Guid>())).Returns(expectedServiceRequests);
+        sessionService.Setup(p => p.GetUserByToken(It.IsAny<Guid>())).Returns(manager);
 
         var serviceRequestController = new ServiceRequestController(serviceRequestLogic.Object, sessionService.Object);
+        serviceRequestController.ControllerContext.HttpContext = new DefaultHttpContext();
+        serviceRequestController.ControllerContext.HttpContext.Request.Headers["Authorization"] = token;
 
         OkObjectResult expectedObjResult = new OkObjectResult(expectedResponse);
 
         // Act
-        var result = serviceRequestController.GetAllServiceRequests("");
+        var result = serviceRequestController.GetAllServiceRequestsManager("");
 
         // Assert
         serviceRequestLogic.VerifyAll();

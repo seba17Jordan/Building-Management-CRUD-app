@@ -20,9 +20,9 @@ namespace DataAccess
             return serviceRequest;
         }
 
-        public IEnumerable<ServiceRequest> GetAllServiceRequests(string categoryName)
+        public IEnumerable<ServiceRequest> GetAllServiceRequestsManager(string categoryName, Guid managerId)
         {
-            return _context.Set<ServiceRequest>().Where(sr => categoryName == "" || sr.CategoryName == categoryName).ToList();
+            return _context.Set<ServiceRequest>().Where(sr => (categoryName == "" || sr.CategoryName == categoryName) && (sr.ManagerId == managerId)).ToList();
         }
 
         public IEnumerable<ServiceRequest> GetAllServiceRequestsByMaintenanceUserId(Guid maintenanceUserId)
@@ -44,6 +44,11 @@ namespace DataAccess
         {
             _context.Set<ServiceRequest>().Update(serviceRequest);
             _context.SaveChanges();
+        }
+
+        public IEnumerable<ServiceRequest> GetAllServiceRequests()
+        {
+            return _context.Set<ServiceRequest>().ToList();
         }
     }
 }

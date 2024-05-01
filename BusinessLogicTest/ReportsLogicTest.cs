@@ -13,6 +13,11 @@ namespace BusinessLogicTest
         public void CreateReportBuildingTestCorrect()
         {
             // Arrange
+            User manager = new User
+            {
+                Id = Guid.NewGuid(),
+                Role = Roles.Manager
+            };
 
             Building building = new Building
             {
@@ -40,7 +45,7 @@ namespace BusinessLogicTest
                 building
             });
 
-            ServiceRequestRepository.Setup(p => p.GetAllServiceRequests("")).Returns(new List<ServiceRequest>
+            ServiceRequestRepository.Setup(p => p.GetAllServiceRequests()).Returns(new List<ServiceRequest>
             {
                 new ServiceRequest
                 {

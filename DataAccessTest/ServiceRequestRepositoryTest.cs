@@ -166,9 +166,18 @@ namespace DataAccessTest
         }
 
         [TestMethod]
-        public void GetAllServiceRequestsTestDataAccess()
+        public void GetAllServiceRequestsByManagerTestDataAccess()
         {
             Category category = new Category { Name = "Category 1" };
+
+            User manager = new User()
+            {
+                Id = Guid.NewGuid(),
+                Name = "John",
+                LastName = "Doe",
+                Email = "alekd@gmiail.com",
+                Role = Roles.Manager
+            };
 
             Apartment apartment = new Apartment()
             {
@@ -187,7 +196,8 @@ namespace DataAccessTest
                 Status = ServiceRequestStatus.Open,
                 Category = category.Id,
                 CategoryName = category.Name,
-                Apartment = apartment.Id
+                Apartment = apartment.Id,
+                ManagerId = manager.Id
             };
 
             ServiceRequest serviceRequest2 = new ServiceRequest()
@@ -197,7 +207,8 @@ namespace DataAccessTest
                 Status = ServiceRequestStatus.Open,
                 Category = category.Id,
                 CategoryName = category.Name,
-                Apartment = apartment.Id
+                Apartment = apartment.Id,
+                ManagerId = manager.Id
             };
 
             var context = CreateDbContext("GetAllServiceRequestsTestDataAccess");
@@ -208,7 +219,7 @@ namespace DataAccessTest
             context.SaveChanges();
 
             // Act
-            IEnumerable<ServiceRequest> serviceRequests = serviceRequestRepo.GetAllServiceRequests("");
+            IEnumerable<ServiceRequest> serviceRequests = serviceRequestRepo.GetAllServiceRequestsManager("", manager.Id);
             List<ServiceRequest> serviceRequestsList = serviceRequests.ToList();
 
             // Assert
@@ -222,6 +233,15 @@ namespace DataAccessTest
         {
             Category category1 = new Category { Name = "Category 1" };
             Category category2 = new Category { Name = "Category 2" };
+
+            User manager = new User()
+            {
+                Id = Guid.NewGuid(),
+                Name = "John",
+                LastName = "Doe",
+                Email = "safae@gmail.com",
+                Role = Roles.Manager
+            };
 
             Apartment apartment = new Apartment()
             {
@@ -240,7 +260,8 @@ namespace DataAccessTest
                 Status = ServiceRequestStatus.Open,
                 Category = category1.Id,
                 CategoryName = category1.Name,
-                Apartment = apartment.Id
+                Apartment = apartment.Id,
+                ManagerId = manager.Id
             };
 
             ServiceRequest serviceRequest2 = new ServiceRequest()
@@ -250,7 +271,8 @@ namespace DataAccessTest
                 Status = ServiceRequestStatus.Open,
                 Category = category2.Id,
                 CategoryName = category2.Name,
-                Apartment = apartment.Id
+                Apartment = apartment.Id,
+                ManagerId = manager.Id
             };
 
             var context = CreateDbContext("GetAllServiceRequestsFilterByNameTestDataAccess");
@@ -261,7 +283,7 @@ namespace DataAccessTest
             context.SaveChanges();
 
             // Act
-            IEnumerable<ServiceRequest> serviceRequests = serviceRequestRepo.GetAllServiceRequests("Category 1");
+            IEnumerable<ServiceRequest> serviceRequests = serviceRequestRepo.GetAllServiceRequestsManager("Category 1", manager.Id);
             List<ServiceRequest> serviceRequestsList = serviceRequests.ToList();
 
             // Assert
@@ -339,8 +361,68 @@ namespace DataAccessTest
             // Assert
             Assert.AreEqual(1, serviceRequestsList.Count);
             Assert.AreEqual(serviceRequest1, serviceRequestsList[0]);
+        }
 
+        [TestMethod]
+        public void GetAllServiceRequestsGeneralTestDataAccess()
+        {
+            User maintenancePerson = new User()
+            {
+                Id = Guid.NewGuid(),
+                Name = "John",
+                LastName = "Doe",
+                Email = "daed@gmail.com"
+            };
 
+            Category category = new Category { Name = "Category 1" };
+
+            Apartment apartment = new Apartment()
+            {
+                Floor = 1,
+                Number = 101,
+                Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "sa@gmail.com" },
+                Rooms = 3,
+                Bathrooms = 2,
+                HasTerrace = true
+            };
+
+            ServiceRequest serviceRequest1 = new ServiceRequest()
+            {
+                Id = Guid.NewGuid(),
+                Description = "Description 1",
+                Status = ServiceRequestStatus.Open,
+                Category = category.Id,
+                CategoryName = category.Name,
+                Apartment = apartment.Id,
+                MaintainancePersonId = maintenancePerson.Id
+            };
+
+            ServiceRequest serviceRequest2 = new ServiceRequest()
+            {
+                Id = Guid.NewGuid(),
+                Description = "Description 2",
+                Status = ServiceRequestStatus.Open,
+                Category = category.Id,
+                CategoryName = category.Name,
+                Apartment = apartment.Id,
+                MaintainancePersonId = maintenancePerson.Id
+            };
+
+            var context = CreateDbContext("GetAllServiceRequestsGeneralTestDataAccess");
+            var serviceRequestRepo = new ServiceRequestRepository(context);
+
+            context.Set<ServiceRequest>().Add(serviceRequest1);
+            context.Set<ServiceRequest>().Add(serviceRequest2);
+            context.SaveChanges();
+
+            // Act
+            IEnumerable<ServiceRequest> serviceRequests = serviceRequestRepo.GetAllServiceRequests();
+            List<ServiceRequest> serviceRequestsList = serviceRequests.ToList();
+
+            // Assert
+            Assert.AreEqual(2, serviceRequestsList.Count);
+            Assert.AreEqual(serviceRequest1, serviceRequestsList[0]);
+            Assert.AreEqual(serviceRequest2, serviceRequestsList[1]);
         }
 
         private DbContext CreateDbContext(string database)

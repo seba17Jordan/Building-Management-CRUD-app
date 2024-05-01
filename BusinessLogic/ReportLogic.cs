@@ -55,7 +55,7 @@ namespace BusinessLogic
             foreach (var building in buildings)
             {
                 // Obtener las solicitudes filtradas por el edificio actual
-                IEnumerable<ServiceRequest> requests = _serviceRequestRepository.GetAllServiceRequests("")
+                IEnumerable<ServiceRequest> requests = _serviceRequestRepository.GetAllServiceRequests()
                     .Where(req => req.BuildingId == building.Id);
 
                 // Agrupar las solicitudes por BuildingId
