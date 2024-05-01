@@ -26,6 +26,7 @@ namespace BuildingManagementApi.Controllers
         }
 
         [HttpGet]
+        //[ServiceFilter(typeof(AuthenticationFilter))]
         //[AuthorizationFilter(_currentRole = Roles.Manager)]
         public IActionResult GetReport([FromQuery] string? building)
         {
@@ -33,6 +34,19 @@ namespace BuildingManagementApi.Controllers
             var user = _sessionService.GetUserByToken(Guid.Parse(token));
             var reportInfo = _reportLogic.GetReport(user.Id, building);
             var response = reportInfo.Select(t => new ReportResponse(t));
+            return Ok(response);
+        }
+
+        [HttpGet]
+        //[ServiceFilter(typeof(AuthenticationFilter))]
+        //[AuthorizationFilter(_currentRole = Roles.Manager)]
+        public IActionResult GetMaintenanceReport([FromRoute] string buildingName, [FromQuery] Guid? maintenance)
+        {
+            string token = Request.Headers["Authorization"].ToString();
+            var manager = _sessionService.GetUserByToken(Guid.Parse(token));
+
+            var reportInfo = _reportLogic.GetMaintenanceReport(buildingName, manager.Id, maintenance);
+            var response = reportInfo.Select(t => new MaintenanceReportResponse(t));
             return Ok(response);
         }
     }

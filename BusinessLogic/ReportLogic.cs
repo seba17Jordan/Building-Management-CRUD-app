@@ -24,6 +24,11 @@ namespace BusinessLogic
             _userRepository = userRepository;
         }
 
+        public IEnumerable<(string, int, int, int, string)> GetMaintenanceReport(string buildingName, Guid id, Guid? maintenance)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<(string, int, int, int)> GetReport(Guid userId, string param)
         {
             List<Building> buildings = _buildingRepository.GetAllBuildings(userId);
