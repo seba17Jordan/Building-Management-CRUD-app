@@ -13,6 +13,13 @@ namespace Domain
 
         public Category() { }
 
+        public void SelfValidate()
+        {
+            if (string.IsNullOrWhiteSpace(Name))
+            {
+                throw new ArgumentException("Category name can't be null or empty");
+            }
+        }
         public override bool Equals(object? obj)
         {
             if (obj == null || GetType() != obj.GetType())

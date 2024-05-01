@@ -41,11 +41,12 @@ namespace BusinessLogic
 
         public void DeleteInvitation(Guid id)
         {
-            Invitation invitation = _invitationRepository.GetInvitationById(id);
             if (id == Guid.Empty)
             {
-                throw new ArgumentException("Invalid id");
+                throw new ArgumentException("Id is Empty");
             }
+
+            Invitation invitation = _invitationRepository.GetInvitationById(id);
 
             if (invitation == null)
             {
@@ -56,6 +57,7 @@ namespace BusinessLogic
             {
                 throw new InvalidOperationException("You can only delete a rejected invitation");
             }
+
             _invitationRepository.DeleteInvitation(id);
         }
 

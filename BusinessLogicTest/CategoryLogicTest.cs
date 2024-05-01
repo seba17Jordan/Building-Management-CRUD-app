@@ -3,13 +3,14 @@ using Domain;
 using Moq;
 using BusinessLogic;
 using IDataAccess;
+using Domain.@enum;
 namespace BusinessLogicTest
 {
     [TestClass]
     public class CategoryLogicTest
     {
         [TestMethod]
-        public void CreateCategory_ShouldReturnCreatedCategoryTest()
+        public void CreateCategory_ShouldReturnCreatedCategoryTestLogic()
         {
             // Arrange
             var expectedCategory = new Category
@@ -30,6 +31,37 @@ namespace BusinessLogicTest
             // Assert
             repo.VerifyAll();
             Assert.AreEqual(expectedCategory, result);
+        }
+
+        [TestMethod]
+        public void CreateCategory_EmptyNameTestLogic()
+        {
+            // Arrange
+            Exception specificEx = null;
+            Mock<ICategoryRepository> repo = new Mock<ICategoryRepository>(MockBehavior.Strict);
+            try
+            {
+                Category cat = new Category()
+                {
+                    Name = ""
+                };
+
+                var caegoryMockRepository = new Mock<ICategoryRepository>(MockBehavior.Strict);
+                CategoryLogic categoryLogic = new CategoryLogic(repo.Object);
+
+                // Act
+                categoryLogic.CreateCategory(cat);
+            }
+            catch (ArgumentException e)
+            {
+                specificEx = e;
+            }
+
+            // Assert
+            repo.VerifyAll();
+            Assert.IsNotNull(specificEx);
+            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
+            Assert.IsTrue(specificEx.Message.Contains("Category name can't be null or empty"));
         }
     }
 }

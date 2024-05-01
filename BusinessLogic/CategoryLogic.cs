@@ -24,6 +24,8 @@ namespace BusinessLogic
                 throw new ArgumentNullException(nameof(category), "Category can't be null");
             }
 
+            category.SelfValidate();
+
             if (_categoryRepository.FindCategoryByName(category.Name))
             {
                 throw new ArgumentException("Category already exists");
