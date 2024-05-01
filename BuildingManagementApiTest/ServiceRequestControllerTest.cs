@@ -17,6 +17,14 @@ public class ServiceRequestControllerTest
     [TestMethod]
     public void CreateServiceRequestCorrectTest()
     {
+        string token = "b4d9e6a4-466c-4a4f-91ea-6d7e7997584e";
+
+        User maintainanceUser = new User
+        {
+            Email = "mail@gmail.com",
+            Role = Roles.Maintenance
+        };
+
         Category category = new Category { Name = "Category 1" };
 
         Apartment apartment = new Apartment()
@@ -50,9 +58,12 @@ public class ServiceRequestControllerTest
 
         Mock<IServiceRequestLogic> serviceRequestLogic = new Mock<IServiceRequestLogic>(MockBehavior.Strict);
         Mock<ISessionService> sessionService = new Mock<ISessionService>(MockBehavior.Strict);
-
         serviceRequestLogic.Setup(serviceRequestLogic => serviceRequestLogic.CreateServiceRequest(It.IsAny<ServiceRequest>())).Returns(expectedServiceRequest);
-        var serviceRequestController = new ServiceRequestController(serviceRequestLogic.Object, sessionService.Object);
+        sessionService.Setup(p => p.GetUserByToken(It.IsAny<Guid>())).Returns(maintainanceUser);
+        
+        ServiceRequestController serviceRequestController = new ServiceRequestController(serviceRequestLogic.Object, sessionService.Object);
+        serviceRequestController.ControllerContext.HttpContext = new DefaultHttpContext();
+        serviceRequestController.ControllerContext.HttpContext.Request.Headers["Authorization"] = token;
 
         var expectedObjServiceRequest = new CreatedAtActionResult("CreateServiceRequest", "CreateServiceRequest", new { id = 1 }, expectedServiceRequestResponse);
 
