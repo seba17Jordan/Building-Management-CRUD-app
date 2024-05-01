@@ -96,7 +96,7 @@ namespace BusinessLogic
 
         public IEnumerable<ServiceRequest> GetAllServiceRequestsMaintenance(Guid maintenanceUserId)
         {
-            throw new NotImplementedException();
+            return _serviceRequestRepository.GetAllServiceRequestsByUserId(maintenanceUserId);
         }
 
         public ServiceRequest UpdateServiceRequestStatus(Guid id, Guid maintenanceUserId, decimal? totalCost)

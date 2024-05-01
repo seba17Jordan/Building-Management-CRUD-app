@@ -11,6 +11,7 @@ namespace IDataAccess
     {
         ServiceRequest CreateServiceRequest(ServiceRequest serviceRequest);
         IEnumerable<ServiceRequest> GetAllServiceRequests(string category);
+        IEnumerable<ServiceRequest> GetAllServiceRequestsByUserId(Guid maintenanceUserId);
         ServiceRequest GetServiceRequestById(Guid serviceRequestId);
         void UpdateServiceRequest(ServiceRequest serviceRequest);
     }

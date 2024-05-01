@@ -53,7 +53,6 @@ namespace BuildingManagementApi.Controllers
         {
             string token = Request.Headers["Authorization"].ToString();
             var maintenanceUser = _sessionService.GetUserByToken(Guid.Parse(token));
-
             IEnumerable<ServiceRequestResponse> serviceRequests = _serviceRequestLogic.GetAllServiceRequestsMaintenance(maintenanceUser.Id).Select(sr => new ServiceRequestResponse(sr)).ToList();
             return Ok(serviceRequests);
         }

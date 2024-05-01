@@ -327,5 +327,59 @@ namespace BusinessLogicTest
             Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
             Assert.IsTrue(specificEx.Message.Contains("Service request is not attending"));
         }
+
+        [TestMethod]
+        public void GetAllServiceRequestsMaintenanceCorrectTestLogic()
+        {
+            // Arrange
+            User maintenancePerson = new User()
+            {
+                Id = Guid.NewGuid(),
+                Role = Roles.Maintenance
+            };
+
+            Category category = new Category { Name = "Category 1" };
+
+            Apartment apartment = new Apartment()
+            {
+                Floor = 1,
+                Number = 101,
+                Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "mail@gmail.com" },
+                Rooms = 3,
+                Bathrooms = 2,
+                HasTerrace = true
+            };
+
+            ServiceRequest serviceRequest = new ServiceRequest()
+            {
+                Id = Guid.NewGuid(),
+                Description = "A description",
+                Apartment = apartment.Id,
+                Category = category.Id,
+                Status = ServiceRequestStatus.Attending,
+                MaintainancePersonId = maintenancePerson.Id
+            };
+
+            IEnumerable<ServiceRequest> expectedServiceRequests = new List<ServiceRequest>
+            {
+                serviceRequest
+            };
+
+            Mock<IServiceRequestRepository> serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
+            Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+            Mock<ICategoryRepository> categoryRepo = new Mock<ICategoryRepository>(MockBehavior.Strict);
+            Mock<IUserRepository> userRepository = new Mock<IUserRepository>(MockBehavior.Strict);
+
+            serviceRequestRepo.Setup(repo => repo.GetAllServiceRequestsByUserId(It.IsAny<Guid>())).Returns(expectedServiceRequests);
+
+            RequestLogic serviceRequestController = new RequestLogic(serviceRequestRepo.Object, buildingRepo.Object, categoryRepo.Object, userRepository.Object);
+
+            // Act
+            IEnumerable<ServiceRequest> logicResult = serviceRequestController.GetAllServiceRequestsMaintenance(maintenancePerson.Id);
+
+            // Assert
+            serviceRequestRepo.VerifyAll();
+            Assert.AreEqual(logicResult, expectedServiceRequests);
+        }
     }
 }
