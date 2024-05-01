@@ -74,7 +74,7 @@ namespace DataAccess
 
         public Building GetBuildingByName(string buildingName)
         {
-            throw new NotImplementedException(); // TEST
+            return _context.Set<Building>().FirstOrDefault(b => b.Name == buildingName);
         }
     }
 }
