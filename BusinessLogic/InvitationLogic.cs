@@ -22,34 +22,6 @@ namespace BusinessLogic
             return _invitationRepository.GetInvitationById(id);
         }
 
-        /*
-        public Invitation UpdateInvitationState(Guid id, Status status)
-        {
-            Invitation invitation = GetInvitationById(id);
-            if (invitation == null)
-            {
-                throw new ArgumentException("La invitación especificada no existe.");
-            }
-            if (invitation.ExpirationDate <= DateTime.Now)
-            {
-                throw new InvalidOperationException("La invitación ha expirado y no se puede actualizar su estado.");
-            }
-            if (invitation.State == Status.Expired)
-            {
-                throw new InvalidOperationException("La invitación ha expirado y no se puede actualizar su estado.");
-            }
-
-            if ((invitation.State == Status.Pending && (status != Status.Accepted && status != Status.Rejected))
-                || (invitation.State == Status.Accepted && status != Status.Rejected)
-                || (invitation.State == Status.Rejected && status != Status.Accepted))
-            {
-                throw new InvalidOperationException("No se puede cambiar la invitación a ese estado.");
-            }
-            invitation.State = status;
-            return _invitationRepository.UpdateInvitation(invitation);
-        }
-        */
-
         public Invitation CreateInvitation(Invitation invitation)
         {
             if (invitation == null)
@@ -141,7 +113,6 @@ namespace BusinessLogic
             invitation.State = Status.Accepted;
             _invitationRepository.UpdateInvitation(invitation);
 
-            //Ahora creo el manager y lo retorno
             managerToCreate.Name = invitation.Name;
             managerToCreate.Role = Roles.Manager;
             managerToCreate.LastName = "";

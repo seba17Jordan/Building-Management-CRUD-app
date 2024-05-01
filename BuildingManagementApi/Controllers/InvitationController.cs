@@ -45,7 +45,6 @@ namespace BuildingManagementApi.Controllers
         [HttpPost("{id}")]
         public IActionResult AcceptInvitation([FromRoute] Guid id, [FromBody] UserLoginRequest managerRequest)
         {
-            //creo manager
             var manager = managerRequest.ToEntity();
             var createdManager = _invitationLogic.AcceptInvitation(id, manager);
             var response = new UserResponse(createdManager);
