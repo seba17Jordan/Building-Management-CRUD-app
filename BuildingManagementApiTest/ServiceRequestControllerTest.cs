@@ -2,6 +2,7 @@
 using Domain;
 using Domain.@enum;
 using LogicInterface;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ModelsApi.In;
 using ModelsApi.Out;
@@ -196,6 +197,8 @@ public class ServiceRequestControllerTest
     [TestMethod]
     public void UpdateServiceRequestToAttendingTestController()
     {
+        string token = "b4d9e6a4-466c-4a4f-91ea-6d7e7997584e"; // Simula un token de autenticación válido
+
         Category category = new Category { Name = "Category 1" };
 
         Apartment apartment = new Apartment()
@@ -240,9 +243,7 @@ public class ServiceRequestControllerTest
         };
 
         UpdateServiceRequestStatusRequest updateServiceRequestStatusRequest = new UpdateServiceRequestStatusRequest
-        {
-            TotalCost = 100
-        };
+        {};
 
         ServiceRequestResponse expectedServiceRequestResponse = new ServiceRequestResponse(expectedServiceRequest);
 
@@ -253,13 +254,16 @@ public class ServiceRequestControllerTest
         .Returns(expectedServiceRequest)
         .Callback((Guid requestId, Guid maintenancePersonId, decimal? totalCost) =>
         {
-            expectedServiceRequest.Status = ServiceRequestStatus.Closed;
-            expectedServiceRequest.TotalCost = 100;
+            expectedServiceRequest.Status = ServiceRequestStatus.Attending;
             expectedServiceRequest.EndDate = new DateTime(2024, 5, 30);
         });
+        sessionService.Setup(p => p.GetUserByToken(It.IsAny<Guid>())).Returns(maintenancePerson);
 
 
         ServiceRequestController serviceRequestController = new ServiceRequestController(serviceRequestLogic.Object, sessionService.Object);
+        serviceRequestController.ControllerContext.HttpContext = new DefaultHttpContext();
+        serviceRequestController.ControllerContext.HttpContext.Request.Headers["Authorization"] = token;
+
         OkObjectResult expectedObjResult = new OkObjectResult(expectedServiceRequestResponse);
 
         // Act
@@ -279,6 +283,7 @@ public class ServiceRequestControllerTest
     [TestMethod]
     public void UpdateServiceRequestToFinishedTestController()
     {
+        string token = "b4d9e6a4-466c-4a4f-91ea-6d7e7997584e";
         Category category = new Category { Name = "Category 1" };
 
         Apartment apartment = new Apartment()
@@ -324,7 +329,9 @@ public class ServiceRequestControllerTest
             EndDate = new DateTime(2024, 5, 30)
         };
 
-        UpdateServiceRequestStatusRequest updateServiceRequestStatusRequest = new UpdateServiceRequestStatusRequest { };
+        UpdateServiceRequestStatusRequest updateServiceRequestStatusRequest = new UpdateServiceRequestStatusRequest { 
+            TotalCost = 100
+        };
         ServiceRequestResponse expectedServiceRequestResponse = new ServiceRequestResponse(expectedServiceRequest);
 
         Mock<IServiceRequestLogic> serviceRequestLogic = new Mock<IServiceRequestLogic>(MockBehavior.Strict);
@@ -338,9 +345,12 @@ public class ServiceRequestControllerTest
             expectedServiceRequest.TotalCost = 100;
             expectedServiceRequest.EndDate = new DateTime(2024, 5, 30);
         });
-
+        sessionService.Setup(p => p.GetUserByToken(It.IsAny<Guid>())).Returns(maintenancePerson);
 
         ServiceRequestController serviceRequestController = new ServiceRequestController(serviceRequestLogic.Object, sessionService.Object);
+        serviceRequestController.ControllerContext.HttpContext = new DefaultHttpContext();
+        serviceRequestController.ControllerContext.HttpContext.Request.Headers["Authorization"] = token;
+
         OkObjectResult expectedObjResult = new OkObjectResult(expectedServiceRequestResponse);
 
         // Act

@@ -19,7 +19,6 @@ public class ReportControllerTest
         // Arrange
         Guid managerId = Guid.NewGuid();
         string token = "b4d9e6a4-466c-4a4f-91ea-6d7e7997584e"; // Simula un token de autenticación válido
-        Guid trueToken = Guid.Parse(token);
 
         IEnumerable<(string, int, int, int)> reportInfo = new List<(string, int, int, int)>
         {
