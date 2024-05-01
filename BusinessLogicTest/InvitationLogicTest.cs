@@ -30,7 +30,7 @@ namespace BusinessLogicTest
             // Assert
             Assert.AreEqual(invitation, result);
         }
-        
+
         [TestMethod]
         public void RejectInvitationStateLogicTest()
         {
@@ -46,14 +46,14 @@ namespace BusinessLogicTest
 
             var mockInvitationRepository = new Mock<IInvitationRepository>();
             var mockUserRepository = new Mock<IUserRepository>();
-            
+
             InvitationLogic invitationLogic = new InvitationLogic(mockInvitationRepository.Object, mockUserRepository.Object);
             mockInvitationRepository.Setup(x => x.GetInvitationById(It.IsAny<Guid>())).Returns(invitation);
             mockInvitationRepository.Setup(x => x.UpdateInvitation(It.IsAny<Invitation>()));
-            
+
             // Act
             invitationLogic.RejectInvitation(invitation.Id);
-            
+
             // Assert
             Assert.AreEqual(Status.Rejected, invitation.State);
         }
@@ -123,7 +123,7 @@ namespace BusinessLogicTest
             mockUserRepository.Setup(x => x.CreateUser(It.IsAny<User>())).Returns(expectedManager);
 
             InvitationLogic invitationLogic = new InvitationLogic(mockInvitationRepository.Object, mockUserRepository.Object);
-            
+
 
             // Act
             User result = invitationLogic.AcceptInvitation(invitation.Id, managerToCreate);
@@ -172,5 +172,43 @@ namespace BusinessLogicTest
             Assert.IsTrue(specificEx.Message.Contains("Invalid email format"));
         }
 
+        [TestMethod]
+        public void CreateInvitation_EmailAlreadyExists()
+        {
+            // Arrange
+            Exception specificEx = null;
+            Mock<IUserRepository> repo = new Mock<IUserRepository>(MockBehavior.Strict);
+            try
+            {
+                Invitation invitation = new Invitation()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "John",
+                    Email = "magail@aasa.com",
+                    ExpirationDate = DateTime.Now.AddDays(6),
+                    State = Status.Pending
+                };
+
+                var mockInvitationRepository = new Mock<IInvitationRepository>();
+                var mockUserRepository = new Mock<IUserRepository>();
+                mockInvitationRepository.Setup(x => x.InvitationExists(It.IsAny<string>())).Returns(true);
+
+                InvitationLogic invitationLogic = new InvitationLogic(mockInvitationRepository.Object, mockUserRepository.Object);
+
+                // Act
+                invitationLogic.CreateInvitation(invitation);
+            }
+            catch (ArgumentException e)
+            {
+                specificEx = e;
+            }
+
+            // Assert
+            repo.VerifyAll();
+            Assert.IsNotNull(specificEx);
+            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
+            Assert.IsTrue(specificEx.Message.Contains("Invitation with same Email already exists"));
+
+        }
     }
 }
