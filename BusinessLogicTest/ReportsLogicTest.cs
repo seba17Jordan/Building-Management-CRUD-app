@@ -106,7 +106,8 @@ namespace BusinessLogicTest
                 Apartments = new List<Apartment>
                 {
                     apartment
-                }
+                },
+                managerId = manager.Id
             };
 
             Category category = new Category { Name = "CategoryName" };

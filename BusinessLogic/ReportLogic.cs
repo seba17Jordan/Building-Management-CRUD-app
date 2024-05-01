@@ -33,6 +33,11 @@ namespace BusinessLogic
                 throw new InvalidOperationException("Building not found.");
             }
 
+            if(currentBuilding.managerId != Managerid)
+            {
+                throw new InvalidOperationException("Manager does not have access to this building.");
+            }
+
             IEnumerable<ServiceRequest> serviceRequests = _serviceRequestRepository.GetServiceRequestsByBuilding(currentBuilding.Id);
 
             if (!string.IsNullOrEmpty(maintenanceName))
