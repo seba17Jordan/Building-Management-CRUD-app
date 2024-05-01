@@ -66,7 +66,7 @@ namespace BusinessLogicTest
             // Assert
             repo.VerifyAll();
             Assert.IsNotNull(specificEx);
-            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));   //Crear exception especifica
+            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
             Assert.AreEqual("Email already exists", specificEx.Message);
         }
 
@@ -101,8 +101,43 @@ namespace BusinessLogicTest
             // Assert
             repo.VerifyAll();
             Assert.IsNotNull(specificEx);
-            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));   //Crear exception especifica
+            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
             Assert.IsTrue(specificEx.Message.Contains("Invalid email format"));
-        }       
+        }
+
+        [TestMethod]
+        public void CreateUser_InvalidPassword()
+        {
+            // Arrange
+            Exception specificEx = null;
+            Mock<IUserRepository> repo = new Mock<IUserRepository>(MockBehavior.Strict);
+            try
+            {
+                User expectedUser = new User
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Federico",
+                    Email = "testexample.com",
+                    Password = "pass",
+                    Role = Domain.@enum.Roles.Administrator
+                };
+
+                var userLogic = new UserLogic(repo.Object);
+
+                // Act
+                var logicResult = userLogic.CreateUser(expectedUser);
+
+            }
+            catch (ArgumentException e)
+            {
+                specificEx = e;
+            }
+
+            // Assert
+            repo.VerifyAll();
+            Assert.IsNotNull(specificEx);
+            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
+            Assert.IsTrue(specificEx.Message.Contains("Password must be at least 6 characters long"));
+        }
     }
 }
