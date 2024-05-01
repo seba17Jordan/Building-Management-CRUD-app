@@ -21,20 +21,11 @@ namespace BusinessLogic
                 throw new ArgumentNullException(nameof(user), "User can't be null");
             }
 
+            user.SelfValidate();
+
             if (_userRepository.UserExists(GetUsersByMail(user.Email)))
             {
-                throw new ArgumentException("User already exists");
-            }
-            if (!IsValidEmail(user.Email))
-            {
-                throw new ArgumentException("Invalid email format", nameof(user.Email));
-            }
-
-            if (string.IsNullOrWhiteSpace(user.Email) ||
-                string.IsNullOrWhiteSpace(user.Name) ||
-                string.IsNullOrWhiteSpace(user.Password))
-            {
-                throw new ArgumentException("Invalid data");
+                throw new ArgumentException("Email already exists");
             }
 
             return _userRepository.CreateUser(user);
@@ -43,12 +34,6 @@ namespace BusinessLogic
         private Func<User, bool> GetUsersByMail(string email)
         {
             return (User u) => email == "" || u.Email == email;
-        }
-
-        private bool IsValidEmail(string email)
-        {
-            string emailRegexPattern = @"^\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b$";
-            return Regex.IsMatch(email, emailRegexPattern, RegexOptions.IgnoreCase);
         }
     }
 }

@@ -67,7 +67,7 @@ namespace BusinessLogicTest
             repo.VerifyAll();
             Assert.IsNotNull(specificEx);
             Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));   //Crear exception especifica
-            Assert.AreEqual("User already exists", specificEx.Message);
+            Assert.AreEqual("Email already exists", specificEx.Message);
         }
 
         [TestMethod]
@@ -86,7 +86,7 @@ namespace BusinessLogicTest
                     Password = "password",
                     Role = Domain.@enum.Roles.Administrator
                 };
-                repo.Setup(repo => repo.UserExists(It.IsAny<Func<User,bool>>())).Returns(false);
+                
                 var userLogic = new UserLogic(repo.Object);
 
                 // Act
