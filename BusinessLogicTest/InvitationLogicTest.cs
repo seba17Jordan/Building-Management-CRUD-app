@@ -103,7 +103,9 @@ namespace BusinessLogicTest
             {
                 Id = Guid.NewGuid(),
                 Email = "mail@gmail.com",
-                Password = "password"
+                Password = "password",
+                Role = Roles.Manager,
+                Name = "John"
             };
 
             User expectedManager = new User()
