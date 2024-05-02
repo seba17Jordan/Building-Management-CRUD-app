@@ -209,5 +209,53 @@ namespace BusinessLogicTest
             Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
             Assert.IsTrue(specificEx.Message.Contains("Invitation with same Email already exists"));
         }
+
+        [TestMethod]
+        public void AcceptInvitationExpiredTestLogic()
+        {
+            // Arrange
+            Exception specificEx = null;
+            Mock<IUserRepository> repo = new Mock<IUserRepository>(MockBehavior.Strict);
+            try
+            {
+                User managerToCreate = new User()
+                {
+                    Id = Guid.NewGuid(),
+                    Email = "magail@aasa.com",
+                    Password = "password",
+                    Role = Roles.Manager,
+                    Name = "John"
+                };
+
+                Invitation invitation = new Invitation()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "John",
+                    Email = "magail@aasa.com",
+                    ExpirationDate = new DateTime(2022,05,05),
+                    State = Status.Pending
+                };
+
+                var mockInvitationRepository = new Mock<IInvitationRepository>();
+                var mockUserRepository = new Mock<IUserRepository>();
+
+                mockInvitationRepository.Setup(x => x.GetInvitationById(invitation.Id)).Returns(invitation);
+
+                InvitationLogic invitationLogic = new InvitationLogic(mockInvitationRepository.Object, mockUserRepository.Object);
+
+                // Act
+                invitationLogic.AcceptInvitation(invitation.Id, managerToCreate);
+            }
+            catch (InvalidOperationException e)
+            {
+                specificEx = e;
+            }
+
+            // Assert
+            repo.VerifyAll();
+            Assert.IsNotNull(specificEx);
+            Assert.IsInstanceOfType(specificEx, typeof(InvalidOperationException));
+            Assert.IsTrue(specificEx.Message.Contains("The invitation has expired"));
+        }
     }
 }

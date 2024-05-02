@@ -84,18 +84,25 @@ namespace BusinessLogic
             _invitationRepository.UpdateInvitation(invitation);
         }
 
-        public User AcceptInvitation(Guid guid, User managerToCreate)
+        public User AcceptInvitation(Guid invitationId, User managerToCreate)
         {
-            if (guid == Guid.Empty)
+            if (invitationId == Guid.Empty)
             {
                 throw new ArgumentException("Invalid id");
             }
 
-            Invitation invitation = _invitationRepository.GetInvitationById(guid);
+            managerToCreate.SelfValidate();
+
+            Invitation invitation = _invitationRepository.GetInvitationById(invitationId);
 
             if (invitation == null)
             {
                 throw new ArgumentException("Invitation not found");
+            }
+
+            if(invitation.ExpirationDate < DateTime.Now)
+            {
+                throw new InvalidOperationException("The invitation has expired");
             }
 
             if (invitation.State != Status.Pending)
