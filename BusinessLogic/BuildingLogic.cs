@@ -87,7 +87,7 @@ namespace BusinessLogic
 
             if (buildingToUpdate == null)
             {
-                throw new ArgumentException("Building not found", nameof(id));
+                throw new ArgumentNullException("Building not found", nameof(id));
             }
 
             if(buildingToUpdate.managerId != managerId)
@@ -124,6 +124,7 @@ namespace BusinessLogic
                 buildingToUpdate.Apartments.Clear();
                 foreach (var apartment in building.Apartments)
                 {
+                    apartment.SelfValidate();
                     var clonedApartment = new Apartment
                     {
                         Number = apartment.Number,
