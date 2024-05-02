@@ -81,7 +81,9 @@ namespace BusinessLogic
         public void Logout(Guid token)
         {
             if (token == null)
-                throw new ArgumentException("No authorization token");
+            {
+                throw new ArgumentNullException("No authorization token");
+            }
 
             var currentSession = _sessionRepository.GetSessionByToken(token);
 
@@ -89,6 +91,10 @@ namespace BusinessLogic
             {
                 _sessionRepository.Delete(currentSession);
                 _sessionRepository.Save();
+            }
+            else
+            {
+                throw new ArgumentNullException("No session found");
             }
         }
     }
