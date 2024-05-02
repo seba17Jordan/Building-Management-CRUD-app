@@ -34,10 +34,11 @@ namespace BusinessLogicTest
             };
 
             Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+            Mock<IServiceRequestRepository> serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
             buildingRepo.Setup(l => l.CreateBuilding(It.IsAny<Building>())).Returns(expectedBuilding);
             buildingRepo.Setup(l => l.BuildingNameExists(It.IsAny<string>())).Returns(false);
 
-            BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
+            BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object);
 
             //Act
             Building logicResult = buildingLogic.CreateBuilding(expectedBuilding);
@@ -53,9 +54,10 @@ namespace BusinessLogicTest
             // Arrange
             Exception specificEx = null;
             Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+            Mock<IServiceRequestRepository> serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
             try
             {   
-                BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
+                BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object);
 
                 // Act
                 Building logicResult = buildingLogic.CreateBuilding(null);
@@ -79,6 +81,7 @@ namespace BusinessLogicTest
             // Arrange
             Exception specificEx = null;
             Mock<IBuildingRepository> buildingRepo = null;
+            Mock<IServiceRequestRepository> serviceRequestRepo = null;
             try
             {
                 //Arrange
@@ -103,8 +106,9 @@ namespace BusinessLogicTest
                 }
                 };
                 buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+                serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
 
-                BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
+                BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object);
 
                 // Act
                 Building logicResult = buildingLogic.CreateBuilding(expectedBuilding);
@@ -128,6 +132,7 @@ namespace BusinessLogicTest
             // Arrange
             Exception specificEx = null;
             Mock<IBuildingRepository> buildingRepo = null;
+            Mock<IServiceRequestRepository> serviceRequestRepo = null;
             try
             {
                 //Arrange
@@ -152,8 +157,9 @@ namespace BusinessLogicTest
                 }
                 };
                 buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+                serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
 
-                BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
+                BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object);
 
                 // Act
                 Building logicResult = buildingLogic.CreateBuilding(expectedBuilding);
@@ -177,6 +183,7 @@ namespace BusinessLogicTest
             // Arrange
             Exception specificEx = null;
             Mock<IBuildingRepository> buildingRepo = null;
+            Mock<IServiceRequestRepository> serviceRequestRepo = null;
             try
             {
                 //Arrange
@@ -201,8 +208,9 @@ namespace BusinessLogicTest
                 }
                 };
                 buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+                serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
 
-                BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
+                BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object);
 
                 // Act
                 Building logicResult = buildingLogic.CreateBuilding(expectedBuilding);
@@ -226,6 +234,7 @@ namespace BusinessLogicTest
             // Arrange
             Exception specificEx = null;
             Mock<IBuildingRepository> buildingRepo = null;
+            Mock<IServiceRequestRepository> serviceRequestRepo = null;
             try
             {
                 //Arrange
@@ -239,8 +248,9 @@ namespace BusinessLogicTest
                     Apartments = new List<Apartment>()
                 };
                 buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+                serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
 
-                BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
+                BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object);
 
                 // Act
                 Building logicResult = buildingLogic.CreateBuilding(expectedBuilding);
@@ -264,6 +274,7 @@ namespace BusinessLogicTest
             // Arrange
             Exception specificEx = null;
             Mock<IBuildingRepository> buildingRepo = null;
+            Mock<IServiceRequestRepository> serviceRequestRepo = null;
             try
             {
                 //Arrange
@@ -289,9 +300,10 @@ namespace BusinessLogicTest
                         apt
                     }
                 };
+                serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
                 buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
 
-                BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
+                BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object);
 
                 // Act
                 Building logicResult = buildingLogic.CreateBuilding(expectedBuilding);
@@ -315,6 +327,7 @@ namespace BusinessLogicTest
             // Arrange
             Exception specificEx = null;
             Mock<IBuildingRepository> buildingRepo = null;
+            Mock<IServiceRequestRepository> serviceRequestRepo = null;
             try
             {
                 //Arrange
@@ -341,10 +354,12 @@ namespace BusinessLogicTest
                         apt
                     }
                 };
+                serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
                 buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+
                 buildingRepo.Setup(l => l.BuildingNameExists(It.IsAny<string>())).Returns(true);
 
-                BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
+                BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object);
 
                 // Act
                 Building logicResult = buildingLogic.CreateBuilding(expectedBuilding);
@@ -395,13 +410,17 @@ namespace BusinessLogicTest
                 },
                 managerId = manager.Id
             };
+            List<ServiceRequest> serviceRequests = new List<ServiceRequest>();
 
             Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+            Mock<IServiceRequestRepository> serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
+
+            serviceRequestRepo.Setup(l => l.GetNoClosedServiceRequestsByBuildingId(It.IsAny<Guid>())).Returns(serviceRequests);
             buildingRepo.Setup(l => l.DeleteBuilding(It.IsAny<Building>()));
             buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(expectedBuilding);
             buildingRepo.Setup(l => l.Save());
             buildingRepo.Setup(l => l.DeleteApartment(It.IsAny<Apartment>()));
-            BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
+            BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object);
 
             // Act
             buildingLogic.DeleteBuildingById(expectedBuilding.Id, manager.Id);
@@ -443,13 +462,17 @@ namespace BusinessLogicTest
                 },
                 managerId = manager.Id
             };
+            List<ServiceRequest> serviceRequests = new List<ServiceRequest>();
 
             Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+            Mock<IServiceRequestRepository> serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
+
+            serviceRequestRepo.Setup(l => l.GetNoClosedServiceRequestsByBuildingId(It.IsAny<Guid>())).Returns(serviceRequests);
             buildingRepo.Setup(l => l.DeleteBuilding(It.IsAny<Building>()));
             buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(expectedBuilding);
             buildingRepo.Setup(l => l.Save());
             buildingRepo.Setup(l => l.DeleteApartment(It.IsAny<Apartment>()));
-            BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
+            BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object);
 
             // Act
             buildingLogic.DeleteBuildingById(expectedBuilding.Id, manager.Id);
@@ -464,7 +487,8 @@ namespace BusinessLogicTest
             // Arrange
             Exception specificEx = null;
             Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
-            BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
+            Mock<IServiceRequestRepository> serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
+            BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object);
 
             try
             {
@@ -489,8 +513,10 @@ namespace BusinessLogicTest
             // Arrange
             Exception specificEx = null;
             Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+            Mock<IServiceRequestRepository> serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
+
             buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns((Building)null);
-            BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
+            BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object);
 
             try
             {
@@ -571,12 +597,13 @@ namespace BusinessLogicTest
             };
 
             Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+            Mock<IServiceRequestRepository> serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
             buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(building);
             buildingRepo.Setup(l => l.BuildingNameExists(It.IsAny<string>())).Returns(false);
             buildingRepo.Setup(l => l.UpdateBuilding(It.IsAny<Building>()));
             buildingRepo.Setup(l => l.Save());
 
-            BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
+            BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object);
 
             //Act
             Building logicResult = buildingLogic.UpdateBuildingById(building.Id, updates, manager.Id);
@@ -592,6 +619,7 @@ namespace BusinessLogicTest
             // Arrange
             Exception specificEx = null;
             Mock<IBuildingRepository> buildingRepo = null;
+            Mock<IServiceRequestRepository> serviceRequestRepo = null;
             try
             {
                 //Arrange
@@ -619,11 +647,12 @@ namespace BusinessLogicTest
                     Name = "Name 2",
                 };
 
+                serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
                 buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
                 buildingRepo.Setup(l => l.BuildingNameExists(It.IsAny<string>())).Returns(true);
                 buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(building);
 
-                BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
+                BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object);
 
                 // Act
                 Building logicResult = buildingLogic.UpdateBuildingById(building.Id, updates, manager.Id);
@@ -647,6 +676,7 @@ namespace BusinessLogicTest
             // Arrange
             Exception specificEx = null;
             Mock<IBuildingRepository> buildingRepo = null;
+            Mock<IServiceRequestRepository> serviceRequestRepo = null;
             try
             {
                 //Arrange
@@ -673,10 +703,11 @@ namespace BusinessLogicTest
                     Name = "Name 2",
                 };
 
+                serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
                 buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
                 buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(building);
 
-                BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
+                BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object);
 
                 // Act
                 Building logicResult = buildingLogic.UpdateBuildingById(building.Id, updates, manager.Id);
@@ -701,6 +732,7 @@ namespace BusinessLogicTest
             // Arrange
             Exception specificEx = null;
             Mock<IBuildingRepository> buildingRepo = null;
+            Mock<IServiceRequestRepository> serviceRequestRepo = null;
             try
             {
                 //Arrange
@@ -728,8 +760,9 @@ namespace BusinessLogicTest
                     }
                 };
                 buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+                serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
 
-                BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
+                BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object);
 
                 // Act
                 Building logicResult = buildingLogic.CreateBuilding(expectedBuilding);

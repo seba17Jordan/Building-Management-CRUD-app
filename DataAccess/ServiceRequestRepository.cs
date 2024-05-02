@@ -55,5 +55,10 @@ namespace DataAccess
         {
             return _context.Set<ServiceRequest>().Where(sr => sr.BuildingId == buildingId).ToList();
         }
+
+        public IEnumerable<ServiceRequest> GetNoClosedServiceRequestsByBuildingId(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

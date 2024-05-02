@@ -8,9 +8,11 @@ namespace BusinessLogic
     public class BuildingLogic : IBuildingLogic
     {
         private readonly IBuildingRepository _buildingRepository;
-        public BuildingLogic(IBuildingRepository buildingRepository)
+        private readonly IServiceRequestRepository _serviceRequestRepository;
+        public BuildingLogic(IBuildingRepository buildingRepository, IServiceRequestRepository serviceRequestRepository)
         {
             _buildingRepository = buildingRepository;
+            _serviceRequestRepository = serviceRequestRepository;
         }
         public Building CreateBuilding(Building building)
         {
@@ -52,6 +54,12 @@ namespace BusinessLogic
             if (building.managerId != managerId)
             {
                 throw new ArgumentException("Manager is not the owner of the building", nameof(managerId));
+            }
+
+            //Si hay solicitud no cerrada asociada al edificio, no puedo borrarlo
+            if (_serviceRequestRepository.GetNoClosedServiceRequestsByBuildingId(id).Count() > 0)
+            {
+                throw new ArgumentException("There are active service requests associated with this building");
             }
             
             if (building.Apartments != null)

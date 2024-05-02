@@ -16,5 +16,6 @@ namespace IDataAccess
         ServiceRequest GetServiceRequestById(Guid serviceRequestId);
         void UpdateServiceRequest(ServiceRequest serviceRequest);
         List<ServiceRequest> GetServiceRequestsByBuilding(Guid buildingId);
+        IEnumerable<ServiceRequest> GetNoClosedServiceRequestsByBuildingId(Guid id);
     }
 }
