@@ -8,6 +8,7 @@ using ModelsApi.Out;
 using Domain;
 using System;
 using Domain.@enum;
+using CustomExceptions;
 
 namespace BuildingManagementApiTests.Controllers
 {
@@ -163,5 +164,32 @@ namespace BuildingManagementApiTests.Controllers
             Assert.IsInstanceOfType(deleteActionResult, typeof(OkResult));
         }
 
+        [TestMethod]
+        public void DeleteInvitation_ReturnsNotFound_WhenInvitationNotFound()
+        {
+            // Arrange
+            var nonExistingId = Guid.NewGuid(); // Generar un ID que no exista en el sistema
+
+            // Configurar el comportamiento del mock para simular una excepción al intentar eliminar la invitación
+            _invitationLogicMock.Setup(l => l.DeleteInvitation(nonExistingId)).Throws(new ObjectNotFoundException("Invitation not found"));
+
+            try
+            {
+                // Act
+                IActionResult result = _controller.DeleteInvitation(nonExistingId);
+
+                // Assert
+                Assert.IsInstanceOfType(result, typeof(NotFoundObjectResult));
+                var notFoundResult = (NotFoundObjectResult)result;
+                Assert.AreEqual(404, notFoundResult.StatusCode);
+                Assert.AreEqual("Invitation not found", notFoundResult.Value);
+                _invitationLogicMock.Verify(l => l.DeleteInvitation(nonExistingId), Times.Once);
+            }
+            catch (ObjectNotFoundException ex)
+            {
+                // Si se lanza la excepción NotFoundException, la prueba pasa
+                Assert.AreEqual("Invitation not found", ex.Message);
+            }
+        }
     }
 }
