@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CustomExceptions\CustomExceptions.csproj" />
     <ProjectReference Include="..\LogicInterface\LogicInterface.csproj" />
     <ProjectReference Include="..\ModelsApi\ModelsApi.csproj" />
     <ProjectReference Include="..\ServerFactory\ServerFactory.csproj" />

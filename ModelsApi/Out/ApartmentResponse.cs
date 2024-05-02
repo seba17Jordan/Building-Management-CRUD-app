@@ -14,6 +14,7 @@ namespace ModelsApi.Out
 
         public ApartmentResponse(Apartment apartment)
         {
+            Id = apartment.Id;
             Floor = apartment.Floor;
             Number = apartment.Number;
             Owner = new OwnerResponse(apartment.Owner);

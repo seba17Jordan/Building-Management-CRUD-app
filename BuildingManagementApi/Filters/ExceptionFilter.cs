@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 using CustomExceptions;
+using System.Security.Authentication;
 
 namespace BuildingManagementApi.Filters
 {
-    public class ExceptionFilter : IExceptionFilter
+    public class ExceptionFilter : Attribute, IExceptionFilter
     {
         
         public void OnException(ExceptionContext context)

@@ -92,8 +92,6 @@ namespace BusinessLogic
                 throw new EmptyFieldException("Invitation Id is Empty");
             }
 
-            managerToCreate.SelfValidate();
-
             Invitation invitation = _invitationRepository.GetInvitationById(invitationId);
 
             if (invitation == null)
@@ -122,6 +120,8 @@ namespace BusinessLogic
             managerToCreate.Name = invitation.Name;
             managerToCreate.Role = Roles.Manager;
             managerToCreate.LastName = "";
+            managerToCreate.SelfValidate();
+
 
             return _userRepository.CreateUser(managerToCreate);
         }

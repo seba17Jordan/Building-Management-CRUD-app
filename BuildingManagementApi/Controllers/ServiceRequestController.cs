@@ -11,7 +11,7 @@ namespace BuildingManagementApi.Controllers
 {
     [ApiController]
     [Route("api/serviceRequests")]
-    [TypeFilter(typeof(ExceptionFilter))]
+    [ExceptionFilter]
     public class ServiceRequestController : ControllerBase
     {
         private readonly IServiceRequestLogic _serviceRequestLogic;
