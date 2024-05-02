@@ -44,7 +44,7 @@ namespace BusinessLogic
         {
             if (id == Guid.Empty)
             {
-                throw new EmptyFieldException("Id is Empty");
+                throw new EmptyFieldException("Invitation Id is Empty");
             }
 
             Invitation invitation = _invitationRepository.GetInvitationById(id);
@@ -66,14 +66,14 @@ namespace BusinessLogic
         {
             if (id == Guid.Empty)
             {
-                throw new ArgumentException("Invalid id");
+                throw new EmptyFieldException("Invitation Id is Empty");
             }
 
             Invitation invitation = _invitationRepository.GetInvitationById(id);
 
             if (invitation == null)
             {
-                throw new ArgumentException("Invitation not found");
+                throw new ArgumentNullException("Invitation not found");
             }
 
             if (invitation.State != Status.Pending)
