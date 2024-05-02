@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using CustomExceptions;
+using Domain;
 using IDataAccess;
 using LogicInterface;
 using System;
@@ -28,12 +29,12 @@ namespace BusinessLogic
 
             if (_categoryRepository.FindCategoryByName(category.Name))
             {
-                throw new ArgumentException("Category already exists");
+                throw new ObjectAlreadyExistsException("Category already exists");
             }
 
             if (string.IsNullOrWhiteSpace(category.Name))
             {
-                throw new ArgumentException("Invalid data");
+                throw new EmptyFieldException("Empty category name");
             }
 
             return _categoryRepository.CreateCategory(category);
