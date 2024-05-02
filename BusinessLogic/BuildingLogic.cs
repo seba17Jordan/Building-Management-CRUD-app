@@ -35,7 +35,7 @@ namespace BusinessLogic
             return _buildingRepository.CreateBuilding(building);
         }
 
-        public void DeleteBuildingById(Guid id)
+        public void DeleteBuildingById(Guid id, Guid managerId)
         {
             if (id == Guid.Empty)
             {
@@ -48,7 +48,12 @@ namespace BusinessLogic
             {
                 throw new ArgumentException("Building not found", nameof(id));
             }
-            
+            /*
+            if (building.managerId != managerId)
+            {
+                throw new ArgumentException("Manager is not the owner of the building", nameof(managerId));
+            }
+            */
             if (building.Apartments != null)
             {
                 foreach (var apartment in building.Apartments)

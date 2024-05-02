@@ -10,7 +10,7 @@ namespace LogicInterface
     public interface IBuildingLogic
     {
         Building CreateBuilding(Building building);
-        void DeleteBuildingById(Guid id);
+        void DeleteBuildingById(Guid id, Guid managerId);
         Building UpdateBuildingById(Guid id, Building building);
     }
 }

@@ -93,6 +93,8 @@ public class BuildingControllerTest
     {
         //Arrange
         string token = "b4d9e6a4-466c-4a4f-91ea-6d7e7997584e";
+        User manager = new User { Id = Guid.NewGuid(), Role = Domain.@enum.Roles.Manager };
+
         Building buildingToDelete = new Building()
         {
             Id = Guid.NewGuid(),
@@ -117,7 +119,8 @@ public class BuildingControllerTest
         Mock<IBuildingLogic> buildingLogic = new Mock<IBuildingLogic>(MockBehavior.Strict);
         Mock<ISessionService> sessionService = new Mock<ISessionService>(MockBehavior.Strict);
 
-        buildingLogic.Setup(buildingLogic => buildingLogic.DeleteBuildingById(buildingToDelete.Id));
+        buildingLogic.Setup(buildingLogic => buildingLogic.DeleteBuildingById(buildingToDelete.Id, manager.Id));
+        sessionService.Setup(sessionService => sessionService.GetUserByToken(It.IsAny<Guid>())).Returns(manager);
         
         BuildingController buildingController = new BuildingController(buildingLogic.Object, sessionService.Object);
         buildingController.ControllerContext.HttpContext = new DefaultHttpContext();

@@ -374,7 +374,7 @@ namespace BusinessLogicTest
             BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
 
             // Act
-            buildingLogic.DeleteBuildingById(expectedId);
+            buildingLogic.DeleteBuildingById(expectedId, Guid.NewGuid());
 
             // Assert
             buildingRepo.VerifyAll();
@@ -384,6 +384,14 @@ namespace BusinessLogicTest
         public void DeleteBuildingByIdWithApartmentAndOwnerCorrectTestLogic()
         {
             // Arrange
+            User manager = new User()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Manager",
+                LastName = "Manager",
+                Email = "mai@gmail.com"
+            };
+
             Building expectedBuilding = new Building()
             {
                 Id = Guid.NewGuid(),
@@ -402,7 +410,8 @@ namespace BusinessLogicTest
                         Bathrooms = 2,
                         HasTerrace = true
                     }
-                }
+                },
+                managerId = manager.Id
             };
 
             Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
@@ -412,7 +421,7 @@ namespace BusinessLogicTest
             BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
 
             // Act
-            buildingLogic.DeleteBuildingById(expectedBuilding.Id);
+            buildingLogic.DeleteBuildingById(expectedBuilding.Id, manager.Id);
 
             // Assert
             buildingRepo.VerifyAll();
@@ -429,7 +438,7 @@ namespace BusinessLogicTest
             try
             {
                 // Act
-                buildingLogic.DeleteBuildingById(Guid.Empty);
+                buildingLogic.DeleteBuildingById(Guid.Empty, Guid.NewGuid());
             }
             catch (ArgumentException e)
             {
@@ -455,7 +464,7 @@ namespace BusinessLogicTest
             try
             {
                 // Act
-                buildingLogic.DeleteBuildingById(Guid.NewGuid());
+                buildingLogic.DeleteBuildingById(Guid.NewGuid(), Guid.NewGuid());
             }
             catch (ArgumentException e)
             {

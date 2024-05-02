@@ -45,7 +45,10 @@ namespace BuildingManagementApi.Controllers
         [AuthorizationFilter(_currentRole = Roles.Manager)]
         public IActionResult DeleteBuildingById([FromRoute] Guid id)
         {
-            _buildingLogic.DeleteBuildingById(id);
+            string token = Request.Headers["Authorization"].ToString();
+            var managerUser = _sessionService.GetUserByToken(Guid.Parse(token));
+
+            _buildingLogic.DeleteBuildingById(id, managerUser.Id);
             return NoContent();
         }
 
