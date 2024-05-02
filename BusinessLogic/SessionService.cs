@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using CustomExceptions;
+using Domain;
 using IDataAccess;
 using LogicInterface;
 using System;
@@ -25,14 +26,14 @@ namespace BusinessLogic
         {
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
             {
-                throw new ArgumentException("Invalid data");
+                throw new EmptyFieldException("There are empty fields");
             }
 
             var user = _userRepository.GetUserByEmail(email);
 
             if (user == null)
             {
-                throw new ArgumentException("User not found");
+                throw new ArgumentNullException("User not found");
             }
 
             if (user.Password != password)
@@ -43,6 +44,7 @@ namespace BusinessLogic
             var actualSession = new Session() {
                 User = user 
             };
+
             _sessionRepository.Insert(actualSession);
             _sessionRepository.Save();
 
