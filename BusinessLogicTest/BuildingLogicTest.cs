@@ -3,6 +3,7 @@ using Domain;
 using Moq;
 using BusinessLogic;
 using IDataAccess;
+using Domain.@enum;
 namespace BusinessLogicTest
 {
     [TestClass]
@@ -505,6 +506,79 @@ namespace BusinessLogicTest
             Assert.IsNotNull(specificEx);
             Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
             Assert.IsTrue(specificEx.Message.Contains("Id is empty"));
+        }
+
+        [TestMethod]
+        public void DeleteBuildingWithAssociatedActiveServiceRequestExceptionTestLogic()
+        {
+            // Arrange
+            User manager = new User()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Manager",
+                LastName = "Manager",
+                Email = "srff@gmail.com",
+                Role = Roles.Manager,
+                Password = "123456"
+            };
+
+            Building building = new Building()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Name 1",
+                Address = "Address 1",
+                ConstructionCompany = "",
+                CommonExpenses = 100,
+                Apartments = new List<Apartment>
+                {
+                    new Apartment()
+                    {
+                        Floor = 1,
+                        Number = 101,
+                        Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "daedeq@gmaui.com"}
+                    }
+                },
+                managerId = manager.Id
+            };
+
+            Category category = new Category()
+            {
+                Name = "Category"
+            };
+
+            ServiceRequest serviceRequest = new ServiceRequest()
+            {
+                Id = Guid.NewGuid(),
+                BuildingId = building.Id,
+                Description = "Description",
+                Status = ServiceRequestStatus.Open,
+                Apartment = building.Apartments.First().Id,
+                Category = category.Id
+            };
+
+            Exception specificEx = null;
+            Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+            Mock<IServiceRequestRepository> serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
+            serviceRequestRepo.Setup(l => l.GetNoClosedServiceRequestsByBuildingId(It.IsAny<Guid>())).Returns(new List<ServiceRequest> { serviceRequest });
+            buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(building);
+
+            BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object);
+
+            try
+            {
+                // Act
+                buildingLogic.DeleteBuildingById(building.Id, manager.Id);
+            }
+            catch (ArgumentException e)
+            {
+                specificEx = e;
+            }
+
+            // Assert
+            buildingRepo.VerifyAll();
+            Assert.IsNotNull(specificEx);
+            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
+            Assert.IsTrue(specificEx.Message.Contains("There are active service requests associated with this building"));
         }
 
         [TestMethod]

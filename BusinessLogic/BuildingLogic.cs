@@ -48,7 +48,7 @@ namespace BusinessLogic
             
             if (building == null)
             {
-                throw new ArgumentException("Building not found", nameof(id));
+                throw new ArgumentException("Building not found");
             }
             
             if (building.managerId != managerId)
