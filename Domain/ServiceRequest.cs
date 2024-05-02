@@ -1,4 +1,5 @@
-﻿using Domain.@enum;
+﻿using CustomExceptions;
+using Domain.@enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace Domain
         {
             if (string.IsNullOrWhiteSpace(Description) || Apartment == Guid.Empty || Category == Guid.Empty)
             {
-                throw new ArgumentException("There are empty fields");
+                throw new EmptyFieldException("There are empty fields");
             }
         }
 

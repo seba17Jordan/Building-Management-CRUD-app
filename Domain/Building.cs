@@ -1,4 +1,6 @@
 ﻿
+using CustomExceptions;
+
 namespace Domain
 {
     public class Building
@@ -18,7 +20,7 @@ namespace Domain
         {
             if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Address) || string.IsNullOrWhiteSpace(ConstructionCompany))
             {
-                throw new ArgumentException("There are empty fields");
+                throw new EmptyFieldException("There are empty fields");
             }
 
             if (CommonExpenses < 0)

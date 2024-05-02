@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CustomExceptions;
 
 namespace BusinessLogic
 {
@@ -30,7 +31,7 @@ namespace BusinessLogic
 
             if (currentBuilding == null)
             {
-                throw new InvalidOperationException("Building not found.");
+                throw new ObjectNotFoundException("Building not found.");
             }
 
             if(currentBuilding.managerId != Managerid)
@@ -46,7 +47,7 @@ namespace BusinessLogic
 
                 if (maintenancePerson == null)
                 {
-                    throw new InvalidOperationException("Maintenance person not found.");
+                    throw new ObjectNotFoundException("Maintenance person not found.");
                 }
                 serviceRequests = serviceRequests.Where(sr => sr.MaintainancePersonId == maintenancePerson.Id); 
             }

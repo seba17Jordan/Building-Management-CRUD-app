@@ -1,4 +1,5 @@
-﻿using Domain.@enum;
+﻿using CustomExceptions;
+using Domain.@enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace Domain
         {
             if(string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password) || string.IsNullOrWhiteSpace(Name))
             {
-                throw new ArgumentException("There are empty fields");
+                throw new EmptyFieldException("There are empty fields");
             }
 
             if (Password.Length < 6)

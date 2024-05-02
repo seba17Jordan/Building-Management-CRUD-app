@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CustomExceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,7 @@ namespace Domain
         {
             if (string.IsNullOrWhiteSpace(Name))
             {
-                throw new ArgumentException("Category name can't be null or empty");
+                throw new EmptyFieldException("Category name can't be null or empty");
             }
         }
         public override bool Equals(object? obj)

@@ -4,6 +4,7 @@ using Moq;
 using BusinessLogic;
 using IDataAccess;
 using Domain.@enum;
+using CustomExceptions;
 namespace BusinessLogicTest
 {
     [TestClass]
@@ -52,7 +53,7 @@ namespace BusinessLogicTest
                 // Act
                 categoryLogic.CreateCategory(cat);
             }
-            catch (ArgumentException e)
+            catch (EmptyFieldException e)
             {
                 specificEx = e;
             }
@@ -60,7 +61,7 @@ namespace BusinessLogicTest
             // Assert
             repo.VerifyAll();
             Assert.IsNotNull(specificEx);
-            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
+            Assert.IsInstanceOfType(specificEx, typeof(EmptyFieldException));
             Assert.IsTrue(specificEx.Message.Contains("Category name can't be null or empty"));
         }
     }

@@ -21,7 +21,7 @@
 
             if (Owner == null)
             {
-                throw new ArgumentException("Owner must be set in all apartments");
+                throw new ArgumentNullException("Owner must be set in all apartments");
             }
         }
 

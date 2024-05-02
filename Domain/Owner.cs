@@ -1,4 +1,6 @@
-﻿namespace Domain
+﻿using CustomExceptions;
+
+namespace Domain
 {
     public class Owner
     {
@@ -13,10 +15,9 @@
         {
             if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(LastName) || string.IsNullOrWhiteSpace(Email))
             {
-                throw new ArgumentException("Owner fields are empty");
+                throw new EmptyFieldException("Owner fields are empty");
             }
         }
-
 
         public override bool Equals(object owner)
         {

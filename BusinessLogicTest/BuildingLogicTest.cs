@@ -116,7 +116,7 @@ namespace BusinessLogicTest
                 Building logicResult = buildingLogic.CreateBuilding(expectedBuilding);
 
             }
-            catch (ArgumentException e)
+            catch (EmptyFieldException e)
             {
                 specificEx = e;
             }
@@ -124,7 +124,7 @@ namespace BusinessLogicTest
             // Assert
             buildingRepo.VerifyAll();
             Assert.IsNotNull(specificEx);
-            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
+            Assert.IsInstanceOfType(specificEx, typeof(EmptyFieldException));
             Assert.IsTrue(specificEx.Message.Contains("There are empty fields"));
         }
 
@@ -167,7 +167,7 @@ namespace BusinessLogicTest
                 Building logicResult = buildingLogic.CreateBuilding(expectedBuilding);
 
             }
-            catch (ArgumentException e)
+            catch (EmptyFieldException e)
             {
                 specificEx = e;
             }
@@ -175,7 +175,7 @@ namespace BusinessLogicTest
             // Assert
             buildingRepo.VerifyAll();
             Assert.IsNotNull(specificEx);
-            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
+            Assert.IsInstanceOfType(specificEx, typeof(EmptyFieldException));
             Assert.IsTrue(specificEx.Message.Contains("There are empty fields"));
         }
 
@@ -218,7 +218,7 @@ namespace BusinessLogicTest
                 Building logicResult = buildingLogic.CreateBuilding(expectedBuilding);
 
             }
-            catch (ArgumentException e)
+            catch (EmptyFieldException e)
             {
                 specificEx = e;
             }
@@ -226,7 +226,7 @@ namespace BusinessLogicTest
             // Assert
             buildingRepo.VerifyAll();
             Assert.IsNotNull(specificEx);
-            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
+            Assert.IsInstanceOfType(specificEx, typeof(EmptyFieldException));
             Assert.IsTrue(specificEx.Message.Contains("There are empty fields"));
         }
 

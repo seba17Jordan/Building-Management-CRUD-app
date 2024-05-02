@@ -51,7 +51,7 @@ namespace BusinessLogic
 
             if (invitation == null)
             {
-                throw new ArgumentNullException("Invitation not found");
+                throw new ObjectNotFoundException("Invitation not found");
             }
 
             if(invitation.State != Status.Rejected)
@@ -73,7 +73,7 @@ namespace BusinessLogic
 
             if (invitation == null)
             {
-                throw new ArgumentNullException("Invitation not found");
+                throw new ObjectNotFoundException("Invitation not found");
             }
 
             if (invitation.State != Status.Pending)
@@ -98,7 +98,7 @@ namespace BusinessLogic
 
             if (invitation == null)
             {
-                throw new ArgumentNullException("Invitation not found");
+                throw new ObjectNotFoundException("Invitation not found");
             }
 
             if(invitation.ExpirationDate < DateTime.Now)
