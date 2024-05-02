@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using CustomExceptions;
+using Domain;
 using Domain.@enum;
 using IDataAccess;
 using LogicInterface;
@@ -24,26 +25,26 @@ namespace BusinessLogic
         {
             if(maintainancePersonId == Guid.Empty || serviceRequestId == Guid.Empty)
             {
-                throw new ArgumentNullException("Missing Id");
+                throw new EmptyFieldException("Missing Id");
             }
 
             User maintainancePerson = _userRepository.GetUserById(maintainancePersonId);
 
             if(maintainancePerson == null)
             {
-                throw new ArgumentException("Maintainance person does not exist", nameof(maintainancePerson));
+                throw new ObjectNotFoundException("Maintainance person does not exist");
             }
 
             if(maintainancePerson.Role != Roles.Maintenance)
             {
-                throw new ArgumentException("User is not a maintainance person", nameof(maintainancePerson));
+                throw new ArgumentException("User is not a maintainance person");
             }
 
             ServiceRequest serviceRequest = _serviceRequestRepository.GetServiceRequestById(serviceRequestId);
 
             if(serviceRequest == null)
             {
-                throw new ArgumentException("Service request does not exist", nameof(serviceRequest));
+                throw new ObjectNotFoundException("Service request does not exist");
             }
 
             if(serviceRequest.Status != ServiceRequestStatus.Open)
@@ -66,10 +67,10 @@ namespace BusinessLogic
             serviceRequest.SelfValidate();
             
             if (!_buildingRepository.ExistApartment(serviceRequest.Apartment)) { 
-                throw new ArgumentException("Apartment does not exist", nameof(serviceRequest.Apartment));
+                throw new ObjectNotFoundException("Apartment does not exist");
             }
             if (!_categoryRepository.FindCategoryById(serviceRequest.Category)) { 
-                throw new ArgumentException("Category does not exist", nameof(serviceRequest.Category));
+                throw new ObjectNotFoundException("Category does not exist");
             }
 
             //Documentar
@@ -99,7 +100,7 @@ namespace BusinessLogic
             
             if (serviceRequest == null)
             {
-                throw new ArgumentException("Service request does not exist", nameof(serviceRequest));
+                throw new ObjectNotFoundException("Service request does not exist");
             }
 
             //Solo puedo aceptar o cerrar las solicitudes asignadas para mi
@@ -112,12 +113,12 @@ namespace BusinessLogic
             {
                 if (serviceRequest.Status != ServiceRequestStatus.Attending)
                 {
-                    throw new ArgumentException("Service request is not attending", nameof(serviceRequest));
+                    throw new InvalidOperationException("Service request is not attending");
                 }
 
                 if (totalCost < 0)
                 {
-                    throw new ArgumentException("Total cost is negative", nameof(totalCost));
+                    throw new ArgumentException("Total cost is negative");
                 }
                 serviceRequest.TotalCost = totalCost;
                 serviceRequest.Status = ServiceRequestStatus.Closed;
@@ -127,7 +128,7 @@ namespace BusinessLogic
             { 
                 if (serviceRequest.Status != ServiceRequestStatus.Open)
                 {
-                    throw new ArgumentException("Service request is not open", nameof(serviceRequest));
+                    throw new InvalidOperationException("Service request is not open");
                 }
                 serviceRequest.Status = ServiceRequestStatus.Attending;
                 serviceRequest.StartDate = DateTime.Now;

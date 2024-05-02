@@ -323,7 +323,7 @@ namespace BusinessLogicTest
                 ServiceRequest logicResult = requestLogic.UpdateServiceRequestStatus(expectedServiceRequest.Id, maitenancePerson.Id, 100);
 
             }
-            catch (ArgumentException e)
+            catch (InvalidOperationException e)
             {
                 specificEx = e;
             }
@@ -331,7 +331,7 @@ namespace BusinessLogicTest
             // Assert
             serviceRequestRepo.VerifyAll();
             Assert.IsNotNull(specificEx);
-            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
+            Assert.IsInstanceOfType(specificEx, typeof(InvalidOperationException));
             Assert.IsTrue(specificEx.Message.Contains("Service request is not attending"));
         }
 
