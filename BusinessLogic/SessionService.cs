@@ -54,10 +54,14 @@ namespace BusinessLogic
         public User GetUserByToken(Guid token)
         {
             if (_currentUser != null)
+            {
                 return _currentUser;
+            }
 
             if (token == null)
-                throw new ArgumentException("No authorization token");
+            {
+                throw new ArgumentNullException("No authorization token");
+            }
 
             var currentSession = _sessionRepository.GetSessionByToken(token);
 
@@ -65,6 +69,10 @@ namespace BusinessLogic
             {
                 Guid _currentUserId = currentSession.UserId;
                 _currentUser = _userRepository.GetUserById(_currentUserId);
+            }
+            else
+            {
+                throw new ArgumentNullException("No session found");
             }
 
             return _currentUser;
