@@ -366,15 +366,45 @@ namespace BusinessLogicTest
         public void DeleteBuildingByIdCorrectTestLogic()
         {
             // Arrange
-            Guid expectedId = Guid.NewGuid();
+            User manager = new User()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Manager",
+                LastName = "Manager",
+                Email = "mai@gmail.com"
+            };
+
+            Building expectedBuilding = new Building()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Name 1",
+                Address = "Address 1",
+                ConstructionCompany = "",
+                CommonExpenses = 100,
+                Apartments = new List<Apartment>
+                {
+                    new Apartment()
+                    {
+                        Floor = 1,
+                        Number = 101,
+                        Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "jane.doe@example.com" },
+                        Rooms = 3,
+                        Bathrooms = 2,
+                        HasTerrace = true
+                    }
+                },
+                managerId = manager.Id
+            };
+
             Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
             buildingRepo.Setup(l => l.DeleteBuilding(It.IsAny<Building>()));
-            buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(new Building());
+            buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(expectedBuilding);
             buildingRepo.Setup(l => l.Save());
+            buildingRepo.Setup(l => l.DeleteApartment(It.IsAny<Apartment>()));
             BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
 
             // Act
-            buildingLogic.DeleteBuildingById(expectedId, Guid.NewGuid());
+            buildingLogic.DeleteBuildingById(expectedBuilding.Id, manager.Id);
 
             // Assert
             buildingRepo.VerifyAll();
