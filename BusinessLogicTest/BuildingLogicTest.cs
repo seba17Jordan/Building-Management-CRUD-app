@@ -4,6 +4,7 @@ using Moq;
 using BusinessLogic;
 using IDataAccess;
 using Domain.@enum;
+using CustomExceptions;
 namespace BusinessLogicTest
 {
     [TestClass]
@@ -366,7 +367,7 @@ namespace BusinessLogicTest
                 Building logicResult = buildingLogic.CreateBuilding(expectedBuilding);
 
             }
-            catch (ArgumentException e)
+            catch (ObjectAlreadyExistsException e)
             {
                 specificEx = e;
             }
@@ -374,7 +375,7 @@ namespace BusinessLogicTest
             // Assert
             buildingRepo.VerifyAll();
             Assert.IsNotNull(specificEx);
-            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
+            Assert.IsInstanceOfType(specificEx, typeof(ObjectAlreadyExistsException));
             Assert.IsTrue(specificEx.Message.Contains("Building with same name already exists"));
         }
 
@@ -496,7 +497,7 @@ namespace BusinessLogicTest
                 // Act
                 buildingLogic.DeleteBuildingById(Guid.Empty, Guid.NewGuid());
             }
-            catch (ArgumentException e)
+            catch (EmptyFieldException e)
             {
                 specificEx = e;
             }
@@ -504,7 +505,7 @@ namespace BusinessLogicTest
             // Assert
             buildingRepo.VerifyAll();
             Assert.IsNotNull(specificEx);
-            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
+            Assert.IsInstanceOfType(specificEx, typeof(EmptyFieldException));
             Assert.IsTrue(specificEx.Message.Contains("Id is empty"));
         }
 
@@ -569,7 +570,7 @@ namespace BusinessLogicTest
                 // Act
                 buildingLogic.DeleteBuildingById(building.Id, manager.Id);
             }
-            catch (ArgumentException e)
+            catch (InvalidOperationException e)
             {
                 specificEx = e;
             }
@@ -577,7 +578,7 @@ namespace BusinessLogicTest
             // Assert
             buildingRepo.VerifyAll();
             Assert.IsNotNull(specificEx);
-            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
+            Assert.IsInstanceOfType(specificEx, typeof(InvalidOperationException));
             Assert.IsTrue(specificEx.Message.Contains("There are active service requests associated with this building"));
         }
 
@@ -597,7 +598,7 @@ namespace BusinessLogicTest
                 // Act
                 buildingLogic.DeleteBuildingById(Guid.NewGuid(), Guid.NewGuid());
             }
-            catch (ArgumentException e)
+            catch (ObjectNotFoundException e)
             {
                 specificEx = e;
             }
@@ -605,7 +606,7 @@ namespace BusinessLogicTest
             // Assert
             buildingRepo.VerifyAll();
             Assert.IsNotNull(specificEx);
-            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
+            Assert.IsInstanceOfType(specificEx, typeof(ObjectNotFoundException));
             Assert.IsTrue(specificEx.Message.Contains("Building not found"));
         }
 

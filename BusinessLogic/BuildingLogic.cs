@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using CustomExceptions;
+using Domain;
 using IDataAccess;
 using LogicInterface;
 using System.Globalization;
@@ -31,7 +32,7 @@ namespace BusinessLogic
             
             if (_buildingRepository.BuildingNameExists(building.Name))
             {
-                throw new ArgumentException("Building with same name already exists");
+                throw new ObjectAlreadyExistsException("Building with same name already exists");
             }
 
             return _buildingRepository.CreateBuilding(building);
@@ -41,25 +42,25 @@ namespace BusinessLogic
         {
             if (id == Guid.Empty)
             {
-                throw new ArgumentException("Id is empty", nameof(id));
+                throw new EmptyFieldException("Id is empty");
             }
 
             Building building = _buildingRepository.GetBuildingById(id);
             
             if (building == null)
             {
-                throw new ArgumentException("Building not found");
+                throw new ObjectNotFoundException("Building not found");
             }
             
             if (building.managerId != managerId)
             {
-                throw new ArgumentException("Manager is not the owner of the building", nameof(managerId));
+                throw new InvalidOperationException("Manager is not the owner of the building");
             }
 
             //Si hay solicitud no cerrada asociada al edificio, no puedo borrarlo
             if (_serviceRequestRepository.GetNoClosedServiceRequestsByBuildingId(id).Count() > 0)
             {
-                throw new ArgumentException("There are active service requests associated with this building");
+                throw new InvalidOperationException("There are active service requests associated with this building");
             }
             
             if (building.Apartments != null)
