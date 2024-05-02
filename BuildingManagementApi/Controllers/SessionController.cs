@@ -8,6 +8,7 @@ namespace BuildingManagementApi.Controllers
 {
     [Route("api/session")]
     [ApiController]
+    [ExceptionFilter]
     public class SessionController : ControllerBase
     {
         private readonly ISessionService _sessionService;

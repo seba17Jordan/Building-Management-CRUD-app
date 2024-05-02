@@ -13,7 +13,7 @@ namespace BuildingManagementApi.Controllers
 {
     [ApiController]
     [Route("api/invitations")]
-    [TypeFilter(typeof(ExceptionFilter))]
+    [ExceptionFilter]
     public class InvitationController : ControllerBase
     {
         private readonly IInvitationLogic _invitationLogic;

@@ -11,7 +11,7 @@ namespace BuildingManagementApi.Controllers
 {
     [ApiController]
     [Route("api/buildings")]
-    [TypeFilter(typeof(ExceptionFilter))]
+    [ExceptionFilter]
     public class BuildingController : ControllerBase
     {
         private readonly IBuildingLogic _buildingLogic;

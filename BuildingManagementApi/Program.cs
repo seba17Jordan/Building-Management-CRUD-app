@@ -11,7 +11,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddServices(builder.Configuration.GetConnectionString("BuildingManagement"));
 //Filters
+builder.Services.AddControllers(options => options.Filters.Add(typeof(ExceptionFilter)));
 builder.Services.AddScoped<AuthenticationFilter>();
+builder.Services.AddScoped<AuthorizationFilter>();
+//builder.Services.AddScoped<ExceptionFilter>();
 
 var app = builder.Build();
 

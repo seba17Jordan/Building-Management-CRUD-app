@@ -11,7 +11,7 @@ namespace BuildingManagementApi.Controllers
 {
     [ApiController]
     [Route("api/maintenances")]
-    [TypeFilter(typeof(ExceptionFilter))]
+    [ExceptionFilter]
     public class MaintenancePersonController : ControllerBase
     {
         private readonly IUserLogic _userLogic;
