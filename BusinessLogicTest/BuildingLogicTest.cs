@@ -642,6 +642,60 @@ namespace BusinessLogicTest
         }
 
         [TestMethod]
+        public void UpdateBuildingNotBeingOwnerShouldThrowExceptionTestLogic()
+        {
+            // Arrange
+            Exception specificEx = null;
+            Mock<IBuildingRepository> buildingRepo = null;
+            try
+            {
+                //Arrange
+                User manager = new User()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Manager",
+                    LastName = "Manager",
+                    Email = "sef@gmail.com"
+                };
+
+                Building building = new Building()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Name 1",
+                    Address = "Address 1",
+                    ConstructionCompany = "Company",
+                    CommonExpenses = -100,
+                    Apartments = new List<Apartment>(),
+                };
+
+                Building updates = new Building()
+                {
+                    Name = "Name 2",
+                };
+
+                buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+                buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(building);
+
+                BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
+
+                // Act
+                Building logicResult = buildingLogic.UpdateBuildingById(building.Id, updates, manager.Id);
+
+            }
+            catch (ArgumentException e)
+            {
+                specificEx = e;
+            }
+
+            // Assert
+            buildingRepo.VerifyAll();
+            Assert.IsNotNull(specificEx);
+            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
+            Assert.IsTrue(specificEx.Message.Contains("Manager is not the owner of the building"));
+        }
+
+
+        [TestMethod]
         public void CreateBuildingWrongApartmentInfoThrowArgumentExceptionTestLogic()
         {
             // Arrange

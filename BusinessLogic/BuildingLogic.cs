@@ -83,7 +83,7 @@ namespace BusinessLogic
 
             if(buildingToUpdate.managerId != managerId)
             {
-                throw new ArgumentException("Manager is not the owner of the building", nameof(managerId));
+                throw new ArgumentException("Manager is not the owner of the building");
             }
 
             if (building.Name != null)
