@@ -48,12 +48,12 @@ namespace BusinessLogic
             {
                 throw new ArgumentException("Building not found", nameof(id));
             }
-            /*
+            
             if (building.managerId != managerId)
             {
                 throw new ArgumentException("Manager is not the owner of the building", nameof(managerId));
             }
-            */
+            
             if (building.Apartments != null)
             {
                 foreach (var apartment in building.Apartments)
