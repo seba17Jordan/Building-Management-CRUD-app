@@ -513,6 +513,14 @@ namespace BusinessLogicTest
         public void UpdateBuildingNameTestLogic()
         {
             //Arrange
+            User manager = new User()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Manager",
+                LastName = "Manager",
+                Email = "sklmf@gmai.com"
+            };
+
             Building building = new Building()
             {
                 Id = Guid.NewGuid(),
@@ -531,7 +539,9 @@ namespace BusinessLogicTest
                         Bathrooms = 2,
                         HasTerrace = true
                     }
-                }
+                },
+                managerId = manager.Id
+                
             };
 
             Building updates = new Building()
@@ -569,7 +579,7 @@ namespace BusinessLogicTest
             BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
 
             //Act
-            Building logicResult = buildingLogic.UpdateBuildingById(building.Id, updates);
+            Building logicResult = buildingLogic.UpdateBuildingById(building.Id, updates, manager.Id);
 
             //Assert
             buildingRepo.VerifyAll();
@@ -585,6 +595,14 @@ namespace BusinessLogicTest
             try
             {
                 //Arrange
+                User manager = new User()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Manager",
+                    LastName = "Manager",
+                    Email = "sef@gmail.com"
+                };
+
                 Building building = new Building()
                 {
                     Id = Guid.NewGuid(),
@@ -592,7 +610,8 @@ namespace BusinessLogicTest
                     Address = "Address 1",
                     ConstructionCompany = "Company",
                     CommonExpenses = -100,
-                    Apartments = new List<Apartment>()
+                    Apartments = new List<Apartment>(),
+                    managerId = manager.Id
                 };
 
                 Building updates = new Building()
@@ -607,7 +626,7 @@ namespace BusinessLogicTest
                 BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object);
 
                 // Act
-                Building logicResult = buildingLogic.UpdateBuildingById(building.Id, updates);
+                Building logicResult = buildingLogic.UpdateBuildingById(building.Id, updates, manager.Id);
 
             }
             catch (ArgumentException e)

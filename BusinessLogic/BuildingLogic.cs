@@ -72,7 +72,7 @@ namespace BusinessLogic
             _buildingRepository.Save();
         }
 
-        public Building UpdateBuildingById(Guid id, Building building)
+        public Building UpdateBuildingById(Guid id, Building building, Guid managerId)
         {
             Building buildingToUpdate = _buildingRepository.GetBuildingById(id);
 

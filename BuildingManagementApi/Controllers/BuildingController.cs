@@ -57,8 +57,11 @@ namespace BuildingManagementApi.Controllers
         [AuthorizationFilter(_currentRole = Roles.Manager)]
         public IActionResult UpdateBuildingById([FromRoute] Guid id, [FromBody] BuildingRequest buildingUpdates)
         {
+            string token = Request.Headers["Authorization"].ToString();
+            var managerUser = _sessionService.GetUserByToken(Guid.Parse(token));
+
             var building = buildingUpdates.ToEntity();
-            var logicBuilding = _buildingLogic.UpdateBuildingById(id, building);
+            var logicBuilding = _buildingLogic.UpdateBuildingById(id, building, managerUser.Id);
             BuildingResponse response = new BuildingResponse(logicBuilding);
 
             return Ok(response);

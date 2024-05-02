@@ -199,7 +199,8 @@ public class BuildingControllerTest
         Mock<IBuildingLogic> buildingLogic = new Mock<IBuildingLogic>(MockBehavior.Strict);
         Mock<ISessionService> sessionService = new Mock<ISessionService>(MockBehavior.Strict);
 
-        buildingLogic.Setup(bl => bl.UpdateBuildingById(It.IsAny<Guid>(), It.IsAny<Building>())).Returns(expectedBuilding);
+        buildingLogic.Setup(bl => bl.UpdateBuildingById(It.IsAny<Guid>(), It.IsAny<Building>(), It.IsAny<Guid>())).Returns(expectedBuilding);
+        sessionService.Setup(ss => ss.GetUserByToken(It.IsAny<Guid>())).Returns(new User { Id = Guid.NewGuid() });
 
         BuildingController buildingController = new BuildingController(buildingLogic.Object, sessionService.Object);
         buildingController.ControllerContext.HttpContext = new DefaultHttpContext();
