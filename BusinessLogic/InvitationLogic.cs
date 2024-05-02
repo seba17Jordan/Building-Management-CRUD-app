@@ -89,7 +89,7 @@ namespace BusinessLogic
         {
             if (invitationId == Guid.Empty)
             {
-                throw new ArgumentException("Invalid id");
+                throw new EmptyFieldException("Invitation Id is Empty");
             }
 
             managerToCreate.SelfValidate();
@@ -98,7 +98,7 @@ namespace BusinessLogic
 
             if (invitation == null)
             {
-                throw new ArgumentException("Invitation not found");
+                throw new ArgumentNullException("Invitation not found");
             }
 
             if(invitation.ExpirationDate < DateTime.Now)
