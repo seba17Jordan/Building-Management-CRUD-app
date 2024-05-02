@@ -90,4 +90,37 @@ public class AdministratorControllerTest
             Assert.AreEqual("Email already exists", ex.Message);
         }
     }
+
+    [TestMethod]
+    public void CreateAdminIncorrectTest()
+    {
+        // Arrange
+        var adminToCreate = new AdministratorRequest
+        {
+            Name = "John",
+            LastName = "Doe",
+            Email = "john.doe@example.com",
+            Password = "",  // Contraseña vacía, otro dato incorrecto
+            Role = Roles.Administrator
+        };
+
+        // Crear el controlador con la lógica simulada
+        Mock<IUserLogic> userLogic = new Mock<IUserLogic>();
+        var controller = new AdministratorController(userLogic.Object);
+
+        try
+        {
+            // Act
+            var result = controller.CreateAdministrator(adminToCreate) as ObjectResult;
+
+            // Assert
+            Assert.Fail("Expected exception not thrown.");
+        }
+        catch (ArgumentException ex)
+        {
+            // Assert
+            Assert.AreEqual("There is a missing field in the request's body", ex.Message);
+        }
+    }
+
 }
