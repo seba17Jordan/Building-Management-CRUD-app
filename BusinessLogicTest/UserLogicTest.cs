@@ -3,6 +3,7 @@ using Domain;
 using Moq;
 using BusinessLogic;
 using IDataAccess;
+using CustomExceptions;
 namespace BusinessLogicTest
 {
     [TestClass]
@@ -58,7 +59,7 @@ namespace BusinessLogicTest
                 var logicResult = userLogic.CreateUser(expectedUser);
 
             }
-            catch(ArgumentException e)
+            catch(ObjectAlreadyExistsException e)
             {
                 specificEx = e;
             }
@@ -66,7 +67,7 @@ namespace BusinessLogicTest
             // Assert
             repo.VerifyAll();
             Assert.IsNotNull(specificEx);
-            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
+            Assert.IsInstanceOfType(specificEx, typeof(ObjectAlreadyExistsException));
             Assert.AreEqual("Email already exists", specificEx.Message);
         }
 

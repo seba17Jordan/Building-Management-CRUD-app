@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using CustomExceptions;
+using Domain;
 using IDataAccess;
 using LogicInterface;
 using System.Globalization;
@@ -25,7 +26,7 @@ namespace BusinessLogic
 
             if (_userRepository.UserExists(GetUsersByMail(user.Email)))
             {
-                throw new ArgumentException("Email already exists");
+                throw new ObjectAlreadyExistsException("Email already exists");
             }
 
             return _userRepository.CreateUser(user);
