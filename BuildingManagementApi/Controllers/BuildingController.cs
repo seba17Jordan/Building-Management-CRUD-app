@@ -15,10 +15,12 @@ namespace BuildingManagementApi.Controllers
     public class BuildingController : ControllerBase
     {
         private readonly IBuildingLogic _buildingLogic;
+        private readonly ISessionService _sessionService;
 
-        public BuildingController(IBuildingLogic buildingLogic)
+        public BuildingController(IBuildingLogic buildingLogic, ISessionService sessionService)
         {
             this._buildingLogic = buildingLogic;
+            _sessionService = sessionService;
         }
 
 
@@ -27,7 +29,11 @@ namespace BuildingManagementApi.Controllers
         [AuthorizationFilter(_currentRole = Roles.Manager)]
         public IActionResult CreateBuilding([FromBody] BuildingRequest buildingToCreate)
         {
+            string token = Request.Headers["Authorization"].ToString();
+            var managerUser = _sessionService.GetUserByToken(Guid.Parse(token));
+
             var building = buildingToCreate.ToEntity();
+            building.managerId = managerUser.Id;
             var resultObj = _buildingLogic.CreateBuilding(building);
             BuildingResponse outputResult = new BuildingResponse(resultObj);
 

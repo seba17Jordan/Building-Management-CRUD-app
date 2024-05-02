@@ -1,10 +1,12 @@
 using BuildingManagementApi.Controllers;
 using Domain;
 using LogicInterface;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ModelsApi.In;
 using ModelsApi.Out;
 using Moq;
+using Newtonsoft.Json.Linq;
 
 namespace BuildingManagementApiTest;
 
@@ -15,6 +17,7 @@ public class BuildingControllerTest
     public void CreateBuildingCorrectTest()
     {
         //Arrange
+        string token = "b4d9e6a4-466c-4a4f-91ea-6d7e7997584e";
         BuildingRequest buildingToCreate = new BuildingRequest()
         {
             Name = "New Building",
@@ -59,9 +62,15 @@ public class BuildingControllerTest
         var expectedMappedBuilding = new BuildingResponse(expectedBuilding); 
 
         Mock<IBuildingLogic> buildingLogic = new Mock<IBuildingLogic>(MockBehavior.Strict);
+        Mock<ISessionService> sessionService = new Mock<ISessionService>(MockBehavior.Strict);
+
         buildingLogic.Setup(buildingLogic => buildingLogic.CreateBuilding(It.IsAny<Building>())).Returns(expectedBuilding);
+        sessionService.Setup(sessionService => sessionService.GetUserByToken(It.IsAny<Guid>())).Returns(new User { Id = Guid.NewGuid() });
         
-        BuildingController buildingController = new BuildingController(buildingLogic.Object);
+        BuildingController buildingController = new BuildingController(buildingLogic.Object, sessionService.Object);
+        buildingController.ControllerContext.HttpContext = new DefaultHttpContext();
+        buildingController.ControllerContext.HttpContext.Request.Headers["Authorization"] = token;
+
         CreatedAtActionResult expectedObjResult = new CreatedAtActionResult("CreateBuilding", "CreateBuilding", new {id = 3 } , expectedMappedBuilding);
 
         //Act
@@ -83,6 +92,7 @@ public class BuildingControllerTest
     public void DeleteBuildingByIdCorrectTestController()
     {
         //Arrange
+        string token = "b4d9e6a4-466c-4a4f-91ea-6d7e7997584e";
         Building buildingToDelete = new Building()
         {
             Id = Guid.NewGuid(),
@@ -105,9 +115,13 @@ public class BuildingControllerTest
         };
 
         Mock<IBuildingLogic> buildingLogic = new Mock<IBuildingLogic>(MockBehavior.Strict);
+        Mock<ISessionService> sessionService = new Mock<ISessionService>(MockBehavior.Strict);
+
         buildingLogic.Setup(buildingLogic => buildingLogic.DeleteBuildingById(buildingToDelete.Id));
         
-        BuildingController buildingController = new BuildingController(buildingLogic.Object);
+        BuildingController buildingController = new BuildingController(buildingLogic.Object, sessionService.Object);
+        buildingController.ControllerContext.HttpContext = new DefaultHttpContext();
+        buildingController.ControllerContext.HttpContext.Request.Headers["Authorization"] = token;
 
         var expectedObjResult = new NoContentResult();
 
@@ -126,6 +140,7 @@ public class BuildingControllerTest
     public void UpdateBuildingCorrectTestController()
     {
         //Arrange
+        string token = "b4d9e6a4-466c-4a4f-91ea-6d7e7997584e";
         Building building = new Building()
         {
             Id = Guid.NewGuid(),
@@ -179,10 +194,13 @@ public class BuildingControllerTest
         var expectedMappedBuilding = new BuildingResponse(expectedBuilding);
 
         Mock<IBuildingLogic> buildingLogic = new Mock<IBuildingLogic>(MockBehavior.Strict);
+        Mock<ISessionService> sessionService = new Mock<ISessionService>(MockBehavior.Strict);
 
         buildingLogic.Setup(bl => bl.UpdateBuildingById(It.IsAny<Guid>(), It.IsAny<Building>())).Returns(expectedBuilding);
 
-        BuildingController buildingController = new BuildingController(buildingLogic.Object);
+        BuildingController buildingController = new BuildingController(buildingLogic.Object, sessionService.Object);
+        buildingController.ControllerContext.HttpContext = new DefaultHttpContext();
+        buildingController.ControllerContext.HttpContext.Request.Headers["Authorization"] = token;
 
         OkObjectResult expectedObjResult = new OkObjectResult(expectedMappedBuilding);
 
