@@ -479,6 +479,61 @@ namespace DataAccessTest
             Assert.AreEqual(2, serviceRequests.Count);
         }
 
+        [TestMethod]
+        public void GetNoClosedServiceRequestsByBuildingIdTestDataAccess()
+        {
+            Category category = new Category { Name = "Category 1" };
+
+            Apartment apartment = new Apartment()
+            {
+                Floor = 1,
+                Number = 101,
+                Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "" }
+            };
+
+            Building building = new Building()
+            {
+                Id = Guid.NewGuid(),
+                Address = "Address 1",
+                Name = "Building 1",
+                Apartments = new List<Apartment> { apartment }
+            };
+
+            ServiceRequest serviceRequest1 = new ServiceRequest()
+            {
+                Id = Guid.NewGuid(),
+                Description = "Description 1",
+                Status = ServiceRequestStatus.Open,
+                Category = category.Id,
+                CategoryName = category.Name,
+                Apartment = apartment.Id,
+                BuildingId = building.Id
+            };
+
+            ServiceRequest serviceRequest2 = new ServiceRequest()
+            {
+                Id = Guid.NewGuid(),
+                Description = "Description 2",
+                Status = ServiceRequestStatus.Closed,
+                Category = category.Id,
+                CategoryName = category.Name,
+                Apartment = apartment.Id,
+                BuildingId = building.Id
+            };
+
+            var context = CreateDbContext("GetNoClosedServiceRequestsByBuildingIdTestDataAccess");
+            var serviceRequestRepo = new ServiceRequestRepository(context);
+
+            context.Set<ServiceRequest>().Add(serviceRequest1);
+            context.Set<ServiceRequest>().Add(serviceRequest2);
+            context.SaveChanges();
+
+            // Act
+            List<ServiceRequest> serviceRequests = (List<ServiceRequest>)serviceRequestRepo.GetNoClosedServiceRequestsByBuildingId(building.Id);
+            Assert.AreEqual(1, serviceRequests.Count);
+            Assert.AreEqual(serviceRequest1, serviceRequests[0]);
+        }
+
         private DbContext CreateDbContext(string database)
         {
             var options = new DbContextOptionsBuilder<Context>().UseInMemoryDatabase(database).Options;

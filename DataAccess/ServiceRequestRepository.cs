@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Domain.@enum;
 using IDataAccess;
 using Microsoft.EntityFrameworkCore;
 
@@ -58,7 +59,7 @@ namespace DataAccess
 
         public IEnumerable<ServiceRequest> GetNoClosedServiceRequestsByBuildingId(Guid id)
         {
-            throw new NotImplementedException();
+            return _context.Set<ServiceRequest>().Where(sr => sr.BuildingId == id && sr.Status != ServiceRequestStatus.Closed).ToList();
         }
     }
 }
