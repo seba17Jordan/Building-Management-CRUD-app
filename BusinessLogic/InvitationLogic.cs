@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using CustomExceptions;
+using Domain;
 using Domain.@enum;
 using IDataAccess;
 using LogicInterface;
@@ -33,7 +34,7 @@ namespace BusinessLogic
 
             if (_invitationRepository.InvitationExists(invitation.Email))
             {
-                throw new ArgumentException("Invitation with same Email already exists");
+                throw new ObjectAlreadyExistsException("Invitation with same Email already exists");
             }
             
             return _invitationRepository.CreateInvitation(invitation);

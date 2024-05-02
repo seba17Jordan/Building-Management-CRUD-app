@@ -4,6 +4,7 @@ using Domain.@enum;
 using Moq;
 using BusinessLogic;
 using IDataAccess;
+using CustomExceptions;
 namespace BusinessLogicTest
 {
     [TestClass]
@@ -200,7 +201,7 @@ namespace BusinessLogicTest
                 // Act
                 invitationLogic.CreateInvitation(invitation);
             }
-            catch (ArgumentException e)
+            catch (ObjectAlreadyExistsException e)
             {
                 specificEx = e;
             }
@@ -208,7 +209,7 @@ namespace BusinessLogicTest
             // Assert
             repo.VerifyAll();
             Assert.IsNotNull(specificEx);
-            Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
+            Assert.IsInstanceOfType(specificEx, typeof(ObjectAlreadyExistsException));
             Assert.IsTrue(specificEx.Message.Contains("Invitation with same Email already exists"));
         }
 
