@@ -10,10 +10,12 @@ namespace BusinessLogic
     {
         private readonly IBuildingRepository _buildingRepository;
         private readonly IServiceRequestRepository _serviceRequestRepository;
-        public BuildingLogic(IBuildingRepository buildingRepository, IServiceRequestRepository serviceRequestRepository)
+        private readonly IConstructionCompanyRepository _constructionCompanyRepository;
+        public BuildingLogic(IBuildingRepository buildingRepository, IServiceRequestRepository serviceRequestRepository, IConstructionCompanyRepository constructionCompanyRepository)
         {
             _buildingRepository = buildingRepository;
             _serviceRequestRepository = serviceRequestRepository;
+            _constructionCompanyRepository = constructionCompanyRepository;
         }
         public Building CreateBuilding(Building building)
         {
@@ -35,7 +37,7 @@ namespace BusinessLogic
                 throw new ObjectAlreadyExistsException("Building with same name already exists");
             }
 
-            ConstructionCompany existingCompany = _buildingRepository.GetConstructionCompanyByName(building.ConstructionCompany.Name);
+            ConstructionCompany existingCompany = _constructionCompanyRepository.GetConstructionCompanyByName(building.ConstructionCompany.Name);
             
             if (existingCompany != null)
             {
