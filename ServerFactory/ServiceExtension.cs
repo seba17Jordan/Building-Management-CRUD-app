@@ -1,5 +1,6 @@
 ﻿using BusinessLogic;
 using DataAccess;
+using Domain;
 using IDataAccess;
 using LogicInterface;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,8 @@ namespace ServerFactory
 
             services.AddScoped<IServiceRequestLogic, RequestLogic>();
             services.AddScoped<IServiceRequestRepository, ServiceRequestRepository>();
+
+            services.AddScoped<IConstructionCompanyRepository, ConstructionCompanyRepository>();
 
             services.AddScoped<IReportLogic, ReportLogic>();
 
