@@ -45,7 +45,7 @@ namespace BusinessLogic
                 }
                 else
                 {
-                    throw new InvalidOperationException("This construction company does not belong to this constrution company administrator");
+                    throw new InvalidOperationException("This construction company does not belong to this construction company administrator");
                 }
             }
             else
