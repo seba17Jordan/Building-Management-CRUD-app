@@ -35,6 +35,24 @@ namespace BusinessLogic
                 throw new ObjectAlreadyExistsException("Building with same name already exists");
             }
 
+            ConstructionCompany existingCompany = _buildingRepository.GetConstructionCompanyByName(building.ConstructionCompany.Name);
+            
+            if (existingCompany != null)
+            {
+                if (existingCompany.ConstructionCompanyAdmin.Equals(building.ConstructionCompanyAdmin))
+                {
+                    building.ConstructionCompany = existingCompany;
+                }
+                else
+                {
+                    throw new InvalidOperationException("This construction company does not belong to this constrution company administrator");
+                }
+            }
+            else
+            {
+                throw new ObjectNotFoundException("Construction company not found");
+            }
+
             return _buildingRepository.CreateBuilding(building);
         }
 

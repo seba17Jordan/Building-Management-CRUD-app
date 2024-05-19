@@ -26,14 +26,14 @@ namespace BuildingManagementApi.Controllers
 
         [HttpPost]
         [ServiceFilter(typeof(AuthenticationFilter))]
-        [AuthorizationFilter(_currentRole = Roles.Manager)]
+        [AuthorizationFilter(_currentRole = Roles.ConstructionCompanyAdmin)]
         public IActionResult CreateBuilding([FromBody] BuildingRequest buildingToCreate)
         {
             string token = Request.Headers["Authorization"].ToString();
-            var managerUser = _sessionService.GetUserByToken(Guid.Parse(token));
+            var constructionCompanyAdmin = _sessionService.GetUserByToken(Guid.Parse(token));
 
             var building = buildingToCreate.ToEntity();
-            building.managerId = managerUser.Id;
+            building.ConstructionCompanyAdmin = constructionCompanyAdmin;
             var resultObj = _buildingLogic.CreateBuilding(building);
             BuildingResponse outputResult = new BuildingResponse(resultObj);
 

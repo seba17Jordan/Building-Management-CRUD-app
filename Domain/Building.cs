@@ -11,6 +11,7 @@ namespace Domain
         public ConstructionCompany? ConstructionCompany { get; set; }
         public int? CommonExpenses { get; set; }
         public List<Apartment>? Apartments { get; set; }
+        public User ConstructionCompanyAdmin { get; set; }
 
         public Guid managerId { get; set; }
 

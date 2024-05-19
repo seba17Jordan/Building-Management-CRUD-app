@@ -14,13 +14,29 @@ namespace BusinessLogicTest
         public void CreateBuildingCorrectTestLogic()
         {
             //Arrange
+            User constructionCompanyAdmin = new User()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Admin",
+                LastName = "ConstructionCompAdmin",
+                Email = "adeae@gmai.com",
+                Role = Roles.ConstructionCompanyAdmin,
+            };
+
+            ConstructionCompany constructionCompany = new ConstructionCompany()
+            {
+                Name = "Construction Company",
+                ConstructionCompanyAdmin = constructionCompanyAdmin
+            };
+
             Building expectedBuilding = new Building()
             {
                 Id = Guid.NewGuid(),
                 Name = "Building 1",
                 Address = "Address 1",
-                ConstructionCompany = new ConstructionCompany("Construction Company"),
+                ConstructionCompany = constructionCompany,
                 CommonExpenses = 100,
+                ConstructionCompanyAdmin = constructionCompanyAdmin,
                 Apartments = new List<Apartment>
                 {
                     new Apartment()
@@ -37,8 +53,10 @@ namespace BusinessLogicTest
 
             Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
             Mock<IServiceRequestRepository> serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
+
             buildingRepo.Setup(l => l.CreateBuilding(It.IsAny<Building>())).Returns(expectedBuilding);
             buildingRepo.Setup(l => l.BuildingNameExists(It.IsAny<string>())).Returns(false);
+            buildingRepo.Setup(l => l.GetConstructionCompanyByName(It.IsAny<string>())).Returns(constructionCompany);
 
             BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object);
 

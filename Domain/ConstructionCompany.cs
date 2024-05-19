@@ -12,6 +12,8 @@ namespace Domain
         public Guid Id { get; set; }
         public string Name { get; set; }
 
+        public User ConstructionCompanyAdmin { get; set; }
+
         public ConstructionCompany() { }
 
         public ConstructionCompany(string name)

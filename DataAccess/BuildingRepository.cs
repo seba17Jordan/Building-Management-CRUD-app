@@ -76,5 +76,10 @@ namespace DataAccess
         {
             return _context.Set<Building>().FirstOrDefault(b => b.Name == buildingName);
         }
+
+        public ConstructionCompany GetConstructionCompanyByName(string name)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
