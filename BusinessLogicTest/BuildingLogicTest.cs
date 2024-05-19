@@ -19,7 +19,7 @@ namespace BusinessLogicTest
                 Id = Guid.NewGuid(),
                 Name = "Building 1",
                 Address = "Address 1",
-                ConstructionCompany = "Construction Company 1",
+                ConstructionCompany = new ConstructionCompany("Construction Company"),
                 CommonExpenses = 100,
                 Apartments = new List<Apartment>
                 {
@@ -92,7 +92,7 @@ namespace BusinessLogicTest
                     Id = Guid.NewGuid(),
                     Name = "",
                     Address = "Address 1",
-                    ConstructionCompany = "Construction Company 1",
+                    ConstructionCompany = new ConstructionCompany("Construction Company"),
                     CommonExpenses = 100,
                     Apartments = new List<Apartment>
                 {
@@ -143,7 +143,7 @@ namespace BusinessLogicTest
                     Id = Guid.NewGuid(),
                     Name = "Name 1",
                     Address = "",
-                    ConstructionCompany = "Construction Company 1",
+                    ConstructionCompany = new ConstructionCompany("Construction Company"),
                     CommonExpenses = 100,
                     Apartments = new List<Apartment>
                 {
@@ -194,7 +194,7 @@ namespace BusinessLogicTest
                     Id = Guid.NewGuid(),
                     Name = "Name 1",
                     Address = "Address 1",
-                    ConstructionCompany = "",
+                    ConstructionCompany = new ConstructionCompany(""),
                     CommonExpenses = 100,
                     Apartments = new List<Apartment>
                 {
@@ -245,7 +245,7 @@ namespace BusinessLogicTest
                     Id = Guid.NewGuid(),
                     Name = "Name 1",
                     Address = "Address 1",
-                    ConstructionCompany = "Company",
+                    ConstructionCompany = new ConstructionCompany("Construction Company"),
                     CommonExpenses = 100,
                     Apartments = new List<Apartment>()
                 };
@@ -295,7 +295,7 @@ namespace BusinessLogicTest
                     Id = Guid.NewGuid(),
                     Name = "Name 1",
                     Address = "Address 1",
-                    ConstructionCompany = "Company",
+                    ConstructionCompany = new ConstructionCompany("Construction Company"),
                     CommonExpenses = -100,
                     Apartments = new List<Apartment>()
                     {
@@ -349,7 +349,7 @@ namespace BusinessLogicTest
                     Id = Guid.NewGuid(),
                     Name = "Name 1",
                     Address = "Address 1",
-                    ConstructionCompany = "Company",
+                    ConstructionCompany = new ConstructionCompany("Construction Company"),
                     CommonExpenses = 100,
                     Apartments = new List<Apartment>()
                     {
@@ -396,7 +396,7 @@ namespace BusinessLogicTest
                 Id = Guid.NewGuid(),
                 Name = "Name 1",
                 Address = "Address 1",
-                ConstructionCompany = "",
+                ConstructionCompany = new ConstructionCompany("Construction Company"),
                 CommonExpenses = 100,
                 Apartments = new List<Apartment>
                 {
@@ -448,7 +448,7 @@ namespace BusinessLogicTest
                 Id = Guid.NewGuid(),
                 Name = "Name 1",
                 Address = "Address 1",
-                ConstructionCompany = "",
+                ConstructionCompany = new ConstructionCompany("Construction Company"),
                 CommonExpenses = 100,
                 Apartments = new List<Apartment>
                 {
@@ -528,7 +528,7 @@ namespace BusinessLogicTest
                 Id = Guid.NewGuid(),
                 Name = "Name 1",
                 Address = "Address 1",
-                ConstructionCompany = "",
+                ConstructionCompany = new ConstructionCompany("Construction Company"),
                 CommonExpenses = 100,
                 Apartments = new List<Apartment>
                 {
@@ -627,7 +627,7 @@ namespace BusinessLogicTest
                 Id = Guid.NewGuid(),
                 Name = "Building 1",
                 Address = "Address 1",
-                ConstructionCompany = "Construction Company 1",
+                ConstructionCompany = new ConstructionCompany("Construction Company"),
                 CommonExpenses = 100,
                 Apartments = new List<Apartment>
                 {
@@ -655,7 +655,7 @@ namespace BusinessLogicTest
                 Id = Guid.NewGuid(),
                 Name = "Building 2",
                 Address = "Address 1",
-                ConstructionCompany = "Construction Company 1",
+                ConstructionCompany = new ConstructionCompany("Construction Company"),
                 CommonExpenses = 100,
                 Apartments = new List<Apartment>
                 {
@@ -711,7 +711,7 @@ namespace BusinessLogicTest
                     Id = Guid.NewGuid(),
                     Name = "Name 1",
                     Address = "Address 1",
-                    ConstructionCompany = "Company",
+                    ConstructionCompany = new ConstructionCompany("Construction Company"),
                     CommonExpenses = -100,
                     Apartments = new List<Apartment>(),
                     managerId = manager.Id
@@ -768,7 +768,7 @@ namespace BusinessLogicTest
                     Id = Guid.NewGuid(),
                     Name = "Name 1",
                     Address = "Address 1",
-                    ConstructionCompany = "Company",
+                    ConstructionCompany = new ConstructionCompany("Construction Company"),
                     CommonExpenses = -100,
                     Apartments = new List<Apartment>(),
                 };
@@ -827,7 +827,7 @@ namespace BusinessLogicTest
                     Id = Guid.NewGuid(),
                     Name = "Name 1",
                     Address = "Address 1",
-                    ConstructionCompany = "Company",
+                    ConstructionCompany = new ConstructionCompany("Construction Company"),
                     CommonExpenses = 100,
                     Apartments = new List<Apartment>()
                     {

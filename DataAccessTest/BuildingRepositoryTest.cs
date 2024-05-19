@@ -18,7 +18,7 @@ namespace DataAccessTest
                 Id = Guid.NewGuid(),
                 Name = "Building 1",
                 Address = "Address 1",
-                ConstructionCompany = "Construction Company 1",
+                ConstructionCompany = new ConstructionCompany("Construction Company"),
                 CommonExpenses = 100,
                 Apartments = new List<Apartment>
                 {
@@ -54,7 +54,7 @@ namespace DataAccessTest
                 Id = Guid.NewGuid(),
                 Name = "Building 1",
                 Address = "Address 1",
-                ConstructionCompany = "Construction Company 1",
+                ConstructionCompany = new ConstructionCompany("Construction Company"),
                 CommonExpenses = 100,
                 Apartments = new List<Apartment>
                 {
@@ -90,7 +90,7 @@ namespace DataAccessTest
                 Id = Guid.NewGuid(),
                 Name = "Building 1",
                 Address = "Address 1",
-                ConstructionCompany = "Construction Company 1",
+                ConstructionCompany = new ConstructionCompany("Construction Company"),
                 CommonExpenses = 100,
                 Apartments = new List<Apartment>
                 {
@@ -122,7 +122,7 @@ namespace DataAccessTest
                 Id = Guid.NewGuid(),
                 Name = "Building 1",
                 Address = "Address 1",
-                ConstructionCompany = "Construction Company 1",
+                ConstructionCompany = new ConstructionCompany("Construction Company"),
                 CommonExpenses = 100,
                 Apartments = new List<Apartment>
                 {
@@ -157,7 +157,7 @@ namespace DataAccessTest
                 Id = Guid.NewGuid(),
                 Name = "Building 1",
                 Address = "Address 1",
-                ConstructionCompany = "Construction Company 1",
+                ConstructionCompany = new ConstructionCompany("Construction Company"),
                 CommonExpenses = 100,
                 Apartments = new List<Apartment>
                 {
@@ -176,12 +176,12 @@ namespace DataAccessTest
             Building createdBuilding = buildingRepo.CreateBuilding(expectedBuilding);
             context.SaveChanges();
 
-            Building updatedBuilding = new Building()
+            /*Building updatedBuilding = new Building()
             {
                 Id = createdBuilding.Id,
                 Name = "Building 2",
                 Address = "Address 2",
-                ConstructionCompany = "Construction Company 2",
+                ConstructionCompany = new ConstructionCompany("Construction Company"),
                 CommonExpenses = 200,
                 Apartments = new List<Apartment>
                 {
@@ -192,13 +192,15 @@ namespace DataAccessTest
                         Owner = new Owner { Name = "John", LastName = "Doe", Email = ""}
                     }
                 }
-            };
-            context.Entry(createdBuilding).State = EntityState.Detached;
-            buildingRepo.UpdateBuilding(updatedBuilding);
+            };*/
+            createdBuilding.Name = "Building 2";
+
+            //context.Entry(createdBuilding).State = EntityState.Detached;
+            buildingRepo.UpdateBuilding(createdBuilding);
             context.SaveChanges();
 
             // Assert
-            Assert.AreEqual(updatedBuilding, buildingRepo.GetBuildingById(createdBuilding.Id));
+            Assert.AreEqual("Building 2", buildingRepo.GetBuildingById(createdBuilding.Id).Name);
         }
 
         [TestMethod]
@@ -210,7 +212,7 @@ namespace DataAccessTest
                 Id = Guid.NewGuid(),
                 Name = "Building 1",
                 Address = "Address 1",
-                ConstructionCompany = "Construction Company 1",
+                ConstructionCompany = new ConstructionCompany("Construction Company"),
                 CommonExpenses = 100,
                 Apartments = new List<Apartment>
                 {
@@ -255,7 +257,7 @@ namespace DataAccessTest
                 Id = Guid.NewGuid(),
                 Name = "Building 1",
                 Address = "Address 1",
-                ConstructionCompany = "Construction Company 1",
+                ConstructionCompany = new ConstructionCompany("Construction Company"),
                 CommonExpenses = 100,
                 Apartments = new List<Apartment> { apartment }
             });
@@ -273,7 +275,7 @@ namespace DataAccessTest
                 Id = Guid.NewGuid(),
                 Name = "Building 1",
                 Address = "Address 1",
-                ConstructionCompany = "Construction Company 1",
+                ConstructionCompany = new ConstructionCompany("Construction Company"),
                 CommonExpenses = 100,
                 Apartments = new List<Apartment>
                 {

@@ -38,12 +38,14 @@ public class BuildingControllerTest
             }
         };
 
+        ConstructionCompany constructionCom = new ConstructionCompany("Construction Company");
+
         Building expectedBuilding = new Building()
         {
             Id = Guid.NewGuid(),
             Name = "New Building",
             Address = "Address 1",
-            ConstructionCompany = "Construction Company",
+            ConstructionCompany = constructionCom,
             CommonExpenses = 100,
             Apartments = new List<Apartment>
             {
@@ -94,13 +96,14 @@ public class BuildingControllerTest
         //Arrange
         string token = "b4d9e6a4-466c-4a4f-91ea-6d7e7997584e";
         User manager = new User { Id = Guid.NewGuid(), Role = Domain.@enum.Roles.Manager };
+        ConstructionCompany constructionCom = new ConstructionCompany("Construction Company");
 
         Building buildingToDelete = new Building()
         {
             Id = Guid.NewGuid(),
             Name = "New Building",
             Address = "Address 1",
-            ConstructionCompany = "Construction Company",
+            ConstructionCompany = constructionCom,
             CommonExpenses = 100,
             Apartments = new List<Apartment>
             {
@@ -144,12 +147,14 @@ public class BuildingControllerTest
     {
         //Arrange
         string token = "b4d9e6a4-466c-4a4f-91ea-6d7e7997584e";
+        ConstructionCompany constructionCom = new ConstructionCompany("Construction Company");
+
         Building building = new Building()
         {
             Id = Guid.NewGuid(),
             Name = "New Building 1",
             Address = "Address 1",
-            ConstructionCompany = "Construction Company 1",
+            ConstructionCompany = constructionCom,
             CommonExpenses = 100,
             Apartments = new List<Apartment>
             {
@@ -165,6 +170,8 @@ public class BuildingControllerTest
             }
         };
 
+        ConstructionCompany constructionCom2 = new ConstructionCompany("Construction Company 2");
+
         BuildingRequest buildingUpdates = new BuildingRequest()
         {
             Name = "New Building 2",
@@ -178,7 +185,7 @@ public class BuildingControllerTest
             Id = Guid.NewGuid(),
             Name = "New Building 2",
             Address = "Address 2",
-            ConstructionCompany = "Construction Company 2",
+            ConstructionCompany = constructionCom,
             CommonExpenses = 200,
             Apartments = new List<Apartment>
             {
