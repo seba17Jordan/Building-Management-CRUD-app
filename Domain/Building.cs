@@ -32,6 +32,8 @@ namespace Domain
             {
                 throw new ArgumentException("Building must have at least one apartment");
             }
+
+            ConstructionCompany.SelfValidate();
         }
 
         public override bool Equals(object building)

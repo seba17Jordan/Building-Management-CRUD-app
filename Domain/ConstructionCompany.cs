@@ -24,7 +24,7 @@ namespace Domain
         {
             if (string.IsNullOrWhiteSpace(Name))
             {
-                throw new EmptyFieldException("Construction company name cannot be empty");
+                throw new EmptyFieldException("There are empty fields");
             }
         }
 
