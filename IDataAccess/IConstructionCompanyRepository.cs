@@ -10,5 +10,7 @@ namespace IDataAccess
     public interface IConstructionCompanyRepository
     {
         ConstructionCompany GetConstructionCompanyByName(string name);
+
+        ConstructionCompany CreateConstructionCompany(ConstructionCompany constructionCompany);
     }
 }
