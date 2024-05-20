@@ -85,7 +85,7 @@ namespace BusinessLogic
             _invitationRepository.UpdateInvitation(invitation);
         }
 
-        public User AcceptInvitation(Guid invitationId, User managerToCreate)
+        public User AcceptInvitation(Guid invitationId, User userToCreate)
         {
             if (invitationId == Guid.Empty)
             {
@@ -109,7 +109,7 @@ namespace BusinessLogic
                 throw new InvalidOperationException("You can only accept a pending invitation");
             }
 
-            if(invitation.Email != managerToCreate.Email)
+            if(invitation.Email != userToCreate.Email)
             {
                 throw new InvalidOperationException("The email of the invitation and the email of the user do not match");
             }
@@ -117,13 +117,13 @@ namespace BusinessLogic
             invitation.State = Status.Accepted;
             _invitationRepository.UpdateInvitation(invitation);
 
-            managerToCreate.Name = invitation.Name;
-            managerToCreate.Role = Roles.Manager;
-            managerToCreate.LastName = "";
-            managerToCreate.SelfValidate();
+            userToCreate.Name = invitation.Name;
+            userToCreate.Role = invitation.Role;
+            userToCreate.LastName = "";
+            userToCreate.SelfValidate();
 
 
-            return _userRepository.CreateUser(managerToCreate);
+            return _userRepository.CreateUser(userToCreate);
         }
     }
 }
