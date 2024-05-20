@@ -15,6 +15,7 @@ namespace ModelsApi.Out
         public DateTime ExpirationDate { get; set; }
         public Guid Id { get; set; }
         public Status State { get; set; }
+        public Roles Role { get; set; }
 
         public InvitationResponse(Invitation invitation)
         {
@@ -23,6 +24,7 @@ namespace ModelsApi.Out
             Name = invitation.Name;
             ExpirationDate = invitation.ExpirationDate;
             State = invitation.State;
+            Role = invitation.Role;
         }
 
         public override bool Equals(object obj)
