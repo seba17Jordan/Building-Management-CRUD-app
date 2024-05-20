@@ -39,6 +39,35 @@ namespace DataAccessTest
             Assert.AreEqual(constructionCompany, repoResult);
         }
 
+        [TestMethod]
+        public void CreateConstructionCompany_ShouldReturnConstructionCompanyDataAccessTest()
+        {
+            // Arrange
+            var database = Guid.NewGuid().ToString();
+            var context = CreateDbContext(database);
+            ConstructionCompany constructionCompany = new ConstructionCompany()
+            {
+                Name = "Test",
+                ConstructionCompanyAdmin = new User()
+                {
+                    Email = "lkand@gmail.com",
+                    Password = "1234",
+                    Role = Roles.ConstructionCompanyAdmin,
+                    Name = "Lukas",
+                    LastName = "Kand"
+                }
+            };
+
+            ConstructionCompanyRepository repository = new ConstructionCompanyRepository(context);
+
+            // Act
+            ConstructionCompany repoResult = repository.CreateConstructionCompany(constructionCompany);
+
+            // Assert
+            Assert.AreEqual(constructionCompany, repoResult);
+        }
+        
+
 
         private DbContext CreateDbContext(string database)
         {
