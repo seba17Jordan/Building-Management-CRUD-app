@@ -25,7 +25,11 @@ namespace BuildingManagementApi.Controllers
         //[AuthorizationFilter(_currentRole = Roles.ConstructionCompanyAdmin)]
         public IActionResult CreateConstructionCompany([FromBody] ConstructionCompanyRequest constructionCompanyToCreate)
         {
-            throw new NotImplementedException();
+            var ConstructionCompany = constructionCompanyToCreate.ToEntity();
+            var resultObj = _constructionCompanyLogic.CreateConstructionCompany(ConstructionCompany);
+            var outputResult = new ConstructionCompanyResponse(resultObj);
+
+            return CreatedAtAction(nameof(CreateConstructionCompany), new { id = outputResult.Id }, outputResult);
         }
     }
 }
