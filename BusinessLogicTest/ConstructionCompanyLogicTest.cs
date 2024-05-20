@@ -20,16 +20,17 @@ namespace BusinessLogicTest
                 Name = "ConstructionCompany",
             };
 
-            Mock<IConstructionCompanyRepository> repo = new Mock<IConstructionCompanyRepository>(MockBehavior.Strict);
-            repo.Setup(l => l.CreateConstructionCompany(It.IsAny<ConstructionCompany>())).Returns(expectedConstructionCompany);
+            var repoMock = new Mock<IConstructionCompanyRepository>(MockBehavior.Strict);
+            repoMock.Setup(l => l.GetConstructionCompanyByName(It.IsAny<string>())).Returns((ConstructionCompany)null);
+            repoMock.Setup(l => l.CreateConstructionCompany(It.IsAny<ConstructionCompany>())).Returns(expectedConstructionCompany);
 
-            var constructionCompanyLogic = new ConstructionCompanyLogic(repo.Object);
+            var constructionCompanyLogic = new ConstructionCompanyLogic(repoMock.Object);
 
             // Act
             var result = constructionCompanyLogic.CreateConstructionCompany(expectedConstructionCompany);
 
             // Assert
-            repo.VerifyAll();
+            repoMock.VerifyAll();
             Assert.AreEqual(expectedConstructionCompany, result);
         }
     }

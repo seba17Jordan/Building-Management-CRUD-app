@@ -20,7 +20,21 @@ namespace BusinessLogic
 
         public ConstructionCompany CreateConstructionCompany(ConstructionCompany constructionCompany)
         {
-            throw new NotImplementedException();
+            if (constructionCompany == null)
+            {
+                throw new ArgumentNullException(nameof(constructionCompany), "ConstructionCompany can't be null");
+            }
+
+            constructionCompany.SelfValidate();
+
+
+            var existingCompany = _constructionCompanyRepository.GetConstructionCompanyByName(constructionCompany.Name);
+            if (existingCompany != null)
+            {
+                throw new InvalidOperationException("Only one construction company can be created.");
+            }
+
+            return _constructionCompanyRepository.CreateConstructionCompany(constructionCompany);
         }
     }
 }

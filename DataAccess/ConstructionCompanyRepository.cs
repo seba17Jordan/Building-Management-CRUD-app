@@ -15,5 +15,12 @@ namespace DataAccess
         {
             return _context.Set<ConstructionCompany>().FirstOrDefault(x => x.Name == name);
         }
+
+        public ConstructionCompany CreateConstructionCompany(ConstructionCompany constructionCompany)
+        {
+            _context.Set<ConstructionCompany>().Add(constructionCompany);
+            _context.SaveChanges();
+            return constructionCompany;
+        }
     }
 }
