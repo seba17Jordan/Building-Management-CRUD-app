@@ -1,5 +1,6 @@
 using BuildingManagementApi.Controllers;
 using Domain;
+using Domain.@enum;
 using LogicInterface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,9 +11,23 @@ using Newtonsoft.Json.Linq;
 
 namespace BuildingManagementApiTest;
 
+
+
 [TestClass]
 public class BuildingControllerTest
 {
+
+    private Mock<IBuildingLogic> _buildingLogicMock;
+    private BuildingController _controller;
+    private ISessionService _sessionService;
+
+    [TestInitialize]
+    public void Setup()
+    {
+        _buildingLogicMock = new Mock<IBuildingLogic>();
+        _controller = new BuildingController(_buildingLogicMock.Object, _sessionService);
+    }
+
     [TestMethod]
     public void CreateBuildingCorrectTest()
     {
@@ -226,6 +241,52 @@ public class BuildingControllerTest
 
         Assert.AreEqual(resultObject.StatusCode, expectedObjResult.StatusCode);
         Assert.AreEqual(resultValue, expectedMappedBuilding);
+    }
+
+    [TestMethod]
+    public void CreateConstructionCompanyTest()
+    {
+        // Arrange
+        var validToken = Guid.Parse("b4d9e6a4-466c-4a4f-91ea-6d7e7997584e");
+        var constructionCompanyRequest = new ConstructionCompanyRequest
+        {
+            Name = "Test"
+        };
+
+
+        var constructionCompanyAdmin = new User
+        {
+            Id = Guid.NewGuid(),
+            Email = "lkand@gmail.com",
+            Password = "1234",
+            Role = Roles.ConstructionCompanyAdmin,
+            Name = "Lukas",
+            LastName = "Kand"
+        };
+
+        var _sessionServiceMock = new Mock<ISessionService>();
+        _sessionServiceMock.Setup(x => x.GetUserByToken(validToken)).Returns(constructionCompanyAdmin);
+
+
+        var _constructionCompanyLogicMock = new Mock<IConstructionCompanyLogic>();
+        _constructionCompanyLogicMock.Setup(x => x.CreateConstructionCompany(It.IsAny<ConstructionCompany>())).Returns(new ConstructionCompany());
+
+
+        var _controller = new ConstructionCompanyController(_constructionCompanyLogicMock.Object, _sessionServiceMock.Object);
+
+        var httpContextMock = new Mock<HttpContext>();
+        var httpRequestMock = new Mock<HttpRequest>();
+        httpRequestMock.SetupGet(x => x.Headers).Returns(new HeaderDictionary { { "Authorization", validToken.ToString() } });
+        httpContextMock.SetupGet(x => x.Request).Returns(httpRequestMock.Object);
+        _controller.ControllerContext = new ControllerContext { HttpContext = httpContextMock.Object };
+
+        // Act
+        var result = _controller.CreateConstructionCompany(constructionCompanyRequest) as CreatedAtActionResult;
+
+        // Assert
+        Assert.IsNotNull(result);
+        Assert.AreEqual(201, result.StatusCode);
+        Assert.AreEqual("CreateConstructionCompany", result.ActionName);
     }
 
 }

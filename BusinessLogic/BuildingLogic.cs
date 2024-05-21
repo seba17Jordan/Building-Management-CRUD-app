@@ -163,5 +163,22 @@ namespace BusinessLogic
 
             return buildingToUpdate;
         }
+
+        public Building GetBuildingById(Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                throw new EmptyFieldException("Id is empty");
+            }
+
+            Building building = _buildingRepository.GetBuildingById(id);
+
+            if (building == null)
+            {
+                throw new ObjectNotFoundException("Building not found");
+            }
+
+            return building;
+        }
     }
 }
