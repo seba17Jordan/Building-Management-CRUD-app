@@ -66,6 +66,37 @@ namespace DataAccessTest
             // Assert
             Assert.AreEqual(constructionCompany, repoResult);
         }
+
+        [TestMethod]
+        public void UpdateConstructionCompanyDataAccessTest()
+        {
+            // Arrange
+            User constructionCompanyAdmin = new User()
+            {
+                Email = "s@gmial.com",
+                Password = "1234",
+                Role = Roles.ConstructionCompanyAdmin,
+                Name = "Sara",
+                LastName = "Kand"
+            };
+
+            ConstructionCompany expectedConstructionCompany = new ConstructionCompany()
+            {
+                Name = "Test",
+                ConstructionCompanyAdmin = constructionCompanyAdmin
+            };
+
+            var context = CreateDbContext("UpdateConstructionCompanyDataAccessTest");
+            ConstructionCompanyRepository repository = new ConstructionCompanyRepository(context);
+
+            // Act
+            ConstructionCompany constructionCompanyCreated = repository.CreateConstructionCompany(expectedConstructionCompany);
+            expectedConstructionCompany.Name = "Test2";
+            ConstructionCompany updatedCompany = repository.UpdateConstructionCompany(constructionCompanyCreated);
+
+            // Assert
+            Assert.AreEqual(repository.GetConstructionCompanyByAdmin(constructionCompanyAdmin.Id).Name, "Test2");
+        }
         
 
 

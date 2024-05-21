@@ -30,7 +30,9 @@ namespace DataAccess
 
         public ConstructionCompany UpdateConstructionCompany(ConstructionCompany companyToUpdate)
         {
-            throw new NotImplementedException();
+            _context.Set<ConstructionCompany>().Update(companyToUpdate);
+            _context.SaveChanges();
+            return companyToUpdate;
         }
     }
 }
