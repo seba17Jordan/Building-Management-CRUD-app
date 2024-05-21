@@ -12,5 +12,7 @@ namespace IDataAccess
         ConstructionCompany GetConstructionCompanyByName(string name);
 
         ConstructionCompany CreateConstructionCompany(ConstructionCompany constructionCompany);
+
+        bool GetConstructionCompanyByAdmin(Guid id);
     }
 }

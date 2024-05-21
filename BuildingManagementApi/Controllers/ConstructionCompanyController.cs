@@ -15,9 +15,11 @@ namespace BuildingManagementApi.Controllers
     public class ConstructionCompanyController : ControllerBase
     {
         private readonly IConstructionCompanyLogic _constructionCompanyLogic;
-        public ConstructionCompanyController(IConstructionCompanyLogic constructionLogic)
+        private readonly ISessionService _sessionService;
+        public ConstructionCompanyController(IConstructionCompanyLogic constructionLogic,ISessionService sessionService)
         {
-            this._constructionCompanyLogic = constructionLogic;
+            _constructionCompanyLogic = constructionLogic;
+            _sessionService = sessionService;
         }
 
         [HttpPost]
@@ -25,7 +27,11 @@ namespace BuildingManagementApi.Controllers
         //[AuthorizationFilter(_currentRole = Roles.ConstructionCompanyAdmin)]
         public IActionResult CreateConstructionCompany([FromBody] ConstructionCompanyRequest constructionCompanyToCreate)
         {
+            string token = Request.Headers["Authorization"].ToString();
+            var constructionCompanyAdmin = _sessionService.GetUserByToken(Guid.Parse(token));
+
             var ConstructionCompany = constructionCompanyToCreate.ToEntity();
+            ConstructionCompany.ConstructionCompanyAdmin = constructionCompanyAdmin;
             var resultObj = _constructionCompanyLogic.CreateConstructionCompany(ConstructionCompany);
             var outputResult = new ConstructionCompanyResponse(resultObj);
 

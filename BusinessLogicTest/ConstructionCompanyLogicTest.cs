@@ -14,24 +14,32 @@ namespace BusinessLogicTest
         public void CreateConstructionCompany_ShouldReturnConstructionCompany()
         {
             // Arrange
-            var expectedConstructionCompany = new ConstructionCompany
+            var adminId = Guid.NewGuid();
+            var expectedConstructionCompany = new ConstructionCompany()
             {
-                Id = Guid.NewGuid(),
-                Name = "ConstructionCompany",
+                Name = "Test",
+                ConstructionCompanyAdmin = new User()
+                {
+                    Id = adminId,  // Asegurando que el ID del administrador esté establecido
+                    Email = "lkand@gmail.com",
+                    Password = "1234",
+                    Role = Roles.ConstructionCompanyAdmin,
+                    Name = "Lukas",
+                    LastName = "Kand"
+                }
             };
 
             var repoMock = new Mock<IConstructionCompanyRepository>(MockBehavior.Strict);
-            repoMock.Setup(l => l.GetConstructionCompanyByName(It.IsAny<string>())).Returns((ConstructionCompany)null);
-            repoMock.Setup(l => l.CreateConstructionCompany(It.IsAny<ConstructionCompany>())).Returns(expectedConstructionCompany);
+            repoMock.Setup(l => l.GetConstructionCompanyByName(It.IsAny<string>())).Returns((string name) => null); 
+            repoMock.Setup(l => l.CreateConstructionCompany(It.IsAny<ConstructionCompany>())).Returns(expectedConstructionCompany); 
+            repoMock.Setup(l => l.GetConstructionCompanyByAdmin(adminId)).Returns(false);  
 
             var constructionCompanyLogic = new ConstructionCompanyLogic(repoMock.Object);
 
-            // Act
             var result = constructionCompanyLogic.CreateConstructionCompany(expectedConstructionCompany);
 
-            // Assert
-            repoMock.VerifyAll();
-            Assert.AreEqual(expectedConstructionCompany, result);
+            repoMock.VerifyAll(); 
+            Assert.AreEqual(expectedConstructionCompany, result); 
         }
     }
 }

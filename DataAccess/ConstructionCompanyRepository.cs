@@ -22,5 +22,10 @@ namespace DataAccess
             _context.SaveChanges();
             return constructionCompany;
         }
+
+        public bool GetConstructionCompanyByAdmin(Guid id)
+        {
+            return _context.Set<ConstructionCompany>().Any(x => x.ConstructionCompanyAdmin.Id == id);
+        }
     }
 }
