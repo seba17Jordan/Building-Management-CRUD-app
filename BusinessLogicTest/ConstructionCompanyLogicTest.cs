@@ -78,7 +78,60 @@ namespace BusinessLogicTest
             //Assert
             Assert.AreEqual(logicResult.Name, "NewName");
         }
-        
+
+        [TestMethod]
+        public void UpdateConstructionCompanyNameAlreadyExists()
+        {
+            //Arrange
+            Exception specificEx = null;
+            Mock<IConstructionCompanyRepository> constructionCompanyRepo = null;
+            try
+            {
+                //Arrange
+                User constructionComAdmin = new User()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Admin",
+                    LastName = "ConstructionCompAdmin",
+                    Email = "aknd@gmail.com",
+                    Role = Roles.ConstructionCompanyAdmin,
+                };
+
+                ConstructionCompany constructionCompany = new ConstructionCompany()
+                {
+                    Name = "Construction Company",
+                    ConstructionCompanyAdmin = constructionComAdmin
+                };
+
+                ConstructionCompany existingConstructionCompany = new ConstructionCompany()
+                {
+                    Name = "Existing Construction Company",
+                    ConstructionCompanyAdmin = constructionComAdmin
+                };
+
+                constructionCompanyRepo = new Mock<IConstructionCompanyRepository>();
+
+                constructionCompanyRepo.Setup(x => x.GetConstructionCompanyByAdmin(It.IsAny<Guid>())).Returns(constructionCompany);
+                constructionCompanyRepo.Setup(x => x.GetConstructionCompanyByName(It.IsAny<string>())).Returns(constructionCompany);
+
+                ConstructionCompanyLogic constructionCompanyLogic = new ConstructionCompanyLogic(constructionCompanyRepo.Object);
+
+                // Act
+                ConstructionCompany logicResult = constructionCompanyLogic.UpdateConstructionCompanyName("NewName", constructionComAdmin);
+
+            }
+            catch (ObjectAlreadyExistsException e)
+            {
+                specificEx = e;
+            }
+
+            // Assert
+            constructionCompanyRepo.VerifyAll();
+            Assert.IsNotNull(specificEx);
+            Assert.IsInstanceOfType(specificEx, typeof(ObjectAlreadyExistsException));
+            Assert.IsTrue(specificEx.Message.Contains("Construction company with that name already exists."));
+        }
+
 
     }
 }

@@ -71,7 +71,7 @@ namespace BusinessLogic
            
             if (existingCompany != null)
             {
-                throw new InvalidOperationException("Construction company with that name already exists.");
+                throw new ObjectAlreadyExistsException("Construction company with that name already exists.");
             }
 
             companyToUpdate.Name = newName;
