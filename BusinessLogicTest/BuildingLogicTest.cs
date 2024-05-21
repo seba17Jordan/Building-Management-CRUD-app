@@ -1198,7 +1198,95 @@ namespace BusinessLogicTest
             Assert.AreEqual(logicResult, expectedBuilding);
         }
 
-        //[TestMethod]
-        //public void ModifyBuildingManagerIncorrectAdminDoesNotOwnBuildingTestLogic()
+        [TestMethod]
+        public void ModifyBuildingManagerIncorrectAdminDoesNotOwnBuildingTestLogic()
+        {
+            // Arrange
+            Exception specificEx = null;
+            Mock<IBuildingRepository> buildingRepo = null;
+            Mock<IServiceRequestRepository> serviceRequestRepo = null;
+            Mock<IConstructionCompanyRepository> constructionCompanyRepo = null;
+            Mock<IUserRepository> userRepo = null;
+            try
+            {
+                //Arrange
+                User constructionComAdmin = new User()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Admin",
+                    LastName = "ConstructionCompAdmin",
+                    Email = "aknd@gmail.com",
+                    Role = Roles.ConstructionCompanyAdmin,
+                };
+
+                User contructionCompanyAdminNotAllowed = new User()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Admin",
+                    LastName = "ConstructionCompAdmin",
+                    Email = "cdcs@gmial.com",
+                    Role = Roles.ConstructionCompanyAdmin,
+                };
+
+                User manager = new User()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Manager",
+                    LastName = "Manager",
+                    Email = "scs@gmail.com",
+                    Role = Roles.Manager
+                };
+
+                ConstructionCompany constructionCompany = new ConstructionCompany()
+                {
+                    Name = "Construction Company",
+                    ConstructionCompanyAdmin = constructionComAdmin
+                };
+
+                Building expectedBuilding = new Building()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Building 1",
+                    Address = "Address 1",
+                    ConstructionCompany = constructionCompany,
+                    ConstructionCompanyAdmin = constructionComAdmin,
+                    CommonExpenses = 100,
+                    Apartments = new List<Apartment>
+                    {
+                        new Apartment()
+                        {
+                            Floor = 1,
+                            Number = 101,
+                            Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "aeda@gmail.com"}
+                        }
+                    }
+                };
+
+                buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+                serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
+                constructionCompanyRepo = new Mock<IConstructionCompanyRepository>(MockBehavior.Strict);
+                userRepo = new Mock<IUserRepository>(MockBehavior.Strict);
+
+                userRepo.Setup(l => l.GetUserById(It.IsAny<Guid>())).Returns(manager);
+                buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(expectedBuilding);
+
+
+                BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object, constructionCompanyRepo.Object, userRepo.Object);
+
+                // Act
+                Building logicResult = buildingLogic.ModifyBuildingManager(expectedBuilding.Id, Guid.NewGuid(), contructionCompanyAdminNotAllowed.Id);
+
+            }
+            catch (InvalidOperationException e)
+            {
+                specificEx = e;
+            }
+
+            // Assert
+            buildingRepo.VerifyAll();
+            Assert.IsNotNull(specificEx);
+            Assert.IsInstanceOfType(specificEx, typeof(InvalidOperationException));
+            Assert.IsTrue(specificEx.Message.Contains("Construction company admin is not the owner of the building"));
+        }
     }
 }
