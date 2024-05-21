@@ -1045,5 +1045,35 @@ namespace BusinessLogicTest
             Assert.IsTrue(specificEx.Message.Contains("This construction company does not belong to this construction company administrator"));
         }
 
+        [TestMethod]
+        public void GetBuildingById_ValidId_ReturnsBuilding()
+        {
+            // Arrange
+            Guid validId = Guid.NewGuid();
+            var _buildingRepositoryMock = new Mock<IBuildingRepository>();
+            var _serviceRequestRepositoryMock = new Mock<IServiceRequestRepository>(); // Mock para IServiceRequestRepository
+            var _constructionCompanyRepositoryMock = new Mock<IConstructionCompanyRepository>(); // Mock para IConstructionCompanyRepository
+            var _buildingLogic = new BuildingLogic(_buildingRepositoryMock.Object, _serviceRequestRepositoryMock.Object, _constructionCompanyRepositoryMock.Object); // Pasar los mocks a BuildingLogic
+
+            var expectedBuilding = new Building
+            {
+                Id = validId,
+                Name = "Test Building",
+                Address = "123 Test St",
+                ConstructionCompanyAdmin = new User { Id = Guid.NewGuid(), Name = "John", LastName = "Doe" }
+            };
+
+            _buildingRepositoryMock.Setup(x => x.GetBuildingById(validId)).Returns(expectedBuilding);
+
+            // Act
+            var result = _buildingLogic.GetBuildingById(validId);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(validId, result.Id);
+            Assert.AreEqual(expectedBuilding.Name, result.Name);
+            Assert.AreEqual(expectedBuilding.Address, result.Address);
+            Assert.AreEqual(expectedBuilding.ConstructionCompanyAdmin, result.ConstructionCompanyAdmin);
+        }
     }
 }
