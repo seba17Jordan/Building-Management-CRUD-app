@@ -1051,9 +1051,9 @@ namespace BusinessLogicTest
             // Arrange
             Guid validId = Guid.NewGuid();
             var _buildingRepositoryMock = new Mock<IBuildingRepository>();
-            var _serviceRequestRepositoryMock = new Mock<IServiceRequestRepository>(); // Mock para IServiceRequestRepository
-            var _constructionCompanyRepositoryMock = new Mock<IConstructionCompanyRepository>(); // Mock para IConstructionCompanyRepository
-            var _buildingLogic = new BuildingLogic(_buildingRepositoryMock.Object, _serviceRequestRepositoryMock.Object, _constructionCompanyRepositoryMock.Object); // Pasar los mocks a BuildingLogic
+            var _serviceRequestRepositoryMock = new Mock<IServiceRequestRepository>(); 
+            var _constructionCompanyRepositoryMock = new Mock<IConstructionCompanyRepository>(); 
+            var _buildingLogic = new BuildingLogic(_buildingRepositoryMock.Object, _serviceRequestRepositoryMock.Object, _constructionCompanyRepositoryMock.Object); 
 
             var expectedBuilding = new Building
             {
