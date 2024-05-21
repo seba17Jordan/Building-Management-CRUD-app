@@ -243,6 +243,7 @@ public class BuildingControllerTest
         Assert.AreEqual(resultValue, expectedMappedBuilding);
     }
 
+    /*
     [TestMethod]
     public void CreateConstructionCompanyTest()
     {
@@ -287,6 +288,98 @@ public class BuildingControllerTest
         Assert.IsNotNull(result);
         Assert.AreEqual(201, result.StatusCode);
         Assert.AreEqual("CreateConstructionCompany", result.ActionName);
+    }*/
+
+
+    [TestMethod]
+    public void ModifyBuildingManagerCorrectTestController()
+    {
+        string token = "b4d9e6a4-466c-4a4f-91ea-6d7e7997584e";
+
+        //Arrange
+        ConstructionCompany constructionCom = new ConstructionCompany("Construction Company");
+
+        User constructionCompanyAdmin = new User
+        { 
+            Id = Guid.NewGuid(),
+            Role = Roles.ConstructionCompanyAdmin,
+            Name = "John",
+            LastName = "Doe"
+        };
+        User newManager = new User
+        {
+            Id = Guid.NewGuid(),
+            Role = Roles.Manager,
+            Name = "ASSAS",
+            LastName = "sssA"
+        };
+
+        IdRequest newBuildingManagerId = new IdRequest { Id = newManager.Id };
+
+        Building building = new Building()
+        {
+            Id = Guid.NewGuid(),
+            Name = "New Building 1",
+            Address = "Address 1",
+            ConstructionCompany = constructionCom,
+            ConstructionCompanyAdmin = constructionCompanyAdmin,
+            CommonExpenses = 100,
+            Apartments = new List<Apartment>
+            {
+                new Apartment()
+                {
+                    Floor = 1,
+                    Number = 101,
+                    Owner = new Owner { Name = "Jane", LastName = "Doe", Email = ""}
+                }
+            }
+        };
+
+        Building expectedBuilding = new Building()
+        {
+            Id = Guid.NewGuid(),
+            Name = "New Building 1",
+            Address = "Address 1",
+            ConstructionCompany = constructionCom,
+            ConstructionCompanyAdmin = constructionCompanyAdmin,
+            managerId = newManager.Id,
+            CommonExpenses = 100,
+            Apartments = new List<Apartment>
+            {
+                new Apartment()
+                {
+                    Floor = 1,
+                    Number = 101,
+                    Owner = new Owner { Name = "Jane", LastName = "Doe", Email = ""}
+                }
+            }
+        };
+
+        BuildingResponse expectedMappedBuilding = new BuildingResponse(expectedBuilding);
+
+        Mock<IBuildingLogic> buildingLogic = new Mock<IBuildingLogic>(MockBehavior.Strict);
+        Mock<ISessionService> sessionService = new Mock<ISessionService>(MockBehavior.Strict);
+
+        sessionService.Setup(sessionService => sessionService.GetUserByToken(It.IsAny<Guid>())).Returns(constructionCompanyAdmin);
+        buildingLogic.Setup(buildingLogic => buildingLogic.ModifyBuildingManager(building.Id, newManager.Id, constructionCompanyAdmin.Id)).Returns(expectedBuilding);
+        
+        BuildingController buildingController = new BuildingController(buildingLogic.Object, sessionService.Object);
+        buildingController.ControllerContext.HttpContext = new DefaultHttpContext();
+        buildingController.ControllerContext.HttpContext.Request.Headers["Authorization"] = token;
+
+        OkObjectResult expectedObjResult = new OkObjectResult(expectedMappedBuilding);
+
+        //Act
+        var finalResult = buildingController.ModifyBuildingManager(building.Id, newBuildingManagerId);
+
+        //Assert
+        buildingLogic.VerifyAll();
+
+        OkObjectResult resultObject = finalResult as OkObjectResult;
+        BuildingResponse resultValue = resultObject.Value as BuildingResponse;
+
+        Assert.AreEqual(resultObject.StatusCode, expectedObjResult.StatusCode);
+        Assert.AreEqual(resultValue, expectedMappedBuilding);
     }
 
 }

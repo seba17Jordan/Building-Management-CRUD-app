@@ -180,5 +180,10 @@ namespace BusinessLogic
 
             return building;
         }
+
+        public Building ModifyBuildingManager(Guid buildingId, Guid newManagerId, Guid constructionCompanyAdminId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

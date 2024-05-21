@@ -96,5 +96,19 @@ namespace BuildingManagementApi.Controllers
             return Ok(listBuildingResponse);
         }
 
+        [HttpPatch("{buildingId}")] //id de building
+        [ServiceFilter(typeof(AuthenticationFilter))]
+        [AuthorizationFilter(_currentRole = Roles.ConstructionCompanyAdmin)]
+        public IActionResult ModifyBuildingManager([FromRoute] Guid buildingId, [FromBody] IdRequest newBuildingManagerId)
+        {
+            string token = Request.Headers["Authorization"].ToString();
+            var constructionCompanyAdmin = _sessionService.GetUserByToken(Guid.Parse(token));
+
+            var building = _buildingLogic.ModifyBuildingManager(buildingId, newBuildingManagerId.Id, constructionCompanyAdmin.Id);
+            BuildingResponse response = new BuildingResponse(building);
+
+            return Ok(response);
+        }
+
     }
 }
