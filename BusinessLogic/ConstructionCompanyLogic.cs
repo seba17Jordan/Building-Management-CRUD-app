@@ -45,5 +45,10 @@ namespace BusinessLogic
 
             return _constructionCompanyRepository.CreateConstructionCompany(constructionCompany);
         }
+
+        public ConstructionCompany UpdateConstructionCompanyName(string newName, User constructionCompanyAdmin)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -37,5 +37,19 @@ namespace BuildingManagementApi.Controllers
 
             return CreatedAtAction(nameof(CreateConstructionCompany), new { id = outputResult.Id }, outputResult);
         }
+        
+        [HttpPatch("{name}")]
+        [ServiceFilter(typeof(AuthenticationFilter))]
+        [AuthorizationFilter(_currentRole = Roles.ConstructionCompanyAdmin)]
+        public IActionResult UpdateConstructionCompanyName([FromBody] ConstructionCompanyRequest newCompanyName)
+        {
+            string token = Request.Headers["Authorization"].ToString();
+            var constructionCompanyAdmin = _sessionService.GetUserByToken(Guid.Parse(token));
+
+            var resultObj = _constructionCompanyLogic.UpdateConstructionCompanyName(newCompanyName.Name, constructionCompanyAdmin);
+            var outputResult = new ConstructionCompanyResponse(resultObj);
+
+            return Ok(outputResult);
+        }
     }
 }

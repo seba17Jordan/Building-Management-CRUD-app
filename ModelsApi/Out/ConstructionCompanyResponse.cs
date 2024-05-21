@@ -17,6 +17,13 @@ namespace ModelsApi.Out
             Id = constructionCompany.Id;
             Name = constructionCompany.Name;
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is ConstructionCompanyResponse response &&
+                   //Id.Equals(response.Id) &&
+                   Name == response.Name;
+        }
     }
 }
 

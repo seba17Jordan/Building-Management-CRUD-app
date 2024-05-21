@@ -68,5 +68,65 @@ namespace BuildingManagementApi.Tests.Controllers
             Assert.AreEqual(201, result.StatusCode);
             Assert.AreEqual("CreateConstructionCompany", result.ActionName);
         }
+
+        [TestMethod]
+        public void UpdateConstructionCompanyNameControllerTest()
+        {
+            //Arrange
+            string token = "b4d9e6a4-466c-4a4f-91ea-6d7e7997584e";
+            ConstructionCompanyRequest constructionCompanyRequest = new ConstructionCompanyRequest
+            {
+                Name = "NewName"
+            };
+
+            ConstructionCompany constructionCompany = new ConstructionCompany
+            {
+                Id = Guid.NewGuid(),
+                Name = "OldName"
+            };
+
+            ConstructionCompany updatedConstructionCompany = new ConstructionCompany
+            {
+                Id = constructionCompany.Id,
+                Name = constructionCompanyRequest.Name
+            };
+
+            User constructionCompanyAdmin = new User
+            {
+                Id = Guid.NewGuid(),
+                Email = "aeda@gmail.com",
+                Password = "1234",
+                Role = Roles.ConstructionCompanyAdmin,
+                Name = "Aeda",
+                LastName = "Kand"
+            };
+
+            ConstructionCompanyResponse expectedMappedCompany = new ConstructionCompanyResponse(updatedConstructionCompany);
+
+            Mock<ISessionService> sessionService = new Mock<ISessionService>(MockBehavior.Strict);
+            Mock<IConstructionCompanyLogic> constructionCompanyLogic = new Mock<IConstructionCompanyLogic>(MockBehavior.Strict);
+
+            sessionService.Setup(x => x.GetUserByToken(It.IsAny<Guid>())).Returns(constructionCompanyAdmin);
+            constructionCompanyLogic.Setup(x => x.UpdateConstructionCompanyName(It.IsAny<string>(), It.IsAny<User>())).Returns(updatedConstructionCompany);
+
+            ConstructionCompanyController constructionCompanyController = new ConstructionCompanyController(constructionCompanyLogic.Object, sessionService.Object);
+            constructionCompanyController.ControllerContext.HttpContext = new DefaultHttpContext();
+            constructionCompanyController.ControllerContext.HttpContext.Request.Headers["Authorization"] = token;
+
+            OkObjectResult expectedObjResult = new OkObjectResult(expectedMappedCompany);
+
+            //Act
+            var controllerResult = constructionCompanyController.UpdateConstructionCompanyName(constructionCompanyRequest);
+
+            //Assert
+            sessionService.VerifyAll();
+            constructionCompanyLogic.VerifyAll();
+
+            OkObjectResult resultObject = controllerResult as OkObjectResult;
+            ConstructionCompanyResponse resultValue = resultObject.Value as ConstructionCompanyResponse;
+
+            Assert.AreEqual(resultObject.StatusCode, expectedObjResult.StatusCode);
+            Assert.AreEqual(resultValue, expectedMappedCompany);
+        }
     }
 }

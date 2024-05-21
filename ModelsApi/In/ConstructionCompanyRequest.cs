@@ -11,8 +11,6 @@ namespace ModelsApi.In
     {
         public string Name { get; set; }
 
-        public User ConstructionCompanyAdmin { get; set; }
-
         public ConstructionCompany ToEntity()
         {
             return new ConstructionCompany(Name);
