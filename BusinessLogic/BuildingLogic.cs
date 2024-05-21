@@ -3,6 +3,7 @@ using Domain;
 using IDataAccess;
 using LogicInterface;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 
 namespace BusinessLogic
 {
@@ -11,11 +12,13 @@ namespace BusinessLogic
         private readonly IBuildingRepository _buildingRepository;
         private readonly IServiceRequestRepository _serviceRequestRepository;
         private readonly IConstructionCompanyRepository _constructionCompanyRepository;
-        public BuildingLogic(IBuildingRepository buildingRepository, IServiceRequestRepository serviceRequestRepository, IConstructionCompanyRepository constructionCompanyRepository)
+        private readonly IUserRepository _userRepository;
+        public BuildingLogic(IBuildingRepository buildingRepository, IServiceRequestRepository serviceRequestRepository, IConstructionCompanyRepository constructionCompanyRepository, IUserRepository userRepository)
         {
             _buildingRepository = buildingRepository;
             _serviceRequestRepository = serviceRequestRepository;
             _constructionCompanyRepository = constructionCompanyRepository;
+            _userRepository = userRepository;
         }
         public Building CreateBuilding(Building building)
         {
@@ -183,7 +186,33 @@ namespace BusinessLogic
 
         public Building ModifyBuildingManager(Guid buildingId, Guid newManagerId, Guid constructionCompanyAdminId)
         {
-            throw new NotImplementedException();
+            Building buildingToUpdate = _buildingRepository.GetBuildingById(buildingId);
+            User newManager = _userRepository.GetUserById(newManagerId);
+
+            if (buildingToUpdate == null)
+            {
+                throw new ArgumentNullException("Building not found");
+            }
+
+            if (newManager == null)
+            {
+                throw new ArgumentNullException("New manager not found");
+            }
+
+            if(newManagerId == buildingToUpdate.managerId)
+            {
+                throw new InvalidOperationException("New manager is already the manager of the building");
+            }
+
+            if (buildingToUpdate.ConstructionCompanyAdmin.Id != constructionCompanyAdminId)
+            {
+                throw new InvalidOperationException("Construction company admin is not the owner of the building");
+            }
+
+            buildingToUpdate.managerId = newManagerId;
+            _buildingRepository.UpdateBuilding(buildingToUpdate);
+            _buildingRepository.Save();
+            return buildingToUpdate;
         }
     }
 }
