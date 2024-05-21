@@ -31,13 +31,15 @@ namespace BusinessLogic
             }
 
             constructionCompany.SelfValidate();
-            var existingCompanyByAdmin = _constructionCompanyRepository.GetConstructionCompanyByAdmin(constructionCompany.ConstructionCompanyAdmin.Id);
-            if (existingCompanyByAdmin == true) { 
+            ConstructionCompany existingCompanyByAdmin = _constructionCompanyRepository.GetConstructionCompanyByAdmin(constructionCompany.ConstructionCompanyAdmin.Id);
+            
+            if (existingCompanyByAdmin != null) { 
                 throw new InvalidOperationException("Only one construction company can be created per user.");
             }
 
 
-            var existingCompany = _constructionCompanyRepository.GetConstructionCompanyByName(constructionCompany.Name);
+            ConstructionCompany existingCompany = _constructionCompanyRepository.GetConstructionCompanyByName(constructionCompany.Name);
+            
             if (existingCompany != null)
             {
                 throw new InvalidOperationException("Only one construction company can be created.");
@@ -48,7 +50,33 @@ namespace BusinessLogic
 
         public ConstructionCompany UpdateConstructionCompanyName(string newName, User constructionCompanyAdmin)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(newName))
+            {
+                throw new EmptyFieldException("New name can't be null or empty");
+            }
+
+            if (constructionCompanyAdmin == null)
+            {
+                throw new ObjectNotFoundException("Construction Company Administrator not found");
+            }
+
+            ConstructionCompany companyToUpdate = _constructionCompanyRepository.GetConstructionCompanyByAdmin(constructionCompanyAdmin.Id);
+            
+            if (companyToUpdate == null)
+            {
+                throw new InvalidOperationException("Construction company not found.");
+            }
+
+            ConstructionCompany existingCompany = _constructionCompanyRepository.GetConstructionCompanyByName(newName);
+           
+            if (existingCompany != null)
+            {
+                throw new InvalidOperationException("Construction company with that name already exists.");
+            }
+
+            companyToUpdate.Name = newName;
+
+            return _constructionCompanyRepository.UpdateConstructionCompany(companyToUpdate);
         }
     }
 }

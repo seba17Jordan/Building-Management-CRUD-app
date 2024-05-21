@@ -23,9 +23,14 @@ namespace DataAccess
             return constructionCompany;
         }
 
-        public bool GetConstructionCompanyByAdmin(Guid id)
+        public ConstructionCompany GetConstructionCompanyByAdmin(Guid id)
         {
-            return _context.Set<ConstructionCompany>().Any(x => x.ConstructionCompanyAdmin.Id == id);
+            return _context.Set<ConstructionCompany>().FirstOrDefault(x => x.ConstructionCompanyAdmin.Id == id);
+        }
+
+        public ConstructionCompany UpdateConstructionCompany(ConstructionCompany companyToUpdate)
+        {
+            throw new NotImplementedException();
         }
     }
 }

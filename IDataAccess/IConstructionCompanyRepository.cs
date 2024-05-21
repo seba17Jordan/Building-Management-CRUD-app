@@ -13,6 +13,7 @@ namespace IDataAccess
 
         ConstructionCompany CreateConstructionCompany(ConstructionCompany constructionCompany);
 
-        bool GetConstructionCompanyByAdmin(Guid id);
+        ConstructionCompany GetConstructionCompanyByAdmin(Guid id);
+        ConstructionCompany UpdateConstructionCompany(ConstructionCompany companyToUpdate);
     }
 }
