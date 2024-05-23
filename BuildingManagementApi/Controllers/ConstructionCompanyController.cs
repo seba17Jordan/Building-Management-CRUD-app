@@ -38,7 +38,7 @@ namespace BuildingManagementApi.Controllers
             return CreatedAtAction(nameof(CreateConstructionCompany), new { id = outputResult.Id }, outputResult);
         }
         
-        [HttpPatch("{name}")]
+        [HttpPatch]
         [ServiceFilter(typeof(AuthenticationFilter))]
         [AuthorizationFilter(_currentRole = Roles.ConstructionCompanyAdmin)]
         public IActionResult UpdateConstructionCompanyName([FromBody] ConstructionCompanyRequest newCompanyName)
