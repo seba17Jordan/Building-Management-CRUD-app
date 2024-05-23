@@ -13,7 +13,7 @@ namespace Domain
         public List<Apartment>? Apartments { get; set; }
         public User ConstructionCompanyAdmin { get; set; }
 
-        public Guid managerId { get; set; }
+        public User? Manager { get; set; }
 
         public Building() { }
 

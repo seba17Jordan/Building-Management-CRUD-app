@@ -4,6 +4,7 @@ using Domain.@enum;
 using LogicInterface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using ModelsApi.In;
 using ModelsApi.Out;
 using Moq;
@@ -294,7 +295,7 @@ public class BuildingControllerTest
             Address = "Address 1",
             ConstructionCompany = constructionCom,
             ConstructionCompanyAdmin = constructionCompanyAdmin,
-            managerId = newManager.Id,
+            Manager = newManager,
             CommonExpenses = 100,
             Apartments = new List<Apartment>
             {
@@ -333,4 +334,42 @@ public class BuildingControllerTest
         Assert.AreEqual(resultObject.StatusCode, expectedObjResult.StatusCode);
         Assert.AreEqual(resultValue, expectedMappedBuilding);
     }
+
+    [TestMethod]
+    public void GetAllBuildingsCorrectTestController()
+    {
+        //Arrange
+        string token = "b4d9e6a4-466c-4a4f-91ea-6d7e7997584e";
+        ConstructionCompany constructionCom = new ConstructionCompany("Construction Company");
+
+        User constructionCompanyAdmin = new User
+        {
+            Id = Guid.NewGuid(),
+            Role = Roles.ConstructionCompanyAdmin,
+            Name = "John",
+            LastName = "Doe"
+        };
+
+        Building building = new Building()
+        {
+            Id = Guid.NewGuid(),
+            Name = "New Building 1",
+            Address = "Address 1",
+            ConstructionCompany = constructionCom,
+            ConstructionCompanyAdmin = constructionCompanyAdmin,
+            CommonExpenses = 100,
+            Apartments = new List<Apartment>
+            {
+                new Apartment()
+                {
+                    Floor = 1,
+                    Number = 101,
+                    Owner = new Owner { Name = "Jane", LastName = "Doe", Email = ""}
+                }
+            }
+        };
+
+       
+    }
+
 }

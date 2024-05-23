@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ModelsApi.Out
 {
-    public class ListConstructionCompanyResponse
+    public class BuildingConstructionCompanyResponse
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -14,18 +15,17 @@ namespace ModelsApi.Out
         public bool HasManager { get; set; }
         public string ManagerName { get; set; }
 
-        public ListConstructionCompanyResponse(Guid id, string name, string address, bool hasManager, string managerName)
+        public BuildingConstructionCompanyResponse(Building b)
         {
-            Id = id;
-            Name = name;
-            Address = address;
-            HasManager = hasManager;
-            ManagerName = managerName;
+            Id = b.Id;
+            Name = b.Name;
+            Address = b.Address;
+            HasManager = b.Manager != null;
         }
 
         public override bool Equals(object obj)
         {
-            return obj is ListConstructionCompanyResponse response &&
+            return obj is BuildingConstructionCompanyResponse response &&
                    Id.Equals(response.Id) &&
                    Name == response.Name &&
                    Address == response.Address &&

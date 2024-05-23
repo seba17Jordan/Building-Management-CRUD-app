@@ -107,7 +107,7 @@ namespace BusinessLogicTest
                 {
                     apartment
                 },
-                managerId = manager.Id
+                Manager = manager
             };
 
             Category category = new Category { Name = "CategoryName" };

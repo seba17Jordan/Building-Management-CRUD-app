@@ -454,7 +454,7 @@ namespace BusinessLogicTest
                         HasTerrace = true
                     }
                 },
-                managerId = manager.Id
+                Manager = manager
             };
             List<ServiceRequest> serviceRequests = new List<ServiceRequest>();
 
@@ -508,7 +508,7 @@ namespace BusinessLogicTest
                         HasTerrace = true
                     }
                 },
-                managerId = manager.Id
+                Manager = manager
             };
             List<ServiceRequest> serviceRequests = new List<ServiceRequest>();
 
@@ -590,7 +590,7 @@ namespace BusinessLogicTest
                         Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "daedeq@gmaui.com"}
                     }
                 },
-                managerId = manager.Id
+                Manager = manager
             };
 
             Category category = new Category()
@@ -697,7 +697,7 @@ namespace BusinessLogicTest
                         HasTerrace = true
                     }
                 },
-                managerId = manager.Id
+                Manager = manager
 
             };
 
@@ -775,7 +775,7 @@ namespace BusinessLogicTest
                     ConstructionCompany = new ConstructionCompany("Construction Company"),
                     CommonExpenses = -100,
                     Apartments = new List<Apartment>(),
-                    managerId = manager.Id
+                    Manager = manager
                 };
 
                 Building updates = new Building()
@@ -1139,7 +1139,7 @@ namespace BusinessLogicTest
                         Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "aeda@gmail.com"}
                     }
                 },
-                managerId = newManager.Id
+                Manager = newManager
             };
 
             Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
@@ -1318,7 +1318,7 @@ namespace BusinessLogicTest
                             Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "aeda@gmail.com"}
                         }
                     },
-                    managerId = manager.Id
+                    Manager = manager
                 };
 
                 buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
@@ -1353,15 +1353,16 @@ namespace BusinessLogicTest
         {
             // Arrange
             var buildingId = Guid.NewGuid();
-            var managerId = Guid.NewGuid();
-            var building = new Building { Id = buildingId, managerId = managerId };
-            var manager = new User { Id = managerId, Name = "John Doe" };
+            User manager = new User { Id = Guid.NewGuid(), Name = "John Doe", Email= "fede@gmail.com", LastName= "de alava", Password= "12345678", Role= Roles.Manager };
+            var building = new Building { Id = buildingId, Manager = manager };
+            User newManager = new User { Id = Guid.NewGuid(), Name = "juan Doe", Email = "juan@gmail.com", LastName = "de alava", Password = "12345678", Role = Roles.Manager };
+
 
             Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
             Mock<IUserRepository> userRepo = new Mock<IUserRepository>(MockBehavior.Strict);
 
             buildingRepo.Setup(repo => repo.GetBuildingById(buildingId)).Returns(building);
-            userRepo.Setup(repo => repo.GetUserById(managerId)).Returns(manager);
+            userRepo.Setup(repo => repo.GetUserById(manager.Id)).Returns(manager);
 
             // Act
             var buildingLogic = new BuildingLogic(buildingRepo.Object, null, null, userRepo.Object);

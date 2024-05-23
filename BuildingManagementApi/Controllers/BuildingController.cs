@@ -68,6 +68,18 @@ namespace BuildingManagementApi.Controllers
             return Ok(response);
         }
 
+        [HttpGet]
+        [ServiceFilter(typeof(AuthenticationFilter))]
+        [AuthorizationFilter(_currentRole = Roles.ConstructionCompanyAdmin)]
+        public IActionResult GetAllBuildings()
+        {
+            string token = Request.Headers["Authorization"].ToString();
+            var ConstructionCompanyUser = _sessionService.GetUserByToken(Guid.Parse(token));
+
+            IEnumerable<BuildingConstructionCompanyResponse> response = _buildingLogic.GetBuildingsByCompanyAdminId(ConstructionCompanyUser.Id).Select(b => new BuildingConstructionCompanyResponse(b)).ToList();
+            return Ok(response);
+        }
+
         [HttpPatch("{buildingId}")] //id de building
         [ServiceFilter(typeof(AuthenticationFilter))]
         [AuthorizationFilter(_currentRole = Roles.ConstructionCompanyAdmin)]

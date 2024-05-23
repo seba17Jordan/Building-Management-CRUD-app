@@ -34,7 +34,7 @@ namespace BusinessLogic
                 throw new ObjectNotFoundException("Building not found.");
             }
 
-            if(currentBuilding.managerId != Managerid)
+            if(currentBuilding.Manager.Id != Managerid)
             {
                 throw new InvalidOperationException("Manager does not have access to this building.");
             }

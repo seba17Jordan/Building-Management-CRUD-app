@@ -75,7 +75,7 @@ namespace BusinessLogic
                 throw new ObjectNotFoundException("Building not found");
             }
             
-            if (building.managerId != managerId)
+            if (building.Manager.Id != managerId)
             {
                 throw new InvalidOperationException("Manager is not the owner of the building");
             }
@@ -113,7 +113,7 @@ namespace BusinessLogic
                 throw new ArgumentNullException("Building not found", nameof(id));
             }
 
-            if(buildingToUpdate.managerId != managerId)
+            if(buildingToUpdate.Manager.Id != managerId)
             {
                 throw new ArgumentException("Manager is not the owner of the building");
             }
@@ -175,7 +175,7 @@ namespace BusinessLogic
                 throw new ArgumentNullException("Building not found");
             }
 
-            User manager = _userRepository.GetUserById(building.managerId);
+            User manager = _userRepository.GetUserById(building.Manager.Id);
             if (manager == null)
             {
                 throw new ArgumentNullException("Manager not found");
@@ -210,7 +210,11 @@ namespace BusinessLogic
                 throw new ArgumentNullException("New manager not found");
             }
 
-            if(newManagerId == buildingToUpdate.managerId)
+            if (buildingToUpdate.Manager == null) {
+                throw new ArgumentNullException("Building has no manager");
+            }
+
+            if(buildingToUpdate.Manager != null && newManagerId == buildingToUpdate.Manager.Id)
             {
                 throw new InvalidOperationException("New manager is already the manager of the building");
             }
@@ -220,7 +224,7 @@ namespace BusinessLogic
                 throw new InvalidOperationException("Construction company admin is not the owner of the building");
             }
 
-            buildingToUpdate.managerId = newManagerId;
+            buildingToUpdate.Manager = newManager;
             _buildingRepository.UpdateBuilding(buildingToUpdate);
             _buildingRepository.Save();
             return buildingToUpdate;
