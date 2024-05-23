@@ -167,21 +167,21 @@ namespace BusinessLogic
             return buildingToUpdate;
         }
 
-        public Building GetBuildingById(Guid id)
+        public string GetBuildingManagerName(Guid buildingId)
         {
-            if (id == Guid.Empty)
-            {
-                throw new EmptyFieldException("Id is empty");
-            }
-
-            Building building = _buildingRepository.GetBuildingById(id);
-
+            Building building = _buildingRepository.GetBuildingById(buildingId);
             if (building == null)
             {
-                throw new ObjectNotFoundException("Building not found");
+                throw new ArgumentNullException("Building not found");
             }
 
-            return building;
+            User manager = _userRepository.GetUserById(building.managerId);
+            if (manager == null)
+            {
+                throw new ArgumentNullException("Manager not found");
+            }
+
+            return manager.Name;
         }
 
         public Building ModifyBuildingManager(Guid buildingId, Guid newManagerId, Guid constructionCompanyAdminId)

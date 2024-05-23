@@ -1,5 +1,6 @@
 ﻿
 using BuildingManagementApi.Filters;
+using Domain;
 using Domain.@enum;
 using LogicInterface;
 using Microsoft.AspNetCore.Mvc;
@@ -65,35 +66,6 @@ namespace BuildingManagementApi.Controllers
             BuildingResponse response = new BuildingResponse(logicBuilding);
 
             return Ok(response);
-        }
-
-        [HttpGet("{id}")]
-        [ServiceFilter(typeof(AuthenticationFilter))]
-        [AuthorizationFilter(_currentRole = Roles.ConstructionCompanyAdmin)]
-        public IActionResult GetBuildingById(Guid id)
-        {
-            string token = Request.Headers["Authorization"].ToString();
-            var managerUser = _sessionService.GetUserByToken(Guid.Parse(token));
-
-            var building = _buildingLogic.GetBuildingById(id);
-
-            if (building.ConstructionCompanyAdmin.Id != managerUser.Id)
-            {
-                return Unauthorized();
-            }
-
-            var hasManager = building.ConstructionCompanyAdmin != null;
-            var managerName = hasManager ? $"{building.ConstructionCompanyAdmin.Name} {building.ConstructionCompanyAdmin.LastName}" : null;
-
-            var listBuildingResponse = new ListBuildingResponse(
-                building.Id,
-                building.Name,
-                building.Address,
-                hasManager,
-                managerName
-            );
-
-            return Ok(listBuildingResponse);
         }
 
         [HttpPatch("{buildingId}")] //id de building

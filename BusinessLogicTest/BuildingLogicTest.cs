@@ -1074,39 +1074,6 @@ namespace BusinessLogicTest
             Assert.IsInstanceOfType(specificEx, typeof(InvalidOperationException));
             Assert.IsTrue(specificEx.Message.Contains("This construction company does not belong to this construction company administrator"));
         }
-        
-        [TestMethod]
-        public void GetBuildingById_ValidId_ReturnsBuilding()
-        {
-            // Arrange
-            Guid validId = Guid.NewGuid();
-            Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
-            Mock<IServiceRequestRepository> serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
-            Mock<IConstructionCompanyRepository> constructionCompanyRepo = new Mock<IConstructionCompanyRepository>(MockBehavior.Strict);
-            Mock<IUserRepository> userRepo = new Mock<IUserRepository>(MockBehavior.Strict);
-
-            BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object, constructionCompanyRepo.Object, userRepo.Object);
-
-            var expectedBuilding = new Building
-            {
-                Id = validId,
-                Name = "Test Building",
-                Address = "123 Test St",
-                ConstructionCompanyAdmin = new User { Id = Guid.NewGuid(), Name = "John", LastName = "Doe" }
-            };
-
-            buildingRepo.Setup(x => x.GetBuildingById(validId)).Returns(expectedBuilding);
-
-            // Act
-            var result = buildingLogic.GetBuildingById(validId);
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(validId, result.Id);
-            Assert.AreEqual(expectedBuilding.Name, result.Name);
-            Assert.AreEqual(expectedBuilding.Address, result.Address);
-            Assert.AreEqual(expectedBuilding.ConstructionCompanyAdmin, result.ConstructionCompanyAdmin);
-        }
 
         [TestMethod]
         public void ModifyBuildingManagerCorrectTestLogic()
@@ -1379,6 +1346,29 @@ namespace BusinessLogicTest
             Assert.IsNotNull(specificEx);
             Assert.IsInstanceOfType(specificEx, typeof(InvalidOperationException));
             Assert.IsTrue(specificEx.Message.Contains("New manager is already the manager of the building"));
+        }
+
+        [TestMethod]
+        public void GetBuildingManagerName_ValidBuildingAndManager_ReturnsManagerName()
+        {
+            // Arrange
+            var buildingId = Guid.NewGuid();
+            var managerId = Guid.NewGuid();
+            var building = new Building { Id = buildingId, managerId = managerId };
+            var manager = new User { Id = managerId, Name = "John Doe" };
+
+            Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+            Mock<IUserRepository> userRepo = new Mock<IUserRepository>(MockBehavior.Strict);
+
+            buildingRepo.Setup(repo => repo.GetBuildingById(buildingId)).Returns(building);
+            userRepo.Setup(repo => repo.GetUserById(managerId)).Returns(manager);
+
+            // Act
+            var buildingLogic = new BuildingLogic(buildingRepo.Object, null, null, userRepo.Object);
+            var result = buildingLogic.GetBuildingManagerName(buildingId);
+
+            // Assert
+            Assert.AreEqual("John Doe", result);
         }
     }
 }
