@@ -69,12 +69,24 @@ namespace BusinessLogic
             }
 
             Building building = _buildingRepository.GetBuildingById(id);
-            
+
             if (building == null)
             {
                 throw new ObjectNotFoundException("Building not found");
             }
-            
+
+            if (building.Manager == null)
+            {
+                throw new InvalidOperationException("Building has no manager");
+            }
+
+            User currentManager = _userRepository.GetUserById(managerId);
+
+            if (currentManager == null)
+            {
+                throw new ObjectNotFoundException("Manager not found");
+            }
+
             if (building.Manager.Id != managerId)
             {
                 throw new InvalidOperationException("Manager is not the owner of the building");
@@ -110,7 +122,19 @@ namespace BusinessLogic
 
             if (buildingToUpdate == null)
             {
-                throw new ArgumentNullException("Building not found", nameof(id));
+                throw new ArgumentNullException("Building not found");
+            }
+
+            if (buildingToUpdate.Manager == null)
+            {
+                throw new InvalidOperationException("Building has no manager");
+            }
+
+            User currentManager = _userRepository.GetUserById(managerId);
+            
+            if (currentManager == null)
+            {
+                   throw new ArgumentNullException("Manager not found");
             }
 
             if(buildingToUpdate.Manager.Id != managerId)
@@ -167,23 +191,6 @@ namespace BusinessLogic
             return buildingToUpdate;
         }
 
-        public string GetBuildingManagerName(Guid buildingId)
-        {
-            Building building = _buildingRepository.GetBuildingById(buildingId);
-            if (building == null)
-            {
-                throw new ArgumentNullException("Building not found");
-            }
-
-            User manager = _userRepository.GetUserById(building.Manager.Id);
-            if (manager == null)
-            {
-                throw new ArgumentNullException("Manager not found");
-            }
-
-            return manager.Name;
-        }
-
         public IEnumerable<Building> GetBuildingsByCompanyAdminId(Guid companyAdminId)
         {
             if (companyAdminId == Guid.Empty)
@@ -208,10 +215,6 @@ namespace BusinessLogic
             if (newManager == null)
             {
                 throw new ArgumentNullException("New manager not found");
-            }
-
-            if (buildingToUpdate.Manager == null) {
-                throw new ArgumentNullException("Building has no manager");
             }
 
             if(buildingToUpdate.Manager != null && newManagerId == buildingToUpdate.Manager.Id)

@@ -468,6 +468,7 @@ namespace BusinessLogicTest
             buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(expectedBuilding);
             buildingRepo.Setup(l => l.Save());
             buildingRepo.Setup(l => l.DeleteApartment(It.IsAny<Apartment>()));
+            userRepo.Setup(l => l.GetUserById(It.IsAny<Guid>())).Returns(manager);
             BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object, constructionCompanyRepo.Object, userRepo.Object);
 
             // Act
@@ -522,6 +523,7 @@ namespace BusinessLogicTest
             buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(expectedBuilding);
             buildingRepo.Setup(l => l.Save());
             buildingRepo.Setup(l => l.DeleteApartment(It.IsAny<Apartment>()));
+            userRepo.Setup(l => l.GetUserById(It.IsAny<Guid>())).Returns(manager);
             BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object, constructionCompanyRepo.Object, userRepo.Object);
 
             // Act
@@ -616,6 +618,7 @@ namespace BusinessLogicTest
             
             serviceRequestRepo.Setup(l => l.GetNoClosedServiceRequestsByBuildingId(It.IsAny<Guid>())).Returns(new List<ServiceRequest> { serviceRequest });
             buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(building);
+            userRepo.Setup(l => l.GetUserById(It.IsAny<Guid>())).Returns(manager);
 
             BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object, constructionCompanyRepo.Object, userRepo.Object);
 
@@ -736,6 +739,7 @@ namespace BusinessLogicTest
             buildingRepo.Setup(l => l.BuildingNameExists(It.IsAny<string>())).Returns(false);
             buildingRepo.Setup(l => l.UpdateBuilding(It.IsAny<Building>()));
             buildingRepo.Setup(l => l.Save());
+            userRepo.Setup(l => l.GetUserById(It.IsAny<Guid>())).Returns(manager);
 
             BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object, constructionCompanyRepo.Object, userRepo.Object);
 
@@ -790,6 +794,7 @@ namespace BusinessLogicTest
                 buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
                 buildingRepo.Setup(l => l.BuildingNameExists(It.IsAny<string>())).Returns(true);
                 buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(building);
+                userRepo.Setup(l => l.GetUserById(It.IsAny<Guid>())).Returns(manager);
 
                 BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object, constructionCompanyRepo.Object, userRepo.Object);
 
@@ -837,6 +842,7 @@ namespace BusinessLogicTest
                     ConstructionCompany = new ConstructionCompany("Construction Company"),
                     CommonExpenses = -100,
                     Apartments = new List<Apartment>(),
+                    Manager = manager
                 };
 
                 Building updates = new Building()
@@ -850,11 +856,12 @@ namespace BusinessLogicTest
                 userRepo = new Mock<IUserRepository>(MockBehavior.Strict);
 
                 buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(building);
+                userRepo.Setup(l => l.GetUserById(It.IsAny<Guid>())).Returns(manager);
 
                 BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object, constructionCompanyRepo.Object, userRepo.Object);
 
                 // Act
-                Building logicResult = buildingLogic.UpdateBuildingById(building.Id, updates, manager.Id);
+                Building logicResult = buildingLogic.UpdateBuildingById(building.Id, updates, Guid.NewGuid());
 
             }
             catch (ArgumentException e)
@@ -1346,30 +1353,6 @@ namespace BusinessLogicTest
             Assert.IsNotNull(specificEx);
             Assert.IsInstanceOfType(specificEx, typeof(InvalidOperationException));
             Assert.IsTrue(specificEx.Message.Contains("New manager is already the manager of the building"));
-        }
-
-        [TestMethod]
-        public void GetBuildingManagerName_ValidBuildingAndManager_ReturnsManagerName()
-        {
-            // Arrange
-            var buildingId = Guid.NewGuid();
-            User manager = new User { Id = Guid.NewGuid(), Name = "John Doe", Email= "fede@gmail.com", LastName= "de alava", Password= "12345678", Role= Roles.Manager };
-            var building = new Building { Id = buildingId, Manager = manager };
-            User newManager = new User { Id = Guid.NewGuid(), Name = "juan Doe", Email = "juan@gmail.com", LastName = "de alava", Password = "12345678", Role = Roles.Manager };
-
-
-            Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
-            Mock<IUserRepository> userRepo = new Mock<IUserRepository>(MockBehavior.Strict);
-
-            buildingRepo.Setup(repo => repo.GetBuildingById(buildingId)).Returns(building);
-            userRepo.Setup(repo => repo.GetUserById(manager.Id)).Returns(manager);
-
-            // Act
-            var buildingLogic = new BuildingLogic(buildingRepo.Object, null, null, userRepo.Object);
-            var result = buildingLogic.GetBuildingManagerName(buildingId);
-
-            // Assert
-            Assert.AreEqual("John Doe", result);
         }
 
         [TestMethod]
