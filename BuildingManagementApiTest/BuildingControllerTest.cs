@@ -369,7 +369,38 @@ public class BuildingControllerTest
             }
         };
 
-       
+        IEnumerable<Building> expectedBuildings = new List<Building>
+        {
+            building
+        };
+
+        var expectedResponse = expectedBuildings.Select(b => new BuildingConstructionCompanyResponse(b)).ToList();
+
+        Mock<IBuildingLogic> buildingLogic = new Mock<IBuildingLogic>(MockBehavior.Strict);
+        Mock<ISessionService> sessionService = new Mock<ISessionService>(MockBehavior.Strict);
+
+        buildingLogic.Setup(bl => bl.GetBuildingsByCompanyAdminId(It.IsAny<Guid>())).Returns(expectedBuildings);
+        sessionService.Setup(p => p.GetUserByToken(It.IsAny<Guid>())).Returns(constructionCompanyAdmin);
+
+        BuildingController buildingController = new BuildingController(buildingLogic.Object, sessionService.Object);
+        buildingController.ControllerContext.HttpContext = new DefaultHttpContext();
+        buildingController.ControllerContext.HttpContext.Request.Headers["Authorization"] = token;
+
+        OkObjectResult expectedObjResult = new OkObjectResult(expectedResponse);
+
+        // Act
+        var constrollerResult = buildingController.GetAllBuildings();
+
+        // Assert
+        buildingLogic.VerifyAll();
+        sessionService.VerifyAll();
+        OkObjectResult resultObj = constrollerResult as OkObjectResult;
+        List<BuildingConstructionCompanyResponse> resultResponse = resultObj.Value as List<BuildingConstructionCompanyResponse>;
+        Assert.IsNotNull(resultResponse);
+        Assert.AreEqual(resultObj.StatusCode, expectedObjResult.StatusCode);
+        Assert.AreEqual(resultResponse.First(), expectedResponse.First());
+
+
     }
 
 }
