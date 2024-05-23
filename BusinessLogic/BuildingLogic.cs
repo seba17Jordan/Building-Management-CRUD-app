@@ -184,6 +184,17 @@ namespace BusinessLogic
             return manager.Name;
         }
 
+        public IEnumerable<Building> GetBuildingsByCompanyAdminId(Guid companyAdminId)
+        {
+            if (companyAdminId == Guid.Empty)
+            {
+                throw new EmptyFieldException("Id is empty");
+            }
+
+            return _buildingRepository.GetAllBuildings(companyAdminId);
+
+        }
+
         public Building ModifyBuildingManager(Guid buildingId, Guid newManagerId, Guid constructionCompanyAdminId)
         {
             Building buildingToUpdate = _buildingRepository.GetBuildingById(buildingId);

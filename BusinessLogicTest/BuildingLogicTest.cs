@@ -1370,5 +1370,29 @@ namespace BusinessLogicTest
             // Assert
             Assert.AreEqual("John Doe", result);
         }
+
+        [TestMethod]
+        public void GetBuildingsByCompanyAdminId_ReturnsBuildings_WhenCompanyAdminIdIsValid()
+        {
+            // Arrange
+            var validGuid = Guid.NewGuid();
+            var buildings = new List<Building>
+            {
+                new Building { Id = Guid.NewGuid(), Name = "Building 1" },
+                new Building { Id = Guid.NewGuid(), Name = "Building 2" }
+            };
+
+            Mock<IBuildingRepository> _buildingRepositoryMock = new Mock<IBuildingRepository>();
+            _buildingRepositoryMock.Setup(repo => repo.GetAllBuildings(validGuid)).Returns(buildings);
+
+            // Act
+            var _buildingService = new BuildingLogic(_buildingRepositoryMock.Object, null, null, null);
+            var result = _buildingService.GetBuildingsByCompanyAdminId(validGuid);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2, result.Count());
+            Assert.AreEqual("Building 1", result.First().Name);
+        }
     }
 }
