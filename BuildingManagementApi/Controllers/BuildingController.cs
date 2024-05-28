@@ -2,6 +2,8 @@
 using BuildingManagementApi.Filters;
 using Domain;
 using Domain.@enum;
+using ImportersInterface;
+using ImportersLogic;
 using LogicInterface;
 using Microsoft.AspNetCore.Mvc;
 using ModelsApi;
@@ -17,11 +19,17 @@ namespace BuildingManagementApi.Controllers
     {
         private readonly IBuildingLogic _buildingLogic;
         private readonly ISessionService _sessionService;
+        private readonly ImporterManager _importerManager;
+        //Ruta relativa a la carpeta de los importadores
+        private readonly string _importersDirectory = @"..\..\..\..\JsonImporter\Dll\";
+        //Ruta relativa a la carpeta de los archivos JSON
+        private readonly string _filesDirectory = @"..\..\..\..\JsonImporter\JSONFiles";
 
         public BuildingController(IBuildingLogic buildingLogic, ISessionService sessionService)
         {
-            this._buildingLogic = buildingLogic;
+            _buildingLogic = buildingLogic;
             _sessionService = sessionService;
+            _importerManager = new ImporterManager();
         }
 
 
@@ -35,7 +43,7 @@ namespace BuildingManagementApi.Controllers
 
             var building = buildingToCreate.ToEntity();
             building.ConstructionCompanyAdmin = constructionCompanyAdmin;
-            var resultObj = _buildingLogic.CreateBuilding(building);
+            var resultObj = _buildingLogic.CreateBuilding(building, constructionCompanyAdmin);
             BuildingResponse outputResult = new BuildingResponse(resultObj);
 
             return CreatedAtAction(nameof(CreateBuilding), new { id = outputResult.Id }, outputResult);
@@ -94,5 +102,26 @@ namespace BuildingManagementApi.Controllers
             return Ok(response);
         }
 
+        [HttpPost("import")]
+        [ServiceFilter(typeof(AuthenticationFilter))]
+        [AuthorizationFilter(_currentRole = Roles.ConstructionCompanyAdmin)]
+        public IActionResult ImportBuildings([FromBody] ImportRequest importRequest) //importer name, JSON file Name
+        {
+            var importer = _importerManager.GetImporter(_importersDirectory, importRequest.ImporterName);
+            if (importer == null)
+            {
+                return BadRequest("Invalid importer specified.");
+            }
+
+            string filePath = Path.Combine(_filesDirectory, importRequest.FileName);
+            if (!System.IO.File.Exists(filePath))
+            {
+                return BadRequest("File not found.");
+            }
+
+            importer.Import(filePath);
+            
+            return Ok();
+        }
     }
 }

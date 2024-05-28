@@ -58,12 +58,13 @@ namespace BusinessLogicTest
 
             buildingRepo.Setup(l => l.CreateBuilding(It.IsAny<Building>())).Returns(expectedBuilding);
             buildingRepo.Setup(l => l.BuildingNameExists(It.IsAny<string>())).Returns(false);
-            constructionCompanyRepo.Setup(l => l.GetConstructionCompanyByName(It.IsAny<string>())).Returns(constructionCompany);
+            constructionCompanyRepo.Setup(l => l.GetConstructionCompanyByAdmin(It.IsAny<Guid>())).Returns(constructionCompany);
+
 
             BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object, constructionCompanyRepo.Object, userRepo.Object);
 
             //Act
-            Building logicResult = buildingLogic.CreateBuilding(expectedBuilding);
+            Building logicResult = buildingLogic.CreateBuilding(expectedBuilding, constructionCompanyAdmin);
 
             //Assert
             buildingRepo.VerifyAll();
@@ -84,7 +85,7 @@ namespace BusinessLogicTest
                 BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object, constructionCompanyRepo.Object, userRepo.Object);
 
                 // Act
-                Building logicResult = buildingLogic.CreateBuilding(null);
+                Building logicResult = buildingLogic.CreateBuilding(null, null);
 
             }
             catch (ArgumentNullException e)
@@ -111,13 +112,24 @@ namespace BusinessLogicTest
             try
             {
                 //Arrange
+                ConstructionCompany constructionCompany = new ConstructionCompany("Construction Company");
+                User constructionComAdmin = new User()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Admin",
+                    LastName = "ConstructionCompAdmin",
+                    Email = "sopfms@gmail.com",
+                    Role = Roles.ConstructionCompanyAdmin,
+                };
+
                 Building expectedBuilding = new Building()
                 {
                     Id = Guid.NewGuid(),
                     Name = "",
                     Address = "Address 1",
-                    ConstructionCompany = new ConstructionCompany("Construction Company"),
+                    ConstructionCompany = constructionCompany,
                     CommonExpenses = 100,
+                    ConstructionCompanyAdmin= constructionComAdmin,
                     Apartments = new List<Apartment>
                 {
                     new Apartment()
@@ -138,7 +150,7 @@ namespace BusinessLogicTest
                 BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object, constructionCompanyRepo.Object, userRepo.Object);
 
                 // Act
-                Building logicResult = buildingLogic.CreateBuilding(expectedBuilding);
+                Building logicResult = buildingLogic.CreateBuilding(expectedBuilding, constructionComAdmin);
 
             }
             catch (EmptyFieldException e)
@@ -165,6 +177,15 @@ namespace BusinessLogicTest
             try
             {
                 //Arrange
+                User constructrionComAdmin = new User()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Admin",
+                    LastName = "ConstructionCompAdmin",
+                    Email = "",
+                    Role = Roles.ConstructionCompanyAdmin,
+                };
+
                 Building expectedBuilding = new Building()
                 {
                     Id = Guid.NewGuid(),
@@ -193,7 +214,7 @@ namespace BusinessLogicTest
                 BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object, constructionCompanyRepo.Object, userRepo.Object);
 
                 // Act
-                Building logicResult = buildingLogic.CreateBuilding(expectedBuilding);
+                Building logicResult = buildingLogic.CreateBuilding(expectedBuilding, constructrionComAdmin);
 
             }
             catch (EmptyFieldException e)
@@ -220,6 +241,15 @@ namespace BusinessLogicTest
             try
             {
                 //Arrange
+                User constructionComAdmin = new User()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Admin",
+                    LastName = "ConstructionCompAdmin",
+                    Email = "",
+                    Role = Roles.ConstructionCompanyAdmin,
+                };
+
                 Building expectedBuilding = new Building()
                 {
                     Id = Guid.NewGuid(),
@@ -248,7 +278,7 @@ namespace BusinessLogicTest
                 BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object, constructionCompanyRepo.Object, userRepo.Object);
 
                 // Act
-                Building logicResult = buildingLogic.CreateBuilding(expectedBuilding);
+                Building logicResult = buildingLogic.CreateBuilding(expectedBuilding, constructionComAdmin);
 
             }
             catch (EmptyFieldException e)
@@ -275,6 +305,15 @@ namespace BusinessLogicTest
             try
             {
                 //Arrange
+                User constructionCompAdmin = new User()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Admin",
+                    LastName = "ConstructionCompAdmin",
+                    Email = "",
+                    Role = Roles.ConstructionCompanyAdmin,
+                };
+
                 Building expectedBuilding = new Building()
                 {
                     Id = Guid.NewGuid(),
@@ -292,7 +331,7 @@ namespace BusinessLogicTest
                 BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object, constructionCompanyRepo.Object, userRepo.Object);
 
                 // Act
-                Building logicResult = buildingLogic.CreateBuilding(expectedBuilding);
+                Building logicResult = buildingLogic.CreateBuilding(expectedBuilding, constructionCompAdmin);
 
             }
             catch (ArgumentException e)
@@ -319,6 +358,15 @@ namespace BusinessLogicTest
             try
             {
                 //Arrange
+                User constructionCompAdmin = new User()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Admin",
+                    LastName = "ConstructionCompAdmin",
+                    Email = "",
+                    Role = Roles.ConstructionCompanyAdmin,
+                };
+
                 Apartment apt = new Apartment()
                 {
                     Floor = 1,
@@ -349,7 +397,7 @@ namespace BusinessLogicTest
                 BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object, constructionCompanyRepo.Object, userRepo.Object);
 
                 // Act
-                Building logicResult = buildingLogic.CreateBuilding(expectedBuilding);
+                Building logicResult = buildingLogic.CreateBuilding(expectedBuilding, constructionCompAdmin);
 
             }
             catch (ArgumentException e)
@@ -375,7 +423,14 @@ namespace BusinessLogicTest
             try
             {
                 //Arrange
-
+                User constructionComAdmin = new User()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Admin",
+                    LastName = "ConstructionCompAdmin",
+                    Email = "",
+                    Role = Roles.ConstructionCompanyAdmin
+                };
                 Apartment apt = new Apartment()
                 {
                     Floor = 1,
@@ -408,7 +463,7 @@ namespace BusinessLogicTest
                 BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object, constructionCompanyRepo.Object, userRepo.Object);
 
                 // Act
-                Building logicResult = buildingLogic.CreateBuilding(expectedBuilding);
+                Building logicResult = buildingLogic.CreateBuilding(expectedBuilding, constructionComAdmin);
 
             }
             catch (ObjectAlreadyExistsException e)
@@ -889,6 +944,14 @@ namespace BusinessLogicTest
             try
             {
                 //Arrange
+                User constructionComAdmin = new User()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Admin",
+                    LastName = "ConstructionCompAdmin",
+                    Email = "",
+                    Role = Roles.ConstructionCompanyAdmin,
+                };
 
                 Apartment apt = new Apartment()
                 {
@@ -920,7 +983,7 @@ namespace BusinessLogicTest
                 BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object, constructionCompanyRepo.Object, userRepo.Object);
 
                 // Act
-                Building logicResult = buildingLogic.CreateBuilding(expectedBuilding);
+                Building logicResult = buildingLogic.CreateBuilding(expectedBuilding, constructionComAdmin);
 
             }
             catch (ArgumentException e)
@@ -947,6 +1010,14 @@ namespace BusinessLogicTest
             try
             {
                 //Arrange
+                User constructionComAdmin = new User()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Admin",
+                    LastName = "ConstructionCompAdmin",
+                    Email = "",
+                    Role = Roles.ConstructionCompanyAdmin,
+                };
 
                 Apartment apt = new Apartment()
                 {
@@ -975,13 +1046,13 @@ namespace BusinessLogicTest
                 constructionCompanyRepo = new Mock<IConstructionCompanyRepository>(MockBehavior.Strict);
                 userRepo = new Mock<IUserRepository>(MockBehavior.Strict);
 
-                constructionCompanyRepo.Setup(l => l.GetConstructionCompanyByName(It.IsAny<string>())).Returns((ConstructionCompany)null);
+                constructionCompanyRepo.Setup(l => l.GetConstructionCompanyByAdmin(It.IsAny<Guid>())).Returns((ConstructionCompany)null);
                 buildingRepo.Setup(l => l.BuildingNameExists(It.IsAny<string>())).Returns(false);
 
                 BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object, constructionCompanyRepo.Object, userRepo.Object);
 
                 // Act
-                Building logicResult = buildingLogic.CreateBuilding(expectedBuilding);
+                Building logicResult = buildingLogic.CreateBuilding(expectedBuilding, constructionComAdmin);
 
             }
             catch (ObjectNotFoundException e)
@@ -996,91 +1067,6 @@ namespace BusinessLogicTest
             Assert.IsTrue(specificEx.Message.Contains("Construction company not found"));
         }
 
-        [TestMethod]
-        public void CreateBuildingConstructionCompanyAdminNotHasConstructionCompanyFound()
-        {
-            // Arrange
-            Exception specificEx = null;
-            Mock<IBuildingRepository> buildingRepo = null;
-            Mock<IServiceRequestRepository> serviceRequestRepo = null;
-            Mock<IConstructionCompanyRepository> constructionCompanyRepo = null;
-            Mock<IUserRepository> userRepo = null;
-            try
-            {
-                //Arrange
-                User constructionComAdmin = new User()
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Admin",
-                    LastName = "ConstructionCompAdmin",
-                    Email = "aknd@gmail.com",
-                    Role = Roles.ConstructionCompanyAdmin,
-                };
-
-                User contructionCompanyAdminNotAllowed = new User()
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Admin",
-                    LastName = "ConstructionCompAdmin",
-                    Email = "cdcs@gmial.com",
-                    Role = Roles.ConstructionCompanyAdmin,
-                };
-
-                ConstructionCompany constructionCompany = new ConstructionCompany()
-                {
-                    Name = "Construction Company",
-                    ConstructionCompanyAdmin = constructionComAdmin
-                };
-
-                Apartment apt = new Apartment()
-                {
-                    Floor = 1,
-                    Number = 101,
-                    Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "dadae@gmai.com" },
-                    Rooms = 1,
-                    Bathrooms = 2,
-                    HasTerrace = true
-                };
-
-                Building expectedBuilding = new Building()
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Name 1",
-                    Address = "Address 1",
-                    ConstructionCompany = constructionCompany, //(*)
-                    CommonExpenses = 100,
-                    ConstructionCompanyAdmin = contructionCompanyAdminNotAllowed, //Este no posee la construction company con (*)
-                    Apartments = new List<Apartment>()
-                    {
-                        apt
-                    }
-                };
-                buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
-                serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
-                constructionCompanyRepo = new Mock<IConstructionCompanyRepository>(MockBehavior.Strict);
-                userRepo = new Mock<IUserRepository>(MockBehavior.Strict);
-
-
-                constructionCompanyRepo.Setup(l => l.GetConstructionCompanyByName(It.IsAny<string>())).Returns(constructionCompany);
-                buildingRepo.Setup(l => l.BuildingNameExists(It.IsAny<string>())).Returns(false);
-
-                BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object, constructionCompanyRepo.Object, userRepo.Object);
-
-                // Act
-                Building logicResult = buildingLogic.CreateBuilding(expectedBuilding);
-
-            }
-            catch (InvalidOperationException e)
-            {
-                specificEx = e;
-            }
-
-            // Assert
-            buildingRepo.VerifyAll();
-            Assert.IsNotNull(specificEx);
-            Assert.IsInstanceOfType(specificEx, typeof(InvalidOperationException));
-            Assert.IsTrue(specificEx.Message.Contains("This construction company does not belong to this construction company administrator"));
-        }
 
         [TestMethod]
         public void ModifyBuildingManagerCorrectTestLogic()

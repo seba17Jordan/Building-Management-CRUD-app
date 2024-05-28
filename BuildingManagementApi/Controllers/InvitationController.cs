@@ -24,8 +24,8 @@ namespace BuildingManagementApi.Controllers
         }
 
         [HttpPost]
-        [ServiceFilter(typeof(AuthenticationFilter))]
-        [AuthorizationFilter(_currentRole = Roles.Administrator)]
+        //[ServiceFilter(typeof(AuthenticationFilter))]
+        //[AuthorizationFilter(_currentRole = Roles.Administrator)]
         public IActionResult CreateInvitation([FromBody] InvitationRequest invitationRequest)
         {
             var invitation = invitationRequest.ToEntity();

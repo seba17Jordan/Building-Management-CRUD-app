@@ -30,6 +30,7 @@ namespace ServerFactory
             services.AddScoped<IServiceRequestLogic, RequestLogic>();
             services.AddScoped<IServiceRequestRepository, ServiceRequestRepository>();
 
+            services.AddScoped<IConstructionCompanyLogic, ConstructionCompanyLogic>();
             services.AddScoped<IConstructionCompanyRepository, ConstructionCompanyRepository>();
 
             services.AddScoped<IReportLogic, ReportLogic>();

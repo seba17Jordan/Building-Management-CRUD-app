@@ -1,8 +1,11 @@
 using BuildingManagementApi.Controllers;
 using Domain;
 using Domain.@enum;
+using ImportersInterface;
+using ImportersLogic;
 using LogicInterface;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using ModelsApi.In;
@@ -82,7 +85,7 @@ public class BuildingControllerTest
         Mock<IBuildingLogic> buildingLogic = new Mock<IBuildingLogic>(MockBehavior.Strict);
         Mock<ISessionService> sessionService = new Mock<ISessionService>(MockBehavior.Strict);
 
-        buildingLogic.Setup(buildingLogic => buildingLogic.CreateBuilding(It.IsAny<Building>())).Returns(expectedBuilding);
+        buildingLogic.Setup(buildingLogic => buildingLogic.CreateBuilding(It.IsAny<Building>(), It.IsAny<User>())).Returns(expectedBuilding);
         sessionService.Setup(sessionService => sessionService.GetUserByToken(It.IsAny<Guid>())).Returns(new User { Id = Guid.NewGuid() });
         
         BuildingController buildingController = new BuildingController(buildingLogic.Object, sessionService.Object);
@@ -399,8 +402,71 @@ public class BuildingControllerTest
         Assert.IsNotNull(resultResponse);
         Assert.AreEqual(resultObj.StatusCode, expectedObjResult.StatusCode);
         Assert.AreEqual(resultResponse.First(), expectedResponse.First());
-
-
     }
+    
+    /*
+    [TestMethod]
+    public void ImportBuildingCorrectControllerTest()
+    {
+        //Arrange
+        string token = "b4d9e6a4-466c-4a4f-91ea-6d7e7997584e";
+
+        User constructionCompanyAdmin = new User
+        {
+            Id = Guid.NewGuid(),
+            Role = Roles.ConstructionCompanyAdmin,
+            Name = "John",
+            LastName = "Doe"
+        };
+
+        ConstructionCompany constructionCom = new ConstructionCompany()
+        {
+            Name = "Construction Company",
+            ConstructionCompanyAdmin = constructionCompanyAdmin
+        };
+
+        Building building = new Building()
+        {
+            Id = Guid.NewGuid(),
+            Name = "New Building 1",
+            Address = "Address 1",
+            ConstructionCompany = constructionCom,
+            ConstructionCompanyAdmin = constructionCompanyAdmin,
+            CommonExpenses = 100,
+            Apartments = new List<Apartment>
+            {
+                new Apartment()
+                {
+                    Floor = 1,
+                    Number = 101,
+                    Owner = new Owner { Name = "Jane", LastName = "Doe", Email = ""}
+                }
+            }
+        };
+
+        ImportRequest importRequest = new ImportRequest()
+        {
+            ImporterName = "JsonImporter.dll",
+            FileName = "FileName.json"
+        };
+
+        Mock<IBuildingImporter> buildingImporter = new Mock<IBuildingImporter>(MockBehavior.Strict);
+        Mock<IBuildingLogic> buildingLogic = new Mock<IBuildingLogic>(MockBehavior.Strict);
+        Mock<ISessionService> sessionService = new Mock<ISessionService>(MockBehavior.Strict);
+        Mock<ImporterManager> importerManager = new Mock<ImporterManager>(MockBehavior.Strict);
+       
+        buildingImporter.Setup(bi => bi.Import(It.IsAny<string>()));
+        importerManager.Setup(im => im.GetImporter(It.IsAny<string>(), It.IsAny<string>())).Returns(buildingImporter.Object);
+
+        BuildingController buildingController = new BuildingController(buildingLogic.Object, sessionService.Object);
+        buildingController.ControllerContext.HttpContext = new DefaultHttpContext();
+        buildingController.ControllerContext.HttpContext.Request.Headers["Authorization"] = token;
+
+        //Act
+        var controllerResult = buildingController.ImportBuildings(importRequest) as OkResult;
+
+        //Assert
+        Assert.AreEqual(200, controllerResult.StatusCode);
+    }*/
 
 }

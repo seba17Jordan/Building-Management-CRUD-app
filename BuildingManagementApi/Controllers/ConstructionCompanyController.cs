@@ -23,8 +23,8 @@ namespace BuildingManagementApi.Controllers
         }
 
         [HttpPost]
-        //[ServiceFilter(typeof(AuthenticationFilter))]
-        //[AuthorizationFilter(_currentRole = Roles.ConstructionCompanyAdmin)]
+        [ServiceFilter(typeof(AuthenticationFilter))]
+        [AuthorizationFilter(_currentRole = Roles.ConstructionCompanyAdmin)]
         public IActionResult CreateConstructionCompany([FromBody] ConstructionCompanyRequest constructionCompanyToCreate)
         {
             string token = Request.Headers["Authorization"].ToString();

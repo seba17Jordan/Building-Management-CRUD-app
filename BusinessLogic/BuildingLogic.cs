@@ -20,7 +20,7 @@ namespace BusinessLogic
             _constructionCompanyRepository = constructionCompanyRepository;
             _userRepository = userRepository;
         }
-        public Building CreateBuilding(Building building)
+        public Building CreateBuilding(Building building, User constructionComAdmin)
         {
             if (building == null)
             {
@@ -40,18 +40,11 @@ namespace BusinessLogic
                 throw new ObjectAlreadyExistsException("Building with same name already exists");
             }
 
-            ConstructionCompany existingCompany = _constructionCompanyRepository.GetConstructionCompanyByName(building.ConstructionCompany.Name);
+            ConstructionCompany existingCompany = _constructionCompanyRepository.GetConstructionCompanyByAdmin(constructionComAdmin.Id);
             
             if (existingCompany != null)
             {
-                if (existingCompany.ConstructionCompanyAdmin.Equals(building.ConstructionCompanyAdmin))
-                {
-                    building.ConstructionCompany = existingCompany;
-                }
-                else
-                {
-                    throw new InvalidOperationException("This construction company does not belong to this construction company administrator");
-                }
+                building.ConstructionCompany = existingCompany;
             }
             else
             {
