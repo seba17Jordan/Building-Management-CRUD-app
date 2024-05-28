@@ -8,6 +8,6 @@ namespace ImportersInterface
 {
     public interface IBuildingImporter
     {
-        void Import(string filePath);
+        void Import(string filePath, IBuildingService buildingService, string constructionCompanyAdminToken);
     }
 }

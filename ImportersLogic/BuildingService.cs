@@ -20,10 +20,9 @@ namespace ImportersLogic
             _sessionService = sessionService;
         }
 
-        public void CreateBuilding(BuildingRequest buildingRequest)
+        public void CreateBuilding(BuildingRequest buildingRequest, string contructionCompanyAdminToken)
         {
-            string token = "e4fe348e-0fe3-4f1b-80a7-347dee4225d1";
-            var constructionCompanyAdmin = _sessionService.GetUserByToken(Guid.Parse(token));
+            var constructionCompanyAdmin = _sessionService.GetUserByToken(Guid.Parse(contructionCompanyAdminToken));
 
             var building = buildingRequest.ToEntity();
             building.ConstructionCompanyAdmin = constructionCompanyAdmin;

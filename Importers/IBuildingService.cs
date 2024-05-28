@@ -9,6 +9,6 @@ namespace ImportersInterface
 {
     public interface IBuildingService
     {
-        void CreateBuilding(BuildingRequest buildingRequest);
+        void CreateBuilding(BuildingRequest buildingRequest, string contructionCompanyAdminToken);
     }
 }

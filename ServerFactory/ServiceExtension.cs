@@ -2,6 +2,9 @@
 using DataAccess;
 using Domain;
 using IDataAccess;
+using ImportersInterface;
+using ImportersLogic;
+using JsonImporter;
 using LogicInterface;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,6 +35,10 @@ namespace ServerFactory
 
             services.AddScoped<IConstructionCompanyLogic, ConstructionCompanyLogic>();
             services.AddScoped<IConstructionCompanyRepository, ConstructionCompanyRepository>();
+
+            //Para los importadores
+            services.AddScoped<IBuildingImporter, JsonBuildingImporter>();
+            services.AddScoped<IBuildingService, BuildingService>();
 
             services.AddScoped<IReportLogic, ReportLogic>();
 

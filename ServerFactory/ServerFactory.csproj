@@ -23,6 +23,9 @@
     <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
     <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
     <ProjectReference Include="..\IDataAccess\IDataAccess.csproj" />
+    <ProjectReference Include="..\ImportersLogic\ImportersLogic.csproj" />
+    <ProjectReference Include="..\Importers\ImportersInterface.csproj" />
+    <ProjectReference Include="..\JsonImporter\JsonImporter.csproj" />
     <ProjectReference Include="..\LogicInterface\LogicInterface.csproj" />
   </ItemGroup>
 

@@ -5,7 +5,7 @@ namespace ImportersLogic
 {
     public class ImporterManager
     {
-        public IBuildingImporter GetImporter(string directoryPath, string importerName)
+        public static IBuildingImporter GetImporter(string directoryPath, string importerName)
         {
             foreach (var file in Directory.GetFiles(directoryPath, "*.dll"))
             {

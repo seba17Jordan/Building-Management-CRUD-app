@@ -19,17 +19,18 @@ namespace BuildingManagementApi.Controllers
     {
         private readonly IBuildingLogic _buildingLogic;
         private readonly ISessionService _sessionService;
+        private readonly IBuildingService _buildingService;
         private readonly ImporterManager _importerManager;
         //Ruta relativa a la carpeta de los importadores
-        private readonly string _importersDirectory = @"..\..\..\..\JsonImporter\Dll\";
+        private readonly string _importersDirectory = @"..\JsonImporter\bin\Debug\net8.0";
         //Ruta relativa a la carpeta de los archivos JSON
-        private readonly string _filesDirectory = @"..\..\..\..\JsonImporter\JSONFiles";
+        private readonly string _filesDirectory = @"..\JsonImporter\JSONFiles";
 
-        public BuildingController(IBuildingLogic buildingLogic, ISessionService sessionService)
+        public BuildingController(IBuildingLogic buildingLogic, ISessionService sessionService, IBuildingService buildingService)
         {
             _buildingLogic = buildingLogic;
             _sessionService = sessionService;
-            _importerManager = new ImporterManager();
+            _buildingService = buildingService;
         }
 
 
@@ -107,7 +108,9 @@ namespace BuildingManagementApi.Controllers
         [AuthorizationFilter(_currentRole = Roles.ConstructionCompanyAdmin)]
         public IActionResult ImportBuildings([FromBody] ImportRequest importRequest) //importer name, JSON file Name
         {
-            var importer = _importerManager.GetImporter(_importersDirectory, importRequest.ImporterName);
+            string token = Request.Headers["Authorization"].ToString();
+
+            var importer = ImporterManager.GetImporter(_importersDirectory, importRequest.ImporterName);
             if (importer == null)
             {
                 return BadRequest("Invalid importer specified.");
@@ -119,9 +122,9 @@ namespace BuildingManagementApi.Controllers
                 return BadRequest("File not found.");
             }
 
-            importer.Import(filePath);
+            importer.Import(filePath, _buildingService, token);
             
-            return Ok();
+            return Ok("Import succesful");
         }
     }
 }

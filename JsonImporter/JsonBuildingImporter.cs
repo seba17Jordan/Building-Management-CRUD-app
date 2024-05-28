@@ -7,20 +7,16 @@ namespace JsonImporter
 {
     public class JsonBuildingImporter : IBuildingImporter
     {
-        private readonly IBuildingService _buildingService;
-        public JsonBuildingImporter(IBuildingService buildingService)
-        {
-            _buildingService = buildingService;
-        }
+        public JsonBuildingImporter() {}
 
-        public void Import(string filePath)
+        public void Import(string filePath, IBuildingService buildingService, string constructionCompanyAdminToken)
         {
             string jsonContent = File.ReadAllText(filePath);
             var buildingsToImport = JsonConvert.DeserializeObject<List<BuildingRequest>>(jsonContent);
 
             foreach (var buildingRequest in buildingsToImport)
             {
-                _buildingService.CreateBuilding(buildingRequest);
+                buildingService.CreateBuilding(buildingRequest, constructionCompanyAdminToken);
             }
 
             Console.WriteLine("Importando desde JSON");
