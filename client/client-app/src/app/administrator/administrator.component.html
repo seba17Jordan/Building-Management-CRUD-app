@@ -1,1 +1,16 @@
-<p>administrator works!</p>
+<h2>Crear Nuevo Administrador</h2>
+<form (submit)="createAdmin($event)">
+    <label>Nombre:</label>
+    <input type="text" [(ngModel)]="newAdmin.Name" name="Name" required>
+
+    <label>Apellido</label>
+    <input type="text" [(ngModel)]="newAdmin.LastName" name="LastName" required>
+
+    <label>Email:</label>
+    <input type="email" [(ngModel)]="newAdmin.Email" name="Email" required>
+
+    <label>Contraseña:</label>
+    <input type="password" [(ngModel)]="newAdmin.Password" name="Password" required>
+
+  <button type="submit">Crear Administrador</button>
+</form>

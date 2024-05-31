@@ -8,7 +8,7 @@ import { User } from '../models/user.model';
 })
 export class AdminService {
 
-  private baseUrl = 'api/admins'; 
+  private baseUrl = 'https://localhost:7266/api/admins';
 
   constructor(private http: HttpClient) { }
 
