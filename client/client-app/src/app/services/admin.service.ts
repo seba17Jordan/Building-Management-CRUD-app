@@ -12,7 +12,6 @@ export class AdminService {
 
   constructor(private http: HttpClient) { }
 
-  // Método para crear un nuevo administrador
   createAdmin(admin: User): Observable<User> {
     return this.http.post<User>(`${this.baseUrl}`, admin);
   }
