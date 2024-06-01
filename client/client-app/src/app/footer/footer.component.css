@@ -3,6 +3,12 @@ footer {
     color: white; 
     padding: 20px; 
     text-align: center; 
+    height: 70px;
+    border-top: 2px solid rgba(0, 0, 0, 0.24);  
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
   }
   
   .footer-content {
@@ -24,4 +30,3 @@ footer {
   .footer-content a:hover {
     text-decoration: underline; 
   }
-  

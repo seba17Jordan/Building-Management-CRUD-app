@@ -24,12 +24,13 @@ public class BuildingControllerTest
     private Mock<IBuildingLogic> _buildingLogicMock;
     private BuildingController _controller;
     private ISessionService _sessionService;
+    private Mock<IBuildingService> _buildingServiceMock;
 
     [TestInitialize]
     public void Setup()
     {
-        _buildingLogicMock = new Mock<IBuildingLogic>();
-        _controller = new BuildingController(_buildingLogicMock.Object, _sessionService);
+        _buildingLogicMock = new Mock<IBuildingLogic>(); 
+        
     }
 
     [TestMethod]
@@ -84,11 +85,12 @@ public class BuildingControllerTest
 
         Mock<IBuildingLogic> buildingLogic = new Mock<IBuildingLogic>(MockBehavior.Strict);
         Mock<ISessionService> sessionService = new Mock<ISessionService>(MockBehavior.Strict);
+        Mock<IBuildingService> buildingService = new Mock<IBuildingService>(MockBehavior.Strict);
 
         buildingLogic.Setup(buildingLogic => buildingLogic.CreateBuilding(It.IsAny<Building>(), It.IsAny<User>())).Returns(expectedBuilding);
         sessionService.Setup(sessionService => sessionService.GetUserByToken(It.IsAny<Guid>())).Returns(new User { Id = Guid.NewGuid() });
         
-        BuildingController buildingController = new BuildingController(buildingLogic.Object, sessionService.Object);
+        BuildingController buildingController = new BuildingController(buildingLogic.Object, sessionService.Object, buildingService.Object);
         buildingController.ControllerContext.HttpContext = new DefaultHttpContext();
         buildingController.ControllerContext.HttpContext.Request.Headers["Authorization"] = token;
 
@@ -140,11 +142,12 @@ public class BuildingControllerTest
 
         Mock<IBuildingLogic> buildingLogic = new Mock<IBuildingLogic>(MockBehavior.Strict);
         Mock<ISessionService> sessionService = new Mock<ISessionService>(MockBehavior.Strict);
+        Mock<IBuildingService> buildingService = new Mock<IBuildingService>(MockBehavior.Strict);
 
         buildingLogic.Setup(buildingLogic => buildingLogic.DeleteBuildingById(buildingToDelete.Id, manager.Id));
         sessionService.Setup(sessionService => sessionService.GetUserByToken(It.IsAny<Guid>())).Returns(manager);
         
-        BuildingController buildingController = new BuildingController(buildingLogic.Object, sessionService.Object);
+        BuildingController buildingController = new BuildingController(buildingLogic.Object, sessionService.Object, buildingService.Object);
         buildingController.ControllerContext.HttpContext = new DefaultHttpContext();
         buildingController.ControllerContext.HttpContext.Request.Headers["Authorization"] = token;
 
@@ -224,11 +227,12 @@ public class BuildingControllerTest
 
         Mock<IBuildingLogic> buildingLogic = new Mock<IBuildingLogic>(MockBehavior.Strict);
         Mock<ISessionService> sessionService = new Mock<ISessionService>(MockBehavior.Strict);
+        Mock<IBuildingService> buildingService = new Mock<IBuildingService>(MockBehavior.Strict);
 
         buildingLogic.Setup(bl => bl.UpdateBuildingById(It.IsAny<Guid>(), It.IsAny<Building>(), It.IsAny<Guid>())).Returns(expectedBuilding);
         sessionService.Setup(ss => ss.GetUserByToken(It.IsAny<Guid>())).Returns(new User { Id = Guid.NewGuid() });
 
-        BuildingController buildingController = new BuildingController(buildingLogic.Object, sessionService.Object);
+        BuildingController buildingController = new BuildingController(buildingLogic.Object, sessionService.Object, buildingService.Object);
         buildingController.ControllerContext.HttpContext = new DefaultHttpContext();
         buildingController.ControllerContext.HttpContext.Request.Headers["Authorization"] = token;
 
@@ -315,11 +319,12 @@ public class BuildingControllerTest
 
         Mock<IBuildingLogic> buildingLogic = new Mock<IBuildingLogic>(MockBehavior.Strict);
         Mock<ISessionService> sessionService = new Mock<ISessionService>(MockBehavior.Strict);
+        Mock<IBuildingService> buildingService = new Mock<IBuildingService>(MockBehavior.Strict);
 
         sessionService.Setup(sessionService => sessionService.GetUserByToken(It.IsAny<Guid>())).Returns(constructionCompanyAdmin);
         buildingLogic.Setup(buildingLogic => buildingLogic.ModifyBuildingManager(building.Id, newManager.Id, constructionCompanyAdmin.Id)).Returns(expectedBuilding);
         
-        BuildingController buildingController = new BuildingController(buildingLogic.Object, sessionService.Object);
+        BuildingController buildingController = new BuildingController(buildingLogic.Object, sessionService.Object, buildingService.Object);
         buildingController.ControllerContext.HttpContext = new DefaultHttpContext();
         buildingController.ControllerContext.HttpContext.Request.Headers["Authorization"] = token;
 
@@ -381,11 +386,12 @@ public class BuildingControllerTest
 
         Mock<IBuildingLogic> buildingLogic = new Mock<IBuildingLogic>(MockBehavior.Strict);
         Mock<ISessionService> sessionService = new Mock<ISessionService>(MockBehavior.Strict);
+        Mock<IBuildingService> buildingService = new Mock<IBuildingService>(MockBehavior.Strict);
 
         buildingLogic.Setup(bl => bl.GetBuildingsByCompanyAdminId(It.IsAny<Guid>())).Returns(expectedBuildings);
         sessionService.Setup(p => p.GetUserByToken(It.IsAny<Guid>())).Returns(constructionCompanyAdmin);
 
-        BuildingController buildingController = new BuildingController(buildingLogic.Object, sessionService.Object);
+        BuildingController buildingController = new BuildingController(buildingLogic.Object, sessionService.Object, buildingService.Object);
         buildingController.ControllerContext.HttpContext = new DefaultHttpContext();
         buildingController.ControllerContext.HttpContext.Request.Headers["Authorization"] = token;
 

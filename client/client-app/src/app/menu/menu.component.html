@@ -1,7 +1,16 @@
 <nav>
     <ul>
-        <li><a routerLink="/home" routerLinkActive="active">Home</a></li>
-        <li><a routerLink="/administrator" routerLinkActive="active">Administrator</a></li>
-        <li><a routerLink="/contact" routerLinkActive="active">Contact</a></li>
+        <li>
+            <a routerLink="/home" routerLinkActive="active">Home</a>
+        </li>
+        <li>
+            <a routerLink="/administrator" routerLinkActive="active">Administrator</a>
+        </li>
+        <li>
+            <a routerLink="/contact" routerLinkActive="active">Contact</a>
+        </li>
+        <li *ngIf="authService.isLoggedIn()">
+            <a (click)="logout()">Logout</a>
+        </li>
     </ul>
 </nav>

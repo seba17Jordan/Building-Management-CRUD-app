@@ -22,7 +22,8 @@ namespace BuildingManagementApi.Controllers
         public IActionResult Login([FromBody] UserLoginRequest userLoginRequest)
         {
             var token = _sessionService.Authenticate(userLoginRequest.Email, userLoginRequest.Password);
-            return Ok(token);
+            var user = _sessionService.GetUserByToken(token);
+            return Ok(new { token, user.Role});
         }
 
         [HttpDelete]
