@@ -9,6 +9,7 @@ import { HomeComponent } from './home/home.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
+import { InvitationComponent } from './invitation/invitation.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { LoginComponent } from './login/login.component';
     FooterComponent,
     AdministratorComponent,
     HomeComponent,
-    LoginComponent
+    LoginComponent,
+    InvitationComponent
   ],
   imports: [
     BrowserModule,
