@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -24,9 +24,27 @@ export class AuthService {
   }
   
   logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('role');
-    this.router.navigate(['/login']);
+    const token = localStorage.getItem('token');
+    if (token) {
+      const headers = new HttpHeaders().set('Authorization', token);
+      this.http.delete(this.loginUrl, { headers }).subscribe(() => {
+          localStorage.removeItem('token');
+          localStorage.removeItem('role');
+          this.router.navigate(['/login']);
+        },
+        error => {
+          console.error('Logout error:', error);
+          // Manejar el error si es necesario
+          localStorage.removeItem('token');
+          localStorage.removeItem('role');
+          this.router.navigate(['/login']);
+        }
+      );
+    } else {
+      localStorage.removeItem('token');
+      localStorage.removeItem('role');
+      this.router.navigate(['/login']);
+    }
   }
 
   isLoggedIn(): boolean {

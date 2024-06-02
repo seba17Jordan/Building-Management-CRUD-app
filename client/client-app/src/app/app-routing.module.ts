@@ -13,7 +13,6 @@ const routes: Routes = [
   { path: '**', redirectTo: '/home' } //Este siempre al final, para que redirija a la página de inicio si no encuentra la ruta
 ];
 
-
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]

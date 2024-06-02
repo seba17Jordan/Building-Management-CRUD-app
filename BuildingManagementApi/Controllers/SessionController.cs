@@ -33,7 +33,7 @@ namespace BuildingManagementApi.Controllers
             string authHeader = HttpContext.Request.Headers["Authorization"].ToString();
             Guid token = Guid.Parse(authHeader);
             _sessionService.Logout(token);
-            return Ok("Logout success");
+            return Ok(new { message = "Logout success" });
         }
     }
 }
