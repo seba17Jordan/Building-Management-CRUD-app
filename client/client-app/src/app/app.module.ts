@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
 import { InvitationComponent } from './invitation/invitation.component';
+import { CreateInvitationComponent } from './create-invitation/create-invitation.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { InvitationComponent } from './invitation/invitation.component';
     AdministratorComponent,
     HomeComponent,
     LoginComponent,
-    InvitationComponent
+    InvitationComponent,
+    CreateInvitationComponent
   ],
   imports: [
     BrowserModule,
