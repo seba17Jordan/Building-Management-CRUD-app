@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { InvitationService } from '../services/invitation.service';
 
 @Component({
   selector: 'app-invitation',
@@ -10,7 +11,16 @@ export class InvitationComponent {
   password: string = '';
   error: string = '';
   
+  constructor(private invitationService: InvitationService) { }
+
   acceptInvitation() {
-    console.log('Invitation accepted');
+    this.invitationService.acceptInvitation(this.mail, this.password).subscribe(
+      (response) => {
+        console.log(response);
+      },
+      (error) => {
+        this.error = error.error.message;
+      }
+    );
   }
 }

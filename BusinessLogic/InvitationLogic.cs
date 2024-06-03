@@ -85,14 +85,10 @@ namespace BusinessLogic
             _invitationRepository.UpdateInvitation(invitation);
         }
 
-        public User AcceptInvitation(Guid invitationId, User userToCreate)
+        public User AcceptInvitation(User userToCreate)
         {
-            if (invitationId == Guid.Empty)
-            {
-                throw new EmptyFieldException("Invitation Id is Empty");
-            }
-
-            Invitation invitation = _invitationRepository.GetInvitationById(invitationId);
+            
+            Invitation invitation = _invitationRepository.GetInvitationByMail(userToCreate.Email);
 
             if (invitation == null)
             {

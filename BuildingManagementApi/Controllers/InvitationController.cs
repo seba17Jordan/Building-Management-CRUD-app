@@ -42,11 +42,11 @@ namespace BuildingManagementApi.Controllers
             return Ok("Invitation Rejected");
         }
 
-        [HttpPost("{id}")]
-        public IActionResult AcceptInvitation([FromRoute] Guid id, [FromBody] UserLoginRequest managerRequest)
+        [HttpPost("accept")]
+        public IActionResult AcceptInvitation([FromBody] UserLoginRequest managerRequest)
         {
             var manager = managerRequest.ToEntity();
-            var createdManager = _invitationLogic.AcceptInvitation(id, manager);
+            var createdManager = _invitationLogic.AcceptInvitation(manager);
             var response = new UserResponse(createdManager);
             return CreatedAtAction(nameof(AcceptInvitation), new { id = response.Id }, response);
         }

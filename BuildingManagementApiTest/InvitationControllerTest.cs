@@ -126,10 +126,10 @@ namespace BuildingManagementApiTests.Controllers
 
             UserResponse userResponse = new UserResponse(createdManager);
 
-            _invitationLogicMock.Setup(l => l.AcceptInvitation(It.IsAny<Guid>(), It.IsAny<User>())).Returns(createdManager);
+            _invitationLogicMock.Setup(l => l.AcceptInvitation(It.IsAny<User>())).Returns(createdManager);
 
             // Act
-            IActionResult actionResult = _controller.AcceptInvitation(invitation.Id, managerRequest);
+            IActionResult actionResult = _controller.AcceptInvitation(managerRequest);
             var createdResponse = actionResult as CreatedAtActionResult;
 
             Assert.IsNotNull(createdResponse);

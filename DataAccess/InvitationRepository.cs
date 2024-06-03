@@ -47,5 +47,10 @@ namespace DataAccess
             _context.Set<Invitation>().Remove(GetInvitationById(id));
             _context.SaveChanges();
         }
+
+        public Invitation GetInvitationByMail(string email)
+        {
+            return _context.Set<Invitation>().FirstOrDefault(i => i.Email == email);
+        }
     }
 }

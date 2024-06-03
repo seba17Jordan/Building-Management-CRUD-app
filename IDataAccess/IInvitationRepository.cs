@@ -14,5 +14,6 @@ namespace IDataAccess
         bool InvitationExists(string email);
         void UpdateInvitation(Invitation invitation);
         void DeleteInvitation(Guid id);
+        Invitation GetInvitationByMail(string email);
     }
 }

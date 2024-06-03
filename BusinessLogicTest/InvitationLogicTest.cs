@@ -121,7 +121,7 @@ namespace BusinessLogicTest
             var mockInvitationRepository = new Mock<IInvitationRepository>();
             var mockUserRepository = new Mock<IUserRepository>();
 
-            mockInvitationRepository.Setup(x => x.GetInvitationById(invitation.Id)).Returns(invitation);
+            mockInvitationRepository.Setup(x => x.GetInvitationByMail(invitation.Email)).Returns(invitation);
             mockInvitationRepository.Setup(x => x.UpdateInvitation(invitation));
             mockUserRepository.Setup(x => x.CreateUser(It.IsAny<User>())).Returns(expectedManager);
 
@@ -129,7 +129,7 @@ namespace BusinessLogicTest
 
 
             // Act
-            User result = invitationLogic.AcceptInvitation(invitation.Id, managerToCreate);
+            User result = invitationLogic.AcceptInvitation(managerToCreate);
 
             // Assert
             mockInvitationRepository.Verify();
@@ -242,12 +242,12 @@ namespace BusinessLogicTest
                 var mockInvitationRepository = new Mock<IInvitationRepository>();
                 var mockUserRepository = new Mock<IUserRepository>();
 
-                mockInvitationRepository.Setup(x => x.GetInvitationById(invitation.Id)).Returns(invitation);
+                mockInvitationRepository.Setup(x => x.GetInvitationByMail(invitation.Email)).Returns(invitation);
 
                 InvitationLogic invitationLogic = new InvitationLogic(mockInvitationRepository.Object, mockUserRepository.Object);
 
                 // Act
-                invitationLogic.AcceptInvitation(invitation.Id, managerToCreate);
+                invitationLogic.AcceptInvitation(managerToCreate);
             }
             catch (InvalidOperationException e)
             {
