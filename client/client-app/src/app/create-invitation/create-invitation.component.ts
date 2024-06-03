@@ -20,11 +20,9 @@ export class CreateInvitationComponent implements OnInit{
   createInvitation(): void{
     if(this.role == 3){
       this.role = 3;
-      console.log('Entro en el if de 3');
     }
-    if(this.role == 2){
-      this.role = 2;
-      console.log('Entro en el if de 2');
+    if(this.role == 1){
+      this.role = 1;
     }
     this.invitationService.createInvitation(this.mail, this.name, this.role!, this.expirationDate).subscribe(
       (response) => {

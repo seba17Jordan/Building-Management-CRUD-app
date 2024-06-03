@@ -13,8 +13,14 @@ export class AuthGuard implements CanActivate { //CanActivate para decidir si pe
     const expectedRole = next.data['expectedRole'];
     const currentRole = this.authService.getUserRole();
 
-    if (!this.authService.isLoggedIn() || (expectedRole && currentRole !== expectedRole)) { //Si no está logeado o no tiene el rol esperado lo mando a home
+    if (!this.authService.isLoggedIn()) { //Si no está logeado o no tiene el rol esperado lo mando a home
+      console.log('Access denied, not authenticated. Redirecting to home page...');
       this.router.navigate(['/login']);
+      return false;
+    }
+    if((expectedRole && (currentRole !== expectedRole))){
+      console.log('Access denied, not authorized. Redirecting to home page...');
+      this.router.navigate(['/home']);
       return false;
     }
     return true;
