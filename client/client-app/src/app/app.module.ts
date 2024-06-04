@@ -12,6 +12,9 @@ import { LoginComponent } from './login/login.component';
 import { InvitationComponent } from './invitation/invitation.component';
 import { CreateInvitationComponent } from './create-invitation/create-invitation.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
+import { BuildingsComponent } from './buildings/buildings.component';
+import { CreateBuildingComponent } from './create-building/create-building.component';
+import { BuildingDetailComponent } from './building-detail/building-detail.component';
 
 
 @NgModule({
@@ -24,7 +27,10 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
     LoginComponent,
     InvitationComponent,
     CreateInvitationComponent,
-    MaintenanceComponent
+    MaintenanceComponent,
+    BuildingsComponent,
+    CreateBuildingComponent,
+    BuildingDetailComponent
   ],
   imports: [
     BrowserModule,

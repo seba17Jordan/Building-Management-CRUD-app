@@ -7,12 +7,14 @@ import { AuthGuard } from './auth.guard';
 import { InvitationComponent } from './invitation/invitation.component';
 import { CreateInvitationComponent } from './create-invitation/create-invitation.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
+import { BuildingsComponent } from './buildings/buildings.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' }, 
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'administrator', component: AdministratorComponent, canActivate: [AuthGuard], data: { expectedRole: 0 } },
   { path: 'create-invitation', component: CreateInvitationComponent, canActivate: [AuthGuard], data: { expectedRole: 0 } },
+  { path: 'buildings', component: BuildingsComponent, canActivate: [AuthGuard]},
   { path: 'login', component: LoginComponent },
   { path: 'invitations', component: InvitationComponent },
   { path: 'maintenance', component: MaintenanceComponent, canActivate: [AuthGuard], data: { expectedRole: 1 } },
