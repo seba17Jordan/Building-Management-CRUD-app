@@ -18,7 +18,8 @@ export class AuthGuard implements CanActivate { //CanActivate para decidir si pe
       this.router.navigate(['/login']);
       return false;
     }
-    if((expectedRole && (currentRole !== expectedRole))){
+
+    if((expectedRole!= undefined && (currentRole != expectedRole))){
       console.log('Access denied, not authorized. Redirecting to home page...');
       this.router.navigate(['/home']);
       return false;
