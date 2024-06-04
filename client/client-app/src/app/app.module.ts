@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
 import { InvitationComponent } from './invitation/invitation.component';
 import { CreateInvitationComponent } from './create-invitation/create-invitation.component';
+import { MaintenanceComponent } from './maintenance/maintenance.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { CreateInvitationComponent } from './create-invitation/create-invitation
     HomeComponent,
     LoginComponent,
     InvitationComponent,
-    CreateInvitationComponent
+    CreateInvitationComponent,
+    MaintenanceComponent
   ],
   imports: [
     BrowserModule,

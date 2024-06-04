@@ -15,8 +15,7 @@ export class AdministratorComponent {
 
   constructor(private adminService: AdminService) { }
 
-  createAdmin(event: Event): void {
-    event.preventDefault(); 
+  createAdmin(): void {
     this.adminService.createAdmin(this.newAdmin).subscribe(admin => {
       console.log('Nuevo administrador creado:', admin);
     });

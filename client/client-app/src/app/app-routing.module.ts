@@ -6,6 +6,7 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './auth.guard';
 import { InvitationComponent } from './invitation/invitation.component';
 import { CreateInvitationComponent } from './create-invitation/create-invitation.component';
+import { MaintenanceComponent } from './maintenance/maintenance.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' }, 
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'create-invitation', component: CreateInvitationComponent, canActivate: [AuthGuard], data: { expectedRole: 0 } },
   { path: 'login', component: LoginComponent },
   { path: 'invitations', component: InvitationComponent },
+  { path: 'maintenance', component: MaintenanceComponent, canActivate: [AuthGuard], data: { expectedRole: 1 } },
   { path: '**', redirectTo: '/login' } //Este siempre al final, para que redirija a la página de inicio si no encuentra la ruta
 ];
 
