@@ -14,8 +14,8 @@ export class BuildingsComponent {
   constructor(private buildingService: BuildingService) { }
 
   ngOnInit(): void {
-    //Agrego un edificio harcodeado
     this.getBuildings();
+    //console.log(this.buildings[0]);
   }
 
   getBuildings(): void {
