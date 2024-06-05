@@ -18,7 +18,7 @@ namespace ModelsApi.Out
             Id = expectedBuilding.Id;
             Name = expectedBuilding.Name;
             Address = expectedBuilding.Address;
-            ConstructionCompany = expectedBuilding.ConstructionCompany.Name;
+            ConstructionCompany = expectedBuilding.ConstructionCompany?.Name;
             CommonExpenses = (int)expectedBuilding.CommonExpenses;
             HasManager = expectedBuilding.Manager != null;
             ManagerName = expectedBuilding.Manager?.Name;

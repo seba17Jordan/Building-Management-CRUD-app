@@ -1,1 +1,19 @@
-<h1>DETALLES DEL EDIFICIO</h1>
+<h1>MODIFICAR EDIFICIO:</h1>
+<div *ngIf="building">
+  <h2>Detalles del edificio: {{building.name}}</h2>
+  <div>
+    <label for="name">Nombre: </label>
+    <input [(ngModel)]="building.name" placeholder="name"/>
+  </div>
+  <div>
+    <label for="address">Dirección: </label>
+    <input [(ngModel)]="building.address" placeholder="address"/>
+  </div>
+  <div>
+    <label for="common-expenses">Gastos comunes: </label>
+    <input [(ngModel)]="building.commonExpenses" placeholder="common expenses"/>
+  </div>
+  <!-- Agregar otros campos necesarios -->
+  <button (click)="save()">Guardar</button>
+  <button (click)="goBack()">Volver</button>
+</div>

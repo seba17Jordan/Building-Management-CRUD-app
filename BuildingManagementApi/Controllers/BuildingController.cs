@@ -64,7 +64,7 @@ namespace BuildingManagementApi.Controllers
 
         [HttpPatch("{id}")]
         [ServiceFilter(typeof(AuthenticationFilter))]
-        [AuthorizationFilter(_currentRole = Roles.Manager)]
+        //[AuthorizationFilter(_currentRole = Roles.Manager)]
         public IActionResult UpdateBuildingById([FromRoute] Guid id, [FromBody] BuildingRequest buildingUpdates)
         {
             string token = Request.Headers["Authorization"].ToString();

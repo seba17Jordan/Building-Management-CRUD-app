@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { BuildingService } from '../services/building.service';
 import { Building } from '../models/building.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-buildings',
@@ -11,11 +12,10 @@ export class BuildingsComponent {
 
   buildings: Building[] = [];
 
-  constructor(private buildingService: BuildingService) { }
+  constructor(private buildingService: BuildingService, private router: Router) { }
 
   ngOnInit(): void {
     this.getBuildings();
-    //console.log(this.buildings[0]);
   }
 
   getBuildings(): void {
@@ -25,6 +25,11 @@ export class BuildingsComponent {
         console.log('Se imprimieron los edificio');
       }
     );
+  }
+
+  selectBuilding(building: Building): void{
+    this.buildingService.setSelectedBuilding(building);
+    this.router.navigate(['/buildings/detail', building.id]);
   }
 
   delete(building: Building){

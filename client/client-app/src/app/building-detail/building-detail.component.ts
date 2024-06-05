@@ -1,39 +1,37 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Building } from '../models/building.model';
 import { BuildingService } from '../services/building.service';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-building-detail',
   templateUrl: './building-detail.component.html',
   styleUrls: ['./building-detail.component.css']
 })
-export class BuildingDetailComponent {
+export class BuildingDetailComponent implements OnInit{
   @Input() building? : Building;
 
-  constructor(private buildingService: BuildingService, private route: ActivatedRoute, private location: Location) {}
+  constructor(private buildingService: BuildingService,
+     private location: Location,
+     private router: Router) {}
 
   ngOnInit(): void {
     this.getBuilding();
   }
 
   getBuilding(): void {
-    /*const id = Number(this.route.snapshot.paramMap.get('id')); //Imagen estatica de la URL actual
-    this.buildingService.getBuilding(id)
-      .subscribe(x => this.building = x);
-      */
+    this.building = this.buildingService.getSelectedBuilding()!;
   }
 
-  /*
   goBack(): void {
     this.location.back();
   }
 
   save(): void {
-    if (this.hero) {
-      this.heroService.updateHero(this.hero)
-        .subscribe(() => this.goBack());
+    console.log('Building common expenses new:', this.building?.commonExpenses);
+    if (this.building) {
+      this.buildingService.updateBuilding(this.building).subscribe(() => this.goBack());
     }
   }
-  */
 }

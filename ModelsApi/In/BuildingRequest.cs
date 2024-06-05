@@ -1,4 +1,5 @@
 ﻿using Domain;
+using ModelsApi.Out;
 using System.Collections.Generic;
 
 namespace ModelsApi.In
@@ -10,7 +11,11 @@ namespace ModelsApi.In
         public string? ConstructionCompany { get; set; }
         public int? CommonExpenses { get; set; }
         public List<ApartmentRequest>? Apartments { get; set; }
-        //public Guid managerId { get; set; }
+
+        //Por mas que no use lo defino:
+        public Guid Id { get; set; }
+        public bool HasManager { get; set; }
+        public string ManagerName { get; set; }
 
         public Building ToEntity()
         {
