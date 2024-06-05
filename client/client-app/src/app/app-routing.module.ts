@@ -8,6 +8,7 @@ import { InvitationComponent } from './invitation/invitation.component';
 import { CreateInvitationComponent } from './create-invitation/create-invitation.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { BuildingsComponent } from './buildings/buildings.component';
+import { BuildingDetailComponent } from './building-detail/building-detail.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' }, 
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'invitations', component: InvitationComponent },
   { path: 'maintenance', component: MaintenanceComponent, canActivate: [AuthGuard], data: { expectedRole: 1 } },
+  { path: 'buildings/detail/:id', component: BuildingDetailComponent },
   { path: '**', redirectTo: '/login' } //Este siempre al final, para que redirija a la página de inicio si no encuentra la ruta
 ];
 

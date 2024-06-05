@@ -1,7 +1,7 @@
 <h2>Lista de edificios:</h2>
 <ul>
   <li *ngFor="let building of buildings">
-    <a routerLink="/detail/{{building.Id}}">
+    <a routerLink="/buildings/detail/{{building.id}}">
       <span>Edificio: </span> {{building.name}}
     </a>
     <button type="button" title="delete building" (click)="delete(building)"> x </button>

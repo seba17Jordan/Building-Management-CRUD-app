@@ -20,6 +20,17 @@ export class BuildingService {
     return this.http.get<Building[]>(this.buildingUrl, {headers});
   }
 
+  /*
+  getBuilding(id: number): Observable<Building> {
+    const url = `${this.buildingUrl}/${id}`;
+    return this.http.get<Building>(url).pipe(
+      tap(_ => this.log(`fetched hero id=${id}`)),
+      catchError(this.handleError<Hero>(`getHero id=${id}`))
+    );
+  }
+  */
+
+  //AUN SIN HACER
   deleteBuilding(id: number): Observable<Building> {
     const url = `${this.buildingUrl}/${id}`;
 

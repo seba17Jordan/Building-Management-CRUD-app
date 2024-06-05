@@ -1,7 +1,7 @@
 import { Apartment } from "./apartment.model";
 
 export interface Building {
-    Id: number;
+    id: number;
     name: string;
     address: string;
     hasManager: boolean;

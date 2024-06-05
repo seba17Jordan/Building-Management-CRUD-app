@@ -85,7 +85,7 @@ namespace BuildingManagementApi.Controllers
             string token = Request.Headers["Authorization"].ToString();
             var ConstructionCompanyUser = _sessionService.GetUserByToken(Guid.Parse(token));
 
-            IEnumerable<BuildingConstructionCompanyResponse> response = _buildingLogic.GetBuildingsByCompanyAdminId(ConstructionCompanyUser.Id).Select(b => new BuildingConstructionCompanyResponse(b)).ToList();
+            IEnumerable<BuildingResponse> response = _buildingLogic.GetBuildingsByCompanyAdminId(ConstructionCompanyUser.Id).Select(b => new BuildingResponse(b)).ToList();
             return Ok(response);
         }
 

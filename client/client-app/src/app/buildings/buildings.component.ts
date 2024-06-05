@@ -29,6 +29,6 @@ export class BuildingsComponent {
 
   delete(building: Building){
     this.buildings = this.buildings.filter(b => b !== building);
-    this.buildingService.deleteBuilding(building.Id).subscribe();
+    this.buildingService.deleteBuilding(building.id).subscribe();
   }
 }

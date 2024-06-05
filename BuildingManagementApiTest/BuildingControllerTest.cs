@@ -382,7 +382,7 @@ public class BuildingControllerTest
             building
         };
 
-        var expectedResponse = expectedBuildings.Select(b => new BuildingConstructionCompanyResponse(b)).ToList();
+        var expectedResponse = expectedBuildings.Select(b => new BuildingResponse(b)).ToList();
 
         Mock<IBuildingLogic> buildingLogic = new Mock<IBuildingLogic>(MockBehavior.Strict);
         Mock<ISessionService> sessionService = new Mock<ISessionService>(MockBehavior.Strict);
@@ -404,7 +404,7 @@ public class BuildingControllerTest
         buildingLogic.VerifyAll();
         sessionService.VerifyAll();
         OkObjectResult resultObj = constrollerResult as OkObjectResult;
-        List<BuildingConstructionCompanyResponse> resultResponse = resultObj.Value as List<BuildingConstructionCompanyResponse>;
+        List<BuildingResponse> resultResponse = resultObj.Value as List<BuildingResponse>;
         Assert.IsNotNull(resultResponse);
         Assert.AreEqual(resultObj.StatusCode, expectedObjResult.StatusCode);
         Assert.AreEqual(resultResponse.First(), expectedResponse.First());
