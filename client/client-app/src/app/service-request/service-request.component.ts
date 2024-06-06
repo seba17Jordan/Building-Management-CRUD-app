@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ServiceRequest, ServiceRequestStatus } from '../models/serviceRequest.model';
 import { ServiceRequestService } from '../services/serviceRequest.service';
 import { CategoryService } from '../services/category.service';
-
+import { BuildingService } from '../services/building.service';
 @Component({
   selector: 'app-service-request',
   templateUrl: './service-request.component.html',
@@ -21,15 +21,18 @@ export class ServiceRequestComponent implements OnInit {
 
   serviceRequests: ServiceRequest[] = [];
   categories: any[] = []; 
+  apartments : any[] = [];
 
   constructor(
     private serviceRequestService: ServiceRequestService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private buildingService: BuildingService
   ) { }
 
   ngOnInit(): void {
     this.getAllServiceRequestsManager();
     this.getAllCategories(); 
+    this.getAllApartmentsForUser();
   }
 
   createServiceRequest(): void {
@@ -77,6 +80,19 @@ export class ServiceRequestComponent implements OnInit {
         },
         error => {
           console.error('Error retrieving categories:', error);
+        }
+      );
+  }
+
+  getAllApartmentsForUser(): void {
+    this.buildingService.getAllApartmentsForManager()
+      .subscribe(
+        response => {
+          console.log('Apartments retrieved successfully:', response);
+          this.apartments = response;
+        },
+        error => {
+          console.error('Error retrieving apartments:', error);
         }
       );
   }

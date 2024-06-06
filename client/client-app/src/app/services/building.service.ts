@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Building } from '../models/building.model';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { Apartment } from '../models/apartment.model';
 
 @Injectable({
   providedIn: 'root'
@@ -51,6 +52,13 @@ export class BuildingService {
   //CAMBIAR EL DELETE EN EL BACKEND PARA QUE SEA PARA ADMINS DE COMPANY
     const url = `${this.buildingUrl}/${id}`;
     return this.http.delete<Building>(url, this.httpOptions);
+  }
+
+  getAllApartmentsForManager(): Observable<Apartment[]> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', token!);
+    const url = `${this.buildingUrl}/manager/apartments`;
+    return this.http.get<Apartment[]>(url, { headers });
   }
  
   httpOptions = {

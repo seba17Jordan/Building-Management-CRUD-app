@@ -8,12 +8,13 @@
         <label for="description">Description:</label>
         <input type="text" class="form-control" id="description" required [(ngModel)]="newServiceRequest.description" name="description">
       </div>
-      <!--<div class="form-group">
+      <div class="form-group">
         <label for="apartment">Apartment:</label>
+        <!-- Dropdown for selecting apartments -->
         <select class="form-control" id="apartment" required [(ngModel)]="newServiceRequest.apartment" name="apartment">
           <option *ngFor="let apartment of apartments" [value]="apartment.id">{{ apartment.name }}</option>
         </select>
-      </div>-->
+      </div>
       <div class="form-group">
         <label for="category">Category:</label>
         <!-- Dropdown for selecting category -->
