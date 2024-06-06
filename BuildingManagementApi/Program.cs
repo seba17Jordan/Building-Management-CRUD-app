@@ -5,6 +5,19 @@ var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add services to the container.
+
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.AddServices(builder.Configuration.GetConnectionString("BuildingManagement"));
+//Filters
+builder.Services.AddControllers(options => options.Filters.Add(typeof(ExceptionFilter)));
+builder.Services.AddScoped<AuthenticationFilter>();
+builder.Services.AddScoped<AuthorizationFilter>();
+//builder.Services.AddScoped<ExceptionFilter>();
+
 //CORS
 builder.Services.AddCors(options =>
 {
@@ -18,18 +31,6 @@ builder.Services.AddCors(options =>
                       });
 });
 
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddServices(builder.Configuration.GetConnectionString("BuildingManagement"));
-//Filters
-builder.Services.AddControllers(options => options.Filters.Add(typeof(ExceptionFilter)));
-builder.Services.AddScoped<AuthenticationFilter>();
-builder.Services.AddScoped<AuthorizationFilter>();
-//builder.Services.AddScoped<ExceptionFilter>();
 
 var app = builder.Build();
 

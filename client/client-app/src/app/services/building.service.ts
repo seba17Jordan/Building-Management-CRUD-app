@@ -33,21 +33,23 @@ export class BuildingService {
 
   updateBuilding(building: Building): Observable<Building> {
     const token = localStorage.getItem('token');
-    this.httpOptions.headers.set('Authorization', token!);
-    const url = `${this.buildingUrl}/${building.id}`;
-    console.log('Sending to url: ', url);
-    console.log('Sending building to update: ', building.id);
-    return this.http.patch<Building>(url, building, this.httpOptions);
+    const headers = new HttpHeaders().set('Authorization', token!);
+    const url = `${this.buildingUrl}/detail/${building.id}`;
+    console.log("url: "+url);
+    return this.http.patch<Building>(url, building, {headers});
   }
 
   //AUN SIN HACER
+  
   deleteBuilding(id: number): Observable<Building> {
     const url = `${this.buildingUrl}/${id}`;
 
-    return this.http.delete<Building>(url, this.httpOptions);
+    return this.http.delete<Building>(url, /*this.httpOptions*/);
   }
 
+  /*
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
+  */
 }

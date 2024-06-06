@@ -225,5 +225,10 @@ namespace BusinessLogic
             _buildingRepository.Save();
             return buildingToUpdate;
         }
+
+        public IEnumerable<Building> GetBuildingsByManagerId(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

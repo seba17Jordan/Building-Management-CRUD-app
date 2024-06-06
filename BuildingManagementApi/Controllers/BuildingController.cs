@@ -62,7 +62,7 @@ namespace BuildingManagementApi.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{id}")]
+        [HttpPatch("detail/{id}")]
         [ServiceFilter(typeof(AuthenticationFilter))]
         //[AuthorizationFilter(_currentRole = Roles.Manager)]
         public IActionResult UpdateBuildingById([FromRoute] Guid id, [FromBody] BuildingRequest buildingUpdates)
@@ -77,10 +77,10 @@ namespace BuildingManagementApi.Controllers
             return Ok(response);
         }
 
-        [HttpGet]
+        [HttpGet("company-admin")]
         [ServiceFilter(typeof(AuthenticationFilter))]
         [AuthorizationFilter(_currentRole = Roles.ConstructionCompanyAdmin)]
-        public IActionResult GetAllBuildings()
+        public IActionResult GetAllBuildingsCompanyAdmin()
         {
             string token = Request.Headers["Authorization"].ToString();
             var ConstructionCompanyUser = _sessionService.GetUserByToken(Guid.Parse(token));
@@ -88,6 +88,19 @@ namespace BuildingManagementApi.Controllers
             IEnumerable<BuildingResponse> response = _buildingLogic.GetBuildingsByCompanyAdminId(ConstructionCompanyUser.Id).Select(b => new BuildingResponse(b)).ToList();
             return Ok(response);
         }
+
+        [HttpGet("manager")]
+        [ServiceFilter(typeof(AuthenticationFilter))]
+        [AuthorizationFilter(_currentRole = Roles.Manager)]
+        public IActionResult GetAllBuildingsByManager()
+        {
+            string token = Request.Headers["Authorization"].ToString();
+            var managerUser = _sessionService.GetUserByToken(Guid.Parse(token));
+            IEnumerable<BuildingResponse> response = _buildingLogic.GetBuildingsByManagerId(managerUser.Id).Select(b => new BuildingResponse(b)).ToList();
+
+            return Ok(response);
+        }
+
 
         [HttpPatch("{buildingId}")] //id de building
         [ServiceFilter(typeof(AuthenticationFilter))]

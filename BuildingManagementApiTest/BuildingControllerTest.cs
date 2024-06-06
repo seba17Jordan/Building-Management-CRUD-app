@@ -344,7 +344,7 @@ public class BuildingControllerTest
     }
 
     [TestMethod]
-    public void GetAllBuildingsCorrectTestController()
+    public void GetAllBuildingsByAdminCorrectTestController()
     {
         //Arrange
         string token = "b4d9e6a4-466c-4a4f-91ea-6d7e7997584e";
@@ -398,7 +398,7 @@ public class BuildingControllerTest
         OkObjectResult expectedObjResult = new OkObjectResult(expectedResponse);
 
         // Act
-        var constrollerResult = buildingController.GetAllBuildings();
+        var constrollerResult = buildingController.GetAllBuildingsCompanyAdmin();
 
         // Assert
         buildingLogic.VerifyAll();
@@ -409,7 +409,83 @@ public class BuildingControllerTest
         Assert.AreEqual(resultObj.StatusCode, expectedObjResult.StatusCode);
         Assert.AreEqual(resultResponse.First(), expectedResponse.First());
     }
-    
+
+    [TestMethod]
+    public void GetAllBuildingsByManagerCorrectTestController()
+    {
+        //Arrange
+        string token = "b4d9e6a4-466c-4a4f-91ea-6d7e7997584e";
+        ConstructionCompany constructionCom = new ConstructionCompany("Construction Company");
+
+        User manager = new User
+        {
+            Id = Guid.NewGuid(),
+            Role = Roles.Manager,
+            Name = "John",
+            LastName = "Doe"
+        };
+
+        User constructionCompanyAdmin = new User
+        {
+            Id = Guid.NewGuid(),
+            Role = Roles.ConstructionCompanyAdmin,
+            Name = "John",
+            LastName = "Doe"
+        };
+
+        Building building = new Building()
+        {
+            Id = Guid.NewGuid(),
+            Name = "New Building 1",
+            Address = "Address 1",
+            ConstructionCompany = constructionCom,
+            ConstructionCompanyAdmin = constructionCompanyAdmin,
+            CommonExpenses = 100,
+            Manager = manager,
+            Apartments = new List<Apartment>
+            {
+                new Apartment()
+                {
+                    Floor = 1,
+                    Number = 101,
+                    Owner = new Owner { Name = "Jane", LastName = "Doe", Email = ""}
+                }
+            }
+        };
+
+        IEnumerable<Building> expectedBuildings = new List<Building>
+        {
+            building
+        };
+
+        var expectedResponse = expectedBuildings.Select(b => new BuildingResponse(b)).ToList();
+
+        Mock<IBuildingLogic> buildingLogic = new Mock<IBuildingLogic>(MockBehavior.Strict);
+        Mock<ISessionService> sessionService = new Mock<ISessionService>(MockBehavior.Strict);
+        Mock<IBuildingService> buildingService = new Mock<IBuildingService>(MockBehavior.Strict);
+
+        buildingLogic.Setup(bl => bl.GetBuildingsByManagerId(It.IsAny<Guid>())).Returns(expectedBuildings);
+        sessionService.Setup(p => p.GetUserByToken(It.IsAny<Guid>())).Returns(constructionCompanyAdmin);
+
+        BuildingController buildingController = new BuildingController(buildingLogic.Object, sessionService.Object, buildingService.Object);
+        buildingController.ControllerContext.HttpContext = new DefaultHttpContext();
+        buildingController.ControllerContext.HttpContext.Request.Headers["Authorization"] = token;
+
+        OkObjectResult expectedObjResult = new OkObjectResult(expectedResponse);
+
+        // Act
+        var constrollerResult = buildingController.GetAllBuildingsByManager();
+
+        // Assert
+        buildingLogic.VerifyAll();
+        sessionService.VerifyAll();
+        OkObjectResult resultObj = constrollerResult as OkObjectResult;
+        List<BuildingResponse> resultResponse = resultObj.Value as List<BuildingResponse>;
+        Assert.IsNotNull(resultResponse);
+        Assert.AreEqual(resultObj.StatusCode, expectedObjResult.StatusCode);
+        Assert.AreEqual(resultResponse.First(), expectedResponse.First());
+    }
+
     /*
     [TestMethod]
     public void ImportBuildingCorrectControllerTest()

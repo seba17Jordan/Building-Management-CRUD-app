@@ -39,7 +39,9 @@ namespace DataAccess
         public Building GetBuildingById(Guid id)
         {
             return _context.Set<Building>()
-                .Include(b => b.Apartments).ThenInclude(o => o.Owner) 
+                .Include(m => m.Manager)
+                .Include(b => b.Apartments)
+                .ThenInclude(o => o.Owner)
                 .FirstOrDefault(b => b.Id == id);
         }
 

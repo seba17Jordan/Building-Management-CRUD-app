@@ -14,8 +14,8 @@ namespace ModelsApi.In
 
         //Por mas que no use lo defino:
         public Guid Id { get; set; }
-        public bool HasManager { get; set; }
-        public string ManagerName { get; set; }
+        public bool? HasManager { get; set; }
+        public string? ManagerName { get; set; }
 
         public Building ToEntity()
         {
