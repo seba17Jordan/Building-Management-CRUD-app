@@ -139,5 +139,29 @@ namespace BuildingManagementApi.Controllers
             
             return Ok("Import succesful");
         }
+
+        [HttpGet("manager/apartments")]
+        [ServiceFilter(typeof(AuthenticationFilter))]
+        [AuthorizationFilter(_currentRole = Roles.Manager)]
+        public IActionResult GetAllApartmentsByManager()
+        {
+            string token = Request.Headers["Authorization"].ToString();
+            var managerUser = _sessionService.GetUserByToken(Guid.Parse(token));
+            
+            var buildings = _buildingLogic.GetBuildingsByManagerId(managerUser.Id);
+
+            if (buildings != null && buildings.Any())
+            {
+                // Obtener los apartamentos de todos los edificios
+                var apartments = buildings.SelectMany(b => b.Apartments);
+                Console.Write(apartments.ToList());
+                IEnumerable<ApartmentResponse> response = apartments.Select(a => new ApartmentResponse(a)).ToList();
+                return Ok(response);
+            }
+            else
+            {
+                return Ok(new List<ApartmentResponse>()); 
+            }
+        }
     }
 }
