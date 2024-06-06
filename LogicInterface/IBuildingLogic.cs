@@ -14,6 +14,7 @@ namespace LogicInterface
         Building UpdateBuildingById(Guid id, Building building, Guid managerId);
         IEnumerable<Building> GetBuildingsByCompanyAdminId(Guid id);
         Building ModifyBuildingManager(Guid buildingId, Guid newManagerId, Guid constructionCompanyAdminId);
+        User GetManagerByName(string managerName);
         IEnumerable<Building> GetBuildingsByManagerId(Guid id);
     }
 }

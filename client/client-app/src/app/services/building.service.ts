@@ -32,6 +32,12 @@ export class BuildingService {
     return this.selectedBuildingSubject.value;
   }
 
+  createBuilding(building: Building): Observable<Building> {
+    const token = localStorage.getItem('token');
+    const headers = this.httpOptions.headers.set('Authorization', token!);
+    return this.http.post<Building>(this.buildingUrl, building, { headers });
+  }
+
   updateBuilding(building: Building): Observable<Building> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', token!);
@@ -40,6 +46,8 @@ export class BuildingService {
     return this.http.patch<Building>(url, building, {headers});
   }
 
+  //AUN SIN HACER
+  deleteBuilding(id: string): Observable<Building> {
   //CAMBIAR EL DELETE EN EL BACKEND PARA QUE SEA PARA ADMINS DE COMPANY
   deleteBuilding(id: number): Observable<Building> {
     const url = `${this.buildingUrl}/${id}`;

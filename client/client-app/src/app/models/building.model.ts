@@ -1,12 +1,12 @@
 import { Apartment } from "./apartment.model";
 
 export interface Building {
-    id: number;
+    id?: string;
     name: string;
     address: string;
     constructionCompany: string;
     commonExpenses: number;
     hasManager: boolean;
-    managerName: string;
-    apartements: Apartment[];
+    managerName?: string;
+    apartments: Apartment[];
   }

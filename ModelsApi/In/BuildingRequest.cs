@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Domain.@enum;
 using ModelsApi.Out;
 using System.Collections.Generic;
 
