@@ -49,8 +49,10 @@ export class BuildingService {
   //AUN SIN HACER
   deleteBuilding(id: string): Observable<Building> {
   //CAMBIAR EL DELETE EN EL BACKEND PARA QUE SEA PARA ADMINS DE COMPANY
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', token!);
     const url = `${this.buildingUrl}/${id}`;
-    return this.http.delete<Building>(url, this.httpOptions);
+    return this.http.delete<Building>(url, {headers});
   }
  
   httpOptions = {
