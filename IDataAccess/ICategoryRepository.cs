@@ -13,5 +13,6 @@ namespace IDataAccess
         Category CreateCategory(Category category);
         bool FindCategoryById(Guid category);
         Category GetCategoryById(Guid category);
+        IEnumerable<Category> GetAllCategories();
     }
 }

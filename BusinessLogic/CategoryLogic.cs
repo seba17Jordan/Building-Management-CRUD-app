@@ -39,5 +39,10 @@ namespace BusinessLogic
 
             return _categoryRepository.CreateCategory(category);
         }
+
+        public IEnumerable<Category> GetAllCategories()
+        {
+            return _categoryRepository.GetAllCategories();
+        }
     }
 }

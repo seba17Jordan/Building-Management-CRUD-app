@@ -10,5 +10,6 @@ namespace LogicInterface
     public interface ICategoryLogic
     {
         Category CreateCategory(Category category);
+        IEnumerable<Category> GetAllCategories();
     }
 }

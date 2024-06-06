@@ -34,5 +34,10 @@ namespace DataAccess
         {
             return _context.Set<Category>().Find(category);
         }
+
+        public IEnumerable<Category> GetAllCategories()
+        {
+            return _context.Set<Category>().ToList();
+        }
     }
 }

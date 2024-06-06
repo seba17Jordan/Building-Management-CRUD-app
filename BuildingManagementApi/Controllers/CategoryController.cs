@@ -29,5 +29,14 @@ namespace BuildingManagementApi.Controllers
 
             return CreatedAtAction(nameof(CreateCategory), new { id = outputResult.Id }, outputResult);
         }
+
+        [HttpGet]
+        [ServiceFilter(typeof(AuthenticationFilter))]
+        public IActionResult GetAllCategories()
+        {
+            var categories = _categoryLogic.GetAllCategories(); // Método para obtener todas las categorías
+            var categoryResponses = categories.Select(category => new CategoryResponse(category)).ToList();
+            return Ok(categoryResponses); // Retorna las categorías encontradas
+        }
     }
 }

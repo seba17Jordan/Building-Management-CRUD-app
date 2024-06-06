@@ -16,4 +16,10 @@ export class CategoryService {
     const headers = new HttpHeaders().set('Authorization', token!);
     return this.http.post<Category>(this.apiUrl, category, { headers });
   }
+
+  getAllCategories(): Observable<Category[]> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', token!);
+    return this.http.get<Category[]>(this.apiUrl, { headers });
+  }
 }
