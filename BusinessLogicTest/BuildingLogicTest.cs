@@ -735,6 +735,7 @@ namespace BusinessLogicTest
             Mock<IUserRepository> userRepo = new Mock<IUserRepository>(MockBehavior.Strict);
 
             buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns((Building)null);
+            userRepo.Setup(l => l.GetUserById(It.IsAny<Guid>())).Returns(new User());
             BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object, constructionCompanyRepo.Object, userRepo.Object);
 
             try

@@ -58,34 +58,24 @@ namespace BusinessLogic
         public void DeleteBuildingById(Guid id, Guid companyAdminId)
         {
             if (id == Guid.Empty)
-            {
                 throw new EmptyFieldException("Id is empty");
-            }
 
             Building building = _buildingRepository.GetBuildingById(id);
 
-            if (building == null)
-            {
-                throw new ObjectNotFoundException("Building not found");
-            }
-
             User currentCompanyAdmin = _userRepository.GetUserById(companyAdminId);
 
+            if (building == null)
+                throw new ObjectNotFoundException("Building not found");
+
             if (currentCompanyAdmin == null)
-            {
                 throw new ObjectNotFoundException("Construction Company Administrator not found");
-            }
 
             if (building.ConstructionCompanyAdmin.Id != companyAdminId)
-            {
                 throw new InvalidOperationException("Construction Company Administrator is not the owner of the building");
-            }
 
             //Si hay solicitud no cerrada asociada al edificio, no puedo borrarlo
             if (_serviceRequestRepository.GetNoClosedServiceRequestsByBuildingId(id).Count() > 0)
-            {
                 throw new InvalidOperationException("There are active service requests associated with this building");
-            }
             
             if (building.Apartments != null)
             {
@@ -100,7 +90,7 @@ namespace BusinessLogic
                 building.Apartments.Clear();
                 building.Apartments = null;
             }
-           
+            
             building.ConstructionCompany = null;
             _buildingRepository.Save();
             _buildingRepository.DeleteBuilding(building);
