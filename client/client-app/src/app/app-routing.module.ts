@@ -11,6 +11,7 @@ import { BuildingsComponent } from './buildings/buildings.component';
 import { BuildingDetailComponent } from './building-detail/building-detail.component';
 import { CreateBuildingComponent } from './create-building/create-building.component';
 import { ConstructionCompanyComponent } from './construction-company/construction-company.component';
+import { CategoryComponent } from './category/category.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' }, 
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'buildings/detail/:id', component: BuildingDetailComponent },
   { path: 'buildings/create', component: CreateBuildingComponent, canActivate: [AuthGuard], data: { expectedRole: 3 } },
   { path: 'construction-company', component: ConstructionCompanyComponent, canActivate: [AuthGuard], data: {expectedRole: 3}},
+  { path: 'category', component: CategoryComponent, canActivate: [AuthGuard], data: {expectedRole: 0}},
   { path: '**', redirectTo: '/login' } //Este siempre al final, para que redirija a la página de inicio si no encuentra la ruta
 ];
 

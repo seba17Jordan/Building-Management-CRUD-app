@@ -16,6 +16,7 @@ import { BuildingsComponent } from './buildings/buildings.component';
 import { CreateBuildingComponent } from './create-building/create-building.component';
 import { BuildingDetailComponent } from './building-detail/building-detail.component';
 import { ConstructionCompanyComponent } from './construction-company/construction-company.component';
+import { CategoryComponent } from './category/category.component';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { ConstructionCompanyComponent } from './construction-company/constructio
     BuildingsComponent,
     CreateBuildingComponent,
     BuildingDetailComponent,
-    ConstructionCompanyComponent
+    ConstructionCompanyComponent,
+    CategoryComponent
   ],
   imports: [
     BrowserModule,

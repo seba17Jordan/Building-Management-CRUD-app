@@ -9,10 +9,16 @@ import { ConstructionCompanyService } from '../services/constructionCompany.serv
   styleUrls: ['./construction-company.component.css']
 })
 export class ConstructionCompanyComponent {
-  newConstructionCompany: ConstructionCompany = {
-    name: ''
-  };
+    newConstructionCompany: Partial<ConstructionCompany> = {
+      name: ''
+    };
+  
+    updateCompanyName: Partial<ConstructionCompany> = {
+      name: ''
+    };
 
+  existingConstructionCompanyName: string | null = null;
+  
   constructor(private constructionCompanyService: ConstructionCompanyService) { }
 
   createConstructionCompany(): void {
@@ -23,13 +29,31 @@ export class ConstructionCompanyComponent {
     }
 
     // Llamar al servicio para crear la empresa constructora
-    this.constructionCompanyService.createConstructionCompany(this.newConstructionCompany)
+    this.constructionCompanyService.createConstructionCompany(this.newConstructionCompany as ConstructionCompany)
       .subscribe(
         response => {
-          console.log('Construction company created successfully:', response);
+          console.log('Empresa de construccion creada satisfactoriamente:', response);
+          this.existingConstructionCompanyName = response.name; // Guardar el nombre de la empresa creada
         },
         error => {
-          console.error('Error creating construction company:', error);
+          console.error('Error al crear la empresa de construccion', error);
+        }
+      );
+  }
+
+  updateConstructionCompanyName(): void {
+    if (!this.updateCompanyName.name) {
+      console.error('Elige otro nombre por favor');
+      return;
+    }
+
+    this.constructionCompanyService.updateConstructionCompanyName(this.updateCompanyName as ConstructionCompany)
+      .subscribe(
+        response => {
+          console.log('Se actualizo el nombre de la empresa constructora satisfactoriamente', response);
+        },
+        error => {
+          console.error('Error al actualizar el nombre de la empresa', error);
         }
       );
   }

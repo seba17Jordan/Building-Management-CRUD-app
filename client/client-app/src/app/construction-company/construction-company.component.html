@@ -1,9 +1,15 @@
 <div class="container">
-    <h2>Create Construction Company</h2>
-    <div>
-      <label for="name">Name:</label>
-      <input type="text" id="name" [(ngModel)]="newConstructionCompany.name">
-    </div>
-    <button (click)="createConstructionCompany()">Create</button>
+  <h2>Crear empresa de construccion</h2>
+  <div>
+    <label for="createName">Name:</label>
+    <input type="text" id="createName" [(ngModel)]="newConstructionCompany.name">
   </div>
-  
+  <button (click)="createConstructionCompany()">Create</button>
+
+  <h2>Actualizar empresa de construccion {{existingConstructionCompanyName}}</h2>
+  <div>
+    <label for="updateName">New Name:</label>
+    <input type="text" id="updateName" [(ngModel)]="updateCompanyName.name">
+  </div>
+  <button (click)="updateConstructionCompanyName()">Update</button>
+</div>

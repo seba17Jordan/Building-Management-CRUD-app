@@ -19,7 +19,15 @@ export class ConstructionCompanyService {
     return this.http.post<ConstructionCompany>(`${this.apiUrl}`, constructionCompany, { headers });
   }
 
-  updateConstructionCompanyName(newCompanyName: ConstructionCompany): Observable<ConstructionCompany> { 
-    return this.http.patch<ConstructionCompany>(`${this.apiUrl}`, newCompanyName);
+  updateConstructionCompanyName(newCompanyName: ConstructionCompany): Observable<ConstructionCompany> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', token!);
+    return this.http.patch<ConstructionCompany>(this.apiUrl, newCompanyName, { headers });
+  }
+
+  getConstructionCompany(): Observable<ConstructionCompany> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', token!);
+    return this.http.get<ConstructionCompany>(this.apiUrl, { headers });
   }
 }
