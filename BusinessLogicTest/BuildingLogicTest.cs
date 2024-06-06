@@ -837,6 +837,15 @@ namespace BusinessLogicTest
                     Email = "sef@gmail.com"
                 };
 
+                User comAdmin = new User()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Admin",
+                    LastName = "ConstructionCompAdmin",
+                    Email = "",
+                    Role = Roles.ConstructionCompanyAdmin,
+                };
+
                 Building building = new Building()
                 {
                     Id = Guid.NewGuid(),
@@ -845,7 +854,8 @@ namespace BusinessLogicTest
                     ConstructionCompany = new ConstructionCompany("Construction Company"),
                     CommonExpenses = -100,
                     Apartments = new List<Apartment>(),
-                    Manager = manager
+                    Manager = manager,
+                    ConstructionCompanyAdmin = comAdmin
                 };
 
                 Building updates = new Building()
@@ -860,12 +870,11 @@ namespace BusinessLogicTest
                 buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
                 buildingRepo.Setup(l => l.BuildingNameExists(It.IsAny<string>())).Returns(true);
                 buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(building);
-                userRepo.Setup(l => l.GetUserById(It.IsAny<Guid>())).Returns(manager);
 
                 BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object, constructionCompanyRepo.Object, userRepo.Object);
 
                 // Act
-                Building logicResult = buildingLogic.UpdateBuildingById(building.Id, updates, manager.Id);
+                Building logicResult = buildingLogic.UpdateBuildingById(building.Id, updates, comAdmin.Id);
 
             }
             catch (ArgumentException e)
