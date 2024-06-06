@@ -122,13 +122,15 @@ namespace BuildingManagementApi.Controllers
         public IActionResult ImportBuildings([FromBody] ImportRequest importRequest) //importer name, JSON file Name
         {
             string token = Request.Headers["Authorization"].ToString();
+            Console.WriteLine("Importador: "+ importRequest.ImporterName);
+            Console.WriteLine("Archivo: "+ importRequest.FileName);
 
             var importer = ImporterManager.GetImporter(_importersDirectory, importRequest.ImporterName);
             if (importer == null)
             {
                 return BadRequest("Invalid importer specified.");
             }
-
+            
             string filePath = Path.Combine(_filesDirectory, importRequest.FileName);
             if (!System.IO.File.Exists(filePath))
             {
@@ -136,8 +138,29 @@ namespace BuildingManagementApi.Controllers
             }
 
             importer.Import(filePath, _buildingService, token);
-            
-            return Ok("Import succesful");
+
+            //retorno ok con un mensaje dentro
+            return Ok(new { message = "Import success" });
         }
+
+        [HttpGet("importers")]
+        [ServiceFilter(typeof(AuthenticationFilter))]
+        [AuthorizationFilter(_currentRole = Roles.ConstructionCompanyAdmin)]
+        public IActionResult GetImporters()
+        {
+            var importers = ImporterManager.GetAvailableImporters(_importersDirectory);
+            return Ok(importers);
+        }
+
+        [HttpGet("files")]
+        [ServiceFilter(typeof(AuthenticationFilter))]
+        [AuthorizationFilter(_currentRole = Roles.ConstructionCompanyAdmin)]
+        public IActionResult GetFiles()
+        {
+            var files = Directory.GetFiles(_filesDirectory).Select(Path.GetFileName).ToList();
+            return Ok(files);
+        }
+
+
     }
 }

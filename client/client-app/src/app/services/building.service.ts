@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Building } from '../models/building.model';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { ImportRequest } from '../models/importRequest.model';
 
 @Injectable({
   providedIn: 'root'
@@ -46,7 +47,6 @@ export class BuildingService {
     return this.http.patch<Building>(url, building, {headers});
   }
 
-  //AUN SIN HACER
   deleteBuilding(id: string): Observable<Building> {
   //CAMBIAR EL DELETE EN EL BACKEND PARA QUE SEA PARA ADMINS DE COMPANY
     const token = localStorage.getItem('token');
@@ -58,5 +58,28 @@ export class BuildingService {
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
+
+  importBuilding(importRequest: ImportRequest): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Authorization': `${token}`,
+      'Content-Type': 'application/json'
+    });
+    const url = `${this.buildingUrl}/import`;
+    return this.http.post<any>(url, importRequest ,{ headers });
+  }
   
+  getImporters(): Observable<string[]> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', token!);
+    const url = `${this.buildingUrl}/importers`;
+    return this.http.get<string[]>(url, { headers });
+  }
+
+  getFiles(): Observable<string[]> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', token!);
+    const url = `${this.buildingUrl}/files`;
+    return this.http.get<string[]>(url, { headers });
+  }
 }
