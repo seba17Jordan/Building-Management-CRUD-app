@@ -47,7 +47,7 @@ export class BuildingService {
   }
 
   //AUN SIN HACER
-  deleteBuilding(id: number): Observable<Building> {
+  deleteBuilding(id: string): Observable<Building> {
     const url = `${this.buildingUrl}/${id}`;
 
     return this.http.delete<Building>(url, this.httpOptions);

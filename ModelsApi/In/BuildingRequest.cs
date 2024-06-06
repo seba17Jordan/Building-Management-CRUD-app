@@ -15,8 +15,8 @@ namespace ModelsApi.In
 
         //Por mas que no use lo defino:
         public Guid? Id { get; set; }
-        public bool HasManager { get; set; }
-        public string ManagerName { get; set; }
+        public bool? HasManager { get; set; }
+        public string? ManagerName { get; set; }
 
         public Building ToEntity()
         {
@@ -35,17 +35,6 @@ namespace ModelsApi.In
                     building.Apartments.Add(apartmentReq.ToEntity());
                 }
             }
-            if (HasManager)
-            {
-                building.Manager = new User
-                {
-                    Name = ManagerName,
-                    Email = "manager@example.com", 
-                    Password = "password", 
-                    Role = Roles.Manager 
-                };
-            }
-
             return building;
         }
     }

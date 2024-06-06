@@ -12,7 +12,6 @@ import { Owner } from '../models/owner.model';
 })
 export class CreateBuildingComponent {
   newBuilding: Building = {
-    id: 0,
     name: '',
     address: '',
     constructionCompany: '',
