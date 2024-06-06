@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Domain.@enum;
 using ModelsApi.Out;
 using System.Collections.Generic;
 
@@ -13,7 +14,7 @@ namespace ModelsApi.In
         public List<ApartmentRequest>? Apartments { get; set; }
 
         //Por mas que no use lo defino:
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
         public bool HasManager { get; set; }
         public string ManagerName { get; set; }
 
@@ -34,6 +35,17 @@ namespace ModelsApi.In
                     building.Apartments.Add(apartmentReq.ToEntity());
                 }
             }
+            if (HasManager)
+            {
+                building.Manager = new User
+                {
+                    Name = ManagerName,
+                    Email = "manager@example.com", 
+                    Password = "password", 
+                    Role = Roles.Manager 
+                };
+            }
+
             return building;
         }
     }

@@ -50,9 +50,10 @@ namespace BusinessLogic
             {
                 throw new ObjectNotFoundException("Construction company not found");
             }
-
+            
             return _buildingRepository.CreateBuilding(building);
         }
+
 
         public void DeleteBuildingById(Guid id, Guid managerId)
         {
@@ -224,6 +225,11 @@ namespace BusinessLogic
             _buildingRepository.UpdateBuilding(buildingToUpdate);
             _buildingRepository.Save();
             return buildingToUpdate;
+        }
+
+        public User GetManagerByName(string managerName)
+        {
+            return _userRepository.GetUserByName(managerName);
         }
     }
 }

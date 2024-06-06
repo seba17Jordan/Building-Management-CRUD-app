@@ -72,6 +72,8 @@ namespace BuildingManagementApi.Controllers
 
             var building = buildingUpdates.ToEntity();
             var logicBuilding = _buildingLogic.UpdateBuildingById(id, building, managerUser.Id);
+            User manager = _buildingLogic.GetManagerByName(buildingUpdates.ManagerName);
+            logicBuilding.Manager = manager;
             BuildingResponse response = new BuildingResponse(logicBuilding);
 
             return Ok(response);
