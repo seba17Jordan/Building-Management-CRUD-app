@@ -554,6 +554,15 @@ namespace BusinessLogicTest
                 LastName = "Manager",
                 Email = "mai@gmail.com"
             };
+            
+            User companyAdmin = new User()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Admin",
+                LastName = "ConstructionCompAdmin",
+                Email = "",
+                Role = Roles.ConstructionCompanyAdmin,
+            };
 
             Building expectedBuilding = new Building()
             {
@@ -574,7 +583,8 @@ namespace BusinessLogicTest
                         HasTerrace = true
                     }
                 },
-                Manager = manager
+                Manager = manager,
+                ConstructionCompanyAdmin = companyAdmin
             };
             List<ServiceRequest> serviceRequests = new List<ServiceRequest>();
 
@@ -588,11 +598,11 @@ namespace BusinessLogicTest
             buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(expectedBuilding);
             buildingRepo.Setup(l => l.Save());
             buildingRepo.Setup(l => l.DeleteApartment(It.IsAny<Apartment>()));
-            userRepo.Setup(l => l.GetUserById(It.IsAny<Guid>())).Returns(manager);
+            userRepo.Setup(l => l.GetUserById(It.IsAny<Guid>())).Returns(companyAdmin);
             BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object, constructionCompanyRepo.Object, userRepo.Object);
 
             // Act
-            buildingLogic.DeleteBuildingById(expectedBuilding.Id, manager.Id);
+            buildingLogic.DeleteBuildingById(expectedBuilding.Id, companyAdmin.Id);
 
             // Assert
             buildingRepo.VerifyAll();
