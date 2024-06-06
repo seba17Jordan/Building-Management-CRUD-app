@@ -49,9 +49,7 @@ export class BuildingService {
   //AUN SIN HACER
   deleteBuilding(id: string): Observable<Building> {
   //CAMBIAR EL DELETE EN EL BACKEND PARA QUE SEA PARA ADMINS DE COMPANY
-  deleteBuilding(id: number): Observable<Building> {
     const url = `${this.buildingUrl}/${id}`;
-
     return this.http.delete<Building>(url, this.httpOptions);
   }
  
