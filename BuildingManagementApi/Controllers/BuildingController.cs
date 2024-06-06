@@ -52,13 +52,13 @@ namespace BuildingManagementApi.Controllers
 
         [HttpDelete("{id}")]
         [ServiceFilter(typeof(AuthenticationFilter))]
-        [AuthorizationFilter(_currentRole = Roles.Manager)]
+        [AuthorizationFilter(_currentRole = Roles.ConstructionCompanyAdmin)]
         public IActionResult DeleteBuildingById([FromRoute] Guid id)
         {
             string token = Request.Headers["Authorization"].ToString();
-            var managerUser = _sessionService.GetUserByToken(Guid.Parse(token));
+            var companyAdmin = _sessionService.GetUserByToken(Guid.Parse(token));
 
-            _buildingLogic.DeleteBuildingById(id, managerUser.Id);
+            _buildingLogic.DeleteBuildingById(id, companyAdmin.Id);
             return NoContent();
         }
 
