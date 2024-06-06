@@ -20,7 +20,8 @@ export class BuildingService {
   getBuildings(): Observable<Building[]> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', token!);
-    return this.http.get<Building[]>(this.buildingUrl, {headers});
+    const url = `${this.buildingUrl}/company-admin`;
+    return this.http.get<Building[]>(url, {headers});
   }
 
   setSelectedBuilding(building: Building): void {
@@ -39,17 +40,15 @@ export class BuildingService {
     return this.http.patch<Building>(url, building, {headers});
   }
 
-  //AUN SIN HACER
-  
+  //CAMBIAR EL DELETE EN EL BACKEND PARA QUE SEA PARA ADMINS DE COMPANY
   deleteBuilding(id: number): Observable<Building> {
     const url = `${this.buildingUrl}/${id}`;
 
-    return this.http.delete<Building>(url, /*this.httpOptions*/);
+    return this.http.delete<Building>(url, this.httpOptions);
   }
-
-  /*
+ 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
-  */
+  
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BuildingService } from '../services/building.service';
 import { Building } from '../models/building.model';
 import { Router } from '@angular/router';
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   templateUrl: './buildings.component.html',
   styleUrls: ['./buildings.component.css']
 })
-export class BuildingsComponent {
+export class BuildingsComponent implements OnInit{
 
   buildings: Building[] = [];
 
