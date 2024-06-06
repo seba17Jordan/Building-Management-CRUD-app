@@ -64,5 +64,35 @@ namespace BusinessLogicTest
             Assert.IsInstanceOfType(specificEx, typeof(EmptyFieldException));
             Assert.IsTrue(specificEx.Message.Contains("Category name can't be null or empty"));
         }
+
+        [TestMethod]
+        public void GetAllCategories_ReturnsCategories_Successfully()
+        {
+            // Arrange
+            var categories = new List<Category>
+            {
+                new Category { Id = Guid.NewGuid(), Name = "Category1" },
+                new Category { Id = Guid.NewGuid(), Name = "Category2" },
+                new Category { Id = Guid.NewGuid(), Name = "Category3" }
+            };
+
+            Mock<ICategoryRepository> repositoryMock = new Mock<ICategoryRepository>(MockBehavior.Strict);
+            repositoryMock.Setup(repo => repo.GetAllCategories()).Returns(categories);
+
+            var categoryLogic = new CategoryLogic(repositoryMock.Object);
+
+            // Act
+            var result = categoryLogic.GetAllCategories();
+
+            // Assert
+            repositoryMock.VerifyAll();
+            Assert.IsNotNull(result);
+            Assert.AreEqual(categories.Count, result.Count());
+
+            foreach (var category in categories)
+            {
+                Assert.IsTrue(result.Any(c => c.Id == category.Id && c.Name == category.Name));
+            }
+        }
     }
 }
