@@ -78,5 +78,10 @@ namespace DataAccess
         {
             return _context.Set<Building>().FirstOrDefault(b => b.Name == buildingName);
         }
+
+        public IEnumerable<Building> GetAllBuildingsByManager(Guid managerId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

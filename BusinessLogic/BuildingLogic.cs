@@ -226,9 +226,14 @@ namespace BusinessLogic
             return buildingToUpdate;
         }
 
-        public IEnumerable<Building> GetBuildingsByManagerId(Guid id)
+        public IEnumerable<Building> GetBuildingsByManagerId(Guid managerId)
         {
-            throw new NotImplementedException();
+            if (managerId == Guid.Empty)
+            {
+                throw new EmptyFieldException("Id is empty");
+            }
+
+            return _buildingRepository.GetAllBuildingsByManager(managerId);
         }
     }
 }

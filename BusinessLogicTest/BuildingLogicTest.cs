@@ -129,7 +129,7 @@ namespace BusinessLogicTest
                     Address = "Address 1",
                     ConstructionCompany = constructionCompany,
                     CommonExpenses = 100,
-                    ConstructionCompanyAdmin= constructionComAdmin,
+                    ConstructionCompanyAdmin = constructionComAdmin,
                     Apartments = new List<Apartment>
                 {
                     new Apartment()
@@ -670,7 +670,7 @@ namespace BusinessLogicTest
             Mock<IServiceRequestRepository> serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
             Mock<IConstructionCompanyRepository> constructionCompanyRepo = new Mock<IConstructionCompanyRepository>(MockBehavior.Strict);
             Mock<IUserRepository> userRepo = new Mock<IUserRepository>(MockBehavior.Strict);
-            
+
             serviceRequestRepo.Setup(l => l.GetNoClosedServiceRequestsByBuildingId(It.IsAny<Guid>())).Returns(new List<ServiceRequest> { serviceRequest });
             buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(building);
             userRepo.Setup(l => l.GetUserById(It.IsAny<Guid>())).Returns(manager);
@@ -1358,6 +1358,48 @@ namespace BusinessLogicTest
             // Act
             var _buildingService = new BuildingLogic(_buildingRepositoryMock.Object, null, null, null);
             var result = _buildingService.GetBuildingsByCompanyAdminId(validGuid);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2, result.Count());
+            Assert.AreEqual("Building 1", result.First().Name);
+        }
+
+        [TestMethod]
+        public void GetBuildingsByManagerIdLogicTest()
+        {
+            // Arrange
+            User manager = new User()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Manager",
+                LastName = "Manager",
+                Email = ""
+            };
+
+            var buildings = new List<Building>
+            {
+                new Building {
+                    Id = Guid.NewGuid(),
+                    Name = "Building 1",
+                    Manager = manager},
+                new Building {
+                    Id = Guid.NewGuid(),
+                    Name = "Building 2",
+                    Manager = manager
+                }
+            };
+
+            Mock<IBuildingRepository> _buildingRepositoryMock = new Mock<IBuildingRepository>();
+            Mock<IUserRepository> _userRepositoryMock = new Mock<IUserRepository>();
+            Mock<IServiceRequestRepository> _serviceRequestRepositoryMock = new Mock<IServiceRequestRepository>();
+            Mock<IConstructionCompanyRepository> _constructionCompanyRepositoryMock = new Mock<IConstructionCompanyRepository>();
+
+            _buildingRepositoryMock.Setup(repo => repo.GetAllBuildingsByManager(It.IsAny<Guid>())).Returns(buildings);
+
+            // Act
+            BuildingLogic _buildingService = new BuildingLogic(_buildingRepositoryMock.Object, _serviceRequestRepositoryMock.Object, _constructionCompanyRepositoryMock.Object, _userRepositoryMock.Object);
+            var result = _buildingService.GetBuildingsByManagerId(manager.Id);
 
             // Assert
             Assert.IsNotNull(result);
