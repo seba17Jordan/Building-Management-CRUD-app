@@ -64,14 +64,14 @@ namespace BuildingManagementApi.Controllers
 
         [HttpPatch("detail/{id}")]
         [ServiceFilter(typeof(AuthenticationFilter))]
-        //[AuthorizationFilter(_currentRole = Roles.Manager)]
+        [AuthorizationFilter(_currentRole = Roles.ConstructionCompanyAdmin)]
         public IActionResult UpdateBuildingById([FromRoute] Guid id, [FromBody] BuildingRequest buildingUpdates)
         {
             string token = Request.Headers["Authorization"].ToString();
-            var managerUser = _sessionService.GetUserByToken(Guid.Parse(token));
+            var constructionCompanyAdmin = _sessionService.GetUserByToken(Guid.Parse(token));
 
             var building = buildingUpdates.ToEntity();
-            var logicBuilding = _buildingLogic.UpdateBuildingById(id, building, managerUser.Id);
+            var logicBuilding = _buildingLogic.UpdateBuildingById(id, building, constructionCompanyAdmin.Id);
             BuildingResponse response = new BuildingResponse(logicBuilding);
 
             return Ok(response);

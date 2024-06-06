@@ -736,6 +736,15 @@ namespace BusinessLogicTest
                 Email = "sklmf@gmai.com"
             };
 
+            User companyAdmin = new User()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Admin",
+                LastName = "ConstructionCompAdmin",
+                Email = "",
+                Role = Roles.ConstructionCompanyAdmin,
+            };
+
             Building building = new Building()
             {
                 Id = Guid.NewGuid(),
@@ -755,7 +764,8 @@ namespace BusinessLogicTest
                         HasTerrace = true
                     }
                 },
-                Manager = manager
+                Manager = manager,
+                ConstructionCompanyAdmin = companyAdmin
 
             };
 
@@ -782,7 +792,9 @@ namespace BusinessLogicTest
                         Bathrooms = 2,
                         HasTerrace = true
                     }
-                }
+                },
+                Manager = manager,
+                ConstructionCompanyAdmin = companyAdmin
             };
 
             Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
@@ -794,12 +806,11 @@ namespace BusinessLogicTest
             buildingRepo.Setup(l => l.BuildingNameExists(It.IsAny<string>())).Returns(false);
             buildingRepo.Setup(l => l.UpdateBuilding(It.IsAny<Building>()));
             buildingRepo.Setup(l => l.Save());
-            userRepo.Setup(l => l.GetUserById(It.IsAny<Guid>())).Returns(manager);
 
             BuildingLogic buildingLogic = new BuildingLogic(buildingRepo.Object, serviceRequestRepo.Object, constructionCompanyRepo.Object, userRepo.Object);
 
             //Act
-            Building logicResult = buildingLogic.UpdateBuildingById(building.Id, updates, manager.Id);
+            Building logicResult = buildingLogic.UpdateBuildingById(building.Id, updates, companyAdmin.Id);
 
             //Assert
             buildingRepo.VerifyAll();
@@ -869,6 +880,7 @@ namespace BusinessLogicTest
             Assert.IsTrue(specificEx.Message.Contains("Building with same name already exists"));
         }
 
+        /* YA NO SE USA
         [TestMethod]
         public void UpdateBuildingNotBeingOwnerShouldThrowExceptionTestLogic()
         {
@@ -930,6 +942,7 @@ namespace BusinessLogicTest
             Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
             Assert.IsTrue(specificEx.Message.Contains("Manager is not the owner of the building"));
         }
+        */
 
 
         [TestMethod]

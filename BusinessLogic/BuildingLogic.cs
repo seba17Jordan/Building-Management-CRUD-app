@@ -109,7 +109,7 @@ namespace BusinessLogic
             _buildingRepository.Save();
         }
 
-        public Building UpdateBuildingById(Guid id, Building building, Guid managerId)
+        public Building UpdateBuildingById(Guid id, Building buildingUpdates, Guid comAdminId)
         {
             Building buildingToUpdate = _buildingRepository.GetBuildingById(id);
 
@@ -118,51 +118,28 @@ namespace BusinessLogic
                 throw new ArgumentNullException("Building not found");
             }
 
-            if (buildingToUpdate.Manager == null)
+            if(buildingToUpdate.ConstructionCompanyAdmin.Id != comAdminId)
             {
-                throw new InvalidOperationException("Building has no manager");
+                throw new ArgumentException("Construction Company Administrator is not the owner of the building");
             }
 
-            User currentManager = _userRepository.GetUserById(managerId);
-            
-            if (currentManager == null)
+            if (buildingUpdates.Name != null)
             {
-                   throw new ArgumentNullException("Manager not found");
-            }
-
-            if(buildingToUpdate.Manager.Id != managerId)
-            {
-                throw new ArgumentException("Manager is not the owner of the building");
-            }
-
-            if (building.Name != null)
-            {
-                if (_buildingRepository.BuildingNameExists(building.Name))
+                if (_buildingRepository.BuildingNameExists(buildingUpdates.Name))
                 {
                     throw new ArgumentException("Building with same name already exists");
                 }
-                buildingToUpdate.Name = building.Name;
+                buildingToUpdate.Name = buildingUpdates.Name;
             }
 
-            if (building.Address != null)
-            {
-                buildingToUpdate.Address = building.Address;
-            }
+            if (buildingUpdates.Address != null) buildingToUpdate.Address = buildingUpdates.Address;
+            if (buildingUpdates.ConstructionCompany != null) buildingToUpdate.ConstructionCompany = buildingUpdates.ConstructionCompany;
+            if (buildingUpdates.CommonExpenses != null) buildingToUpdate.CommonExpenses = buildingUpdates.CommonExpenses;
 
-            if (building.ConstructionCompany != null)
-            {
-                buildingToUpdate.ConstructionCompany = building.ConstructionCompany;
-            }
-
-            if (building.CommonExpenses != null)
-            {
-                buildingToUpdate.CommonExpenses = building.CommonExpenses;
-            }
-
-            if (building.Apartments != null && building.Apartments.Count >=1) //se cambian todos los apartamentos de una
+            if (buildingUpdates.Apartments != null && buildingUpdates.Apartments.Count >=1) //se cambian todos los apartamentos de una
             {
                 buildingToUpdate.Apartments.Clear();
-                foreach (var apartment in building.Apartments)
+                foreach (var apartment in buildingUpdates.Apartments)
                 {
                     apartment.SelfValidate();
                     var clonedApartment = new Apartment
