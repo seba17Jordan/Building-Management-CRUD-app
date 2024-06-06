@@ -1,6 +1,6 @@
 export interface Owner {
-    Id?: string;
-    Email: string;
-    Name: string;
-    LastName?: string;
+    id?: string;
+    email: string;
+    name: string;
+    lastName?: string;
   }

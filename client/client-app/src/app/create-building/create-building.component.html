@@ -1,1 +1,55 @@
-<p>create-building works!</p>
+<h3>Agregar nuevo edificio</h3>
+<form (ngSubmit)="createBuilding()">
+  <label for="name">Nombre:</label>
+  <input id="name" [(ngModel)]="newBuilding.name" name="name" required>
+
+  <label for="address">Dirección:</label>
+  <input id="address" [(ngModel)]="newBuilding.address" name="address" required>
+
+  <label for="constructionCompany">Compañía constructora:</label>
+  <input id="constructionCompany" [(ngModel)]="newBuilding.constructionCompany" name="constructionCompany" required>
+
+  <label for="commonExpenses">Gastos comunes:</label>
+  <input id="commonExpenses" type="number" [(ngModel)]="newBuilding.commonExpenses" name="commonExpenses" required>
+
+  <label for="hasManager">¿Tiene Manager?:</label>
+  <input id="hasManager" type="checkbox" [(ngModel)]="newBuilding.hasManager" name="hasManager">
+
+  <label for="managerName" *ngIf="newBuilding.hasManager">Nombre del Manager:</label>
+  <input id="managerName" *ngIf="newBuilding.hasManager" [(ngModel)]="newBuilding.managerName" name="managerName">
+
+  <div *ngFor="let apartment of newBuilding.apartments; let i = index">
+    <h4>Apartamento {{ i + 1 }}</h4>
+    <label for="floor">Piso:</label>
+    <input id="floor" [(ngModel)]="apartment.floor" name="floor{{i}}" required>
+    
+    <label for="number">Número:</label>
+    <input id="number" [(ngModel)]="apartment.number" name="number{{i}}" required>
+
+    <label for="rooms">Habitaciones:</label>
+    <input id="rooms" [(ngModel)]="apartment.rooms" name="rooms{{i}}" required>
+    
+    <label for="bathrooms">Baños:</label>
+    <input id="bathrooms" [(ngModel)]="apartment.bathrooms" name="bathrooms{{i}}" required>
+
+    <label for="hasTerrace">¿Tiene Terraza?:</label>
+    <input id="hasTerrace" type="checkbox" [(ngModel)]="apartment.hasTerrace" name="hasTerrace{{i}}">
+
+    <h5>Propietario</h5>
+    <label for="ownerName">Nombre:</label>
+    <input id="ownerName" [(ngModel)]="apartment.owner.name" name="ownerName{{i}}" required>
+    
+    <label for="ownerLastName">Apellido:</label>
+    <input id="ownerLastName" [(ngModel)]="apartment.owner.lastName" name="ownerLastName{{i}}" required>
+    
+    <label for="ownerEmail">Email:</label>
+    <input id="ownerEmail" [(ngModel)]="apartment.owner.email" name="ownerEmail{{i}}" required>
+    
+    <button type="button" (click)="removeApartment(i)">Eliminar Apartamento</button>
+  </div>
+  
+  <button type="button" (click)="addApartment()">Agregar Apartamento</button>
+  
+  <button type="submit">Agregar Edificio</button>
+  <button type="button" (click)="cancel()">Cancelar</button>
+</form>

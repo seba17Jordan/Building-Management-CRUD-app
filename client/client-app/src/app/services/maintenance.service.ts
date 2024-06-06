@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../models/user.model';
 
@@ -13,6 +13,8 @@ export class MaintenanceService {
   constructor(private http: HttpClient) { }
 
   createMaintenance(maintenance: User): Observable<User> {
-    return this.http.post<User>(`${this.baseUrl}`, maintenance);
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', token!);
+    return this.http.post<User>(`${this.baseUrl}`, maintenance, {headers});
   }
 }

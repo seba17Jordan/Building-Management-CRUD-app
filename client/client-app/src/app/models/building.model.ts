@@ -7,6 +7,6 @@ export interface Building {
     constructionCompany: string;
     commonExpenses: number;
     hasManager: boolean;
-    managerName: string;
-    apartements: Apartment[];
+    managerName?: string;
+    apartments: Apartment[];
   }

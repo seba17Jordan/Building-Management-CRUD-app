@@ -31,6 +31,12 @@ export class BuildingService {
     return this.selectedBuildingSubject.value;
   }
 
+  createBuilding(building: Building): Observable<Building> {
+    const token = localStorage.getItem('token');
+    const headers = this.httpOptions.headers.set('Authorization', token!);
+    return this.http.post<Building>(this.buildingUrl, building, { headers });
+  }
+
   updateBuilding(building: Building): Observable<Building> {
     const token = localStorage.getItem('token');
     this.httpOptions.headers.set('Authorization', token!);

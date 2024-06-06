@@ -1,11 +1,11 @@
 import { Owner } from "./owner.model";
 
 export interface Apartment {
-    Id?: string;
-    Floor: number;
-    Number: number;
-    Owner: Owner;
-    Rooms: number;
-    Bathrooms: number;
-    HasTerrace: boolean;
+    id?: string;
+    floor: number;
+    number: number;
+    owner: Owner;
+    rooms: number;
+    bathrooms: number;
+    hasTerrace: boolean;
   }
