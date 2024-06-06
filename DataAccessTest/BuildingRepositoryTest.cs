@@ -175,24 +175,6 @@ namespace DataAccessTest
             // Act
             Building createdBuilding = buildingRepo.CreateBuilding(expectedBuilding);
             context.SaveChanges();
-
-            /*Building updatedBuilding = new Building()
-            {
-                Id = createdBuilding.Id,
-                Name = "Building 2",
-                Address = "Address 2",
-                ConstructionCompany = new ConstructionCompany("Construction Company"),
-                CommonExpenses = 200,
-                Apartments = new List<Apartment>
-                {
-                    new Apartment()
-                    {
-                        Floor = 2,
-                        Number = 201,
-                        Owner = new Owner { Name = "John", LastName = "Doe", Email = ""}
-                    }
-                }
-            };*/
             createdBuilding.Name = "Building 2";
 
             //context.Entry(createdBuilding).State = EntityState.Detached;
@@ -295,6 +277,45 @@ namespace DataAccessTest
             context.SaveChanges();
 
             Assert.AreEqual(building, buildingRepo.GetBuildingByName(building.Name));
+        }
+
+        [TestMethod]
+        public void GetAllBuildingsByManagerIdTestCorrectDataAccess()
+        {
+            User manager = new User {
+                Name = "Manager",
+                LastName = "Manager",
+                Email = "acx@gail.com",
+                Password = "1234",
+                Role = Roles.Manager
+            };
+            Building building = new Building()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Building 1",
+                Address = "Address 1",
+                ConstructionCompany = new ConstructionCompany("Construction Company"),
+                CommonExpenses = 100,
+                Apartments = new List<Apartment>
+                {
+                    new Apartment()
+                    {
+                        Floor = 1,
+                        Number = 101,
+                        Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "" }
+                    }
+                },
+                Manager = manager
+                
+            };
+
+            var context = CreateDbContext("GetAllBuildingsByManagerIdTestCorrectDataAccess");
+            var buildingRepo = new BuildingRepository(context);
+
+            buildingRepo.CreateBuilding(building);
+            context.SaveChanges();
+
+            Assert.AreEqual(1, buildingRepo.GetAllBuildingsByManager(manager.Id).Count());
         }
 
         private DbContext CreateDbContext(string database)

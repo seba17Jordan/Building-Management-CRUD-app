@@ -81,7 +81,7 @@ namespace DataAccess
 
         public IEnumerable<Building> GetAllBuildingsByManager(Guid managerId)
         {
-            throw new NotImplementedException();
+            return _context.Set<Building>().Where(b => b.Manager.Id == managerId).ToList();
         }
     }
 }
