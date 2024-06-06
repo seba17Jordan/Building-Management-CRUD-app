@@ -15,6 +15,7 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { BuildingsComponent } from './buildings/buildings.component';
 import { CreateBuildingComponent } from './create-building/create-building.component';
 import { BuildingDetailComponent } from './building-detail/building-detail.component';
+import { ConstructionCompanyComponent } from './construction-company/construction-company.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { BuildingDetailComponent } from './building-detail/building-detail.compo
     MaintenanceComponent,
     BuildingsComponent,
     CreateBuildingComponent,
-    BuildingDetailComponent
+    BuildingDetailComponent,
+    ConstructionCompanyComponent
   ],
   imports: [
     BrowserModule,
