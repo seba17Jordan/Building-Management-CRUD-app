@@ -34,14 +34,14 @@ namespace BusinessLogic
                 apartment.SelfValidate();
                 apartment.Owner.SelfValidate();
             }
-            
+
             if (_buildingRepository.BuildingNameExists(building.Name))
             {
                 throw new ObjectAlreadyExistsException("Building with same name already exists");
             }
 
             ConstructionCompany existingCompany = _constructionCompanyRepository.GetConstructionCompanyByAdmin(constructionComAdmin.Id);
-            
+
             if (existingCompany != null)
             {
                 building.ConstructionCompany = existingCompany;
