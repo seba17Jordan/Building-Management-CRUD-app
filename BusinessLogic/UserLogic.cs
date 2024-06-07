@@ -34,7 +34,7 @@ namespace BusinessLogic
 
         public IEnumerable<User> GetAllManagers()
         {
-            throw new NotImplementedException();
+            return _userRepository.GetManagers();
         }
 
         private Func<User, bool> GetUsersByMail(string email)

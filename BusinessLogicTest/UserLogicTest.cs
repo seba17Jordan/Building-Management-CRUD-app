@@ -4,6 +4,7 @@ using Moq;
 using BusinessLogic;
 using IDataAccess;
 using CustomExceptions;
+using Domain.@enum;
 namespace BusinessLogicTest
 {
     [TestClass]
@@ -139,6 +140,40 @@ namespace BusinessLogicTest
             Assert.IsNotNull(specificEx);
             Assert.IsInstanceOfType(specificEx, typeof(ArgumentException));
             Assert.IsTrue(specificEx.Message.Contains("Password must be at least 6 characters long"));
+        }
+
+        [TestMethod]
+        public void GetManagersCorrectTestLogic()
+        {
+            // Arrange
+            var managers = new List<User>
+            {
+                new User {
+                    Id = Guid.NewGuid(),
+                    Name = "Manager 1",
+                    Role = Roles.Manager,
+                    Email = ""
+                },
+                new User {
+                    Id = Guid.NewGuid(),
+                    Name = "Manager 1",
+                    Role = Roles.Manager,
+                    Email = "" 
+                }
+            };
+
+            Mock<IUserRepository> _userRepository = new Mock<IUserRepository>();
+            _userRepository.Setup(x => x.GetManagers()).Returns(managers);
+
+            // Act
+            UserLogic _userLogic = new UserLogic(_userRepository.Object);
+
+            var result = _userLogic.GetAllManagers();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2, result.Count());
+            Assert.AreEqual("Manager 1", result.First().Name);
         }
     }
 }

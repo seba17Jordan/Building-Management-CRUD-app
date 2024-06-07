@@ -19,6 +19,11 @@ namespace DataAccess
             return user;
         }
 
+        public IEnumerable<User> GetManagers()
+        {
+            throw new NotImplementedException();
+        }
+
         public User GetUserByEmail(string email)
         {
             return _context.Set<User>().FirstOrDefault(u => u.Email == email);
