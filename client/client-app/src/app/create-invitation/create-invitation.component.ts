@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { InvitationService } from '../services/invitation.service';
+import { Invitation } from '../models/invitation.model';
 
 @Component({
   selector: 'app-create-invitation',
@@ -10,12 +11,16 @@ export class CreateInvitationComponent implements OnInit{
   mail: string = '';
   name: string = '';
   @Input() role? : number;
+
   //pongo una fecha de expiracion para que no de error
   expirationDate: Date = new Date();
+  invitations: Invitation[] = [];
 
   constructor(private invitationService: InvitationService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getInvitations();
+  }
 
   createInvitation(): void{
     if(this.role == 3){
@@ -31,6 +36,26 @@ export class CreateInvitationComponent implements OnInit{
       (error) => {
         console.log(error.error.message);
         console.log('Entro en un errorrrr');
+      }
+    );
+  }
+
+  delete(invitation: Invitation){
+    this.invitationService.deleteInvitation(invitation.id!).subscribe(
+      (response) => {
+        this.invitations = this.invitations.filter(i => i !== invitation);  //Borrado visual
+      },
+      (error) => {
+        console.log(error.error.message);
+      }
+    ); //Borrado fisico
+  }
+
+  getInvitations(): void {
+    this.invitationService.getInvitations()
+      .subscribe(x => {
+        this.invitations = x
+        console.log('Se imprimieron los edificio');
       }
     );
   }

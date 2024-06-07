@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, take, tap } from 'rxjs';
+import { Invitation } from '../models/invitation.model';
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +40,28 @@ export class InvitationService {
     return this.http.patch<any>(this.loginUrl, {email}).pipe(
       tap(response =>{
         console.log('Se rechazo correctamente la invitacion: ');
+        }
+      )
+    );
+  }
+
+  deleteInvitation(id: string): Observable<any>{
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', token!);
+    return this.http.delete<any>(this.loginUrl + '/' + id, {headers}).pipe(
+      tap(response =>{
+        console.log('Se borro correctamente la invitacion: ');
+        }
+      )
+    );
+  }
+
+  getInvitations(): Observable<Invitation[]>{
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', token!);
+    return this.http.get<Invitation[]>(this.loginUrl, {headers}).pipe(
+      tap(response =>{
+        console.log('Se obtuvieron correctamente las invitaciones: ');
         }
       )
     );

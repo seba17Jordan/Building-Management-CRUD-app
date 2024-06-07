@@ -23,3 +23,14 @@
     </div>
     <button type="submit">Crear invitacion</button>
 </form>
+
+<h1>Lista de invitaciones</h1>
+<ul>
+    <li *ngFor="let invitation of invitations">
+        <div>
+            <span>Nombre: </span> {{invitation.name}}
+            <span>Email: </span> {{invitation.email}}
+        </div>
+      <button type="button" title="delete invitation" (click)="delete(invitation)"> x </button>
+    </li>
+  </ul>
