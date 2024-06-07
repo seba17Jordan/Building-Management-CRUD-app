@@ -1,0 +1,34 @@
+<h1>Solicitudes asignadas para ti:</h1>
+<ul>
+    <li *ngFor="let serviceRequest of serviceRequests">
+        <div>
+            <span>Descripcion: </span> {{serviceRequest.description}}
+            <!--Descomentar luego del refactor-->
+            <!--
+            <span>Categoria: </span> {{serviceRequest.category}}
+            <span>Estado: </span> {{serviceRequest.status}}
+            <span>Costo Total: </span> {{serviceRequest.totalCost}}
+            <span>Fecha de Inicio: </span> {{serviceRequest.startDate}}
+            <span>Fecha de Fin: </span> {{serviceRequest.endDate}}
+            -->
+        </div>
+        <!--
+      <button type="button" title="delete invitation" (click)="delete(invitation)"> x </button>
+      -->
+    </li>
+</ul>
+
+<!--
+    description?: string;
+    apartment?: string;
+    category?: string;
+    status?: number;
+    
+    buildingId?: string;
+    managerId?: string;
+    maintainancePersonId?: string;
+    
+    totalCost?: number;
+    startDate?: Date;
+    endDate?: Date;
+-->

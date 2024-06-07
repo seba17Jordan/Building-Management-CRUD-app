@@ -29,6 +29,7 @@
     </form>
   
     <h3>Service Requests List</h3>
+    <p>Aqui puede eliminar solicitudes de mantenimiento no aceptadas o asignarlas a su personal de mantenimiento</p>
     <ul>
       <li *ngFor="let request of serviceRequests">
         {{ request.description }} - {{ request.status }}

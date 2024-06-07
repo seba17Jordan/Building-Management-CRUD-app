@@ -35,7 +35,6 @@ export class ServiceRequestService {
   
     return this.http.get<ServiceRequest[]>(`${this.baseUrl}/manager-requests`, { headers, params });
   }
-  
 
   getAllServiceRequestsMaintenance(): Observable<ServiceRequest[]> {
     const token = localStorage.getItem('token');

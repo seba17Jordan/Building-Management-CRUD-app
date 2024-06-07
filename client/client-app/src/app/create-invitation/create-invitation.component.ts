@@ -11,9 +11,8 @@ export class CreateInvitationComponent implements OnInit{
   mail: string = '';
   name: string = '';
   @Input() role? : number;
-
-  //pongo una fecha de expiracion para que no de error
-  expirationDate: Date = new Date();
+  expirationDate: Date = new Date();  //pongo una fecha de expiracion para que no de error
+  
   invitations: Invitation[] = [];
 
   constructor(private invitationService: InvitationService) { }
@@ -55,7 +54,6 @@ export class CreateInvitationComponent implements OnInit{
     this.invitationService.getInvitations()
       .subscribe(x => {
         this.invitations = x
-        console.log('Se imprimieron los edificio');
       }
     );
   }
