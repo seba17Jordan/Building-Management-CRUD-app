@@ -10,5 +10,6 @@ namespace LogicInterface
     public interface IUserLogic
     {
         User CreateUser(User user);
+        IEnumerable<User> GetAllManagers();
     }
 }

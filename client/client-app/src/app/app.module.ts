@@ -35,7 +35,7 @@ import { ServiceRequestComponent } from './service-request/service-request.compo
     BuildingsComponent,
     CreateBuildingComponent,
     BuildingDetailComponent,
-    ImportBuildingComponent
+    ImportBuildingComponent,
     BuildingDetailComponent,
     ConstructionCompanyComponent,
     CategoryComponent,

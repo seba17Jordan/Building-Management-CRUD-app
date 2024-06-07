@@ -6,6 +6,7 @@ using ModelsApi.In;
 using ModelsApi.Out;
 using BuildingManagementApi.Filters;
 using Domain.@enum;
+using BusinessLogic;
 
 namespace BuildingManagementApi.Controllers
 {
@@ -31,6 +32,15 @@ namespace BuildingManagementApi.Controllers
             AdministratorResponse response = new AdministratorResponse(resultAdmin);
 
             return CreatedAtAction(nameof(CreateAdministrator), new { id = response.Id }, response);
+        }
+
+        [HttpGet]
+        [ServiceFilter(typeof(AuthenticationFilter))]
+        [AuthorizationFilter(_currentRole = Roles.ConstructionCompanyAdmin)]
+        public IActionResult GetAllManagers()
+        {
+            IEnumerable<UserResponse> response = _userLogic.GetAllManagers().Select(m => new UserResponse(m)).ToList();
+            return Ok(response);
         }
     }
 }

@@ -32,6 +32,11 @@ namespace BusinessLogic
             return _userRepository.CreateUser(user);
         }
 
+        public IEnumerable<User> GetAllManagers()
+        {
+            throw new NotImplementedException();
+        }
+
         private Func<User, bool> GetUsersByMail(string email)
         {
             return (User u) => email == "" || u.Email == email;
