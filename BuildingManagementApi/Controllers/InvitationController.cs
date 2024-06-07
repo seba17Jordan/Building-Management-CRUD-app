@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using BuildingManagementApi.Filters;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Domain.@enum;
+using BusinessLogic;
 
 namespace BuildingManagementApi.Controllers
 {
@@ -65,8 +66,7 @@ namespace BuildingManagementApi.Controllers
         [AuthorizationFilter(_currentRole = Roles.Administrator)]
         public IActionResult GetAllInvitations()
         {
-            var invitations = _invitationLogic.GetAllInvitations();
-            var response = new InvitationResponse(invitations);
+            IEnumerable<InvitationResponse> response = _invitationLogic.GetAllInvitations().Select(i => new InvitationResponse(i)).ToList();
             return Ok(response);
         }
     }

@@ -40,7 +40,6 @@ namespace BuildingManagementApi.Controllers
         public IActionResult GetAllManagers()
         {
             IEnumerable<UserResponse> response = _userLogic.GetAllManagers().Select(m => new UserResponse(m)).ToList();
-
             return Ok(response);
         }
     }

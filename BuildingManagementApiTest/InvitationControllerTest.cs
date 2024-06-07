@@ -9,6 +9,7 @@ using Domain;
 using System;
 using Domain.@enum;
 using CustomExceptions;
+using Microsoft.AspNetCore.Http;
 
 namespace BuildingManagementApiTests.Controllers
 {
@@ -195,6 +196,60 @@ namespace BuildingManagementApiTests.Controllers
                 // Si se lanza la excepción NotFoundException, la prueba pasa
                 Assert.AreEqual("Invitation not found", ex.Message);
             }
+        }
+
+        [TestMethod]
+        public void GetAllInvitationsTestController()
+        {
+            //Arrange
+            string token = "b4d9e6a4-466c-4a4f-91ea-6d7e7997584e";
+
+            User manager = new User
+            {
+                Id = Guid.NewGuid(),
+                Role = Roles.Manager,
+                Name = "John",
+                LastName = "Doe"
+            };
+
+            Invitation invitation = new Invitation
+            {
+                Id = Guid.NewGuid(),
+                Email = "invitation@gmial.com",
+                Name = "name",
+                ExpirationDate = DateTime.UtcNow.AddDays(7),
+                State = Status.Pending,
+                Role = Roles.Manager
+            };
+
+            IEnumerable<Invitation> expectedInvitations = new List<Invitation>
+            {
+                invitation
+            };
+
+            var expectedResponse = expectedInvitations.Select(b => new InvitationResponse(b)).ToList();
+
+            Mock<IUserLogic> userLogic = new Mock<IUserLogic>(MockBehavior.Strict);
+            Mock<IInvitationLogic> invitationLogic = new Mock<IInvitationLogic>(MockBehavior.Strict);
+
+            invitationLogic.Setup(l => l.GetAllInvitations()).Returns(expectedInvitations);
+
+            InvitationController invitationController = new InvitationController(invitationLogic.Object);
+            invitationController.ControllerContext.HttpContext = new DefaultHttpContext();
+            invitationController.ControllerContext.HttpContext.Request.Headers["Authorization"] = token;
+
+            OkObjectResult expectedObjResult = new OkObjectResult(expectedResponse);
+
+            // Act
+            var constrollerResult = invitationController.GetAllInvitations();
+
+            // Assert
+            userLogic.VerifyAll();
+            OkObjectResult resultObj = constrollerResult as OkObjectResult;
+            List<InvitationResponse> resultResponse = resultObj.Value as List<InvitationResponse>;
+            Assert.IsNotNull(resultResponse);
+            Assert.AreEqual(resultObj.StatusCode, expectedObjResult.StatusCode);
+            Assert.AreEqual(resultResponse.First(), expectedResponse.First());
         }
     }
 }

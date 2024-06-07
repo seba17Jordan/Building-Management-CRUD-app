@@ -118,7 +118,7 @@ namespace BusinessLogic
             return _userRepository.CreateUser(userToCreate);
         }
 
-        public Invitation GetAllInvitations()
+        public IEnumerable<Invitation> GetAllInvitations()
         {
             throw new NotImplementedException();
         }
