@@ -22,7 +22,9 @@
   <h2>Modificar encargado</h2>
   <div *ngIf="building">
     <label for="manager">manager: </label>
-    <input [(ngModel)]="manager" placeholder="manager"/>
+    <select id="manager" [(ngModel)]="selectedManager">
+      <option *ngFor="let manager of managers" [ngValue]="manager">{{manager.email}}</option>
+    </select>
     <button (click)="assignManager(building.id!)">Asignar</button>
   </div>
 

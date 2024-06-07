@@ -1,16 +1,16 @@
 <h2>Crear Nueva persona de mantenimiento</h2>
 <form (submit)="createMaintenance()">
     <label>Nombre:</label>
-    <input type="text" [(ngModel)]="newMaintenance.Name" name="Name" required>
+    <input type="text" [(ngModel)]="newMaintenance.name" name="Name" required>
 
     <label>Apellido</label>
-    <input type="text" [(ngModel)]="newMaintenance.LastName" name="LastName" required>
+    <input type="text" [(ngModel)]="newMaintenance.lastName" name="LastName" required>
 
     <label>Email:</label>
-    <input type="email" [(ngModel)]="newMaintenance.Email" name="Email" required>
+    <input type="email" [(ngModel)]="newMaintenance.email" name="Email" required>
 
     <label>Contraseña:</label>
-    <input type="password" [(ngModel)]="newMaintenance.Password" name="Password" required>
+    <input type="password" [(ngModel)]="newMaintenance.password" name="Password" required>
 
   <button type="submit">Crear persona de mantenimiento</button>
 </form>

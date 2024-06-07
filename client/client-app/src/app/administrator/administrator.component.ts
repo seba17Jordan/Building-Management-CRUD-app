@@ -11,7 +11,7 @@ import { User } from '../models/user.model';
 })
 
 export class AdministratorComponent {
-  newAdmin: User = { Email: '',LastName:'', Password: '', Name: ''};
+  newAdmin: User = { email: '',lastName:'', password: '', name: ''};
 
   constructor(private adminService: AdminService) { }
 

@@ -34,12 +34,13 @@ namespace BuildingManagementApi.Controllers
             return CreatedAtAction(nameof(CreateAdministrator), new { id = response.Id }, response);
         }
 
-        [HttpGet]
+        [HttpGet("managers")]
         [ServiceFilter(typeof(AuthenticationFilter))]
         [AuthorizationFilter(_currentRole = Roles.ConstructionCompanyAdmin)]
         public IActionResult GetAllManagers()
         {
             IEnumerable<UserResponse> response = _userLogic.GetAllManagers().Select(m => new UserResponse(m)).ToList();
+
             return Ok(response);
         }
     }

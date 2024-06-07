@@ -4,6 +4,7 @@ import { BuildingService } from '../services/building.service';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { User } from '../models/user.model';
+import { AdminService } from '../services/admin.service';
 
 @Component({
   selector: 'app-building-detail',
@@ -12,14 +13,19 @@ import { User } from '../models/user.model';
 })
 export class BuildingDetailComponent implements OnInit{
   @Input() building? : Building;
-  @Input() manager? : User;
+
+  managers: User[] = [];
+  selectedManager?: User;
 
   constructor(private buildingService: BuildingService,
      private location: Location,
+     private adminService: AdminService,
      private router: Router) {}
 
   ngOnInit(): void {
     this.getBuilding();
+    this.getManagers();
+
   }
 
   getBuilding(): void {
@@ -38,6 +44,10 @@ export class BuildingDetailComponent implements OnInit{
   }
 
   assignManager(buildingId: string): void {
-    this.buildingService.assignManager(buildingId, this.manager?.Id!).subscribe(() => this.goBack());
+    this.buildingService.assignManager(buildingId, this.selectedManager?.id!).subscribe(() => this.goBack());
+  }
+
+  getManagers(): void {
+    this.adminService.getManagers().subscribe(managers => this.managers = managers);
   }
 }

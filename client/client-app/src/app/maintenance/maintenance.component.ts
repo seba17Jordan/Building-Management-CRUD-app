@@ -8,7 +8,7 @@ import { MaintenanceService } from '../services/maintenance.service';
   styleUrls: ['./maintenance.component.css']
 })
 export class MaintenanceComponent {
-  newMaintenance: User = { Email: '',LastName:'', Password: '', Name: ''};
+  newMaintenance: User = { email: '', lastName:'', password: '', name: ''};
 
   constructor(private maintenanceService: MaintenanceService) { }
 
