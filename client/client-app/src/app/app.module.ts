@@ -19,6 +19,7 @@ import { ImportBuildingComponent } from './import-building/import-building.compo
 import { ConstructionCompanyComponent } from './construction-company/construction-company.component';
 import { CategoryComponent } from './category/category.component';
 import { ServiceRequestComponent } from './service-request/service-request.component';
+import { ReportsComponent } from './reports/reports.component';
 import { ServiceRequestMaintenanceComponent } from './service-request-maintenance/service-request-maintenance.component';
 
 
@@ -40,6 +41,8 @@ import { ServiceRequestMaintenanceComponent } from './service-request-maintenanc
     BuildingDetailComponent,
     ConstructionCompanyComponent,
     CategoryComponent,
+    ServiceRequestComponent,
+    ReportsComponent
     ServiceRequestComponent,
     ServiceRequestMaintenanceComponent
   ],
