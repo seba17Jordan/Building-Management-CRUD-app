@@ -49,10 +49,10 @@ namespace BusinessLogic
                 {
                     throw new ObjectNotFoundException("Maintenance person not found.");
                 }
-                serviceRequests = serviceRequests.Where(sr => sr.MaintainancePersonId == maintenancePerson.Id); 
+                serviceRequests = serviceRequests.Where(sr => sr.MaintenanceId == maintenancePerson.Id); 
             }
 
-            var groupedRequests = serviceRequests.GroupBy(sr => sr.MaintainancePersonId);
+            var groupedRequests = serviceRequests.GroupBy(sr => sr.MaintenanceId);
 
             List<(string, int, int, int, string)> reportList = new List<(string, int, int, int, string)>();
 
@@ -131,7 +131,7 @@ namespace BusinessLogic
             {
 
                 IEnumerable<ServiceRequest> requests = _serviceRequestRepository.GetAllServiceRequests()
-                .Where(req => req.BuildingId == building.Id);
+                .Where(req => req.Building.Id == building.Id);
 
                 string buildingName = building.Name ?? "Unknown";
                 int openCount = requests.Count(req => req.Status == ServiceRequestStatus.Open);

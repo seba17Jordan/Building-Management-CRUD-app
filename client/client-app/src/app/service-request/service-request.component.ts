@@ -12,7 +12,7 @@ import { Category } from '../models/category.model';
 })
 export class ServiceRequestComponent implements OnInit {
   
-  @Input() newServiceRequest: ServiceRequest = {apartment: '', category: '', description: ''};
+  @Input() newServiceRequest: ServiceRequest = { apartmentId: '', categoryId: '', description: '' };
 
   serviceRequests: ServiceRequest[] = [];
   categories: Category[] = []; 
@@ -33,12 +33,13 @@ export class ServiceRequestComponent implements OnInit {
     this.getAllCategories(); 
     this.getAllApartmentsForUser();
     this.getAllServiceRequests();
+    console.log('Service requests:', this.serviceRequests);
   }
 
   createServiceRequest(): void {
-    this.newServiceRequest.apartment = this.apartmentId;
+    this.newServiceRequest.apartmentId = this.apartmentId;
     this.newServiceRequest.description = this.description;
-    this.newServiceRequest.category = this.categoryId;
+    this.newServiceRequest.categoryId = this.categoryId;
     this.newServiceRequest.status = 0;
     this.serviceRequestService.createServiceRequest(this.newServiceRequest!).subscribe(
       (createdRequest) => {
@@ -52,7 +53,7 @@ export class ServiceRequestComponent implements OnInit {
   }
 
   resetForm(): void {
-    this.newServiceRequest = { apartment: '', category: '', description: '' };
+    this.newServiceRequest = { apartmentId: '', categoryId: '', description: '' };
     this.description = '';
     this.apartmentId = '';
     this.categoryId = '';
@@ -72,6 +73,7 @@ export class ServiceRequestComponent implements OnInit {
   }
 
   getAllApartmentsForUser(): void {
+    
     this.buildingService.getAllApartmentsForManager()
       .subscribe(
         (response) => {

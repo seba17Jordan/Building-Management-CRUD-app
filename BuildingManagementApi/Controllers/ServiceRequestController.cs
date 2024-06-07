@@ -1,5 +1,6 @@
 ﻿using BuildingManagementApi.Filters;
 using BusinessLogic;
+using Domain;
 using Domain.@enum;
 using LogicInterface;
 using Microsoft.AspNetCore.Http;
@@ -31,10 +32,7 @@ namespace BuildingManagementApi.Controllers
             string token = Request.Headers["Authorization"].ToString();
             var managerUser = _sessionService.GetUserByToken(Guid.Parse(token));
 
-            var serviceRequest = serviceRequestToCreate.ToEntity();
-            serviceRequest.ManagerId = managerUser.Id;
-
-            var createdServiceRequest = _serviceRequestLogic.CreateServiceRequest(serviceRequest);
+            var createdServiceRequest = _serviceRequestLogic.CreateServiceRequest(serviceRequestToCreate.ApartmentId, serviceRequestToCreate.CategoryId, serviceRequestToCreate.Description, managerUser);
             ServiceRequestResponse response = new ServiceRequestResponse(createdServiceRequest);
 
             return CreatedAtAction(nameof(CreateServiceRequest), new { id = response.Id }, response);
@@ -72,7 +70,6 @@ namespace BuildingManagementApi.Controllers
         {
             var serviceRequest = _serviceRequestLogic.AssignRequestToMaintainancePerson(id, maintainancePersonId.Id);
             ServiceRequestResponse response = new ServiceRequestResponse(serviceRequest);
-
             return Ok(response);
         }
 

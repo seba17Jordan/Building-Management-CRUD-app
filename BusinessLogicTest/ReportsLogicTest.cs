@@ -50,19 +50,19 @@ namespace BusinessLogicTest
                 new ServiceRequest
                 {
                     Id = Guid.NewGuid(),
-                    BuildingId = BuildingRepository.Object.GetAllBuildings(managerId).First().Id,
+                    Building = BuildingRepository.Object.GetAllBuildings(managerId).First(),
                     Status = ServiceRequestStatus.Open
                 },
                 new ServiceRequest
                 {
                     Id = Guid.NewGuid(),
-                    BuildingId = BuildingRepository.Object.GetAllBuildings(managerId).First().Id,
+                    Building = BuildingRepository.Object.GetAllBuildings(managerId).First(),
                     Status = ServiceRequestStatus.Attending
                 },
                 new ServiceRequest
                 {
                     Id = Guid.NewGuid(),
-                    BuildingId = BuildingRepository.Object.GetAllBuildings(managerId).First().Id,
+                    Building = BuildingRepository.Object.GetAllBuildings(managerId).First(),
                     Status = ServiceRequestStatus.Closed
                 }
             });
@@ -115,12 +115,13 @@ namespace BusinessLogicTest
             ServiceRequest serviceRequest = new ServiceRequest
             {
                 Id = Guid.NewGuid(),
-                BuildingId = building.Id,
-                ApartmentId = apartment.Id,
+                Building = building,
+                Apartment = apartment,
                 Status = ServiceRequestStatus.Closed,
-                CategoryId = category.Id,
-                MaintainancePersonId = maintenancePerson.Id,
-                ManagerId = manager.Id,
+                Category = category,
+                MaintenancePerson = maintenancePerson,
+                Manager = manager,
+                MaintenanceId = maintenancePerson.Id,
                 StartDate = new DateTime(2022, 4, 25, 10, 0, 0),
                 EndDate = new DateTime(2022, 4, 25, 15, 0, 0)
         };

@@ -64,7 +64,7 @@ namespace DataAccess
             _context.Set<Building>().Update(buildingToUpdate);
         }
 
-        public Guid GetBuildingIdByApartmentId(Apartment apartment)
+        public Guid GetBuildingIdByApartment(Apartment apartment)
         {
             return _context.Set<Building>().FirstOrDefault(b => b.Apartments.Contains(apartment)).Id;
         }

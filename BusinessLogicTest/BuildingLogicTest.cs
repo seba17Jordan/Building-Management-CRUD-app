@@ -688,11 +688,11 @@ namespace BusinessLogicTest
             ServiceRequest serviceRequest = new ServiceRequest()
             {
                 Id = Guid.NewGuid(),
-                BuildingId = building.Id,
+                Building = building,
                 Description = "Description",
                 Status = ServiceRequestStatus.Open,
-                ApartmentId = building.Apartments.First().Id,
-                CategoryId = category.Id
+                Apartment = building.Apartments.First(),
+                Category = category
             };
 
             Exception specificEx = null;

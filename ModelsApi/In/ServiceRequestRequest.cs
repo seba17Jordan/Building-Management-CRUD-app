@@ -6,8 +6,8 @@ namespace ModelsApi.In
     public class ServiceRequestRequest
     {
         public string Description { get; set; }
-        public Guid Apartment { get; set; }
-        public Guid Category { get; set; }
+        public Guid ApartmentId { get; set; }
+        public Guid CategoryId { get; set; }
         public ServiceRequestStatus Status { get; set; }
 
         public ServiceRequest ToEntity()
@@ -15,8 +15,6 @@ namespace ModelsApi.In
             ServiceRequest serviceRequest = new ServiceRequest
             {
                 Description = Description,
-                ApartmentId = Apartment,
-                CategoryId = Category,
                 Status = Status
             };
 

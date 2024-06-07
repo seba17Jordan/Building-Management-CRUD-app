@@ -20,7 +20,7 @@ import { ServiceRequestMaintenanceComponent } from './service-request-maintenanc
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' }, 
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
-  { path: 'administrator', component: AdministratorComponent, canActivate: [AuthGuard], data: { expectedRole: 0 } },
+  { path: 'administrator', component: AdministratorComponent, /*canActivate: [AuthGuard], data: { expectedRole: 0 }*/},
   { path: 'create-invitation', component: CreateInvitationComponent, canActivate: [AuthGuard], data: { expectedRole: 0 } },
   { path: 'buildings', component: BuildingsComponent, canActivate: [AuthGuard]},
   { path: 'login', component: LoginComponent },

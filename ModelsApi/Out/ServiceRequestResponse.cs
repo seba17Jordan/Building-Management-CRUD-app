@@ -15,16 +15,18 @@ namespace ModelsApi.Out
     {
         public Guid Id { get; set; }
         public string Description { get; set; }
-        public Apartment Apartment { get; set; }
-        public Category Category { get; set; }
+        public ApartmentResponse Apartment { get; set; }
+        public CategoryResponse Category { get; set; }
         public ServiceRequestStatus Status { get; set; }
+        public UserResponse MaintenancePerson { get; set; }
 
         public ServiceRequestResponse (ServiceRequest expectedServiceRequest)
         {
             Id = expectedServiceRequest.Id;
             Description = expectedServiceRequest.Description;
-            Apartment = expectedServiceRequest.Apartment;
-            Category = expectedServiceRequest.Category;
+            if (expectedServiceRequest.Apartment != null) Apartment = new ApartmentResponse(expectedServiceRequest.Apartment);
+            if (expectedServiceRequest.Category != null) Category = new CategoryResponse(expectedServiceRequest.Category);
+            if (expectedServiceRequest.MaintenancePerson != null) MaintenancePerson = new UserResponse(expectedServiceRequest.MaintenancePerson);
             Status = expectedServiceRequest.Status;
         }
 

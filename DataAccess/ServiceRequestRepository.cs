@@ -23,12 +23,18 @@ namespace DataAccess
 
         public IEnumerable<ServiceRequest> GetAllServiceRequestsManager(string categoryName, Guid managerId)
         {
-            return _context.Set<ServiceRequest>().Where(sr => (categoryName == "" || sr.Category.Name == categoryName) && (sr.ManagerId == managerId)).ToList();
+            return _context.Set<ServiceRequest>()
+                .Where(sr => (categoryName == "" || (sr.Category != null && sr.Category.Name == categoryName)) && (sr.Manager != null && sr.Manager.Id == managerId))
+                .Include(c => c.Category)
+                .Include(m => m.MaintenancePerson)
+                .Include(a => a.Apartment)
+                .ThenInclude(o => o.Owner)
+                .ToList();
         }
 
         public IEnumerable<ServiceRequest> GetAllServiceRequestsByMaintenanceUserId(Guid maintenanceUserId)
         {
-            return _context.Set<ServiceRequest>().Where(sr => sr.MaintainancePersonId == maintenanceUserId).ToList();
+            return _context.Set<ServiceRequest>().Where(sr => sr.MaintenanceId == maintenanceUserId).ToList();
         }
 
         public ServiceRequest GetServiceRequestById(Guid serviceRequestId)
@@ -54,12 +60,12 @@ namespace DataAccess
 
         public List<ServiceRequest> GetServiceRequestsByBuilding(Guid buildingId)
         {
-            return _context.Set<ServiceRequest>().Where(sr => sr.BuildingId == buildingId).ToList();
+            return _context.Set<ServiceRequest>().Where(sr => sr.Building.Id == buildingId).ToList();
         }
 
         public IEnumerable<ServiceRequest> GetNoClosedServiceRequestsByBuildingId(Guid id)
         {
-            return _context.Set<ServiceRequest>().Where(sr => sr.BuildingId == id && sr.Status != ServiceRequestStatus.Closed).ToList();
+            return _context.Set<ServiceRequest>().Where(sr => sr.Building.Id == id && sr.Status != ServiceRequestStatus.Closed).ToList();
         }
     }
 }
