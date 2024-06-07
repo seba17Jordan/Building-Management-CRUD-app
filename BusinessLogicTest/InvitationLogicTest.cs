@@ -49,11 +49,11 @@ namespace BusinessLogicTest
             var mockUserRepository = new Mock<IUserRepository>();
 
             InvitationLogic invitationLogic = new InvitationLogic(mockInvitationRepository.Object, mockUserRepository.Object);
-            mockInvitationRepository.Setup(x => x.GetInvitationById(It.IsAny<Guid>())).Returns(invitation);
+            mockInvitationRepository.Setup(x => x.GetInvitationByMail(It.IsAny<string>())).Returns(invitation);
             mockInvitationRepository.Setup(x => x.UpdateInvitation(It.IsAny<Invitation>()));
 
             // Act
-            invitationLogic.RejectInvitation(invitation.Id);
+            invitationLogic.RejectInvitation(invitation.Email);
 
             // Assert
             Assert.AreEqual(Status.Rejected, invitation.State);

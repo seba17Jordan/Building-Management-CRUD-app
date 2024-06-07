@@ -72,13 +72,13 @@ namespace BuildingManagementApiTests.Controllers
                 State = Status.Pending
             };
 
-            _invitationLogicMock.Setup(l => l.RejectInvitation(It.IsAny<Guid>())).Callback<Guid>(id =>
+            _invitationLogicMock.Setup(l => l.RejectInvitation(It.IsAny<string>())).Callback<string>(id =>
             {
                 invitation.State = Status.Rejected;
             });
 
             // Act
-            IActionResult actionResult = _controller.RejectInvitationState(invitation.Id);
+            IActionResult actionResult = _controller.RejectInvitationState(invitation.Email);
             var okResult = actionResult as OkObjectResult;
 
             // Assert

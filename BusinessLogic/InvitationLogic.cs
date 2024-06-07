@@ -62,14 +62,10 @@ namespace BusinessLogic
             _invitationRepository.DeleteInvitation(id);
         }
 
-        public void RejectInvitation(Guid id)
+        public void RejectInvitation(string invitationEmail)
         {
-            if (id == Guid.Empty)
-            {
-                throw new EmptyFieldException("Invitation Id is Empty");
-            }
-
-            Invitation invitation = _invitationRepository.GetInvitationById(id);
+            
+            Invitation invitation = _invitationRepository.GetInvitationByMail(invitationEmail);
 
             if (invitation == null)
             {

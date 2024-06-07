@@ -35,11 +35,11 @@ namespace BuildingManagementApi.Controllers
             return CreatedAtAction(nameof(CreateInvitation), new { id = response.Id }, response);
         }
 
-        [HttpPatch("{id}")]
-        public IActionResult RejectInvitationState([FromRoute] Guid id)
+        [HttpPatch]
+        public IActionResult RejectInvitationState([FromBody] string invitationEmail)
         {
-            _invitationLogic.RejectInvitation(id);
-            return Ok("Invitation Rejected");
+            _invitationLogic.RejectInvitation(invitationEmail);
+            return Ok(new { message = "Invitation rejected" });
         }
 
         [HttpPost("accept")]
