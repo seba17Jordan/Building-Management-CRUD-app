@@ -36,9 +36,9 @@ namespace BuildingManagementApi.Controllers
         }
 
         [HttpPatch]
-        public IActionResult RejectInvitationState([FromBody] string invitationEmail)
+        public IActionResult RejectInvitationState([FromBody] EmailRequest invitationEmail)
         {
-            _invitationLogic.RejectInvitation(invitationEmail);
+            _invitationLogic.RejectInvitation(invitationEmail.Email);
             return Ok(new { message = "Invitation rejected" });
         }
 

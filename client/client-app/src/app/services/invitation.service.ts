@@ -32,4 +32,15 @@ export class InvitationService {
       )
     );
   }
+
+  /*Posibilidad de mejora: pararece texto: "Busque el mail de la invitacion que quiere rechazar:", luego
+  al hacer click en bucar solicitudes, si existe, entonces aparece un boton que dice rechazar  */
+  rejectInvitation(email: string): Observable<any>{
+    return this.http.patch<any>(this.loginUrl, {email}).pipe(
+      tap(response =>{
+        console.log('Se rechazo correctamente la invitacion: ');
+        }
+      )
+    );
+  }
 }
