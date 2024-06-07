@@ -691,8 +691,8 @@ namespace BusinessLogicTest
                 BuildingId = building.Id,
                 Description = "Description",
                 Status = ServiceRequestStatus.Open,
-                Apartment = building.Apartments.First().Id,
-                Category = category.Id
+                ApartmentId = building.Apartments.First().Id,
+                CategoryId = category.Id
             };
 
             Exception specificEx = null;

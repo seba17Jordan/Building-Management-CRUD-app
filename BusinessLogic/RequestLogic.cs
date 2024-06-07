@@ -66,19 +66,26 @@ namespace BusinessLogic
 
             serviceRequest.SelfValidate();
             
-            if (!_buildingRepository.ExistApartment(serviceRequest.Apartment)) { 
+            if (!_buildingRepository.ExistApartment(serviceRequest.ApartmentId)) { 
                 throw new ObjectNotFoundException("Apartment does not exist");
             }
-            if (!_categoryRepository.FindCategoryById(serviceRequest.Category)) { 
+            if (!_categoryRepository.FindCategoryById(serviceRequest.CategoryId)) { 
                 throw new ObjectNotFoundException("Category does not exist");
             }
 
             //Documentar
-            Category cat = _categoryRepository.GetCategoryById(serviceRequest.Category);
-            serviceRequest.CategoryName = cat.Name;
+            Category cat = _categoryRepository.GetCategoryById(serviceRequest.CategoryId);
+            serviceRequest.Category = cat;
+            serviceRequest.CategoryId = cat.Id;
 
-            Apartment apartment = _buildingRepository.GetApartmentById(serviceRequest.Apartment);
-            serviceRequest.BuildingId = _buildingRepository.GetBuildingIdByApartmentId(apartment);
+            Apartment apartment = _buildingRepository.GetApartmentById(serviceRequest.ApartmentId);
+            serviceRequest.Apartment = apartment;
+            serviceRequest.ApartmentId = apartment.Id;
+
+            Guid buildingId = _buildingRepository.GetBuildingIdByApartmentId(apartment);
+            Building building = _buildingRepository.GetBuildingById(buildingId);
+            serviceRequest.BuildingId = building.Id;
+            serviceRequest.Building = building;
 
             serviceRequest.Status = ServiceRequestStatus.Open;
             return _serviceRequestRepository.CreateServiceRequest(serviceRequest);

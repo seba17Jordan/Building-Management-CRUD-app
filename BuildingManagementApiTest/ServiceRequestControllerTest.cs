@@ -49,8 +49,10 @@ public class ServiceRequestControllerTest
         {
             Id = Guid.NewGuid(),
             Description = "A description",
-            Apartment = apartment.Id,
-            Category = category.Id,
+            ApartmentId = apartment.Id,
+            Apartment = apartment,
+            CategoryId = category.Id,
+            Category = category,
             Status = ServiceRequestStatus.Open
         };
 
@@ -110,8 +112,10 @@ public class ServiceRequestControllerTest
             {
                 Id = Guid.NewGuid(),
                 Description = "A description",
-                Apartment = apartment.Id,
-                Category = category.Id,
+                ApartmentId = apartment.Id,
+                Apartment = apartment,
+                CategoryId = category.Id,
+                Category = category,
                 Status = ServiceRequestStatus.Open
             }
         };
@@ -171,8 +175,10 @@ public class ServiceRequestControllerTest
         {
             Id = Guid.NewGuid(),
             Description = "A description",
-            Apartment = apartment.Id,
-            Category = category.Id,
+            ApartmentId = apartment.Id,
+            Apartment = apartment,
+            Category = category,
+            CategoryId = category.Id,
             Status = ServiceRequestStatus.Open
         };
 
@@ -180,8 +186,10 @@ public class ServiceRequestControllerTest
         {
             Id = Guid.NewGuid(),
             Description = "A description",
-            Apartment = apartment.Id,
-            Category = category.Id,
+            ApartmentId = apartment.Id,
+            Apartment = apartment,
+            CategoryId = category.Id,
+            Category = category,
             MaintainancePersonId = maintenancePerson.Id,
             Status = ServiceRequestStatus.Attending
         };
@@ -247,8 +255,10 @@ public class ServiceRequestControllerTest
         {
             Id = Guid.NewGuid(),
             Description = "A description",
-            Apartment = apartment.Id,
-            Category = category.Id,
+            ApartmentId = apartment.Id,
+            Apartment = apartment,
+            CategoryId = category.Id,
+            Category = category,
             MaintainancePersonId = maintenancePerson.Id,
             Status = ServiceRequestStatus.Open
         };
@@ -257,8 +267,10 @@ public class ServiceRequestControllerTest
         {
             Id = Guid.NewGuid(),
             Description = "A description",
-            Apartment = apartment.Id,
-            Category = category.Id,
+            ApartmentId = apartment.Id,
+            Apartment = apartment,
+            CategoryId = category.Id,
+            Category = category,
             MaintainancePersonId = maintenancePerson.Id,
             Status = ServiceRequestStatus.Attending,
             //fecha especifica
@@ -332,8 +344,10 @@ public class ServiceRequestControllerTest
         {
             Id = Guid.NewGuid(),
             Description = "A description",
-            Apartment = apartment.Id,
-            Category = category.Id,
+            ApartmentId = apartment.Id,
+            Apartment = apartment,
+            CategoryId = category.Id,
+            Category = category,
             MaintainancePersonId = maintenancePerson.Id,
             Status = ServiceRequestStatus.Attending,
             StartDate = new DateTime(2024, 4, 30)
@@ -343,8 +357,10 @@ public class ServiceRequestControllerTest
         {
             Id = Guid.NewGuid(),
             Description = "A description",
-            Apartment = apartment.Id,
-            Category = category.Id,
+            ApartmentId = apartment.Id,
+            Apartment = apartment,
+            CategoryId = category.Id,
+            Category = category,
             MaintainancePersonId = maintenancePerson.Id,
             Status = ServiceRequestStatus.Closed,
             TotalCost = 100,
@@ -420,8 +436,10 @@ public class ServiceRequestControllerTest
         {
             Id = Guid.NewGuid(),
             Description = "A description",
-            Apartment = apartment.Id,
-            Category = category.Id,
+            ApartmentId = apartment.Id,
+            Apartment = apartment,
+            CategoryId = category.Id,
+            Category = category,
             MaintainancePersonId = maintenancePerson.Id,
             Status = ServiceRequestStatus.Open
         };

@@ -23,7 +23,7 @@ namespace DataAccess
 
         public IEnumerable<ServiceRequest> GetAllServiceRequestsManager(string categoryName, Guid managerId)
         {
-            return _context.Set<ServiceRequest>().Where(sr => (categoryName == "" || sr.CategoryName == categoryName) && (sr.ManagerId == managerId)).ToList();
+            return _context.Set<ServiceRequest>().Where(sr => (categoryName == "" || sr.Category.Name == categoryName) && (sr.ManagerId == managerId)).ToList();
         }
 
         public IEnumerable<ServiceRequest> GetAllServiceRequestsByMaintenanceUserId(Guid maintenanceUserId)

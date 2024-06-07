@@ -38,12 +38,10 @@ import { ServiceRequestMaintenanceComponent } from './service-request-maintenanc
     CreateBuildingComponent,
     BuildingDetailComponent,
     ImportBuildingComponent,
-    BuildingDetailComponent,
     ConstructionCompanyComponent,
     CategoryComponent,
     ServiceRequestComponent,
-    ReportsComponent
-    ServiceRequestComponent,
+    ReportsComponent,
     ServiceRequestMaintenanceComponent
   ],
   imports: [

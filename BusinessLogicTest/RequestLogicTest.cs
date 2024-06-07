@@ -34,8 +34,16 @@ namespace BusinessLogicTest
             {
                 Id = Guid.NewGuid(),
                 Description = "Service Request 1",
-                Category = category.Id,
-                Apartment = apartment.Id
+                CategoryId = category.Id,
+                ApartmentId = apartment.Id
+            };
+
+            Building building = new Building()
+            {
+                Id = Guid.NewGuid(),
+                Address = "Address 1",
+                Name = "Building 1",
+                Apartments = new List<Apartment> { apartment }
             };
 
             Mock<IServiceRequestRepository> serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
@@ -45,6 +53,7 @@ namespace BusinessLogicTest
 
             serviceRequestRepo.Setup(l => l.CreateServiceRequest(It.IsAny<ServiceRequest>())).Returns(expectedServiceRequest);
             buildingRepo.Setup(l => l.ExistApartment(It.IsAny<Guid>())).Returns(true);
+            buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(building);
             categoryRepo.Setup(l => l.FindCategoryById(It.IsAny<Guid>())).Returns(true);
             categoryRepo.Setup(l => l.GetCategoryById(It.IsAny<Guid>())).Returns(category);
             buildingRepo.Setup(l => l.GetApartmentById(It.IsAny<Guid>())).Returns(apartment);
@@ -89,8 +98,8 @@ namespace BusinessLogicTest
             {
                 Id = Guid.NewGuid(),
                 Description = "Service Request 1",
-                Category = Guid.NewGuid(),
-                Apartment = Guid.NewGuid(),
+                CategoryId = Guid.NewGuid(),
+                ApartmentId = Guid.NewGuid(),
                 Status = ServiceRequestStatus.Open
             };
             Guid maintainancePersonId = Guid.NewGuid();
@@ -157,8 +166,8 @@ namespace BusinessLogicTest
             {
                 Id = Guid.NewGuid(),
                 Description = "A description",
-                Apartment = apartment.Id,
-                Category = category.Id,
+                ApartmentId = apartment.Id,
+                CategoryId = category.Id,
                 Status = ServiceRequestStatus.Open
             }
         };
@@ -194,8 +203,8 @@ namespace BusinessLogicTest
             {
                 Id = Guid.NewGuid(),
                 Description = "Service Request 1",
-                Category = Guid.NewGuid(),
-                Apartment = Guid.NewGuid(),
+                CategoryId = Guid.NewGuid(),
+                ApartmentId = Guid.NewGuid(),
                 Status = ServiceRequestStatus.Open,
                 MaintainancePersonId = maintenancePerson.Id
             };
@@ -242,8 +251,8 @@ namespace BusinessLogicTest
             {
                 Id = Guid.NewGuid(),
                 Description = "Service Request 1",
-                Category = Guid.NewGuid(),
-                Apartment = Guid.NewGuid(),
+                CategoryId = Guid.NewGuid(),
+                ApartmentId = Guid.NewGuid(),
                 Status = ServiceRequestStatus.Attending,
                 MaintainancePersonId = maintenancePerson.Id
             };
@@ -300,8 +309,8 @@ namespace BusinessLogicTest
                 {
                     Id = Guid.NewGuid(),
                     Description = "Service Request 1",
-                    Category = Guid.NewGuid(),
-                    Apartment = Guid.NewGuid(),
+                    CategoryId = Guid.NewGuid(),
+                    ApartmentId = Guid.NewGuid(),
                     Status = ServiceRequestStatus.Open,
                     MaintainancePersonId = maitenancePerson.Id
                 };
@@ -361,8 +370,8 @@ namespace BusinessLogicTest
             {
                 Id = Guid.NewGuid(),
                 Description = "A description",
-                Apartment = apartment.Id,
-                Category = category.Id,
+                ApartmentId = apartment.Id,
+                CategoryId = category.Id,
                 Status = ServiceRequestStatus.Attending,
                 MaintainancePersonId = maintenancePerson.Id
             };

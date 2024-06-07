@@ -116,9 +116,9 @@ namespace BusinessLogicTest
             {
                 Id = Guid.NewGuid(),
                 BuildingId = building.Id,
-                Apartment = apartment.Id,
+                ApartmentId = apartment.Id,
                 Status = ServiceRequestStatus.Closed,
-                Category = category.Id,
+                CategoryId = category.Id,
                 MaintainancePersonId = maintenancePerson.Id,
                 ManagerId = manager.Id,
                 StartDate = new DateTime(2022, 4, 25, 10, 0, 0),

@@ -15,8 +15,8 @@ namespace ModelsApi.In
             ServiceRequest serviceRequest = new ServiceRequest
             {
                 Description = Description,
-                Apartment = Apartment,
-                Category = Category,
+                ApartmentId = Apartment,
+                CategoryId = Category,
                 Status = Status
             };
 
