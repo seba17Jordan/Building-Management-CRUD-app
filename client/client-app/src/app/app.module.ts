@@ -15,6 +15,7 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { BuildingsComponent } from './buildings/buildings.component';
 import { CreateBuildingComponent } from './create-building/create-building.component';
 import { BuildingDetailComponent } from './building-detail/building-detail.component';
+import { ImportBuildingComponent } from './import-building/import-building.component';
 import { ConstructionCompanyComponent } from './construction-company/construction-company.component';
 import { CategoryComponent } from './category/category.component';
 import { ServiceRequestComponent } from './service-request/service-request.component';
@@ -33,6 +34,8 @@ import { ServiceRequestComponent } from './service-request/service-request.compo
     MaintenanceComponent,
     BuildingsComponent,
     CreateBuildingComponent,
+    BuildingDetailComponent,
+    ImportBuildingComponent
     BuildingDetailComponent,
     ConstructionCompanyComponent,
     CategoryComponent,

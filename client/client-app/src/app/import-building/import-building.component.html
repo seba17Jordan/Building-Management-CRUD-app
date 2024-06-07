@@ -1,0 +1,31 @@
+<h1>Importacion de edificios</h1>
+<p>
+    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Exercitationem voluptatum, nobis vitae sint officia 
+    dolor laboriosam atempore voluptatem cupiditate nihil, consequatur magni? Obcaecati libero, voluptatibus iusto
+    quam quo autem.
+</p>
+<div>
+    <!--Primero se debe ingresar el nombre del importador a utilizar-->
+    <!--Esto se podra optimizar con un selector de opciones-->
+    <div>
+        <label for="importer">Seleccione el importador a utilizar:</label>
+        <select id="importer" [(ngModel)]="selectedImporter">
+            <option *ngFor="let importer of importers" [value]="importer">{{importer}}</option>
+        </select>
+    </div>
+    <!--Luego se debe seleccionar el nombre del archivo a importar-->
+    <!--Tambien se podra optimizar con un selector de archivos-->
+    <div>
+        <label for="file">Seleccione el archivo  con los edificios a importar:</label>
+        <select id="file" [(ngModel)]="selectedFile">
+            <option *ngFor="let file of files" [value]="file">{{file}}</option>
+        </select>
+    </div>
+    <!--Tambien se podria utilizar selecor de archivos, de esta manera
+    <div>
+        <label for="file">Seleccione el archivo a importar:</label>
+        <input type="file" id="file" name="file" required>
+    </div>
+    -->
+    <button (click)="importBuilding()">Importar edificios</button>
+</div>
