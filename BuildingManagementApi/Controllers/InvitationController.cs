@@ -59,5 +59,15 @@ namespace BuildingManagementApi.Controllers
             _invitationLogic.DeleteInvitation(id);
             return Ok();
         }
+
+        [HttpGet]
+        [ServiceFilter(typeof(AuthenticationFilter))]
+        [AuthorizationFilter(_currentRole = Roles.Administrator)]
+        public IActionResult GetAllInvitations()
+        {
+            var invitations = _invitationLogic.GetAllInvitations();
+            var response = new InvitationResponse(invitations);
+            return Ok(response);
+        }
     }
 }

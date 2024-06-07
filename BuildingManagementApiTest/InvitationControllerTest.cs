@@ -77,8 +77,13 @@ namespace BuildingManagementApiTests.Controllers
                 invitation.State = Status.Rejected;
             });
 
+            EmailRequest emailRequest = new EmailRequest
+            {
+                Email = invitation.Email
+            };
+
             // Act
-            IActionResult actionResult = _controller.RejectInvitationState(invitation.Email);
+            IActionResult actionResult = _controller.RejectInvitationState(emailRequest);
             var okResult = actionResult as OkObjectResult;
 
             // Assert

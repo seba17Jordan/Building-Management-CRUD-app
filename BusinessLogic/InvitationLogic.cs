@@ -54,9 +54,9 @@ namespace BusinessLogic
                 throw new ObjectNotFoundException("Invitation not found");
             }
 
-            if(invitation.State != Status.Rejected)
+            if(invitation.State == Status.Accepted)
             {
-                throw new InvalidOperationException("You can only delete a rejected invitation");
+                throw new InvalidOperationException("This invitation is already accepted");
             }
 
             _invitationRepository.DeleteInvitation(id);
@@ -116,6 +116,11 @@ namespace BusinessLogic
 
 
             return _userRepository.CreateUser(userToCreate);
+        }
+
+        public Invitation GetAllInvitations()
+        {
+            throw new NotImplementedException();
         }
     }
 }

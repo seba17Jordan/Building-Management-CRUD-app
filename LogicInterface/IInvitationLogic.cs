@@ -14,5 +14,6 @@ namespace LogicInterface
         void RejectInvitation(string invitationEmail);
         void DeleteInvitation(Guid id);
         User AcceptInvitation(User managerToCreate);
+        Invitation GetAllInvitations();
     }
 }
