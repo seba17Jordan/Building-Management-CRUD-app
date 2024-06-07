@@ -55,7 +55,7 @@ namespace DataAccess
 
         public IEnumerable<Invitation> GetAllInvitations()
         {
-            throw new NotImplementedException();
+            return _context.Set<Invitation>().ToList();
         }
     }
 }

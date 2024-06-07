@@ -104,6 +104,26 @@ namespace DataAccessTest
             Assert.AreEqual(expectedInvitation, createdInvitation);
         }
 
+        [TestMethod]
+        public void GetAllInvitations()
+        {
+            Invitation invitation = new Invitation
+            {
+                Name = "Manager",
+                Email = "acx@gail.com",
+                Role = Roles.Manager,
+                ExpirationDate = DateTime.Now.AddDays(6),
+                State = Status.Pending
+            };
+
+            var context = CreateDbContext("GetAllInvitations");
+            InvitationRepository invitationRepo = new InvitationRepository(context);
+
+            invitationRepo.CreateInvitation(invitation);
+
+            Assert.AreEqual(1, invitationRepo.GetAllInvitations().Count());
+        }
+
         private DbContext CreateDbContext(string database)
         {
             var options = new DbContextOptionsBuilder<Context>().UseInMemoryDatabase(database).Options;
