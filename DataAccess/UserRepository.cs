@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Domain.@enum;
 using IDataAccess;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,7 +22,7 @@ namespace DataAccess
 
         public IEnumerable<User> GetManagers()
         {
-            throw new NotImplementedException();
+            return _context.Set<User>().Where(u => u.Role == Roles.Manager);
         }
 
         public User GetUserByEmail(string email)
