@@ -21,6 +21,7 @@ export class ServiceRequestComponent implements OnInit {
   description?: string;
   apartmentId?: string;
   categoryId?: string;
+  selectedCategory?: string;  // Aquí se declara la propiedad selectedCategory
 
   constructor(
     private serviceRequestService: ServiceRequestService,
@@ -31,6 +32,7 @@ export class ServiceRequestComponent implements OnInit {
   ngOnInit(): void {
     this.getAllCategories(); 
     this.getAllApartmentsForUser();
+    this.getAllServiceRequests();
   }
 
   createServiceRequest(): void {
@@ -38,7 +40,22 @@ export class ServiceRequestComponent implements OnInit {
     this.newServiceRequest.description = this.description;
     this.newServiceRequest.category = this.categoryId;
     this.newServiceRequest.status = 0;
-    this.serviceRequestService.createServiceRequest(this.newServiceRequest!).subscribe();
+    this.serviceRequestService.createServiceRequest(this.newServiceRequest!).subscribe(
+      (createdRequest) => {
+        this.serviceRequests.push(createdRequest); 
+        this.resetForm();
+      },
+      (error) => {
+        console.error('Error al crear service request:', error);
+      }
+    );
+  }
+
+  resetForm(): void {
+    this.newServiceRequest = { apartment: '', category: '', description: '' };
+    this.description = '';
+    this.apartmentId = '';
+    this.categoryId = '';
   }
 
   getAllCategories(): void {
@@ -65,5 +82,22 @@ export class ServiceRequestComponent implements OnInit {
           console.error('Error retrieving apartments:', error);
         }
       );
+  }
+
+  getAllServiceRequests(): void {
+    this.serviceRequestService.getAllServiceRequestsManager(this.selectedCategory)
+      .subscribe(
+        response => {
+          console.log('Service requests retrieved successfully:', response);
+          this.serviceRequests = response;
+        },
+        error => {
+          console.error('Error retrieving service requests:', error);
+        }
+      );
+  }
+
+  onCategoryChange(): void {
+    this.getAllServiceRequests();
   }
 }

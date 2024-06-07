@@ -28,6 +28,15 @@
       <button type="submit" class="btn btn-primary">Create</button>
     </form>
   
+    <h3>Filter Service Requests</h3>
+    <div class="form-group">
+      <label for="filter-category">Filter by Category:</label>
+      <select class="form-control" id="filter-category" [(ngModel)]="selectedCategory" (ngModelChange)="onCategoryChange()">
+        <option value="">All</option>
+        <option *ngFor="let category of categories" [ngValue]="category.name">{{ category.name }}</option>
+      </select>
+    </div>
+
     <h3>Service Requests List</h3>
     <ul>
       <li *ngFor="let request of serviceRequests">

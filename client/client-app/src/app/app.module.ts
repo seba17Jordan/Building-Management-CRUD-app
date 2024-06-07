@@ -19,6 +19,7 @@ import { ImportBuildingComponent } from './import-building/import-building.compo
 import { ConstructionCompanyComponent } from './construction-company/construction-company.component';
 import { CategoryComponent } from './category/category.component';
 import { ServiceRequestComponent } from './service-request/service-request.component';
+import { ReportsComponent } from './reports/reports.component';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { ServiceRequestComponent } from './service-request/service-request.compo
     BuildingDetailComponent,
     ConstructionCompanyComponent,
     CategoryComponent,
-    ServiceRequestComponent
+    ServiceRequestComponent,
+    ReportsComponent
   ],
   imports: [
     BrowserModule,
