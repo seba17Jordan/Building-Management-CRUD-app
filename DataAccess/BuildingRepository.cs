@@ -81,7 +81,11 @@ namespace DataAccess
 
         public IEnumerable<Building> GetAllBuildingsByManager(Guid managerId)
         {
-            return _context.Set<Building>().Where(b => b.Manager.Id == managerId).Include(b => b.Apartments).ToList();
+            return _context.Set<Building>()
+                .Where(b => b.Manager.Id == managerId)
+                .Include(b => b.Apartments)
+                .ThenInclude(o => o.Owner)
+                .ToList();
         }
     }
 }

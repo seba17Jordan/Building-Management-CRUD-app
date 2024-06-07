@@ -1,27 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ServiceRequest, ServiceRequestStatus } from '../models/serviceRequest.model';
 import { ServiceRequestService } from '../services/serviceRequest.service';
 import { CategoryService } from '../services/category.service';
 import { BuildingService } from '../services/building.service';
+import { Apartment } from '../models/apartment.model';
+import { Category } from '../models/category.model';
 @Component({
   selector: 'app-service-request',
   templateUrl: './service-request.component.html',
   styleUrls: ['./service-request.component.css']
 })
 export class ServiceRequestComponent implements OnInit {
-  newServiceRequest: ServiceRequest = {
-    description: '',
-    apartment: '',
-    category: '',
-    categoryName: '',
-    status: ServiceRequestStatus.Open,
-    buildingId: '',
-    managerId: ''
-  };
+  
+  @Input() newServiceRequest: ServiceRequest = {apartment: '', category: '', description: ''};
 
   serviceRequests: ServiceRequest[] = [];
-  categories: any[] = []; 
-  apartments : any[] = [];
+  categories: Category[] = []; 
+  apartments : Apartment[] = [];
+
+  description?: string;
+  apartmentId?: string;
+  categoryId?: string;
 
   constructor(
     private serviceRequestService: ServiceRequestService,
@@ -30,45 +29,16 @@ export class ServiceRequestComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getAllServiceRequestsManager();
     this.getAllCategories(); 
     this.getAllApartmentsForUser();
   }
 
   createServiceRequest(): void {
-    this.serviceRequestService.createServiceRequest(this.newServiceRequest)
-        .subscribe(
-            response => {
-                console.log('Service request created successfully:', response);
-                this.getAllServiceRequestsManager();
-                this.getAllCategories(); // Refresh categories after creating a service request
-                this.newServiceRequest = {
-                    description: '',
-                    apartment: '',
-                    category: '', 
-                    categoryName: '', 
-                    status: ServiceRequestStatus.Open, 
-                    buildingId: '', 
-                    managerId: '' 
-                };
-            },
-            error => {
-                console.error('Error creating service request:', error);
-            }
-        );
-  }
-
-  getAllServiceRequestsManager(category?: string): void {
-    this.serviceRequestService.getAllServiceRequestsManager(category)
-      .subscribe(
-        response => {
-          console.log('Service requests retrieved successfully:', response);
-          this.serviceRequests = response;
-        },
-        error => {
-          console.error('Error retrieving service requests:', error);
-        }
-      );
+    this.newServiceRequest.apartment = this.apartmentId;
+    this.newServiceRequest.description = this.description;
+    this.newServiceRequest.category = this.categoryId;
+    this.newServiceRequest.status = 0;
+    this.serviceRequestService.createServiceRequest(this.newServiceRequest!).subscribe();
   }
 
   getAllCategories(): void {
@@ -87,11 +57,11 @@ export class ServiceRequestComponent implements OnInit {
   getAllApartmentsForUser(): void {
     this.buildingService.getAllApartmentsForManager()
       .subscribe(
-        response => {
+        (response) => {
           console.log('Apartments retrieved successfully:', response);
           this.apartments = response;
         },
-        error => {
+        (error) => {
           console.error('Error retrieving apartments:', error);
         }
       );

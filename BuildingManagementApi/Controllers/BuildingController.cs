@@ -171,6 +171,7 @@ namespace BuildingManagementApi.Controllers
             
             var buildings = _buildingLogic.GetBuildingsByManagerId(managerUser.Id);
 
+
             if (buildings != null && buildings.Any())
             {
                 // Obtener los apartamentos de todos los edificios

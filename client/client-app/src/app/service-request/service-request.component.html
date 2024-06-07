@@ -2,26 +2,29 @@
     <h2>Service Requests</h2>
   
     <!-- Create Service Request Form -->
+    
     <h3>Create Service Request</h3>
-    <form (ngSubmit)="createServiceRequest()" #createForm="ngForm">
+    <form (ngSubmit)="createServiceRequest()">
+      
       <div class="form-group">
         <label for="description">Description:</label>
-        <input type="text" class="form-control" id="description" required [(ngModel)]="newServiceRequest.description" name="description">
+        <input type="text" class="form-control" id="description"  [(ngModel)]="description" name="description" required>
       </div>
+
       <div class="form-group">
-        <label for="apartment">Apartment:</label>
-        <!-- Dropdown for selecting apartments -->
-        <select class="form-control" id="apartment" required [(ngModel)]="newServiceRequest.apartment" name="apartment">
-          <option *ngFor="let apartment of apartments" [value]="apartment.id">{{ apartment.name }}</option>
+        <label for="apartment">Apartmento:</label>
+        <select class="form-control" id="apartment"  [(ngModel)]="apartmentId" name="apartment" required>
+          <option *ngFor="let apartment of apartments" [ngValue]="apartment.id">{{ apartment.number }}</option>
         </select>
       </div>
+
       <div class="form-group">
-        <label for="category">Category:</label>
-        <!-- Dropdown for selecting category -->
-        <select class="form-control" id="category" required [(ngModel)]="newServiceRequest.category" name="category">
-          <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+        <label for="category">Categoria:</label>
+        <select class="form-control" id="category"  [(ngModel)]="categoryId" name="category" required>
+          <option *ngFor="let category of categories" [ngValue]="category.id">{{ category.name }}</option>
         </select>
       </div>
+
       <button type="submit" class="btn btn-primary">Create</button>
     </form>
   
@@ -31,4 +34,5 @@
         {{ request.description }} - {{ request.status }}
       </li>
     </ul>
+  
   </div>
