@@ -15,5 +15,6 @@ namespace IDataAccess
         void UpdateInvitation(Invitation invitation);
         void DeleteInvitation(Guid id);
         Invitation GetInvitationByMail(string email);
+        IEnumerable<Invitation> GetAllInvitations();
     }
 }

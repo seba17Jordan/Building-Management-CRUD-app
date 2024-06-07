@@ -260,5 +260,45 @@ namespace BusinessLogicTest
             Assert.IsInstanceOfType(specificEx, typeof(InvalidOperationException));
             Assert.IsTrue(specificEx.Message.Contains("The invitation has expired"));
         }
+
+        [TestMethod]
+        public void GetAllInvitationsCorrectTestLogic()
+        {
+            // Arrange
+            var invitations = new List<Invitation>
+            {
+                new Invitation {
+                    Id = Guid.NewGuid(),
+                    Name = "Manager 1",
+                    Role = Roles.Manager,
+                    Email = "",
+                    ExpirationDate = DateTime.Now.AddDays(6),
+                    State = Status.Pending
+                },
+                new Invitation {
+                    Id = Guid.NewGuid(),
+                    Name = "Manager 1",
+                    Role = Roles.Manager,
+                    Email = "dae",
+                    ExpirationDate = DateTime.Now.AddDays(6),
+                    State = Status.Accepted
+                }
+            };
+
+            Mock<IUserRepository> _userRepository = new Mock<IUserRepository>();
+            Mock<IInvitationRepository> _invitationRepository = new Mock<IInvitationRepository>();
+
+            _invitationRepository.Setup(x => x.GetAllInvitations()).Returns(invitations);
+
+            // Act
+            InvitationLogic _invitationLogic = new InvitationLogic(_invitationRepository.Object, _userRepository.Object);
+
+            var result = _invitationLogic.GetAllInvitations();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2, result.Count());
+            Assert.AreEqual("Manager 1", result.First().Name);
+        }
     }
 }

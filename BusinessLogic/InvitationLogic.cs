@@ -120,7 +120,7 @@ namespace BusinessLogic
 
         public IEnumerable<Invitation> GetAllInvitations()
         {
-            throw new NotImplementedException();
+            return _invitationRepository.GetAllInvitations();
         }
     }
 }

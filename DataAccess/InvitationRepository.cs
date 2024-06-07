@@ -52,5 +52,10 @@ namespace DataAccess
         {
             return _context.Set<Invitation>().FirstOrDefault(i => i.Email == email);
         }
+
+        public IEnumerable<Invitation> GetAllInvitations()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
