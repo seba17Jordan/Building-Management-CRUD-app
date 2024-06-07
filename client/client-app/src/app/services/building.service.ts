@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Building } from '../models/building.model';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Apartment } from '../models/apartment.model';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -59,6 +60,13 @@ export class BuildingService {
     const headers = new HttpHeaders().set('Authorization', token!);
     const url = `${this.buildingUrl}/manager/apartments`;
     return this.http.get<Apartment[]>(url, { headers });
+  }
+
+  assignManager(buildingId: string, managerId : string): Observable<Building> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', token!);
+    const url = `${this.buildingUrl}/${buildingId}`;
+    return this.http.patch<Building>(url, {managerId}, { headers });
   }
  
   httpOptions = {

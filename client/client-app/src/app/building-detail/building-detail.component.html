@@ -17,3 +17,13 @@
   <button (click)="save()">Guardar</button>
   <button (click)="goBack()">Volver</button>
 </div>
+
+  <!-- Agregar manager al building -->
+  <h2>Modificar encargado</h2>
+  <div *ngIf="building">
+    <label for="manager">manager: </label>
+    <input [(ngModel)]="manager" placeholder="manager"/>
+    <button (click)="assignManager(building.id!)">Asignar</button>
+  </div>
+
+
