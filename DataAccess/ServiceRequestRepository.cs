@@ -34,12 +34,23 @@ namespace DataAccess
 
         public IEnumerable<ServiceRequest> GetAllServiceRequestsByMaintenanceUserId(Guid maintenanceUserId)
         {
-            return _context.Set<ServiceRequest>().Where(sr => sr.MaintenanceId == maintenanceUserId).ToList();
+            return _context.Set<ServiceRequest>()
+                .Where(sr => sr.MaintenanceId == maintenanceUserId)
+                .Include(c => c.Category)
+                .Include(m => m.Manager)
+                .Include(a => a.Apartment)
+                .ThenInclude(o => o.Owner)
+                .ToList();
         }
 
         public ServiceRequest GetServiceRequestById(Guid serviceRequestId)
         {
-            return _context.Set<ServiceRequest>().Find(serviceRequestId);
+            return _context.Set<ServiceRequest>()
+                .Include(c => c.Category)
+                .Include(m => m.Manager)
+                .Include(a => a.Apartment)
+                .ThenInclude(o => o.Owner)
+                .FirstOrDefault(sr => sr.Id == serviceRequestId);
         }
 
         public bool ServiceRequestExists(Guid id)

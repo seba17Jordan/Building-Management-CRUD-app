@@ -50,7 +50,9 @@ export class ServiceRequestService {
     return this.http.patch<any>(`${this.baseUrl}/${requestId}/assign-request`, body, { headers });
   }
 
-  updateServiceRequestStatus(id: string, totalCost: number): Observable<ServiceRequest> {
+  //Si mando con totalCost es para cerrar, si mando sin, es para aceptar
+  updateServiceRequestStatus(id: string, totalCost?: number): Observable<ServiceRequest> {
+    console.log('Service Request totalCost:', totalCost);
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', token!);
     return this.http.patch<ServiceRequest>(`${this.baseUrl}/${id}`, { totalCost }, { headers });

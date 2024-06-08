@@ -14,6 +14,7 @@ export interface ServiceRequest {
     
     buildingId?: string;
     managerId?: string;
+    manager?: User;
     maintainancePersonId?: string;
     maintenancePerson?: User;
     selectedMaintenancePersonId?: string; 

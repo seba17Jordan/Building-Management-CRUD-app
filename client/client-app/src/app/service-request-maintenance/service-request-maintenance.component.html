@@ -3,14 +3,35 @@
     <li *ngFor="let serviceRequest of serviceRequests">
         <div>
             <span>Descripcion: </span> {{serviceRequest.description}}
-            <!--Descomentar luego del refactor-->
-            <!--
-            <span>Categoria: </span> {{serviceRequest.category}}
+            <br>
+            <span>Categoria: </span> {{serviceRequest.category!.name}}
+            <br>
             <span>Estado: </span> {{serviceRequest.status}}
-            <span>Costo Total: </span> {{serviceRequest.totalCost}}
-            <span>Fecha de Inicio: </span> {{serviceRequest.startDate}}
-            <span>Fecha de Fin: </span> {{serviceRequest.endDate}}
-            -->
+            <br>
+            <span>Nro de apartamento: </span> {{serviceRequest.apartment!.number}}
+            <br>
+            <span>Encargado del edificio: </span> {{serviceRequest.manager!.name}}
+            <br>
+            <!--El boton solo aparece si el status es 0 (o sea abierta)-->
+            <div *ngIf="serviceRequest.status == 0">
+                <button type="button" title="accept invitation" (click)="accept(serviceRequest)"> Atender solicitud</button>
+            </div>
+            <!--Fecha inicio aparece cuando estado es distinto de 0 (o sea ya no esta abierta)-->
+           <div *ngIf="serviceRequest.status != 0">
+            <span>Fecha de Inicio: </span> {{serviceRequest.startDate!}}
+           </div>
+            <!--Para cerrar aparece si el estado es 1 (o sea se esta atendiendo, aqui pone el costo de cierre)-->
+            <div *ngIf="serviceRequest.status == 1">
+                <label for="totalCost"> Ingrese el costo total del servicio para cerrar la solicitud:</label>
+                <input id="totalCost" type="number" [(ngModel)]="serviceRequest.totalCost" name="totalCost" required>
+                <button type="button" title="close invitation" (click)="close(serviceRequest)"> Cerrar solicitud</button>
+            </div>
+            <!--Fecha fin aparece cuando el estatus es 2 (y aparece el costo por el cual la cerro)-->
+            <div *ngIf="serviceRequest.status == 2">
+                <span>Fecha de Fin: </span> {{serviceRequest.endDate}}
+                <br>
+                <span>Costo Total: </span> {{serviceRequest.totalCost}}
+            </div>
         </div>
         <!--
       <button type="button" title="delete invitation" (click)="delete(invitation)"> x </button>

@@ -53,6 +53,7 @@ namespace BusinessLogic
             }
 
             serviceRequest.MaintenancePerson = maintainancePerson;
+            serviceRequest.MaintenanceId = maintainancePersonId;
             _serviceRequestRepository.UpdateServiceRequest(serviceRequest);
             return serviceRequest;
         }
