@@ -40,7 +40,7 @@ namespace BusinessLogicTest
             var BuildingRepository = new Mock<IBuildingRepository>();
             var ServiceRequestRepository = new Mock<IServiceRequestRepository>();
 
-            BuildingRepository.Setup(p => p.GetAllBuildings(managerId)).Returns(new List<Building>
+            BuildingRepository.Setup(p => p.GetAllBuildingsByManagerId(managerId)).Returns(new List<Building>
             {
                 building
             });
@@ -50,19 +50,19 @@ namespace BusinessLogicTest
                 new ServiceRequest
                 {
                     Id = Guid.NewGuid(),
-                    Building = BuildingRepository.Object.GetAllBuildings(managerId).First(),
+                    Building = building,
                     Status = ServiceRequestStatus.Open
                 },
                 new ServiceRequest
                 {
                     Id = Guid.NewGuid(),
-                    Building = BuildingRepository.Object.GetAllBuildings(managerId).First(),
+                    Building = building,
                     Status = ServiceRequestStatus.Attending
                 },
                 new ServiceRequest
                 {
                     Id = Guid.NewGuid(),
-                    Building = BuildingRepository.Object.GetAllBuildings(managerId).First(),
+                    Building = building,
                     Status = ServiceRequestStatus.Closed
                 }
             });
