@@ -18,8 +18,8 @@ export class AuthService {
       tap(response =>{
         localStorage.setItem('token', response.token.toString());
         localStorage.setItem('role', response.role);
-        localStorage.setItem('Name', response.Name);
-        localStorage.setItem('Email', response.Email);
+        localStorage.setItem('Name', response.name);
+        localStorage.setItem('Email', response.email);
       })
     );
   }

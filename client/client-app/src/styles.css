@@ -1,8 +1,35 @@
 /* You can add global styles to this file, and also import other style files */
 /* Definir un color rojo personalizado */
 /* Fondo general */
-body {
-background-color: #212121 !important;
-color: white !important; /* Texto oscuro */
-}
+/* src/styles.css */
+
+/* Definir un color rojo personalizado */
+.custom-btn-red {
+    background-color: #e60000 !important;
+    border-color: #e60000 !important;
+    color: white !important;
+  }
+  
+  .custom-btn-red:hover {
+    background-color: #cc0000 !important;
+    border-color: #cc0000 !important;
+    color: white !important;
+  }
+
+  /* Fondo general */
+  body {
+    background-color: #212121 !important;
+    color: white !important; /* Texto oscuro */
+  }
+  
+  /* Estilo personalizado para los campos de entrada */
+  .custom-input {
+    background-color: #2F2F2F !important;
+    color: white;
+    border: 1px solid #444444;
+  }
+  
+  .custom-input::placeholder {
+    color: #888888;
+  }
   
