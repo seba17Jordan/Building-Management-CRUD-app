@@ -1,5 +1,5 @@
 
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ConstructionCompany } from '../models/constructionCompany.model';
 import { ConstructionCompanyService } from '../services/constructionCompany.service';
 
@@ -8,18 +8,28 @@ import { ConstructionCompanyService } from '../services/constructionCompany.serv
   templateUrl: './construction-company.component.html',
   styleUrls: ['./construction-company.component.css']
 })
-export class ConstructionCompanyComponent {
-    newConstructionCompany: Partial<ConstructionCompany> = {
-      name: ''
-    };
-  
-    updateCompanyName: Partial<ConstructionCompany> = {
-      name: ''
-    };
+export class ConstructionCompanyComponent implements OnInit{
+
+  newConstructionCompany: Partial<ConstructionCompany> = { name: ''};
+  updateCompanyName: Partial<ConstructionCompany> = { name: ''};
 
   existingConstructionCompanyName: string | null = null;
   
   constructor(private constructionCompanyService: ConstructionCompanyService) { }
+
+
+  //FALTA IMPLEMENTAR EN EL BACKEND
+  ngOnInit(): void {
+    this.constructionCompanyService.getConstructionCompany().subscribe(
+      response => {
+        console.log('Empresa de construccion:', response);
+        this.existingConstructionCompanyName = response.name;
+      },
+      error => {
+        console.error('Error al obtener la empresa de construccion', error);
+      }
+    );
+  }
 
   createConstructionCompany(): void {
     // Verificar si se ha proporcionado un nombre de empresa
