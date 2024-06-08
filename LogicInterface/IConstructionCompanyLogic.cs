@@ -10,6 +10,7 @@ namespace LogicInterface
     public interface IConstructionCompanyLogic
     {
         ConstructionCompany CreateConstructionCompany(ConstructionCompany constructionCompany);
+        ConstructionCompany GetConstructionCompany(User constructionCompanyAdmin);
         ConstructionCompany UpdateConstructionCompanyName(string newName, User constructionCompanyAdmin);
     }
 }

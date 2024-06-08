@@ -51,5 +51,19 @@ namespace BuildingManagementApi.Controllers
 
             return Ok(outputResult);
         }
+
+        [HttpGet]
+        [ServiceFilter(typeof(AuthenticationFilter))]
+        [AuthorizationFilter(_currentRole = Roles.ConstructionCompanyAdmin)]
+        public IActionResult GetConstructionCompany()
+        {
+            string token = Request.Headers["Authorization"].ToString();
+            var constructionCompanyAdmin = _sessionService.GetUserByToken(Guid.Parse(token));
+
+            var resultObj = _constructionCompanyLogic.GetConstructionCompany(constructionCompanyAdmin);
+            var outputResult = new ConstructionCompanyResponse(resultObj);
+
+            return Ok(outputResult);
+        }
     }
 }

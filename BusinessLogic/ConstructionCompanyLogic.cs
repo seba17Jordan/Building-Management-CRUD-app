@@ -42,6 +42,23 @@ namespace BusinessLogic
             return _constructionCompanyRepository.CreateConstructionCompany(constructionCompany);
         }
 
+        public ConstructionCompany GetConstructionCompany(User constructionCompanyAdmin)
+        {
+            if (constructionCompanyAdmin == null)
+            {
+                throw new ObjectNotFoundException("Construction Company Administrator not found");
+            }
+
+            ConstructionCompany company = _constructionCompanyRepository.GetConstructionCompanyByAdmin(constructionCompanyAdmin.Id);
+            
+            if (company == null)
+            {
+                throw new ObjectNotFoundException("Construction company not found.");
+            }
+
+            return company;
+        }
+
         public ConstructionCompany UpdateConstructionCompanyName(string newName, User constructionCompanyAdmin)
         {
             if (string.IsNullOrWhiteSpace(newName))

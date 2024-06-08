@@ -17,6 +17,10 @@ export class ConstructionCompanyComponent {
       name: ''
     };
 
+    ngOnInit(): void {
+      this.loadExistingConstructionCompany();
+    }
+
   existingConstructionCompanyName: string | null = null;
   
   constructor(private constructionCompanyService: ConstructionCompanyService) { }
@@ -28,12 +32,14 @@ export class ConstructionCompanyComponent {
       return;
     }
 
+    
+
     // Llamar al servicio para crear la empresa constructora
     this.constructionCompanyService.createConstructionCompany(this.newConstructionCompany as ConstructionCompany)
       .subscribe(
         response => {
           console.log('Empresa de construccion creada satisfactoriamente:', response);
-          this.existingConstructionCompanyName = response.name; // Guardar el nombre de la empresa creada
+          this.existingConstructionCompanyName = response.name; 
         },
         error => {
           console.error('Error al crear la empresa de construccion', error);
@@ -54,6 +60,18 @@ export class ConstructionCompanyComponent {
         },
         error => {
           console.error('Error al actualizar el nombre de la empresa', error);
+        }
+      );
+  }
+
+  loadExistingConstructionCompany(): void {
+    this.constructionCompanyService.getConstructionCompany()
+      .subscribe(
+        response => {
+          this.existingConstructionCompanyName = ": "+response.name;
+        },
+        error => {
+          console.error('Error loading construction company', error);
         }
       );
   }
