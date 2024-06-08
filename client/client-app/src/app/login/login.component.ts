@@ -17,13 +17,11 @@ export class LoginComponent {
 
   login(): void {
     this.authService.login(this.mail, this.password).subscribe(
-      response => {
+      (response) => {
         this.router.navigate(['/home']);
-        console.log('Login correcto');
       },
-      error => {
-        this.error = 'Usuario o contraseña incorrectos';
-        console.log('Error en el login');
+      (error) => {
+        this.error = error.error.errorMessage;
       }
     );
   }

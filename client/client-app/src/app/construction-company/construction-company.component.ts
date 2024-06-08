@@ -21,20 +21,6 @@ export class ConstructionCompanyComponent implements OnInit{
   
   constructor(private constructionCompanyService: ConstructionCompanyService) { }
 
-
-  //FALTA IMPLEMENTAR EN EL BACKEND
-  ngOnInit(): void {
-    this.constructionCompanyService.getConstructionCompany().subscribe(
-      response => {
-        console.log('Empresa de construccion:', response);
-        this.existingConstructionCompanyName = response.name;
-      },
-      error => {
-        console.error('Error al obtener la empresa de construccion', error);
-      }
-    );
-  }
-
   createConstructionCompany(): void {
     // Verificar si se ha proporcionado un nombre de empresa
     if (!this.newConstructionCompany.name) {
