@@ -54,6 +54,11 @@ namespace DataAccess
             return _context.Set<Building>().Where(b => b.ConstructionCompanyAdmin.Id == constructionCompanyAdminId).ToList();
         }
 
+        public List<Building> GetAllBuildingsByManagerId(Guid managerId)
+        {
+            return _context.Set<Building>().Where(b => b.Manager.Id == managerId).ToList();
+        }
+
         public void Save()
         {
             _context.SaveChanges();
@@ -83,6 +88,14 @@ namespace DataAccess
         {
             return _context.Set<Building>()
                 .Where(b => b.Manager.Id == managerId)
+                .Include(b => b.Apartments)
+                .ThenInclude(o => o.Owner)
+                .ToList();
+        }
+
+        public IEnumerable<Building> GetAllBuildings()
+        {
+            return _context.Set<Building>()
                 .Include(b => b.Apartments)
                 .ThenInclude(o => o.Owner)
                 .ToList();

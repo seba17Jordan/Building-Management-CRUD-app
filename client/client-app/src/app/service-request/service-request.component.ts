@@ -7,6 +7,7 @@ import { Apartment } from '../models/apartment.model';
 import { Category } from '../models/category.model';
 import {User} from '../models/user.model';
 import { AdminService } from '../services/admin.service';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-service-request',
   templateUrl: './service-request.component.html',
@@ -15,6 +16,9 @@ import { AdminService } from '../services/admin.service';
 export class ServiceRequestComponent implements OnInit {
   
   @Input() newServiceRequest: ServiceRequest = { apartmentId: '', categoryId: '', description: '' };
+
+  showAssignControls: boolean = true; 
+
 
   serviceRequests: ServiceRequest[] = [];
   categories: Category[] = []; 
@@ -124,6 +128,11 @@ export class ServiceRequestComponent implements OnInit {
       this.serviceRequestService.assignMaintenancePerson(requestId, maintenancePersonId).subscribe(
         () => {
           console.log('Maintenance person assigned successfully');
+          const updatedRequestIndex = this.serviceRequests.findIndex(request => request.id === requestId);
+          if (updatedRequestIndex !== -1) {
+            this.serviceRequests[updatedRequestIndex].selectedMaintenancePersonId = maintenancePersonId;
+          }
+          this.showAssignControls = false;
         },
         (error) => {
           console.error('Error assigning maintenance person:', error);
@@ -133,6 +142,16 @@ export class ServiceRequestComponent implements OnInit {
       console.error('Maintenance person ID or request ID is missing');
     }
   }
+
+
+  getMaintenancePersonName(request: ServiceRequest): string | undefined {
+    if (request.selectedMaintenancePersonId) {
+      const maintenancePerson = this.maintenancePersons.find(person => person.id === request.selectedMaintenancePersonId);
+      return maintenancePerson ? maintenancePerson.name : undefined;
+    }
+    return undefined;
+  }
+
   
   onCategoryChange(): void {
     this.getAllServiceRequests();

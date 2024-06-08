@@ -1,1 +1,30 @@
-<p>reports works!</p>
+<h2>Report</h2>
+
+<div>
+  <label for="building">Select Building:</label>
+  <select id="building" [(ngModel)]="selectedBuilding">
+    <option value="">All</option>
+    <option *ngFor="let building of buildings" [value]="building">{{ building }}</option>
+  </select>
+  <button (click)="filterReports()">Filter</button>
+</div>
+
+<ul>
+  <li *ngFor="let report of reports">
+    <p>Name: {{ report.name }}</p>
+    <p>Solicitudes abiertas {{ report.pendingRequests }}</p>
+    <p>Solicitudes atendiendo {{ report.inProgressRequests }}</p>
+    <p>Solicitudes cerradas {{ report.doneRequests }}</p>
+  </li>
+</ul>
+
+<h3>Maintenance Reports</h3>
+<ul>
+  <li *ngFor="let report of maintenanceReports">
+    <p>Persona de mantenimiento: {{ report.name }}</p>
+    <p>Pending Requests: {{ report.pendingRequests }}</p>
+    <p>In Progress Requests: {{ report.inProgressRequests }}</p>
+    <p>Done Requests: {{ report.doneRequests }}</p>
+    <p>Average Time: {{ report.averageTime }}</p>
+  </li>
+</ul>

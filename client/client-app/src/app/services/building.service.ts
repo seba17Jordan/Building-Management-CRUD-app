@@ -64,6 +64,12 @@ export class BuildingService {
     return this.http.get<Apartment[]>(url, { headers });
   }
 
+  getAllBuildings(): Observable<Building[]> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', token!);
+    return this.http.get<Building[]>(this.buildingUrl, { headers });
+  }
+
   assignManager(buildingId: string, managerId : string): Observable<Building> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', token!);

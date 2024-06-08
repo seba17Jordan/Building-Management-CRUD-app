@@ -161,6 +161,14 @@ namespace BuildingManagementApi.Controllers
             return Ok(files);
         }
 
+        [HttpGet]
+        public IActionResult GetAllBuildings()
+        {
+            var buildings = _buildingLogic.GetAllBuildings();
+            IEnumerable<BuildingResponse> response = buildings.Select(b => new BuildingResponse(b)).ToList();
+            return Ok(response);
+        }
+
         [HttpGet("manager/apartments")]
         [ServiceFilter(typeof(AuthenticationFilter))]
         [AuthorizationFilter(_currentRole = Roles.Manager)]

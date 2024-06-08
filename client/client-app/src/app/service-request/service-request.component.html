@@ -45,11 +45,14 @@
         <span>Estado: </span> {{ request.status }} <br>
         <span>Apartamento: </span> {{ request.apartment!.number }} <br>
         <span>Categoria: </span> {{ request.category!.name }} <br>
-        <span>Persona de mantenimiento: </span> 
-        <select [(ngModel)]="request.selectedMaintenancePersonId">
-          <option *ngFor="let person of maintenancePersons" [ngValue]="person.id">{{ person.name }}</option>
-        </select>
-        <button (click)="assignMaintenancePerson(request.id!, request.selectedMaintenancePersonId!)">Asignar</button>
+        <ng-container *ngIf="!request.maintenancePerson?.name && showAssignControls">
+          <span>Persona de mantenimiento: </span> 
+          <select [(ngModel)]="request.selectedMaintenancePersonId">
+            <option *ngFor="let person of maintenancePersons" [ngValue]="person.id">{{ person.name }}</option>
+          </select>
+          <button (click)="assignMaintenancePerson(request.id!, request.selectedMaintenancePersonId!)">Asignar</button>
+        </ng-container>
+        <span *ngIf="request.maintenancePerson?.name">Persona de mantenimiento: {{ request.maintenancePerson?.name }}</span> 
       </li>
     </ul>
-  </div>
+</div>

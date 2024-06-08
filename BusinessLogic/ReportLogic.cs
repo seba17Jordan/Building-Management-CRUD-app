@@ -62,6 +62,7 @@ namespace BusinessLogic
                 double averageCompletionTime = 0;
                 averageCompletionTime = CalculateAverageCompletionTime(serviceRequestGroup);
 
+                bool hasMaintenancePerson = (Guid)serviceRequestGroup.Key != null;
                 Guid MaintenancePerson = (Guid)serviceRequestGroup.Key;
                 string maintenancePersonName = _userRepository.GetUserById(MaintenancePerson).Name;
                 int OpenRequests = serviceRequestGroup.Count(sr => sr.Status == ServiceRequestStatus.Open);
@@ -101,7 +102,7 @@ namespace BusinessLogic
 
         public IEnumerable<(string, int, int, int)> GetReport(Guid userId, string param)
         {
-            List<Building> buildings = _buildingRepository.GetAllBuildings(userId);
+            List<Building> buildings = _buildingRepository.GetAllBuildingsByManagerId(userId);
 
             if (param != null)
             {
