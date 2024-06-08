@@ -132,6 +132,33 @@ namespace BusinessLogicTest
             Assert.IsTrue(specificEx.Message.Contains("Construction company with that name already exists."));
         }
 
+        [TestMethod]
+        public void GetConstructionCompanyCorrectLogicTest()
+        {
+            User constructionComAdmin = new User()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Admin",
+                LastName = "ConstructionCompAdmin",
+                Email = "aknd@gmail.com",
+                Role = Roles.ConstructionCompanyAdmin,
+            };
 
+            ConstructionCompany constructionCompany = new ConstructionCompany()
+            {
+                Name = "Construction Company",
+                ConstructionCompanyAdmin = constructionComAdmin
+            };
+
+            Mock<IConstructionCompanyRepository> constructionCompanyRepo = new Mock<IConstructionCompanyRepository>();
+            constructionCompanyRepo.Setup(x => x.GetConstructionCompanyByAdmin(It.IsAny<Guid>())).Returns(constructionCompany);
+
+            ConstructionCompanyLogic constructionCompanyLogic = new ConstructionCompanyLogic(constructionCompanyRepo.Object);
+
+            //Act
+            ConstructionCompany logicResult = constructionCompanyLogic.GetConstructionCompany(constructionComAdmin);
+            Assert.IsNotNull(logicResult);
+            Assert.AreEqual(logicResult, constructionCompany);
+        }
     }
 }
