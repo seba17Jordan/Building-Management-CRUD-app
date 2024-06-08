@@ -62,6 +62,7 @@ namespace BusinessLogic
                 double averageCompletionTime = 0;
                 averageCompletionTime = CalculateAverageCompletionTime(serviceRequestGroup);
 
+                bool hasMaintenancePerson = (Guid)serviceRequestGroup.Key != null;
                 Guid MaintenancePerson = (Guid)serviceRequestGroup.Key;
                 string maintenancePersonName = _userRepository.GetUserById(MaintenancePerson).Name;
                 int OpenRequests = serviceRequestGroup.Count(sr => sr.Status == ServiceRequestStatus.Open);

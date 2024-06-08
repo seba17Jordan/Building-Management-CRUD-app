@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ReportService } from '../services/report.service';
 import { ReportResponse } from '../models/report-response.model';
 import { BuildingService } from '../services/building.service';
+import { MaintenanceReportResponse } from '../models/maintenance-report-response.model';
 
 
 @Component({
@@ -11,15 +12,18 @@ import { BuildingService } from '../services/building.service';
 })
 export class ReportComponent implements OnInit {
   reports: ReportResponse[] = [];
+  maintenanceReports: MaintenanceReportResponse[] = [];
   building?: string = "";
   buildings: string[] = [];
-  selectedBuilding?: string = "";
+  selectedBuilding: string = "";
+  maintenanceName?: string = "";
 
   constructor(private reportService: ReportService, private buildingService: BuildingService) { }
 
   ngOnInit(): void {
     this.getReports();
     this.getBuildings();
+    this.getMaintenanceReports();
   }
 
   getBuildings(): void {
@@ -48,7 +52,27 @@ export class ReportComponent implements OnInit {
       );
   }
 
+  getMaintenanceReports(): void {
+    if (this.selectedBuilding) {
+      this.reportService.getMaintenanceReport(this.selectedBuilding, this.maintenanceName)
+        .subscribe(
+          maintenanceReports => {
+            this.maintenanceReports = maintenanceReports;
+            console.log('Maintenance Reports:', maintenanceReports);
+          },
+          error => {
+            console.error('Error fetching maintenance reports:', error);
+          }
+        );
+    }
+  }
+
   filterReports(): void {
-    this.getReports(); 
+    this.getReports();
+    this.getMaintenanceReports(); 
+  }
+
+  filterMaintenanceReports(): void {
+    this.getMaintenanceReports();
   }
 }
