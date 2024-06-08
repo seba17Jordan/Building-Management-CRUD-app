@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common'; 
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { FooterComponent } from './footer/footer.component';
@@ -19,8 +20,8 @@ import { ImportBuildingComponent } from './import-building/import-building.compo
 import { ConstructionCompanyComponent } from './construction-company/construction-company.component';
 import { CategoryComponent } from './category/category.component';
 import { ServiceRequestComponent } from './service-request/service-request.component';
-import { ReportsComponent } from './reports/reports.component';
 import { ServiceRequestMaintenanceComponent } from './service-request-maintenance/service-request-maintenance.component';
+import { ReportComponent } from './reports/reports.component';
 
 
 @NgModule({
@@ -41,14 +42,15 @@ import { ServiceRequestMaintenanceComponent } from './service-request-maintenanc
     ConstructionCompanyComponent,
     CategoryComponent,
     ServiceRequestComponent,
-    ReportsComponent,
-    ServiceRequestMaintenanceComponent
+    ServiceRequestMaintenanceComponent,
+    ReportComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    CommonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

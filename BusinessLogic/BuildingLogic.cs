@@ -205,5 +205,10 @@ namespace BusinessLogic
 
             return _buildingRepository.GetAllBuildingsByManager(managerId);
         }
+
+        public IEnumerable<Building> GetAllBuildings()
+        {
+            return _buildingRepository.GetAllBuildings();
+        }
     }
 }

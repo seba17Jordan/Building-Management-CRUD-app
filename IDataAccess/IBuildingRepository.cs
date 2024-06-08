@@ -10,7 +10,9 @@ namespace IDataAccess
         void DeleteBuilding(Building building);
         bool ExistApartment(Guid apartment);
         List<Building> GetAllBuildings(Guid userId);
+        IEnumerable<Building> GetAllBuildings();
         IEnumerable<Building> GetAllBuildingsByManager(Guid managerId);
+        List<Building> GetAllBuildingsByManagerId(Guid userId);
         Apartment GetApartmentById(Guid apartment);
         Building GetBuildingById(Guid id);
         Building GetBuildingByName(string buildingName);

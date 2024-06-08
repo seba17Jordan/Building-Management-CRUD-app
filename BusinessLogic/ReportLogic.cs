@@ -101,7 +101,7 @@ namespace BusinessLogic
 
         public IEnumerable<(string, int, int, int)> GetReport(Guid userId, string param)
         {
-            List<Building> buildings = _buildingRepository.GetAllBuildings(userId);
+            List<Building> buildings = _buildingRepository.GetAllBuildingsByManagerId(userId);
 
             if (param != null)
             {
