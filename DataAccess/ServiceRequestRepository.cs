@@ -71,7 +71,14 @@ namespace DataAccess
 
         public List<ServiceRequest> GetServiceRequestsByBuilding(Guid buildingId)
         {
-            return _context.Set<ServiceRequest>().Where(sr => sr.Building.Id == buildingId).ToList();
+            return _context.Set<ServiceRequest>()
+                .Include(sr => sr.Apartment)
+                .Include(sr => sr.Category)
+                .Include(sr => sr.MaintenancePerson)
+                .Include(sr => sr.Building)
+                .Include(sr => sr.Manager)
+                .Where(sr => sr.Building.Id == buildingId)
+                .ToList();
         }
 
         public IEnumerable<ServiceRequest> GetNoClosedServiceRequestsByBuildingId(Guid id)

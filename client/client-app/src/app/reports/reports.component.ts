@@ -3,6 +3,7 @@ import { ReportService } from '../services/report.service';
 import { ReportResponse } from '../models/report-response.model';
 import { BuildingService } from '../services/building.service';
 import { MaintenanceReportResponse } from '../models/maintenance-report-response.model';
+import { AdminService } from '../services/admin.service';
 
 
 @Component({
@@ -15,15 +16,20 @@ export class ReportComponent implements OnInit {
   maintenanceReports: MaintenanceReportResponse[] = [];
   building?: string = "";
   buildings: string[] = [];
-  selectedBuilding: string = "";
-  maintenanceName?: string = "";
+  maintenancePersons: string[] = [];
 
-  constructor(private reportService: ReportService, private buildingService: BuildingService) { }
+  selectedBuilding: string = "";
+  selectedBuildingForMaintenance: string = "";
+  selectedMaintenancePerson: string = "";
+
+  showWarning: boolean = false;
+
+  constructor(private reportService: ReportService, private buildingService: BuildingService, private adminService: AdminService) { }
 
   ngOnInit(): void {
     this.getReports();
     this.getBuildings();
-    this.getMaintenanceReports();
+    this.getMaintenancePersons();
   }
 
   getBuildings(): void {
@@ -35,6 +41,19 @@ export class ReportComponent implements OnInit {
         },
         error => {
           console.error('Error fetching buildings:', error);
+        }
+      );
+  }
+
+  getMaintenancePersons(): void {
+    this.adminService.getAllMaintenancePersons()
+      .subscribe(
+        persons => {
+          this.maintenancePersons = persons.map(person => person.name);
+          console.log('Maintenance Persons:', this.maintenancePersons);
+        },
+        error => {
+          console.error('Error fetching maintenance persons:', error);
         }
       );
   }
@@ -52,27 +71,30 @@ export class ReportComponent implements OnInit {
       );
   }
 
-  getMaintenanceReports(): void {
-    if (this.selectedBuilding) {
-      this.reportService.getMaintenanceReport(this.selectedBuilding, this.maintenanceName)
-        .subscribe(
-          maintenanceReports => {
-            this.maintenanceReports = maintenanceReports;
-            console.log('Maintenance Reports:', maintenanceReports);
-          },
-          error => {
-            console.error('Error fetching maintenance reports:', error);
-          }
-        );
+  getMaintenanceReports(buildingName?: string, maintenanceName?: string): void {
+    this.reportService.getMaintenanceReport(buildingName ?? this.selectedBuildingForMaintenance, maintenanceName ?? this.selectedMaintenancePerson)
+      .subscribe(
+        reports => {
+          this.maintenanceReports = reports;
+          console.log('Maintenance Reports:', reports); 
+        },
+        error => {
+          console.error('Error fetching maintenance reports:', error);
+        }
+      );
+  }
+
+  filterMaintenanceReports(): void {
+    if (!this.selectedBuildingForMaintenance) {
+      this.showWarning = true;
+      return;
     }
+
+    this.showWarning = false;
+    this.getMaintenanceReports(this.selectedBuildingForMaintenance, this.selectedMaintenancePerson);
   }
 
   filterReports(): void {
     this.getReports();
-    this.getMaintenanceReports(); 
-  }
-
-  filterMaintenanceReports(): void {
-    this.getMaintenanceReports();
   }
 }

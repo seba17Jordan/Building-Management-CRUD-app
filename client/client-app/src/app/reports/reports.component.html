@@ -18,7 +18,27 @@
   </li>
 </ul>
 
+
+  
+
 <h3>Maintenance Reports</h3>
+<div>
+    <label for="maintenanceBuilding">Select Building:</label>
+    <select id="maintenanceBuilding" [(ngModel)]="selectedBuildingForMaintenance">
+        <option value=""></option>
+        <option *ngFor="let building of buildings" [value]="building">{{ building }}</option>
+    </select>
+</div>
+<div>
+    <label for="maintenancePerson">Select Maintenance Person:</label>
+    <select id="maintenancePerson" [(ngModel)]="selectedMaintenancePerson">
+        <option value=""></option>
+        <option *ngFor="let person of maintenancePersons" [value]="person">{{ person }}</option>
+    </select>
+</div>
+<button (click)="filterMaintenanceReports()">Filter</button>
+<p *ngIf="showWarning" class="warning">Es necesario asignar un building</p>
+
 <ul>
   <li *ngFor="let report of maintenanceReports">
     <p>Persona de mantenimiento: {{ report.name }}</p>

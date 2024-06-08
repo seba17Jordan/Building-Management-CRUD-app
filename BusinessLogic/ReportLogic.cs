@@ -49,10 +49,10 @@ namespace BusinessLogic
                 {
                     throw new ObjectNotFoundException("Maintenance person not found.");
                 }
-                serviceRequests = serviceRequests.Where(sr => sr.MaintenanceId == maintenancePerson.Id); 
+                serviceRequests = serviceRequests.Where(sr => sr.MaintenancePerson.Id == maintenancePerson.Id); 
             }
 
-            var groupedRequests = serviceRequests.GroupBy(sr => sr.MaintenanceId);
+            var groupedRequests = serviceRequests.GroupBy(sr => sr.MaintenancePerson.Id);
 
             List<(string, int, int, int, string)> reportList = new List<(string, int, int, int, string)>();
 
