@@ -21,4 +21,13 @@ export class AdminService {
     const headers = new HttpHeaders().set('Authorization', token!);
     return this.http.get<User[]>(`${this.baseUrl}/managers`, {headers});
   }
+
+  getAllMaintenancePersons(): Observable<User[]> {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('No authorization token found');
+    }
+    const headers = new HttpHeaders().set('Authorization', token);
+    return this.http.get<User[]>(`${this.baseUrl}/maintenance`, { headers });
+  }
 }

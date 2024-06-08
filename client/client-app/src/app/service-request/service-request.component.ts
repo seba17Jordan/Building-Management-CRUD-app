@@ -5,6 +5,8 @@ import { CategoryService } from '../services/category.service';
 import { BuildingService } from '../services/building.service';
 import { Apartment } from '../models/apartment.model';
 import { Category } from '../models/category.model';
+import {User} from '../models/user.model';
+import { AdminService } from '../services/admin.service';
 @Component({
   selector: 'app-service-request',
   templateUrl: './service-request.component.html',
@@ -17,6 +19,7 @@ export class ServiceRequestComponent implements OnInit {
   serviceRequests: ServiceRequest[] = [];
   categories: Category[] = []; 
   apartments : Apartment[] = [];
+  maintenancePersons: User[] = [];
 
   description?: string;
   apartmentId?: string;
@@ -26,13 +29,15 @@ export class ServiceRequestComponent implements OnInit {
   constructor(
     private serviceRequestService: ServiceRequestService,
     private categoryService: CategoryService,
-    private buildingService: BuildingService
+    private buildingService: BuildingService,
+    private adminService: AdminService
   ) { }
 
   ngOnInit(): void {
     this.getAllCategories(); 
     this.getAllApartmentsForUser();
     this.getAllServiceRequests();
+    this.getAllMaintenancePersons();
     console.log('Service requests:', this.serviceRequests);
   }
 
@@ -99,6 +104,36 @@ export class ServiceRequestComponent implements OnInit {
       );
   }
 
+  getAllMaintenancePersons(): void {
+    this.adminService.getAllMaintenancePersons()
+      .subscribe(
+        response => {
+          console.log('Maintenance persons retrieved successfully:', response);
+          this.maintenancePersons = response;
+        },
+        error => {
+          console.error('Error retrieving maintenance persons:', error);
+        }
+      );
+  }
+
+  assignMaintenancePerson(requestId: string, maintenancePersonId: string): void {
+    console.log(`Assigning maintenance person ID ${maintenancePersonId} to request ${requestId}`);
+    
+    if (maintenancePersonId && requestId) {
+      this.serviceRequestService.assignMaintenancePerson(requestId, maintenancePersonId).subscribe(
+        () => {
+          console.log('Maintenance person assigned successfully');
+        },
+        (error) => {
+          console.error('Error assigning maintenance person:', error);
+        }
+      );
+    } else {
+      console.error('Maintenance person ID or request ID is missing');
+    }
+  }
+  
   onCategoryChange(): void {
     this.getAllServiceRequests();
   }

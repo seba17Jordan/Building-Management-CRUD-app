@@ -16,6 +16,8 @@ export interface ServiceRequest {
     managerId?: string;
     maintainancePersonId?: string;
     maintenancePerson?: User;
+    selectedMaintenancePersonId?: string; 
+
     
     totalCost?: number;
     startDate?: Date;

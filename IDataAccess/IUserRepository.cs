@@ -5,6 +5,7 @@ namespace IDataAccess
     public interface IUserRepository
     {
         User CreateUser(User user);
+        IEnumerable<User> GetAllMaintenance();
         IEnumerable<User> GetManagers();
         User GetUserByEmail(string email);
         User? GetUserById(Guid currentUserId);

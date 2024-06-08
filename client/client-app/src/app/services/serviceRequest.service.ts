@@ -42,10 +42,12 @@ export class ServiceRequestService {
     return this.http.get<ServiceRequest[]>(`${this.baseUrl}`, { headers });
   }
 
-  assignRequestToMaintainancePerson(id: string, maintainancePersonId: string): Observable<ServiceRequest> {
+  assignMaintenancePerson(requestId: string, maintenancePersonId: string): Observable<any> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', token!);
-    return this.http.patch<ServiceRequest>(`${this.baseUrl}/${id}/assign-request`, { id: maintainancePersonId }, { headers });
+    const body = { id: maintenancePersonId };
+    console.log('HTTP PATCH request body:', body);
+    return this.http.patch<any>(`${this.baseUrl}/${requestId}/assign-request`, body, { headers });
   }
 
   updateServiceRequestStatus(id: string, totalCost: number): Observable<ServiceRequest> {

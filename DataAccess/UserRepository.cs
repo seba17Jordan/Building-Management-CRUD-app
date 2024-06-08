@@ -25,6 +25,11 @@ namespace DataAccess
             return _context.Set<User>().Where(u => u.Role == Roles.Manager);
         }
 
+        public IEnumerable<User> GetAllMaintenance()
+        {
+            return _context.Set<User>().Where(u => u.Role == Roles.Maintenance);
+        }
+
         public User GetUserByEmail(string email)
         {
             return _context.Set<User>().FirstOrDefault(u => u.Email == email);

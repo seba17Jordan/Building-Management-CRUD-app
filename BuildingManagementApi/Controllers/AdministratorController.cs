@@ -42,6 +42,14 @@ namespace BuildingManagementApi.Controllers
             IEnumerable<UserResponse> response = _userLogic.GetAllManagers().Select(m => new UserResponse(m)).ToList();
             return Ok(response);
         }
+
+        [HttpGet("maintenance")]
+        [ServiceFilter(typeof(AuthenticationFilter))]
+        public IActionResult GetAllMaintenancePersons()
+        {
+            IEnumerable<UserResponse> response = _userLogic.GetAllMaintenancePersons().Select(m => new UserResponse(m)).ToList();
+            return Ok(response);
+        }
     }
 }
 
