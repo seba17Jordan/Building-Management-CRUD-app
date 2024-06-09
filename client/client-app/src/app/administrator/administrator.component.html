@@ -1,16 +1,26 @@
-<h2>Crear Nuevo Administrador</h2>
-<form (submit)="createAdmin()">
-    <label>Nombre:</label>
-    <input type="text" [(ngModel)]="newAdmin.name" name="Name" required>
-
-    <label>Apellido</label>
-    <input type="text" [(ngModel)]="newAdmin.lastName" name="LastName" required>
-
-    <label>Email:</label>
-    <input type="email" [(ngModel)]="newAdmin.email" name="Email" required>
-
-    <label>Contraseña:</label>
-    <input type="password" [(ngModel)]="newAdmin.password" name="Password" required>
-
-  <button type="submit">Crear Administrador</button>
-</form>
+<div class="d-flex justify-content-center align-items-center vh-100">
+  <div class="card p-4 login-container" style="width: 100%; max-width: 400px;">
+    <h2 class="text-center">Crear Administrador</h2>
+    <form (ngSubmit)="createAdmin()">
+      <div class="mb-3">
+        <label for="email" class="form-label">Email:</label>
+        <input type="email" id="email" [(ngModel)]="newAdmin.email" name="email" class="form-control custom-input" placeholder="correo" required>
+      </div>
+      <div class="mb-3">
+        <label for="name" class="form-label">Nombre:</label>
+        <input type="text" id="name" [(ngModel)]="newAdmin.name" name="name" class="form-control custom-input" placeholder="nombre" required>
+      </div>
+      <div class="mb-3">
+        <label for="lastName" class="form-label">Apellido:</label>
+        <input type="text" id="lastName" [(ngModel)]="newAdmin.lastName" name="lastName" class="form-control custom-input" placeholder="apellido" required>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Contraseña:</label>
+        <input type="password" id="password" [(ngModel)]="newAdmin.password" name="password" class="form-control custom-input" placeholder="contraseña" required>
+      </div>
+      <button type="submit" class="btn custom-btn-red w-100">Crear</button>
+      <div *ngIf="successMessage" class="alert alert-success mt-3">{{ successMessage }}</div>
+      <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
+    </form>
+  </div>
+</div>

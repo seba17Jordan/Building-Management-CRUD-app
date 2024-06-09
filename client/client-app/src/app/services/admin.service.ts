@@ -13,7 +13,9 @@ export class AdminService {
   constructor(private http: HttpClient) { }
 
   createAdmin(admin: User): Observable<User> {
-    return this.http.post<User>(`${this.baseUrl}`, admin);
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', token!);
+    return this.http.post<User>(this.baseUrl, admin, { headers })
   }
 
   getManagers(): Observable<User[]> {

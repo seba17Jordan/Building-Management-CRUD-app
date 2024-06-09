@@ -1,0 +1,18 @@
+.welcome-container {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .welcome-title {
+    font-size: 28px;
+    color: #ffffff; /* Cambia el color del texto a blanco */
+  }
+  
+  .welcome-message {
+    font-size: 16px;
+    color: #666;
+    margin-top: 20px;
+  }
+  

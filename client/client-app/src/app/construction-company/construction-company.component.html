@@ -1,15 +1,25 @@
 <div class="container">
-  <h2>Crear empresa de construccion</h2>
-  <div>
-    <label for="createName">Name:</label>
-    <input type="text" id="createName" [(ngModel)]="newConstructionCompany.name">
+  <!-- Crear empresa de construcción -->
+  <div class="card p-4 mt-5 login-container">
+    <h2 class="create-title text-center mb-4">Crear empresa de construcción</h2>
+    <form (ngSubmit)="createConstructionCompany()">
+      <div class="mb-3">
+        <label for="createName" class="form-label">Nombre:</label>
+        <input type="text" id="createName" [(ngModel)]="newConstructionCompany.name" class="form-control custom-input" placeholder="Nombre">
+      </div>
+      <button type="submit" class="btn btn-primary custom-btn-red">Crear</button>
+    </form>
   </div>
-  <button (click)="createConstructionCompany()">Create</button>
 
-  <h2>Actualizar empresa de construccion {{existingConstructionCompanyName}}</h2>
-  <div>
-    <label for="updateName">New Name:</label>
-    <input type="text" id="updateName" [(ngModel)]="updateCompanyName.name">
+  <!-- Actualizar empresa de construcción -->
+  <div class="card p-4 mt-5 login-container">
+    <h2 class="update-title text-center mb-4">Actualizar empresa de construcción {{ existingConstructionCompanyName }}</h2>
+    <form>
+      <div class="mb-3">
+        <label for="updateName" class="form-label">Nuevo Nombre:</label>
+        <input type="text" id="updateName" [(ngModel)]="updateCompanyName.name" class="form-control custom-input" placeholder="Nuevo Nombre">
+      </div>
+      <button (click)="updateConstructionCompanyName()" class="btn btn-primary custom-btn-red">Actualizar</button>
+    </form>
   </div>
-  <button (click)="updateConstructionCompanyName()">Update</button>
 </div>
