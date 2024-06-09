@@ -16,6 +16,7 @@ export class BuildingDetailComponent implements OnInit{
 
   managers: User[] = [];
   selectedManager?: User;
+  currentManagerName?: string;
 
   constructor(private buildingService: BuildingService,
      private location: Location,
@@ -24,6 +25,7 @@ export class BuildingDetailComponent implements OnInit{
 
   ngOnInit(): void {
     this.getBuilding();
+    this.currentManagerName = this.building?.managerName;
     this.getManagers();
 
   }

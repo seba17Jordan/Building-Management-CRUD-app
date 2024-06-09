@@ -1,31 +1,43 @@
-<h1>MODIFICAR EDIFICIO:</h1>
-<div *ngIf="building">
-  <h2>Detalles del edificio: {{building.name}}</h2>
-  <div>
-    <label for="name">Nombre: </label>
-    <input [(ngModel)]="building.name" placeholder="name"/>
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+  <div class="container">
+      <div class="row">
+          <div class="col-md-6">
+              <div class="card p-4 building-container mt-4" style="width: 100%; max-width: 600px;">
+                  <div *ngIf="building">
+                      <h2 class="text-center">Detalles del edificio: {{building.name}}</h2>
+                      <div class="mb-3">
+                          <label for="name" class="form-label">Nombre: </label>
+                          <input [(ngModel)]="building.name" placeholder="name" class="form-control custom-input"/>
+                      </div>
+                      <div class="mb-3">
+                          <label for="address" class="form-label">Dirección: </label>
+                          <input [(ngModel)]="building.address" placeholder="address" class="form-control custom-input"/>
+                      </div>
+                      <div class="mb-3">
+                          <label for="common-expenses" class="form-label">Gastos comunes: </label>
+                          <input [(ngModel)]="building.commonExpenses" placeholder="common expenses" class="form-control custom-input"/>
+                      </div>
+                      <button class="btn custom-btn-red w-100 mb-2" (click)="save()">Guardar</button>
+                      <button class="btn btn-secondary w-100" (click)="goBack()">Volver</button>
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-6">
+              <div class="card p-4 building-container mt-4" style="width: 100%; max-width: 600px;">
+                  <h2 class="text-center">Modificar encargado del edificio</h2>
+                  <div *ngIf="building">
+                      <div *ngIf="building.managerName">
+                          <p>Encargado actual del edificio: {{building.managerName}}</p> 
+                          <p> Puede modificar el encargado por otro del sistema a continuación:</p>
+                      </div>
+                      <label for="manager" class="form-label">Asignar nuevo encargado: </label>
+                      <select id="manager" [(ngModel)]="selectedManager" class="form-select custom-input">
+                          <option *ngFor="let manager of managers" [ngValue]="manager">{{manager.email}}</option>
+                      </select>
+                      <button class="btn custom-btn-red w-100 mt-3" (click)="assignManager(building.id!)">Asignar</button>
+                  </div>
+              </div>
+          </div>
+      </div>
   </div>
-  <div>
-    <label for="address">Dirección: </label>
-    <input [(ngModel)]="building.address" placeholder="address"/>
-  </div>
-  <div>
-    <label for="common-expenses">Gastos comunes: </label>
-    <input [(ngModel)]="building.commonExpenses" placeholder="common expenses"/>
-  </div>
-  <!-- Agregar otros campos necesarios -->
-  <button (click)="save()">Guardar</button>
-  <button (click)="goBack()">Volver</button>
 </div>
-
-  <!-- Agregar manager al building -->
-  <h2>Modificar encargado</h2>
-  <div *ngIf="building">
-    <label for="manager">manager: </label>
-    <select id="manager" [(ngModel)]="selectedManager">
-      <option *ngFor="let manager of managers" [ngValue]="manager">{{manager.email}}</option>
-    </select>
-    <button (click)="assignManager(building.id!)">Asignar</button>
-  </div>
-
-

@@ -1,49 +1,83 @@
-<h3>Agregar nuevo edificio</h3>
-<form (ngSubmit)="createBuilding()">
-  <label for="name">Nombre:</label>
-  <input id="name" [(ngModel)]="newBuilding.name" name="name" required>
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card p-4 building-container mt-4 " style="width: 100%; max-width: 800px;">
+          <h3 class="text-center">Agregar nuevo edificio</h3>
+          <form (ngSubmit)="createBuilding()">
+            <div class="mb-3">
+              <label for="name" class="form-label">Nombre:</label>
+              <input id="name" [(ngModel)]="newBuilding.name" name="name" class="form-control custom-input" required>
+            </div>
 
-  <label for="address">Dirección:</label>
-  <input id="address" [(ngModel)]="newBuilding.address" name="address" required>
+            <div class="mb-3">
+              <label for="address" class="form-label">Dirección:</label>
+              <input id="address" [(ngModel)]="newBuilding.address" name="address" class="form-control custom-input" required>
+            </div>
 
-  <label for="constructionCompany">Compañía constructora:</label>
-  <input id="constructionCompany" [(ngModel)]="newBuilding.constructionCompany" name="constructionCompany" required>
+            <div class="mb-3">
+              <label for="constructionCompany" class="form-label">Compañía constructora:</label>
+              <input id="constructionCompany" [(ngModel)]="newBuilding.constructionCompany" name="constructionCompany" class="form-control custom-input" required>
+            </div>
 
-  <label for="commonExpenses">Gastos comunes:</label>
-  <input id="commonExpenses" type="number" [(ngModel)]="newBuilding.commonExpenses" name="commonExpenses" required>
+            <div class="mb-3">
+              <label for="commonExpenses" class="form-label">Gastos comunes:</label>
+              <input id="commonExpenses" type="number" [(ngModel)]="newBuilding.commonExpenses" name="commonExpenses" class="form-control custom-input" required>
+            </div>
 
-  <div *ngFor="let apartment of newBuilding.apartments; let i = index">
-    <h4>Apartamento {{ i + 1 }}</h4>
-    <label for="floor">Piso:</label>
-    <input id="floor" [(ngModel)]="apartment.floor" name="floor{{i}}" required>
-    
-    <label for="number">Número:</label>
-    <input id="number" [(ngModel)]="apartment.number" name="number{{i}}" required>
+            <div *ngFor="let apartment of newBuilding.apartments; let i = index" class="card p-3 mb-3 apartment-container">
+              <h4>Apartamento {{ i + 1 }}</h4>
 
-    <label for="rooms">Habitaciones:</label>
-    <input id="rooms" [(ngModel)]="apartment.rooms" name="rooms{{i}}" required>
-    
-    <label for="bathrooms">Baños:</label>
-    <input id="bathrooms" [(ngModel)]="apartment.bathrooms" name="bathrooms{{i}}" required>
+              <div class="mb-3">
+                <label for="floor{{i}}" class="form-label">Piso:</label>
+                <input type="number" id="floor{{i}}" [(ngModel)]="apartment.floor" name="floor{{i}}" class="form-control custom-input" required>
+              </div>
 
-    <label for="hasTerrace">¿Tiene Terraza?:</label>
-    <input id="hasTerrace" type="checkbox" [(ngModel)]="apartment.hasTerrace" name="hasTerrace{{i}}">
+              <div class="mb-3">
+                <label for="number{{i}}" class="form-label">Número:</label>
+                <input type="number" id="number{{i}}" [(ngModel)]="apartment.number" name="number{{i}}" class="form-control custom-input" required>
+              </div>
 
-    <h5>Propietario</h5>
-    <label for="ownerName">Nombre:</label>
-    <input id="ownerName" [(ngModel)]="apartment.owner.name" name="ownerName{{i}}" required>
-    
-    <label for="ownerLastName">Apellido:</label>
-    <input id="ownerLastName" [(ngModel)]="apartment.owner.lastName" name="ownerLastName{{i}}" required>
-    
-    <label for="ownerEmail">Email:</label>
-    <input id="ownerEmail" [(ngModel)]="apartment.owner.email" name="ownerEmail{{i}}" required>
-    
-    <button type="button" (click)="removeApartment(i)">Eliminar Apartamento</button>
+              <div class="mb-3">
+                <label for="rooms{{i}}" class="form-label">Habitaciones:</label>
+                <input type="number" id="rooms{{i}}" [(ngModel)]="apartment.rooms" name="rooms{{i}}" class="form-control custom-input" required>
+              </div>
+
+              <div class="mb-3">
+                <label for="bathrooms{{i}}" class="form-label">Baños:</label>
+                <input type="number" id="bathrooms{{i}}" [(ngModel)]="apartment.bathrooms" name="bathrooms{{i}}" class="form-control custom-input" required>
+              </div>
+
+              <div class="mb-3 form-check">
+                <input id="hasTerrace{{i}}" type="checkbox" [(ngModel)]="apartment.hasTerrace" name="hasTerrace{{i}}" class="form-check-input">
+                <label for="hasTerrace{{i}}" class="form-check-label">¿Tiene Terraza?</label>
+              </div>
+
+              <h5>Propietario</h5>
+              <div class="mb-3">
+                <label for="ownerName{{i}}" class="form-label">Nombre:</label>
+                <input id="ownerName{{i}}" [(ngModel)]="apartment.owner.name" name="ownerName{{i}}" class="form-control custom-input" required>
+              </div>
+
+              <div class="mb-3">
+                <label for="ownerLastName{{i}}" class="form-label">Apellido:</label>
+                <input id="ownerLastName{{i}}" [(ngModel)]="apartment.owner.lastName" name="ownerLastName{{i}}" class="form-control custom-input" required>
+              </div>
+
+              <div class="mb-3">
+                <label for="ownerEmail{{i}}" class="form-label">Email:</label>
+                <input id="ownerEmail{{i}}" [(ngModel)]="apartment.owner.email" name="ownerEmail{{i}}" class="form-control custom-input" required>
+              </div>
+
+              <button type="button" class="btn btn-danger w-100 mt-3" (click)="removeApartment(i)">Eliminar Apartamento</button>
+            </div>
+
+            <button type="button" class="btn custom-btn-red w-100 mb-3" (click)="addApartment()">Agregar Apartamento</button>
+            <button type="submit" class="btn custom-btn-red w-100 mb-3">Agregar Edificio</button>
+            <button type="button" class="btn btn-secondary w-100" (click)="cancel()">Cancelar</button>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
-  
-  <button type="button" (click)="addApartment()">Agregar Apartamento</button>
-  
-  <button type="submit">Agregar Edificio</button>
-  <button type="button" (click)="cancel()">Cancelar</button>
-</form>
+</div>
