@@ -18,7 +18,7 @@ namespace Domain
         {
             if (string.IsNullOrWhiteSpace(Name))
             {
-                throw new EmptyFieldException("Category name can't be null or empty");
+                throw new EmptyFieldException("Category name can't be empty");
             }
         }
         public override bool Equals(object? obj)

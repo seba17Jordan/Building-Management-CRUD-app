@@ -62,7 +62,7 @@ namespace BusinessLogicTest
             repo.VerifyAll();
             Assert.IsNotNull(specificEx);
             Assert.IsInstanceOfType(specificEx, typeof(EmptyFieldException));
-            Assert.IsTrue(specificEx.Message.Contains("Category name can't be null or empty"));
+            Assert.IsTrue(specificEx.Message.Contains("Category name can't be empty"));
         }
 
         [TestMethod]
