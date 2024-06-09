@@ -8,26 +8,19 @@ import { CategoryService } from '../services/category.service';
   styleUrls: ['./category.component.css']
 })
 export class CategoryComponent {
-  newCategory: Partial<Category> = {
-    name: ''
-  };
-
+  newCategory: Partial<Category> = { name: ''};
+  error: string = '';
+  
   constructor(private categoryService: CategoryService) { }
 
   createCategory(): void {
-    if (!this.newCategory.name) {
-      console.error('Please provide a name for the category.');
-      return;
-    }
-
     this.categoryService.createCategory(this.newCategory as Category)
       .subscribe(
-        response => {
-          console.log('Category created successfully:', response);
+        (response) => {
           this.newCategory = { name: '' }; // Clear the form
         },
-        error => {
-          console.error('Error creating category:', error);
+        (error) => {
+          this.error = error.error.errorMessage;
         }
       );
   }
