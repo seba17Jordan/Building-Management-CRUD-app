@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-center align-items-center vh-100 flex-column">
+<div class="d-flex justify-content-center align-items-center vh-100 flex-column custom-container">
     <div class="card p-4 mb-4 invitation-container" style="width: 100%; max-width: 400px;">
       <h2 class="text-center">Tienes una invitación?</h2>
       <p class="text-center">Escribe el mail de tu invitación y una contraseña nueva</p>
@@ -11,8 +11,9 @@
           <label for="password" class="form-label">Password</label>
           <input type="password" id="password" [(ngModel)]="password" name="password" class="form-control custom-input" placeholder="constraseña nueva..." required>
         </div>
+        <div *ngIf="errorAccept" class="alert alert-danger mt-3">{{ errorAccept }}</div>
+        <div *ngIf="successAccept" class="alert alert-success mt-3">{{ successAccept }}</div>
         <button type="submit" class="btn custom-btn-red w-100">Aceptar invitación</button>
-        <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
       </form>
     </div>
   
@@ -23,9 +24,10 @@
           <label for="mailRejected" class="form-label">Email</label>
           <input type="email" id="mailRejected" [(ngModel)]="mailRejected" name="mailRejected" class="form-control custom-input" placeholder="correo..." required>
         </div>
+        <div *ngIf="errorReject" class="alert alert-danger mt-3">{{ errorReject }}</div>
+        <div *ngIf="successReject" class="alert alert-success mt-3">{{ successReject }}</div>
         <button type="submit" class="btn custom-btn-red w-100">Rechazar invitación</button>
-        <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
       </form>
     </div>
-  </div>
+</div>
   

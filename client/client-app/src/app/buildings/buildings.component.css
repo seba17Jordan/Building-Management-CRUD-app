@@ -1,0 +1,63 @@
+.custom-input {
+    background-color: #2F2F2F;
+    color: white;
+    border: 1px solid #444;
+  }
+  
+  .custom-input::placeholder {
+    color: #aaa;
+  }
+  
+  .custom-btn-red {
+    background-color: #e60000;
+    border-color: #e60000;
+    color: white;
+  }
+
+  .custom-btn-red-delete {
+    background-color: #e60000;
+    border-color: #e60000;
+    color: white;
+  }
+  
+  .custom-btn-red:hover {
+    background-color: #cc0000;
+    border-color: #cc0000;
+    color: white;
+  }
+
+  .custom-btn-red-delete:hover {
+    background-color: #cc0000;
+    border-color: #cc0000;
+    color: white;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5), 0 8px 30px rgba(0, 0, 0, 0.4);
+  }
+  
+  .building-card {
+    background-color: #2F2F2F;
+    color: white;
+    border: 1px solid #444;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .building-card:hover {
+    background-color: #404040;
+  }
+  
+  .building-card .card-body {
+    color: white;
+  }
+  
+  .building-card button {
+    background-color: #e60000;
+    border-color: #e60000;
+    color: white;
+  }
+  
+  .building-card button:hover {
+    background-color: #cc0000;
+    border-color: #cc0000;
+    color: white;
+  }
+  

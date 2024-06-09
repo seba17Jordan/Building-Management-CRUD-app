@@ -61,7 +61,7 @@ namespace BuildingManagementApi.Filters
 
             else if (context.Exception is Exception)
             {
-                context.Result = new ObjectResult(new { ErrorMessage = $"{context.Exception.Message}" })
+                context.Result = new ObjectResult(new { ErrorMessage = $"{context.Exception.Message}", InnerException = context.Exception.InnerException?.Message })
                 {
                     StatusCode = 500
                 };

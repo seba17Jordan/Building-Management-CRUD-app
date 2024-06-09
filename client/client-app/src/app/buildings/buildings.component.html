@@ -1,14 +1,24 @@
-<h2>Lista de edificios:</h2>
-<ul>
-  <li *ngFor="let building of buildings">
-    <a (click)="selectBuilding(building)">
-      <span>Edificio: </span> {{building.name}}
-      <span>Direccion: </span> {{building.address}}
-      <div *ngIf="building.hasManager"> 
-        <span>Manager: </span> {{building.managerName}}
-      </div>
-    </a>
-    <button type="button" title="delete building" (click)="delete(building)"> x </button>
-  </li>
-</ul>
-<button type="button" title="create building" routerLink="/buildings/create">Agregar Edificio</button>
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Tus edificios:</h2>
+  <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="list-group">
+        <li *ngFor="let building of buildings" class="list-group-item mb-3 custom-input">
+          <div class="card p-3 building-card" (click)="selectBuilding(building)">
+            <div class="card-body">
+              <span><strong>Edificio:</strong> </span> {{building.name}} <br>
+              <span><strong>Dirección:</strong> </span> {{building.address}} <br>
+              <span><strong>Gastos comunes:</strong> </span> {{building.commonExpenses}} <br>
+              <div *ngIf="building.hasManager"> 
+                <span><strong>Manager:</strong> </span> {{building.managerName}}
+              </div>
+            </div>
+            <button type="button"  class="btn custom-btn-red-delete w-100 mt-3" title="delete building" (click)="delete(building); $event.stopPropagation()"> Eliminar edificio </button>
+          </div>
+        </li>
+      </ul>
+      <button type="button" class="btn custom-btn-red w-100 mt-3" routerLink="/buildings/create">Agregar Edificio</button>
+    </div>
+  </div>
+</div>

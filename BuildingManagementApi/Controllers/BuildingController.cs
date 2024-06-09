@@ -183,10 +183,9 @@ namespace BuildingManagementApi.Controllers
             if (buildings != null && buildings.Any())
             {
                 // Obtener los apartamentos de todos los edificios
-                var apartments = buildings.SelectMany(b => b.Apartments);
-                Console.Write(apartments.ToList());
-                IEnumerable<ApartmentResponse> response = apartments.Select(a => new ApartmentResponse(a)).ToList();
-                return Ok(response);
+                var apartmentsWithBuilding = buildings.SelectMany(b => b.Apartments, (building, apartment) => new ApartmentWithBuildingNameResponse(apartment, building.Name)).ToList();
+                
+                return Ok(apartmentsWithBuilding);
             }
             else
             {

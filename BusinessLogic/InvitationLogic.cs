@@ -106,14 +106,12 @@ namespace BusinessLogic
                 throw new InvalidOperationException("The email of the invitation and the email of the user do not match");
             }
 
+            userToCreate.SelfValidateData();
             invitation.State = Status.Accepted;
             _invitationRepository.UpdateInvitation(invitation);
-
             userToCreate.Name = invitation.Name;
             userToCreate.Role = invitation.Role;
             userToCreate.LastName = "";
-            userToCreate.SelfValidate();
-
 
             return _userRepository.CreateUser(userToCreate);
         }

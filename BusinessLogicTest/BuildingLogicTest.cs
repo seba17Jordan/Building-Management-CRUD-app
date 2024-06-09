@@ -528,7 +528,7 @@ namespace BusinessLogicTest
             Mock<IConstructionCompanyRepository> constructionCompanyRepo = new Mock<IConstructionCompanyRepository>(MockBehavior.Strict);
             Mock<IUserRepository> userRepo = new Mock<IUserRepository>(MockBehavior.Strict);
 
-            serviceRequestRepo.Setup(l => l.GetNoClosedServiceRequestsByBuildingId(It.IsAny<Guid>())).Returns(serviceRequests);
+            serviceRequestRepo.Setup(l => l.GetServiceRequestsByBuildingId(It.IsAny<Guid>())).Returns(serviceRequests);
             buildingRepo.Setup(l => l.DeleteBuilding(It.IsAny<Building>()));
             buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(expectedBuilding);
             buildingRepo.Setup(l => l.Save());
@@ -593,7 +593,7 @@ namespace BusinessLogicTest
             Mock<IConstructionCompanyRepository> constructionCompanyRepo = new Mock<IConstructionCompanyRepository>(MockBehavior.Strict);
             Mock<IUserRepository> userRepo = new Mock<IUserRepository>(MockBehavior.Strict);
 
-            serviceRequestRepo.Setup(l => l.GetNoClosedServiceRequestsByBuildingId(It.IsAny<Guid>())).Returns(serviceRequests);
+            serviceRequestRepo.Setup(l => l.GetServiceRequestsByBuildingId(It.IsAny<Guid>())).Returns(serviceRequests);
             buildingRepo.Setup(l => l.DeleteBuilding(It.IsAny<Building>()));
             buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(expectedBuilding);
             buildingRepo.Setup(l => l.Save());
@@ -701,7 +701,7 @@ namespace BusinessLogicTest
             Mock<IConstructionCompanyRepository> constructionCompanyRepo = new Mock<IConstructionCompanyRepository>(MockBehavior.Strict);
             Mock<IUserRepository> userRepo = new Mock<IUserRepository>(MockBehavior.Strict);
 
-            serviceRequestRepo.Setup(l => l.GetNoClosedServiceRequestsByBuildingId(It.IsAny<Guid>())).Returns(new List<ServiceRequest> { serviceRequest });
+            serviceRequestRepo.Setup(l => l.GetServiceRequestsByBuildingId(It.IsAny<Guid>())).Returns(new List<ServiceRequest> { serviceRequest });
             buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(building);
             userRepo.Setup(l => l.GetUserById(It.IsAny<Guid>())).Returns(companyAdmin);
 
@@ -721,7 +721,7 @@ namespace BusinessLogicTest
             buildingRepo.VerifyAll();
             Assert.IsNotNull(specificEx);
             Assert.IsInstanceOfType(specificEx, typeof(InvalidOperationException));
-            Assert.IsTrue(specificEx.Message.Contains("There are active service requests associated with this building"));
+            Assert.IsTrue(specificEx.Message.Contains("There are service requests associated with this building"));
         }
 
         [TestMethod]
@@ -803,6 +803,8 @@ namespace BusinessLogicTest
             Building updates = new Building()
             {
                 Name = "Building 2",
+                Address = building.Address,
+                CommonExpenses = building.CommonExpenses,
             };
 
             Building expectedBuilding = new Building()
@@ -883,7 +885,7 @@ namespace BusinessLogicTest
                     Name = "Name 1",
                     Address = "Address 1",
                     ConstructionCompany = new ConstructionCompany("Construction Company"),
-                    CommonExpenses = -100,
+                    CommonExpenses = 100,
                     Apartments = new List<Apartment>(),
                     Manager = manager,
                     ConstructionCompanyAdmin = comAdmin
@@ -892,6 +894,8 @@ namespace BusinessLogicTest
                 Building updates = new Building()
                 {
                     Name = "Name 2",
+                    Address = building.Address,
+                    CommonExpenses = building.CommonExpenses,
                 };
 
                 serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);

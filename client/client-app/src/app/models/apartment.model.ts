@@ -8,4 +8,5 @@ export interface Apartment {
     rooms: number;
     bathrooms: number;
     hasTerrace: boolean;
+    buildingName?: string;
   }

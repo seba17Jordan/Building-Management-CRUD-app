@@ -18,8 +18,8 @@ export class AuthService {
       tap(response =>{
         localStorage.setItem('token', response.token.toString());
         localStorage.setItem('role', response.role);
-        localStorage.setItem('Name', response.name);
-        localStorage.setItem('Email', response.email);
+        localStorage.setItem('name', response.name);
+        localStorage.setItem('email', response.email);
       })
     );
   }
@@ -31,6 +31,8 @@ export class AuthService {
       this.http.delete(this.loginUrl, { headers }).subscribe(() => {
           localStorage.removeItem('token');
           localStorage.removeItem('role');
+          localStorage.removeItem('name');
+          localStorage.removeItem('email');
           this.router.navigate(['/login']);
         },
         error => {
@@ -57,11 +59,11 @@ export class AuthService {
   }
 
   getUsername(): string | null {
-    return localStorage.getItem('Name');
+    return localStorage.getItem('name');
   }
 
   getEmail(): string | null {
-    return localStorage.getItem('Email');
+    return localStorage.getItem('email');
   }
 
   isAdmin(): boolean {

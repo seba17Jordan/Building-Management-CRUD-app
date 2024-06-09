@@ -14,10 +14,6 @@ export class ServiceRequestService {
   createServiceRequest(serviceRequest: ServiceRequest): Observable<ServiceRequest> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', token!);
-    console.log('Service Request status:', serviceRequest.status);
-    console.log('Service Request description:', serviceRequest.description);
-    console.log('Service Request apartmentId:', serviceRequest.apartment);
-    console.log('Service Request categoryId:', serviceRequest.category);
     return this.http.post<ServiceRequest>(this.baseUrl, serviceRequest, { headers });
   }
 

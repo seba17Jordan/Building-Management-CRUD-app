@@ -32,11 +32,6 @@ namespace BusinessLogic
                 throw new ObjectAlreadyExistsException("Category already exists");
             }
 
-            if (string.IsNullOrWhiteSpace(category.Name))
-            {
-                throw new EmptyFieldException("Empty category name");
-            }
-
             return _categoryRepository.CreateCategory(category);
         }
 

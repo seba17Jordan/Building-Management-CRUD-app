@@ -10,17 +10,22 @@ export class InvitationComponent {
   mail: string = '';
   mailRejected: string = '';
   password: string = '';
-  error: string = '';
+  errorAccept: string = '';
+  errorReject: string = '';
+  successReject: string = '';
+  successAccept: string = '';
   
   constructor(private invitationService: InvitationService) { }
 
   acceptInvitation() {
     this.invitationService.acceptInvitation(this.mail, this.password).subscribe(
       (response) => {
-        console.log(response);
+        this.errorAccept = '';
+        this.successAccept = 'Invitation accepted successfully';
       },
       (error) => {
-        this.error = error.error.message;
+        this.successAccept = '';
+        this.errorAccept = error.error.errorMessage;
       }
     );
   }
@@ -29,9 +34,12 @@ export class InvitationComponent {
     this.invitationService.rejectInvitation(this.mailRejected).subscribe(
       (response) => {
         console.log(response);
+        this.errorReject = '';
+        this.successReject = 'Invitation rejected successfully';
       },
       (error) => {
-        this.error = error.error.message;
+        this.successReject = '';
+        this.errorReject = error.error.errorMessage;
       }
     );
   }

@@ -18,6 +18,10 @@ border-radius: 8px;
 color: white;
 }
 
+.custom-container {
+  margin-top: 50px;
+}
+
 .custom-input {
 background-color: #2F2F2F !important;
 color: white;

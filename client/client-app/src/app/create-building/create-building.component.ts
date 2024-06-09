@@ -1,16 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Building } from '../models/building.model';
 import { BuildingService } from '../services/building.service';
 import { Apartment } from '../models/apartment.model';
 import { Owner } from '../models/owner.model';
+import { ConstructionCompanyService } from '../services/constructionCompany.service';
 
 @Component({
   selector: 'app-create-building',
   templateUrl: './create-building.component.html',
   styleUrls: ['./create-building.component.css']
 })
-export class CreateBuildingComponent {
+export class CreateBuildingComponent implements OnInit{
   newBuilding: Building = {
     name: '',
     address: '',
@@ -21,18 +22,30 @@ export class CreateBuildingComponent {
     apartments: []
   };
 
-  constructor(private buildingService: BuildingService, private router: Router) { }
+  error: string = '';
+
+  constructor(private buildingService: BuildingService, private router: Router, private constructionCompanyService: ConstructionCompanyService) { }
+
+
+  ngOnInit(): void {
+    this.constructionCompanyService.getConstructionCompany().subscribe({
+      next: (company) => {
+        this.newBuilding.constructionCompany = company.name;
+        console.log('Empresa constructora obtenida:', this.newBuilding.constructionCompany);
+      },
+      error: (err) => {
+        console.error('Error al obtener la empresa constructora', err);
+      }
+    });
+  }
 
   createBuilding(): void {
-    // Verifica el payload antes de enviarlo
-    console.log(this.newBuilding);
-
     this.buildingService.createBuilding(this.newBuilding).subscribe({
       next: () => {
         this.router.navigate(['/buildings']);
       },
       error: (err) => {
-        console.error('Error creating building:', err);
+        this.error = err.error.errorMessage;
       }
     });
   }
