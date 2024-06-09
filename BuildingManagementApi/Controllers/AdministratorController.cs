@@ -12,7 +12,7 @@ namespace BuildingManagementApi.Controllers
 {
     [ApiController]
     [Route("api/admins")]
-    [TypeFilter(typeof(ExceptionFilter))] 
+    [ExceptionFilter]
     public class AdministratorController : ControllerBase
     {
         private readonly IUserLogic _userLogic;

@@ -1,50 +1,53 @@
-<h2>Report</h2>
+<div class="d-flex justify-content-center align-items-center vh-100">
+  <div class="card p-4 login-container" style="width: 100%; max-width: 800px;">
+    <h2 class="text-center">Report</h2>
 
-<div>
-  <label for="building">Select Building:</label>
-  <select id="building" [(ngModel)]="selectedBuilding">
-    <option value="">All</option>
-    <option *ngFor="let building of buildings" [value]="building">{{ building }}</option>
-  </select>
-  <button (click)="filterReports()">Filter</button>
-</div>
+    <div class="mb-3">
+      <label for="building" class="form-label">Select Building:</label>
+      <select id="building" [(ngModel)]="selectedBuilding" class="form-control custom-input">
+        <option value="">All</option>
+        <option *ngFor="let building of buildings" [value]="building">{{ building }}</option>
+      </select>
+      <button (click)="filterReports()" class="btn custom-btn-red w-100">Filter</button>
+    </div>
 
-<ul>
-  <li *ngFor="let report of reports">
-    <p>Name: {{ report.name }}</p>
-    <p>Solicitudes abiertas {{ report.pendingRequests }}</p>
-    <p>Solicitudes atendiendo {{ report.inProgressRequests }}</p>
-    <p>Solicitudes cerradas {{ report.doneRequests }}</p>
-  </li>
-</ul>
+    <ul>
+      <li *ngFor="let report of reports" class="mt-3">
+        <p>Name: {{ report.name }}</p>
+        <p>Solicitudes abiertas {{ report.pendingRequests }}</p>
+        <p>Solicitudes atendiendo {{ report.inProgressRequests }}</p>
+        <p>Solicitudes cerradas {{ report.doneRequests }}</p>
+      </li>
+    </ul>
 
-
-  
-
-<h3>Maintenance Reports</h3>
-<div>
-    <label for="maintenanceBuilding">Select Building:</label>
-    <select id="maintenanceBuilding" [(ngModel)]="selectedBuildingForMaintenance">
+    <h3 class="mt-5">Maintenance Reports</h3>
+    <div class="mb-3">
+      <label for="maintenanceBuilding" class="form-label">Select Building:</label>
+      <select id="maintenanceBuilding" [(ngModel)]="selectedBuildingForMaintenance" class="form-control custom-input">
         <option value=""></option>
         <option *ngFor="let building of buildings" [value]="building">{{ building }}</option>
-    </select>
-</div>
-<div>
-    <label for="maintenancePerson">Select Maintenance Person:</label>
-    <select id="maintenancePerson" [(ngModel)]="selectedMaintenancePerson">
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="maintenancePerson" class="form-label">Select Maintenance Person:</label>
+      <select id="maintenancePerson" [(ngModel)]="selectedMaintenancePerson" class="form-control custom-input">
         <option value=""></option>
         <option *ngFor="let person of maintenancePersons" [value]="person">{{ person }}</option>
-    </select>
-</div>
-<button (click)="filterMaintenanceReports()">Filter</button>
-<p *ngIf="showWarning" class="warning">Es necesario asignar un building</p>
+      </select>
+    </div>
 
-<ul>
-  <li *ngFor="let report of maintenanceReports">
-    <p>Persona de mantenimiento: {{ report.name }}</p>
-    <p>Pending Requests: {{ report.pendingRequests }}</p>
-    <p>In Progress Requests: {{ report.inProgressRequests }}</p>
-    <p>Done Requests: {{ report.doneRequests }}</p>
-    <p>Average Time: {{ report.averageTime }}</p>
-  </li>
-</ul>
+    <button (click)="filterMaintenanceReports()" class="btn custom-btn-red w-100">Filter</button>
+    <p *ngIf="showWarning" class="alert alert-danger mt-3">Es necesario asignar un building</p>
+
+    <ul>
+      <li *ngFor="let report of maintenanceReports" class="mt-3">
+        <p>Persona de mantenimiento: {{ report.name }}</p>
+        <p>Pending Requests: {{ report.pendingRequests }}</p>
+        <p>In Progress Requests: {{ report.inProgressRequests }}</p>
+        <p>Done Requests: {{ report.doneRequests }}</p>
+        <p>Average Time: {{ report.averageTime }}</p>
+      </li>
+    </ul>
+  </div>
+</div>

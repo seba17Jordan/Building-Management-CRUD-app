@@ -1,16 +1,30 @@
-<h2>Crear Nueva persona de mantenimiento</h2>
-<form (submit)="createMaintenance()">
-    <label>Nombre:</label>
-    <input type="text" [(ngModel)]="newMaintenance.name" name="Name" required>
+<div class="d-flex justify-content-center align-items-center vh-100">
+  <div class="card p-4 login-container" style="width: 100%; max-width: 400px;">
+    <h2 class="text-center">Crear Nueva persona de mantenimiento</h2>
+    <form (submit)="createMaintenance()">
+      <div class="mb-3">
+        <label for="name" class="form-label">Nombre:</label>
+        <input type="text" id="name" [(ngModel)]="newMaintenance.name" name="Name" class="form-control custom-input" required>
+      </div>
 
-    <label>Apellido</label>
-    <input type="text" [(ngModel)]="newMaintenance.lastName" name="LastName" required>
+      <div class="mb-3">
+        <label for="lastName" class="form-label">Apellido:</label>
+        <input type="text" id="lastName" [(ngModel)]="newMaintenance.lastName" name="LastName" class="form-control custom-input" required>
+      </div>
 
-    <label>Email:</label>
-    <input type="email" [(ngModel)]="newMaintenance.email" name="Email" required>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email:</label>
+        <input type="email" id="email" [(ngModel)]="newMaintenance.email" name="Email" class="form-control custom-input" required>
+      </div>
 
-    <label>Contraseña:</label>
-    <input type="password" [(ngModel)]="newMaintenance.password" name="Password" required>
+      <div class="mb-3">
+        <label for="password" class="form-label">Contraseña:</label>
+        <input type="password" id="password" [(ngModel)]="newMaintenance.password" name="Password" class="form-control custom-input" required>
+      </div>
 
-  <button type="submit">Crear persona de mantenimiento</button>
-</form>
+      <button type="submit" class="btn custom-btn-red w-100">Crear persona de mantenimiento</button>
+      <div *ngIf="successMessage" class="alert alert-success mt-3">{{ successMessage }}</div>
+      <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
+    </form>
+  </div>
+</div>

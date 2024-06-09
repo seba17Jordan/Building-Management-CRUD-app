@@ -1,31 +1,25 @@
-<h1>Importacion de edificios</h1>
-<p>
-    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Exercitationem voluptatum, nobis vitae sint officia 
-    dolor laboriosam atempore voluptatem cupiditate nihil, consequatur magni? Obcaecati libero, voluptatibus iusto
-    quam quo autem.
-</p>
-<div>
-    <!--Primero se debe ingresar el nombre del importador a utilizar-->
-    <!--Esto se podra optimizar con un selector de opciones-->
-    <div>
-        <label for="importer">Seleccione el importador a utilizar:</label>
-        <select id="importer" [(ngModel)]="selectedImporter">
-            <option *ngFor="let importer of importers" [value]="importer">{{importer}}</option>
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="card p-4 login-container" style="width: 100%; max-width: 600px;">
+      <h1 class="text-center">Importación de edificios</h1>
+      <p>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Exercitationem voluptatum, nobis vitae sint officia 
+        dolor laboriosam atempore voluptatem cupiditate nihil, consequatur magni? Obcaecati libero, voluptatibus iusto
+        quam quo autem.
+      </p>
+      <div class="mb-3">
+        <label for="importer" class="form-label">Seleccione el importador a utilizar:</label>
+        <select id="importer" [(ngModel)]="selectedImporter" class="form-control custom-input">
+          <option *ngFor="let importer of importers" [value]="importer">{{importer}}</option>
         </select>
-    </div>
-    <!--Luego se debe seleccionar el nombre del archivo a importar-->
-    <!--Tambien se podra optimizar con un selector de archivos-->
-    <div>
-        <label for="file">Seleccione el archivo  con los edificios a importar:</label>
-        <select id="file" [(ngModel)]="selectedFile">
-            <option *ngFor="let file of files" [value]="file">{{file}}</option>
+      </div>
+      <div class="mb-3">
+        <label for="file" class="form-label">Seleccione el archivo con los edificios a importar:</label>
+        <select id="file" [(ngModel)]="selectedFile" class="form-control custom-input">
+          <option *ngFor="let file of files" [value]="file">{{file}}</option>
         </select>
+      </div>
+      <button (click)="importBuilding()" class="btn custom-btn-red w-100">Importar edificios</button>
+      <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
     </div>
-    <!--Tambien se podria utilizar selecor de archivos, de esta manera
-    <div>
-        <label for="file">Seleccione el archivo a importar:</label>
-        <input type="file" id="file" name="file" required>
-    </div>
-    -->
-    <button (click)="importBuilding()">Importar edificios</button>
-</div>
+  </div>
+  
