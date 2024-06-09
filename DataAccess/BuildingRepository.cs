@@ -86,7 +86,9 @@ namespace DataAccess
 
         public Building GetBuildingByName(string buildingName)
         {
-            return _context.Set<Building>().FirstOrDefault(b => b.Name == buildingName);
+            return _context.Set<Building>()
+                .Include(m => m.Manager)
+                .FirstOrDefault(b => b.Name == buildingName);
         }
 
         public IEnumerable<Building> GetAllBuildingsByManager(Guid managerId)

@@ -28,12 +28,12 @@ export class ReportComponent implements OnInit {
 
   ngOnInit(): void {
     this.getReports();
-    this.getBuildings();
+    this.getAllBuildingsByManager();
     this.getMaintenancePersons();
   }
 
-  getBuildings(): void {
-    this.buildingService.getAllBuildings()
+  getAllBuildingsByManager(): void {
+    this.buildingService.getAllBuildingsByManager()
       .subscribe(
         buildings => {
           this.buildings = buildings.map(building => building.name); 
@@ -53,7 +53,8 @@ export class ReportComponent implements OnInit {
           console.log('Maintenance Persons:', this.maintenancePersons);
         },
         error => {
-          console.error('Error fetching maintenance persons:', error);
+          //console.error('Error fetching maintenance persons:', error);
+          //console.log(error.error.innerMessage)
         }
       );
   }
@@ -80,6 +81,7 @@ export class ReportComponent implements OnInit {
         },
         error => {
           console.error('Error fetching maintenance reports:', error);
+          console.log("INNER ERROR: " + error.error.errorMessage);
         }
       );
   }

@@ -66,7 +66,11 @@ namespace DataAccess
 
         public IEnumerable<ServiceRequest> GetAllServiceRequests()
         {
-            return _context.Set<ServiceRequest>().ToList();
+            return _context.Set<ServiceRequest>()
+                .Include(b => b.Building)
+                .ThenInclude(a => a.Apartments)
+                .ThenInclude(o => o.Owner)
+                .ToList();
         }
 
         public List<ServiceRequest> GetServiceRequestsByBuilding(Guid buildingId)

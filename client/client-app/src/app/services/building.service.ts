@@ -69,6 +69,13 @@ export class BuildingService {
     return this.http.get<Building[]>(this.buildingUrl, { headers });
   }
 
+  getAllBuildingsByManager(): Observable<Building[]> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', token!);
+    const url = `${this.buildingUrl}/manager`;
+    return this.http.get<Building[]>(url, { headers });
+  }
+
   assignManager(buildingId: string, managerId : string): Observable<Building> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', token!);
