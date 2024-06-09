@@ -1,0 +1,25 @@
+.invitation-container {
+    background-color: #2F2F2F; /* Un gris claro */
+    padding: 2rem;
+    border-radius: 8px;
+    color: white;
+  }
+  .custom-input {
+    background-color: #2F2F2F !important;
+    color: white;
+    border: 1px solid #444444;
+  }
+  
+  .custom-input::placeholder {
+    color: #888888 !important;
+  }
+
+  .custom-container {
+    align-items: center;
+    display: flex;
+  }
+
+  h1 {
+    color: white;
+    margin-bottom: 30px;
+  }
