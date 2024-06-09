@@ -1,7 +1,7 @@
-
 <div class="d-flex justify-content-center align-items-center vh-100">
     <div class="container">
         <div class="row">
+            <!--CREAR INVITACION-->
             <div class="col-md-6">
                 <div class="card p-4 invitation-container" style="width: 100%; max-width: 600px;">
                     <h1 class="text-center">Invita a otros a unirse a la plataforma!</h1>
@@ -17,9 +17,9 @@
                     </div>
                     <div class="mb-3">
                         <label for="role" class="form-label">Rol</label>
-                        <select id="role" [(ngModel)]="role" name="role" class="form-select custom-input"  required>
-                        <option value="3">Administrador de E.C.</option>
-                        <option value="1">Encargado</option>
+                        <select id="role" [(ngModel)]="role" name="role" class="form-select custom-input" required>
+                            <option value="3" >Administrador de E.C.</option>
+                            <option value="1">Encargado</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -27,9 +27,11 @@
                         <input type="date" id="expirationDate" [(ngModel)]="expirationDate" name="expirationDate" class="form-control custom-input" required>
                     </div>
                     <button type="submit" class="btn custom-btn-red w-100">Crear invitación</button>
+                    <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
                     </form>
                 </div>
             </div>
+            <!--MOSTRAR INVITACIONES-->
             <div class="col-md-6">
                 <div class="card p-4 invitation-container mt-4" style="width: 100%; max-width: 600px;">
                     <h1 class="text-center">Lista de invitaciones</h1>

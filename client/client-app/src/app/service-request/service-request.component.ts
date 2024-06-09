@@ -25,10 +25,11 @@ export class ServiceRequestComponent implements OnInit {
   apartments : Apartment[] = [];
   maintenancePersons: User[] = [];
 
-  description?: string;
+  description: string = '';
   apartmentId?: string;
   categoryId?: string;
   selectedCategory?: string;  // Aquí se declara la propiedad selectedCategory
+  error: string = '';
 
   constructor(
     private serviceRequestService: ServiceRequestService,
@@ -56,7 +57,8 @@ export class ServiceRequestComponent implements OnInit {
         this.resetForm();
       },
       (error) => {
-        console.error('Error al crear service request:', error);
+        console.error('Error creating service request: '+ error.error.errorMessage);
+        this.error = error.error.errorMessage;
       }
     );
   }

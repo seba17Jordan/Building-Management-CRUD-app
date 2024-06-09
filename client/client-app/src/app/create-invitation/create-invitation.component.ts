@@ -10,8 +10,9 @@ import { Invitation } from '../models/invitation.model';
 export class CreateInvitationComponent implements OnInit{
   mail: string = '';
   name: string = '';
-  @Input() role? : number;
+  @Input() role? : number = 1;
   expirationDate: Date = new Date();  //pongo una fecha de expiracion para que no de error
+  error: string = '';
   
   invitations: Invitation[] = [];
 
@@ -33,8 +34,7 @@ export class CreateInvitationComponent implements OnInit{
         console.log(response);
       },
       (error) => {
-        console.log(error.error.message);
-        console.log('Entro en un errorrrr');
+        this.error = error.error.errorMessage;
       }
     );
   }

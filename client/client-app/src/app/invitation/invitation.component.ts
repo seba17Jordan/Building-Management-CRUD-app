@@ -10,7 +10,8 @@ export class InvitationComponent {
   mail: string = '';
   mailRejected: string = '';
   password: string = '';
-  error: string = '';
+  errorAccept: string = '';
+  errorReject: string = '';
   
   constructor(private invitationService: InvitationService) { }
 
@@ -20,7 +21,7 @@ export class InvitationComponent {
         console.log(response);
       },
       (error) => {
-        this.error = error.error.message;
+        this.errorAccept = error.error.errorMessage;
       }
     );
   }
@@ -31,7 +32,7 @@ export class InvitationComponent {
         console.log(response);
       },
       (error) => {
-        this.error = error.error.message;
+        this.errorReject = error.error.errorMessage;
       }
     );
   }

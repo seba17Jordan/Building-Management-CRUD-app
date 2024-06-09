@@ -60,7 +60,11 @@ namespace BusinessLogic
 
         public ServiceRequest CreateServiceRequest(Guid apartmentId, Guid categoryId, string description, User manager)
         {
-            
+            if (string.IsNullOrEmpty(description))
+            {
+                throw new EmptyFieldException("Description is empty");
+            }
+
             if (!_buildingRepository.ExistApartment(apartmentId)) { 
                 throw new ObjectNotFoundException("Apartment does not exist");
             }
