@@ -15,6 +15,7 @@ export class ImportBuildingComponent implements OnInit{
   selectedImporter: string = '';
   selectedFile: string = '';
   errorMessage: string = '';
+  successMessage: string = '';
 
   importRequest: ImportRequest = {importerName: '', fileName: ''};
   
@@ -32,6 +33,7 @@ export class ImportBuildingComponent implements OnInit{
     this.buildingService.importBuilding(this.importRequest).subscribe(
         (response) => {
           console.log(response);
+          this.successMessage = 'Edificio importado con éxito.';
         },
         (error) => {
           console.log(error.error.message);
