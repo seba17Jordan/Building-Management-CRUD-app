@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 export class BuildingsComponent implements OnInit{
 
   buildings: Building[] = [];
+  error: string = '';
 
   constructor(private buildingService: BuildingService, private router: Router) { }
 
@@ -34,6 +35,17 @@ export class BuildingsComponent implements OnInit{
 
   delete(building: Building){
     this.buildings = this.buildings.filter(b => b !== building);   //Borrado visual
-    this.buildingService.deleteBuilding(building.id!).subscribe(); //Borrado fisico
+    this.buildingService.deleteBuilding(building.id!).subscribe(
+      (response) => {
+        console.log('Edificio eliminado');
+      },
+      (error) => {
+        this.error = error.error.errorMessage;
+        console.log('ERROR MENSAJE', error.error.errorMessage);
+        console.log('ERROR INNER', error.error.innerException);
+        console.log('ERROR GENERAL', error.error);
+        this.getBuildings();
+      }
+    );
   }
 }

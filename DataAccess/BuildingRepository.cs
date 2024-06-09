@@ -40,6 +40,8 @@ namespace DataAccess
         {
             return _context.Set<Building>()
                 .Include(m => m.Manager)
+                .Include(b => b.ConstructionCompanyAdmin)
+                .Include(c => c.ConstructionCompany)
                 .Include(b => b.Apartments)
                 .ThenInclude(o => o.Owner)
                 .FirstOrDefault(b => b.Id == id);

@@ -81,9 +81,9 @@ namespace DataAccess
                 .ToList();
         }
 
-        public IEnumerable<ServiceRequest> GetNoClosedServiceRequestsByBuildingId(Guid id)
+        public IEnumerable<ServiceRequest> GetServiceRequestsByBuildingId(Guid id)
         {
-            return _context.Set<ServiceRequest>().Where(sr => sr.Building.Id == id && sr.Status != ServiceRequestStatus.Closed).ToList();
+            return _context.Set<ServiceRequest>().Where(sr => sr.Building.Id == id).ToList(); //quitamos  && sr.Status != ServiceRequestStatus.Closed
         }
     }
 }

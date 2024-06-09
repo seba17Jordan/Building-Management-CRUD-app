@@ -474,7 +474,7 @@ namespace DataAccessTest
         }
 
         [TestMethod]
-        public void GetNoClosedServiceRequestsByBuildingIdTestDataAccess()
+        public void GetServiceRequestsByBuildingIdTestDataAccess()
         {
             Category category = new Category { Name = "Category 1" };
 
@@ -521,8 +521,8 @@ namespace DataAccessTest
             context.SaveChanges();
 
             // Act
-            List<ServiceRequest> serviceRequests = (List<ServiceRequest>)serviceRequestRepo.GetNoClosedServiceRequestsByBuildingId(building.Id);
-            Assert.AreEqual(1, serviceRequests.Count);
+            List<ServiceRequest> serviceRequests = (List<ServiceRequest>)serviceRequestRepo.GetServiceRequestsByBuildingId(building.Id);
+            Assert.AreEqual(2, serviceRequests.Count);
             Assert.AreEqual(serviceRequest1, serviceRequests[0]);
         }
 

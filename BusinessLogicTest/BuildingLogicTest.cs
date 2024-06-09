@@ -528,7 +528,7 @@ namespace BusinessLogicTest
             Mock<IConstructionCompanyRepository> constructionCompanyRepo = new Mock<IConstructionCompanyRepository>(MockBehavior.Strict);
             Mock<IUserRepository> userRepo = new Mock<IUserRepository>(MockBehavior.Strict);
 
-            serviceRequestRepo.Setup(l => l.GetNoClosedServiceRequestsByBuildingId(It.IsAny<Guid>())).Returns(serviceRequests);
+            serviceRequestRepo.Setup(l => l.GetServiceRequestsByBuildingId(It.IsAny<Guid>())).Returns(serviceRequests);
             buildingRepo.Setup(l => l.DeleteBuilding(It.IsAny<Building>()));
             buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(expectedBuilding);
             buildingRepo.Setup(l => l.Save());
@@ -593,7 +593,7 @@ namespace BusinessLogicTest
             Mock<IConstructionCompanyRepository> constructionCompanyRepo = new Mock<IConstructionCompanyRepository>(MockBehavior.Strict);
             Mock<IUserRepository> userRepo = new Mock<IUserRepository>(MockBehavior.Strict);
 
-            serviceRequestRepo.Setup(l => l.GetNoClosedServiceRequestsByBuildingId(It.IsAny<Guid>())).Returns(serviceRequests);
+            serviceRequestRepo.Setup(l => l.GetServiceRequestsByBuildingId(It.IsAny<Guid>())).Returns(serviceRequests);
             buildingRepo.Setup(l => l.DeleteBuilding(It.IsAny<Building>()));
             buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(expectedBuilding);
             buildingRepo.Setup(l => l.Save());
@@ -701,7 +701,7 @@ namespace BusinessLogicTest
             Mock<IConstructionCompanyRepository> constructionCompanyRepo = new Mock<IConstructionCompanyRepository>(MockBehavior.Strict);
             Mock<IUserRepository> userRepo = new Mock<IUserRepository>(MockBehavior.Strict);
 
-            serviceRequestRepo.Setup(l => l.GetNoClosedServiceRequestsByBuildingId(It.IsAny<Guid>())).Returns(new List<ServiceRequest> { serviceRequest });
+            serviceRequestRepo.Setup(l => l.GetServiceRequestsByBuildingId(It.IsAny<Guid>())).Returns(new List<ServiceRequest> { serviceRequest });
             buildingRepo.Setup(l => l.GetBuildingById(It.IsAny<Guid>())).Returns(building);
             userRepo.Setup(l => l.GetUserById(It.IsAny<Guid>())).Returns(companyAdmin);
 

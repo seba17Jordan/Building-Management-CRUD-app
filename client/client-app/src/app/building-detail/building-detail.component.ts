@@ -17,6 +17,8 @@ export class BuildingDetailComponent implements OnInit{
   managers: User[] = [];
   selectedManager?: User;
   currentManagerName?: string;
+  error: string = '';
+  
 
   constructor(private buildingService: BuildingService,
      private location: Location,

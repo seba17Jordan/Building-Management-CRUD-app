@@ -16,11 +16,6 @@
             </div>
 
             <div class="mb-3">
-              <label for="constructionCompany" class="form-label">Compañía constructora:</label>
-              <input id="constructionCompany" [(ngModel)]="newBuilding.constructionCompany" name="constructionCompany" class="form-control custom-input" required>
-            </div>
-
-            <div class="mb-3">
               <label for="commonExpenses" class="form-label">Gastos comunes:</label>
               <input id="commonExpenses" type="number" [(ngModel)]="newBuilding.commonExpenses" name="commonExpenses" class="form-control custom-input" required>
             </div>
@@ -71,7 +66,7 @@
 
               <button type="button" class="btn btn-danger w-100 mt-3" (click)="removeApartment(i)">Eliminar Apartamento</button>
             </div>
-
+            <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
             <button type="button" class="btn custom-btn-red w-100 mb-3" (click)="addApartment()">Agregar Apartamento</button>
             <button type="submit" class="btn custom-btn-red w-100 mb-3">Agregar Edificio</button>
             <button type="button" class="btn btn-secondary w-100" (click)="cancel()">Cancelar</button>

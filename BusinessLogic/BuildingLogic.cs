@@ -73,8 +73,8 @@ namespace BusinessLogic
             if (building.ConstructionCompanyAdmin.Id != companyAdminId)
                 throw new InvalidOperationException("Construction Company Administrator is not the owner of the building");
 
-            //Si hay solicitud no cerrada asociada al edificio, no puedo borrarlo
-            if (_serviceRequestRepository.GetNoClosedServiceRequestsByBuildingId(id).Count() > 0)
+            //Si hay solicitud asociada al edificio, no puedo borrarlo
+            if (_serviceRequestRepository.GetServiceRequestsByBuildingId(id).Count() > 0)
                 throw new InvalidOperationException("There are active service requests associated with this building");
             
             if (building.Apartments != null)
