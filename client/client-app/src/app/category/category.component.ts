@@ -10,6 +10,7 @@ import { CategoryService } from '../services/category.service';
 export class CategoryComponent {
   newCategory: Partial<Category> = { name: ''};
   error: string = '';
+  success: string = '';
   
   constructor(private categoryService: CategoryService) { }
 
@@ -17,7 +18,9 @@ export class CategoryComponent {
     this.categoryService.createCategory(this.newCategory as Category)
       .subscribe(
         (response) => {
+          this.error = '';
           this.newCategory = { name: '' }; // Clear the form
+          this.success = 'Category created successfully';
         },
         (error) => {
           this.error = error.error.errorMessage;

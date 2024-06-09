@@ -721,7 +721,7 @@ namespace BusinessLogicTest
             buildingRepo.VerifyAll();
             Assert.IsNotNull(specificEx);
             Assert.IsInstanceOfType(specificEx, typeof(InvalidOperationException));
-            Assert.IsTrue(specificEx.Message.Contains("There are active service requests associated with this building"));
+            Assert.IsTrue(specificEx.Message.Contains("There are service requests associated with this building"));
         }
 
         [TestMethod]
@@ -803,6 +803,8 @@ namespace BusinessLogicTest
             Building updates = new Building()
             {
                 Name = "Building 2",
+                Address = building.Address,
+                CommonExpenses = building.CommonExpenses,
             };
 
             Building expectedBuilding = new Building()
@@ -883,7 +885,7 @@ namespace BusinessLogicTest
                     Name = "Name 1",
                     Address = "Address 1",
                     ConstructionCompany = new ConstructionCompany("Construction Company"),
-                    CommonExpenses = -100,
+                    CommonExpenses = 100,
                     Apartments = new List<Apartment>(),
                     Manager = manager,
                     ConstructionCompanyAdmin = comAdmin
@@ -892,6 +894,8 @@ namespace BusinessLogicTest
                 Building updates = new Building()
                 {
                     Name = "Name 2",
+                    Address = building.Address,
+                    CommonExpenses = building.CommonExpenses,
                 };
 
                 serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);

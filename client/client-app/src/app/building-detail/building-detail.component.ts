@@ -17,7 +17,8 @@ export class BuildingDetailComponent implements OnInit{
   managers: User[] = [];
   selectedManager?: User;
   currentManagerName?: string;
-  error: string = '';
+  detailsError: string = '';
+  managerError: string = '';
   
 
   constructor(private buildingService: BuildingService,
@@ -43,12 +44,26 @@ export class BuildingDetailComponent implements OnInit{
   save(): void {
     console.log('Building common expenses new:', this.building?.commonExpenses);
     if (this.building) {
-      this.buildingService.updateBuilding(this.building).subscribe(() => this.goBack());
+      this.buildingService.updateBuilding(this.building).subscribe(
+        () => {
+          this.goBack() 
+        },
+        (error) => {
+          this.detailsError = error.error.errorMessage;
+        }
+      );
     }
   }
 
   assignManager(buildingId: string): void {
-    this.buildingService.assignManager(buildingId, this.selectedManager?.id!).subscribe(() => this.goBack());
+    this.buildingService.assignManager(buildingId, this.selectedManager?.id!).subscribe(
+      () => {
+        this.goBack()
+      },
+      (error) => {
+        this.managerError = error.error.errorMessage;
+      }
+    );
   }
 
   getManagers(): void {

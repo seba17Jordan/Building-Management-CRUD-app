@@ -41,9 +41,6 @@ export class BuildingsComponent implements OnInit{
       },
       (error) => {
         this.error = error.error.errorMessage;
-        console.log('ERROR MENSAJE', error.error.errorMessage);
-        console.log('ERROR INNER', error.error.innerException);
-        console.log('ERROR GENERAL', error.error);
         this.getBuildings();
       }
     );

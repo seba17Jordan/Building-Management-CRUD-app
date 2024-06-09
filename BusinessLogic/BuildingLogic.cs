@@ -75,7 +75,7 @@ namespace BusinessLogic
 
             //Si hay solicitud asociada al edificio, no puedo borrarlo
             if (_serviceRequestRepository.GetServiceRequestsByBuildingId(id).Count() > 0)
-                throw new InvalidOperationException("There are active service requests associated with this building");
+                throw new InvalidOperationException("There are service requests associated with this building");
             
             if (building.Apartments != null)
             {
@@ -99,6 +99,8 @@ namespace BusinessLogic
 
         public Building UpdateBuildingById(Guid id, Building buildingUpdates, Guid comAdminId)
         {
+            buildingUpdates.SelfValidateUpdateData();
+
             Building buildingToUpdate = _buildingRepository.GetBuildingById(id);
 
             if (buildingToUpdate == null)

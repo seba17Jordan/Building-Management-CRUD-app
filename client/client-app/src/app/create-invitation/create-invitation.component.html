@@ -26,8 +26,9 @@
                             <label for="expirationDate" class="form-label">Fecha limite</label>
                             <input type="date" id="expirationDate" [(ngModel)]="expirationDate" name="expirationDate" class="form-control custom-input" required>
                         </div>
-                        <button type="submit" class="btn custom-btn-red w-100">Crear invitación</button>
                         <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
+                        <div *ngIf="success" class="alert alert-success mt-3">{{ success }}</div>
+                        <button type="submit" class="btn custom-btn-red w-100">Crear invitación</button>
                     </form>
                 </div>
             </div>
@@ -44,6 +45,7 @@
                         <button type="button" class="btn btn-danger btn-sm" title="delete invitation" (click)="delete(invitation)">x</button>
                         </li>
                     </ul>
+                    <div *ngIf="errorDelete" class="alert alert-danger mt-3">{{ errorDelete }}</div>
                 </div>
             </div>
         </div>

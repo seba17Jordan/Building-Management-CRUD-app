@@ -45,7 +45,6 @@ export class BuildingService {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', token!);
     const url = `${this.buildingUrl}/detail/${building.id}`;
-    console.log("url: "+url);
     return this.http.patch<Building>(url, building, {headers});
   }
 

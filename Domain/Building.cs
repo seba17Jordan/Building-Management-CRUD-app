@@ -37,6 +37,19 @@ namespace Domain
             ConstructionCompany.SelfValidate();
         }
 
+        public void SelfValidateUpdateData()
+        {
+            if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Address))
+            {
+                throw new EmptyFieldException("There are empty fields");
+            }
+
+            if (CommonExpenses < 0)
+            {
+                throw new ArgumentException("Common expenses must be greater than 0");
+            }
+        }
+
         public override bool Equals(object building)
         {
             if (building == null || GetType() != building.GetType())

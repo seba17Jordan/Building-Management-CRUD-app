@@ -13,6 +13,8 @@ export class CreateInvitationComponent implements OnInit{
   @Input() role? : number = 1;
   expirationDate: Date = new Date();  //pongo una fecha de expiracion para que no de error
   error: string = '';
+  success: string = '';
+  errorDelete: string = '';
   
   invitations: Invitation[] = [];
 
@@ -31,23 +33,27 @@ export class CreateInvitationComponent implements OnInit{
     }
     this.invitationService.createInvitation(this.mail, this.name, this.role!, this.expirationDate).subscribe(
       (response) => {
-        console.log(response);
+        this.error = '';
+        this.success = 'Invitation created successfully';
+        this.invitations.push(response);
       },
       (error) => {
+        this.success = '';
         this.error = error.error.errorMessage;
       }
     );
   }
 
   delete(invitation: Invitation){
-    this.invitationService.deleteInvitation(invitation.id!).subscribe(
+    this.invitationService.deleteInvitation(invitation.id!).subscribe(//Borrado fisico
       (response) => {
+        this.errorDelete = '';
         this.invitations = this.invitations.filter(i => i !== invitation);  //Borrado visual
       },
       (error) => {
-        console.log(error.error.message);
+        this.errorDelete = error.error.errorMessage;
       }
-    ); //Borrado fisico
+    ); 
   }
 
   getInvitations(): void {
