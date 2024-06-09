@@ -57,7 +57,6 @@ export class ServiceRequestComponent implements OnInit {
         this.resetForm();
       },
       (error) => {
-        console.error('Error creating service request: '+ error.error.errorMessage);
         this.error = error.error.errorMessage;
       }
     );

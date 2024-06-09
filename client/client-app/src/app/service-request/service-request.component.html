@@ -13,7 +13,7 @@
             <div class="mb-3">
               <label for="apartment" class="form-label">Apartamento:</label>
               <select class="form-select custom-input" id="apartment" [(ngModel)]="apartmentId" name="apartment" required>
-                <option *ngFor="let apartment of apartments" [ngValue]="apartment.id">{{ apartment.number }}</option>
+                <option *ngFor="let apartment of apartments" [ngValue]="apartment.id">{{ apartment.number }} - ({{apartment.buildingName}})</option>
               </select>
             </div>
             <div class="mb-3">
