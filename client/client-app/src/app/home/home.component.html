@@ -1,8 +1,15 @@
 <div class="welcome-container">
-    <h1 class="welcome-title">BIENVENIDO {{ username }}, {{ email }}!</h1>
-    <p class="welcome-message">
-      Nos alegra tenerte de vuelta. Aquí podrás gestionar todas tus solicitudes de servicio y ver la información relevante
-      de tus edificios y apartamentos. Si necesitas ayuda, no dudes en contactarnos.
-    </p>
+  <div class="w-100 d-flex justify-content-end">
+    <span class="role-badge">Your role: {{ getRoleLabel(role!) }}</span>
   </div>
-  
+  <h1 class="welcome-title">Bienvenido {{ username }}!</h1>
+  <p class="welcome-message">
+    Estamos encantados de tenerte de vuelta en nuestra plataforma. Aquí podrás acceder a todas las herramientas necesarias para gestionar tus actividades. Ya sea que formes parte de la administración, el equipo de mantenimiento, o seas un encargado de empresa constructora, encontrarás todas las funciones que necesitas para llevar a cabo tu trabajo de manera eficiente.
+  </p>
+  <p class="welcome-message">
+    Si necesitas ayuda en cualquier momento, no dudes en ponerte en contacto con nuestro equipo de soporte. ¡Bienvenido de nuevo y gracias por ser parte de nuestra comunidad!
+  </p>
+</div>
+<div class="image-container">
+  <img src="assets/images/building-image.png" alt="Welcome Image">
+</div>

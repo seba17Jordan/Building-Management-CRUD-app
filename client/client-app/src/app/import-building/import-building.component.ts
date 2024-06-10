@@ -32,13 +32,12 @@ export class ImportBuildingComponent implements OnInit{
     this.importRequest.fileName = this.selectedFile;
     this.buildingService.importBuilding(this.importRequest).subscribe(
         (response) => {
-          console.log(response);
+          this.errorMessage = '';
           this.successMessage = 'Edificio importado con éxito.';
         },
         (error) => {
-          console.log(error.error.message);
-          console.log('NO SE PUDO IMORTAR, REVISE EL NOMRBE DE LOS ARCHIVOS');
-          this.errorMessage = 'Error al importar edificios. Por favor, revise el nombre de los archivos.';
+          this.successMessage = '';
+          this.errorMessage = error.error.errorMessage;
         }
     );
   }

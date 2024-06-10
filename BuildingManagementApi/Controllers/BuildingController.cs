@@ -128,13 +128,13 @@ namespace BuildingManagementApi.Controllers
             var importer = ImporterManager.GetImporter(_importersDirectory, importRequest.ImporterName);
             if (importer == null)
             {
-                return BadRequest("Invalid importer specified.");
+                throw new InvalidOperationException("Invalid importer specified.");
             }
             
             string filePath = Path.Combine(_filesDirectory, importRequest.FileName);
             if (!System.IO.File.Exists(filePath))
             {
-                return BadRequest("File not found.");
+                throw new InvalidOperationException("File not found.");
             }
 
             importer.Import(filePath, _buildingService, token);

@@ -1,24 +1,24 @@
 <div class="d-flex justify-content-center align-items-center vh-100">
   <div class="card p-4 login-container" style="width: 100%; max-width: 400px;">
-    <h2 class="text-center">Crear Administrador</h2>
+    <h2 class="text-center">Create administrator</h2>
     <form (ngSubmit)="createAdmin()">
       <div class="mb-3">
         <label for="email" class="form-label">Email:</label>
-        <input type="email" id="email" [(ngModel)]="newAdmin.email" name="email" class="form-control custom-input" placeholder="correo" required>
+        <input type="email" id="email" [(ngModel)]="newAdmin.email" name="email" class="form-control custom-input" placeholder="email..." required>
       </div>
       <div class="mb-3">
-        <label for="name" class="form-label">Nombre:</label>
-        <input type="text" id="name" [(ngModel)]="newAdmin.name" name="name" class="form-control custom-input" placeholder="nombre" required>
+        <label for="name" class="form-label">Name:</label>
+        <input type="text" id="name" [(ngModel)]="newAdmin.name" name="name" class="form-control custom-input" placeholder="name..." required>
       </div>
       <div class="mb-3">
-        <label for="lastName" class="form-label">Apellido:</label>
-        <input type="text" id="lastName" [(ngModel)]="newAdmin.lastName" name="lastName" class="form-control custom-input" placeholder="apellido" required>
+        <label for="lastName" class="form-label">Last name:</label>
+        <input type="text" id="lastName" [(ngModel)]="newAdmin.lastName" name="lastName" class="form-control custom-input" placeholder="last name..." required>
       </div>
       <div class="mb-3">
-        <label for="password" class="form-label">Contraseña:</label>
-        <input type="password" id="password" [(ngModel)]="newAdmin.password" name="password" class="form-control custom-input" placeholder="contraseña" required>
+        <label for="password" class="form-label">Password:</label>
+        <input type="password" id="password" [(ngModel)]="newAdmin.password" name="password" class="form-control custom-input" placeholder="password..." required>
       </div>
-      <button type="submit" class="btn custom-btn-red w-100">Crear</button>
+      <button type="submit" class="btn custom-btn-red w-100">Create</button>
       <div *ngIf="successMessage" class="alert alert-success mt-3">{{ successMessage }}</div>
       <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
     </form>

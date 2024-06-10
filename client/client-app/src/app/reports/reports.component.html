@@ -14,9 +14,9 @@
     <ul>
       <li *ngFor="let report of reports" class="mt-3">
         <p>Name: {{ report.name }}</p>
-        <p>Solicitudes abiertas {{ report.pendingRequests }}</p>
-        <p>Solicitudes atendiendo {{ report.inProgressRequests }}</p>
-        <p>Solicitudes cerradas {{ report.doneRequests }}</p>
+        <p>Open requests: {{ report.pendingRequests }}</p>
+        <p>Attending requests: {{ report.inProgressRequests }}</p>
+        <p>Cloesed requests: {{ report.doneRequests }}</p>
       </li>
     </ul>
 
@@ -42,7 +42,7 @@
 
     <ul>
       <li *ngFor="let report of maintenanceReports" class="mt-3">
-        <p>Persona de mantenimiento: {{ report.name }}</p>
+        <p>Maintenance person: {{ report.name }}</p>
         <p>Pending Requests: {{ report.pendingRequests }}</p>
         <p>In Progress Requests: {{ report.inProgressRequests }}</p>
         <p>Done Requests: {{ report.doneRequests }}</p>

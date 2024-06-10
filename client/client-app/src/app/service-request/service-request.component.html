@@ -4,37 +4,38 @@
       <!--CREAR SOLICITUD-->
       <div class="col-md-6 mb-4">
         <div class="card p-4 service-request-container">
-          <h3 class="text-center">Crear Solicitud de Servicio</h3>
+          <h3 class="text-center">Create service request</h3>
           <form (ngSubmit)="createServiceRequest()">
             <div class="mb-3">
-              <label for="description" class="form-label">Descripción:</label>
-              <input type="text" class="form-control custom-input" id="description" [(ngModel)]="description" name="description" placeholder="descripción..." required>
+              <label for="description" class="form-label">Description:</label>
+              <input type="text" class="form-control custom-input" id="description" [(ngModel)]="description" name="description" placeholder="description..." required>
             </div>
             <div class="mb-3">
-              <label for="apartment" class="form-label">Apartamento:</label>
+              <label for="apartment" class="form-label">Apartament:</label>
               <select class="form-select custom-input" id="apartment" [(ngModel)]="apartmentId" name="apartment" required>
                 <option *ngFor="let apartment of apartments" [ngValue]="apartment.id">{{ apartment.number }} - ({{apartment.buildingName}})</option>
               </select>
             </div>
             <div class="mb-3">
-              <label for="category" class="form-label">Categoría:</label>
+              <label for="category" class="form-label">Category:</label>
               <select class="form-select custom-input" id="category" [(ngModel)]="categoryId" name="category" required>
                 <option *ngFor="let category of categories" [ngValue]="category.id">{{ category.name }}</option>
               </select>
             </div>
-            <button type="submit" class="btn custom-btn-red w-100">Crear</button>
+            <div *ngIf="success" class="alert alert-success mt-3">{{ success }}</div>
             <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
+            <button type="submit" class="btn custom-btn-red w-100">Create</button>
           </form>
         </div>
       </div>
       <!--FILTRO PARA MOSTRAR SOLICITUDES-->
       <div class="col-md-6 mb-4">
         <div class="card p-4 service-request-container">
-          <h3 class="text-center">Filtrar Solicitudes de Servicio</h3>
+          <h3 class="text-center">Filter service requests</h3>
           <div class="mb-3">
-            <label for="filter-category" class="form-label">Filtrar por Categoría:</label>
+            <label for="filter-category" class="form-label">Filter by category:</label>
             <select class="form-select custom-input" id="filter-category" [(ngModel)]="selectedCategory" (ngModelChange)="onCategoryChange()">
-              <option value="">Todas</option>
+              <option value="">All</option>
               <option *ngFor="let category of categories" [ngValue]="category.name">{{ category.name }}</option>
             </select>
           </div>
@@ -43,23 +44,26 @@
       <!--MOSTRAR SOLICITUDES LISTA-->
       <div class="col-md-12">
         <div class="card p-4 service-request-container">
-          <h3 class="text-center">Lista de Solicitudes de Servicio</h3>
-          <p class="text-center">Aquí puede eliminar solicitudes de mantenimiento no aceptadas o asignarlas a su personal de mantenimiento</p>
+          <h3 class="text-center">Service request list</h3>
+          <p class="text-center">Here you can delete unaccepted maintenance requests or assign them to your maintenance staff.</p>
           <ul class="list-group">
             <li *ngFor="let request of serviceRequests" class="list-group-item custom-input">
-              <span><strong>Descripción:</strong> {{ request.description }}</span><br>
-              <span><strong>Estado:</strong> {{ request.status }}</span><br>
-              <span><strong>Apartamento:</strong> {{ request.apartment!.number }}</span><br>
-              <span><strong>Categoría:</strong> {{ request.category!.name }}</span><br>
+              <span><strong>Description:</strong> {{ request.description }}</span>
+              <br>
+              <span><strong>Request state:</strong> {{ getStateLabel(request.status) }}</span>
+              <br>
+              <span><strong>Apartament:</strong> {{ request.apartment!.number }}</span>
+              <br>
+              <span><strong>Category:</strong> {{ request.category!.name }}</span><br>
               <ng-container *ngIf="!request.maintenancePerson?.name && showAssignControls">
-                <span><strong>Persona de mantenimiento:</strong></span>
+                <span><strong>Maintenance person:</strong></span>
                 <select [(ngModel)]="request.selectedMaintenancePersonId" class="form-select custom-input">
                   <option *ngFor="let person of maintenancePersons" [ngValue]="person.id">{{ person.name }}</option>
                 </select>
-                <button class="btn custom-btn-red w-10" (click)="assignMaintenancePerson(request.id!, request.selectedMaintenancePersonId!)">Asignar</button>
+                <button class="btn custom-btn-red w-10" (click)="assignMaintenancePerson(request.id!, request.selectedMaintenancePersonId!)">Assign</button>
               </ng-container>
               <span *ngIf="request.maintenancePerson?.name">
-                <strong>Persona de mantenimiento:</strong> {{ request.maintenancePerson?.name }}
+                <strong>Maintenance person:</strong> {{ request.maintenancePerson?.name }}
               </span>
             </li>
           </ul>

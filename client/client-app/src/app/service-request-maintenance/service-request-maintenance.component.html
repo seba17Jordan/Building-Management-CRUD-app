@@ -3,39 +3,39 @@
         <div class="row justify-content-center">
             <div class="col-md-4">      
                 <div class="card p-4 invitation-container mt-4 custom-container" >
-                    <h1>Tus solicitudes:</h1>
+                    <h1>Your requests:</h1>
                     <ul class="list-group">
                         <li *ngFor="let serviceRequest of serviceRequests" class="list-group-item d-flex justify-content-between align-items-center custom-input">
                             <div>
-                                <span><strong>Descripcion:</strong></span> {{serviceRequest.description}}
+                                <span><strong>Description:</strong></span> {{serviceRequest.description}}
                                 <br>
-                                <span><strong>Categoria:</strong></span> {{serviceRequest.category!.name}}
+                                <span><strong>Category:</strong></span> {{serviceRequest.category!.name}}
                                 <br>
-                                <span><strong>Estado:</strong></span> {{serviceRequest.status}}
+                                <span><strong>Request state:</strong> {{ getStateLabel(serviceRequest.status) }}</span>
                                 <br>
-                                <span><strong>Nro de apartamento:</strong></span> {{serviceRequest.apartment!.number}}
+                                <span><strong>Apartment number:</strong></span> {{serviceRequest.apartment!.number}}
                                 <br>
-                                <span><strong>Encargado del edificio:</strong></span> {{serviceRequest.manager!.name}}
+                                <span><strong>Building manager:</strong></span> {{serviceRequest.manager!.name}}
                                 <br>
                                 <!--El boton solo aparece si el status es 0 (o sea abierta)-->
                                 <div *ngIf="serviceRequest.status == 0">
-                                    <button type="button" class="btn custom-btn-red w-100" title="accept invitation" (click)="accept(serviceRequest)"> Atender solicitud</button>
+                                    <button type="button" class="btn custom-btn-red w-100" title="accept invitation" (click)="accept(serviceRequest)"> Attend request</button>
                                 </div>
                                 <!--Fecha inicio aparece cuando estado es distinto de 0 (o sea ya no esta abierta)-->
                             <div *ngIf="serviceRequest.status != 0">
-                                <span><strong>Fecha de Inicio:</strong></span> {{serviceRequest.startDate!}}
+                                <span><strong>Start date:</strong></span> {{serviceRequest.startDate! | date:'dd/MM/yyyy' }}
                             </div>
                                 <!--Para cerrar aparece si el estado es 1 (o sea se esta atendiendo, aqui pone el costo de cierre)-->
                                 <div *ngIf="serviceRequest.status == 1">
-                                    <label for="totalCost"> Ingrese el costo total del servicio para cerrar la solicitud:</label>
+                                    <label for="totalCost"> Enter the total cost of the service to close the request:</label>
                                     <input id="totalCost" type="number" [(ngModel)]="serviceRequest.totalCost" name="totalCost" class="form-control custom-input" required>
-                                    <button type="button" class="btn custom-btn-red w-100" title="close invitation" (click)="close(serviceRequest)"> Cerrar solicitud</button>
+                                    <button type="button" class="btn custom-btn-red w-100" title="close invitation" (click)="close(serviceRequest)"> Close request</button>
                                 </div>
                                 <!--Fecha fin aparece cuando el estatus es 2 (y aparece el costo por el cual la cerro)-->
                                 <div *ngIf="serviceRequest.status == 2">
-                                    <span><strong>Fecha de Fin:</strong></span> {{serviceRequest.endDate}}
+                                    <span><strong>End date:</strong></span> {{serviceRequest.endDate | date:'dd/MM/yyyy'}}
                                     <br>
-                                    <span><strong>Costo Total:</strong></span> {{serviceRequest.totalCost}}
+                                    <span><strong>Total cost:</strong></span> {{serviceRequest.totalCost}}
                                 </div>
                             </div>
                         </li>

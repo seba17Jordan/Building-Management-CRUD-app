@@ -30,6 +30,7 @@ export class ServiceRequestComponent implements OnInit {
   categoryId?: string;
   selectedCategory?: string;  // Aquí se declara la propiedad selectedCategory
   error: string = '';
+  success: string = '';
 
   constructor(
     private serviceRequestService: ServiceRequestService,
@@ -53,10 +54,13 @@ export class ServiceRequestComponent implements OnInit {
     this.newServiceRequest.status = 0;
     this.serviceRequestService.createServiceRequest(this.newServiceRequest!).subscribe(
       (createdRequest) => {
+        this.error = '';
+        this.success = 'Service request created successfully';
         this.serviceRequests.push(createdRequest); 
         this.resetForm();
       },
       (error) => {
+        this.success = '';
         this.error = error.error.errorMessage;
       }
     );
@@ -156,5 +160,18 @@ export class ServiceRequestComponent implements OnInit {
   
   onCategoryChange(): void {
     this.getAllServiceRequests();
+  }
+
+  getStateLabel(state: number | undefined): string {
+    switch(state) {
+      case 0:
+        return 'Open';
+      case 1:
+        return 'Attending';
+      case 2:
+        return 'Closed';
+      default:
+        return 'Unknown';
+    }
   }
 }

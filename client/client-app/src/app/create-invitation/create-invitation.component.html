@@ -1,48 +1,55 @@
-<div class="d-flex justify-content-center align-items-center vh-100">
+<div class="d-flex justify-content-center align-items-center vh-100 big-container">
     <div class="container">
         <div class="row">
             <!--CREAR INVITACION-->
             <div class="col-md-6">
                 <div class="card p-4 invitation-container" style="width: 100%; max-width: 600px;">
-                    <h1 class="text-center">Invita a otros a unirse a la plataforma!</h1>
-                    <p class="text-center">Invita a encargados y administradores de empresas constructoras para que puedan unirse</p>
+                    <h1 class="text-center">Invite others to join the platform!</h1>
+                    <p class="text-center">Here you can invite managers and administrators of construction companies to join</p>
                     <form (ngSubmit)="createInvitation()">
                         <div class="mb-3">
                             <label for="mail" class="form-label">Email</label>
-                            <input type="email" id="mail" [(ngModel)]="mail" name="mail" class="form-control custom-input" placeholder="correo..." required>
+                            <input type="email" id="mail" [(ngModel)]="mail" name="mail" class="form-control custom-input" placeholder="email..." required>
                         </div>
                         <div class="mb-3">
-                            <label for="name" class="form-label">Nombre</label>
-                            <input type="text" id="name" [(ngModel)]="name" name="name" class="form-control custom-input" placeholder="nombre..." required>
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" id="name" [(ngModel)]="name" name="name" class="form-control custom-input" placeholder="name..." required>
                         </div>
                         <div class="mb-3">
-                            <label for="role" class="form-label">Rol</label>
-                            <select id="role" [(ngModel)]="role" name="role" class="form-select custom-input" required>
-                                <option value="3" >Administrador de E.C.</option>
-                                <option value="1">Encargado</option>
+                            <label for="role" class="form-label">Role</label>
+                            <select id="role" [(ngModel)]="role" name="role..." class="form-select custom-input" required>
+                                <option value="3" >Construction Company Administrador</option>
+                                <option value="1">Manager</option>
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="expirationDate" class="form-label">Fecha limite</label>
+                            <label for="expirationDate" class="form-label">Expiration date</label>
                             <input type="date" id="expirationDate" [(ngModel)]="expirationDate" name="expirationDate" class="form-control custom-input" required>
                         </div>
                         <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
                         <div *ngIf="success" class="alert alert-success mt-3">{{ success }}</div>
-                        <button type="submit" class="btn custom-btn-red w-100">Crear invitación</button>
+                        <button type="submit" class="btn custom-btn-red w-100">Create invitation</button>
                     </form>
                 </div>
             </div>
             <!--MOSTRAR INVITACIONES-->
             <div class="col-md-6">
-                <div class="card p-4 invitation-container mt-4" style="width: 100%; max-width: 600px;">
-                    <h1 class="text-center">Lista de invitaciones</h1>
+                <div class="card p-4 invitation-container" style="width: 100%; max-width: 600px;">
+                    <h1 class="text-center">Invitation list</h1>
                     <ul class="list-group">
                         <li *ngFor="let invitation of invitations" class="list-group-item d-flex justify-content-between align-items-center custom-input">
                             <div>
-                                <span><strong>Nombre:</strong> {{invitation.name}}</span><br>
+                                <span><strong>Name:</strong> {{invitation.name}}</span>
+                                <br>
                                 <span><strong>Email:</strong> {{invitation.email}}</span>
+                                <br>
+                                <span><strong>Role:</strong> {{invitation.role == 3 ? 'Construction Company Administrador' : 'Manager'}}</span>
+                                <br>
+                                <span><strong>Expiration Date:</strong> {{invitation.expirationDate | date:'dd/MM/yyyy' }}</span>
+                                <br>
+                                <span><strong>Invitation state:</strong> {{ getStateLabel(invitation!.state) }}</span>
                             </div>
-                        <button type="button" class="btn btn-danger btn-sm" title="delete invitation" (click)="delete(invitation)">x</button>
+                        <button type="button" class="btn btn-danger btn-sm" title="delete invitation" (click)="delete(invitation)">Delete</button>
                         </li>
                     </ul>
                     <div *ngIf="errorDelete" class="alert alert-danger mt-3">{{ errorDelete }}</div>

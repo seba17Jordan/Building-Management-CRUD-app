@@ -18,7 +18,7 @@ import { ReportComponent } from './reports/reports.component';
 import { ServiceRequestMaintenanceComponent } from './service-request-maintenance/service-request-maintenance.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' }, 
+  { path: '', pathMatch: 'full', canActivate: [AuthGuard], component: HomeComponent },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'administrator', component: AdministratorComponent, /*canActivate: [AuthGuard], data: { expectedRole: 0 }*/},
   { path: 'create-invitation', component: CreateInvitationComponent, canActivate: [AuthGuard], data: { expectedRole: 0 } },

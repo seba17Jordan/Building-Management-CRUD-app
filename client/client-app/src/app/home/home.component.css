@@ -1,18 +1,39 @@
 .welcome-container {
-    max-width: 600px;
-    margin: 0 auto;
-    text-align: center;
-    padding: 20px;
-  }
-  
-  .welcome-title {
-    font-size: 28px;
-    color: #ffffff; /* Cambia el color del texto a blanco */
-  }
-  
-  .welcome-message {
-    font-size: 16px;
-    color: #666;
-    margin-top: 20px;
-  }
+  max-width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  padding: 20px;
+}
+
+.welcome-title {
+  font-size: 28px;
+  color: #ffffff; /* Cambia el color del texto a blanco */
+}
+
+.welcome-message {
+  font-size: 16px;
+  color: #666;
+  margin-top: 20px;
+}
+
+.image-container {
+  width: 100%;
+  margin-bottom: -30px;
+}
+
+.image-container img {
+  width: 100%; /* Asegúrate de que la imagen ocupe el ancho completo del contenedor */
+  height: auto;
+  /*clip-path: inset(0 0 30% 0);*/
+}
+
+.role-badge {
+  font-size: 16px;
+  color: #ffffff;
+  background-color: #cc0000;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+
   

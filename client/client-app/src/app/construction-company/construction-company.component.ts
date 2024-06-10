@@ -9,11 +9,14 @@ import { ConstructionCompanyService } from '../services/constructionCompany.serv
 })
 export class ConstructionCompanyComponent implements OnInit {
 
-  newConstructionCompany: Partial<ConstructionCompany> = { name: '' };
-  updateCompanyName: Partial<ConstructionCompany> = { name: '' };
-  existingConstructionCompanyName: string | null = null;
-  errorMessage: string | null = null;
-  successMessage: string | null = null;
+  newConstructionCompany: ConstructionCompany = { name: '' };
+  updateCompanyName: ConstructionCompany = { name: '' };
+  existingConstructionCompanyName: string ='';
+  errorCreate: string ='';
+  errorUpdate: string ='';
+  successCreate: string ='';
+  successUpdate: string ='';
+  constructionCompanyName: string = '';
 
   constructor(private constructionCompanyService: ConstructionCompanyService) { }
 
@@ -22,40 +25,35 @@ export class ConstructionCompanyComponent implements OnInit {
   }
 
   createConstructionCompany(): void {
-    if (!this.newConstructionCompany.name) {
-      this.errorMessage = 'Please provide a name for the construction company.';
-      return;
-    }
-
-    this.constructionCompanyService.createConstructionCompany(this.newConstructionCompany as ConstructionCompany)
+    this.newConstructionCompany.name = this.constructionCompanyName;
+    console.log(this.constructionCompanyName);
+    this.constructionCompanyService.createConstructionCompany(this.newConstructionCompany)
       .subscribe(
         response => {
-          console.log('Construction company created successfully:', response);
+          this.successCreate = 'Construction company created successfully'; 
+          this.errorCreate = '';
           this.existingConstructionCompanyName = response.name;
-          this.errorMessage = null;
-          this.successMessage = 'Construction company created successfully.';
           this.resetForm();
         },
         error => {
-          console.error('Error creating construction company', error);
-          this.errorMessage = 'Error creating construction company: ' + error.error.message;
+          console.log(error.error.errorMessage);
+          this.errorCreate = error.error.errorMessage;
+          this.successCreate = '';
         }
       );
   }
 
   updateConstructionCompanyName(): void {
-    if (!this.updateCompanyName.name) {
-      console.error('Please choose another name.');
-      return;
-    }
-
-    this.constructionCompanyService.updateConstructionCompanyName(this.updateCompanyName as ConstructionCompany)
+    this.updateCompanyName.name = this.constructionCompanyName;
+    this.constructionCompanyService.updateConstructionCompanyName(this.updateCompanyName)
       .subscribe(
         response => {
-          console.log('Construction company name updated successfully', response);
+          this.errorUpdate = '';
+          this.successUpdate = 'Construction company name updated successfully';
         },
         error => {
-          console.error('Error updating construction company name', error);
+          this.successUpdate = '';
+          this.errorUpdate = error.error.errorMessage;
         }
       );
   }
@@ -67,7 +65,6 @@ export class ConstructionCompanyComponent implements OnInit {
           this.existingConstructionCompanyName = response.name;
         },
         error => {
-          console.error('Error loading construction company', error);
         }
       );
   }

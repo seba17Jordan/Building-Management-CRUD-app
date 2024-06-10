@@ -1,6 +1,5 @@
 .invitation-container {
     background-color: #2F2F2F; /* Un gris claro */
-    padding: 2rem;
     border-radius: 8px;
     color: white;
   }
@@ -13,3 +12,15 @@
   .custom-input::placeholder {
     color: #888888 !important;
   }
+
+  .big-container {
+    margin-top: 20px; /* Ajustar según sea necesario */
+}
+
+  .container {
+    max-height: calc(100vh - 80px); /* Ajustar según sea necesario */
+    overflow-y: auto;
+    padding-bottom: 20px;
+}
+  
+  

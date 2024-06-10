@@ -52,4 +52,17 @@ export class ServiceRequestMaintenanceComponent {
       }  
     );
   }
+
+  getStateLabel(state: number | undefined): string {
+    switch(state) {
+      case 0:
+        return 'Open';
+      case 1:
+        return 'Attending';
+      case 2:
+        return 'Closed';
+      default:
+        return 'Unknown';
+    }
+  }
 }
