@@ -1,0 +1,33 @@
+<div class="container " *ngIf="!existingConstructionCompanyName">
+  <!-- Crear empresa de construcción -->
+  <div class="card p-4 mt-5 login-container">
+    <h2 class="create-title text-center mb-4">Create construction company</h2>
+    <p>Here you can create your own construction company, you can edit the name later</p>
+    <form (ngSubmit)="createConstructionCompany()">
+        <div class="mb-3">
+            <label for="createName" class="form-label">Name:</label>
+            <input type="text" id="createName" [(ngModel)]="constructionCompanyName" name="constructionCompanyName" class="form-control custom-input" placeholder="name...">
+        </div>
+        <div *ngIf="errorCreate" class="alert alert-danger mt-3">{{ errorCreate }}</div>
+        <div *ngIf="successCreate" class="alert alert-success mt-3">{{ successCreate }}</div>
+        <button type="submit" class="btn btn-primary custom-btn-red">Create</button>
+    </form>
+  </div>
+</div>
+
+<div class="container" *ngIf="existingConstructionCompanyName">
+  <!-- Actualizar empresa de construcción -->
+  <div class="card p-4 mt-5 login-container">
+    <h2 class="update-title text-center mb-4">Edit construction company name: {{ existingConstructionCompanyName }}</h2>
+    <form (ngSubmit)="updateConstructionCompanyName()">
+      <div class="mb-3">
+        <label for="updateName" class="form-label">New name:</label>
+        <input type="text" id="updateName" [(ngModel)]="constructionCompanyName" class="form-control custom-input" name="updateName" placeholder="new name...">
+      </div>
+      <div *ngIf="errorUpdate" class="alert alert-danger mt-3">{{ errorUpdate }}</div>
+      <div *ngIf="successUpdate" class="alert alert-success mt-3">{{ successUpdate }}</div>
+      <button type="submit" class="btn btn-primary custom-btn-red">Update</button>
+    </form>
+  </div>
+</div>
+

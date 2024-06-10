@@ -52,33 +52,42 @@ namespace BusinessLogic
                 throw new ArgumentException("Service request is not open", nameof(serviceRequest));
             }
 
-            serviceRequest.MaintainancePersonId = maintainancePersonId;
+            serviceRequest.MaintenancePerson = maintainancePerson;
+            serviceRequest.MaintenanceId = maintainancePersonId;
             _serviceRequestRepository.UpdateServiceRequest(serviceRequest);
             return serviceRequest;
         }
 
-        public ServiceRequest CreateServiceRequest(ServiceRequest serviceRequest)
+        public ServiceRequest CreateServiceRequest(Guid apartmentId, Guid categoryId, string description, User manager)
         {
-            if (serviceRequest == null)
+            if (string.IsNullOrEmpty(description))
             {
-                throw new ArgumentNullException(nameof(serviceRequest), "Service request is null");
+                throw new EmptyFieldException("Description is empty");
             }
 
-            serviceRequest.SelfValidate();
-            
-            if (!_buildingRepository.ExistApartment(serviceRequest.Apartment)) { 
+            if (!_buildingRepository.ExistApartment(apartmentId)) { 
                 throw new ObjectNotFoundException("Apartment does not exist");
             }
-            if (!_categoryRepository.FindCategoryById(serviceRequest.Category)) { 
+            if (!_categoryRepository.FindCategoryById(categoryId)) { 
                 throw new ObjectNotFoundException("Category does not exist");
             }
 
             //Documentar
-            Category cat = _categoryRepository.GetCategoryById(serviceRequest.Category);
-            serviceRequest.CategoryName = cat.Name;
+            Category cat = _categoryRepository.GetCategoryById(categoryId);
 
-            Apartment apartment = _buildingRepository.GetApartmentById(serviceRequest.Apartment);
-            serviceRequest.BuildingId = _buildingRepository.GetBuildingIdByApartmentId(apartment);
+            Apartment apartment = _buildingRepository.GetApartmentById(apartmentId);
+
+            Guid buildingId = _buildingRepository.GetBuildingIdByApartment(apartment);
+            Building building = _buildingRepository.GetBuildingById(buildingId);
+
+            ServiceRequest serviceRequest = new ServiceRequest
+            {
+                Description = description,
+                Manager = manager,
+                Building = building,
+                Category = cat,
+                Apartment = apartment,
+            };
 
             serviceRequest.Status = ServiceRequestStatus.Open;
             return _serviceRequestRepository.CreateServiceRequest(serviceRequest);
@@ -104,7 +113,7 @@ namespace BusinessLogic
             }
 
             //Solo puedo aceptar o cerrar las solicitudes asignadas para mi
-            if(serviceRequest.MaintainancePersonId != maintenanceUserId)
+            if(serviceRequest.MaintenancePerson == null || serviceRequest.MaintenancePerson.Id != maintenanceUserId)
             {
                 throw new ArgumentException("Service request is not assigned to the current maintainance person", nameof(serviceRequest));
             }

@@ -40,7 +40,7 @@ namespace BusinessLogicTest
             var BuildingRepository = new Mock<IBuildingRepository>();
             var ServiceRequestRepository = new Mock<IServiceRequestRepository>();
 
-            BuildingRepository.Setup(p => p.GetAllBuildings(managerId)).Returns(new List<Building>
+            BuildingRepository.Setup(p => p.GetAllBuildingsByManagerId(managerId)).Returns(new List<Building>
             {
                 building
             });
@@ -50,19 +50,19 @@ namespace BusinessLogicTest
                 new ServiceRequest
                 {
                     Id = Guid.NewGuid(),
-                    BuildingId = BuildingRepository.Object.GetAllBuildings(managerId).First().Id,
+                    Building = building,
                     Status = ServiceRequestStatus.Open
                 },
                 new ServiceRequest
                 {
                     Id = Guid.NewGuid(),
-                    BuildingId = BuildingRepository.Object.GetAllBuildings(managerId).First().Id,
+                    Building = building,
                     Status = ServiceRequestStatus.Attending
                 },
                 new ServiceRequest
                 {
                     Id = Guid.NewGuid(),
-                    BuildingId = BuildingRepository.Object.GetAllBuildings(managerId).First().Id,
+                    Building = building,
                     Status = ServiceRequestStatus.Closed
                 }
             });
@@ -107,7 +107,7 @@ namespace BusinessLogicTest
                 {
                     apartment
                 },
-                managerId = manager.Id
+                Manager = manager
             };
 
             Category category = new Category { Name = "CategoryName" };
@@ -115,12 +115,13 @@ namespace BusinessLogicTest
             ServiceRequest serviceRequest = new ServiceRequest
             {
                 Id = Guid.NewGuid(),
-                BuildingId = building.Id,
-                Apartment = apartment.Id,
+                Building = building,
+                Apartment = apartment,
                 Status = ServiceRequestStatus.Closed,
-                Category = category.Id,
-                MaintainancePersonId = maintenancePerson.Id,
-                ManagerId = manager.Id,
+                Category = category,
+                MaintenancePerson = maintenancePerson,
+                Manager = manager,
+                MaintenanceId = maintenancePerson.Id,
                 StartDate = new DateTime(2022, 4, 25, 10, 0, 0),
                 EndDate = new DateTime(2022, 4, 25, 15, 0, 0)
         };

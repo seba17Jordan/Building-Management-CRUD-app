@@ -6,12 +6,13 @@ using ModelsApi.In;
 using ModelsApi.Out;
 using BuildingManagementApi.Filters;
 using Domain.@enum;
+using BusinessLogic;
 
 namespace BuildingManagementApi.Controllers
 {
     [ApiController]
     [Route("api/admins")]
-    [TypeFilter(typeof(ExceptionFilter))] 
+    [ExceptionFilter]
     public class AdministratorController : ControllerBase
     {
         private readonly IUserLogic _userLogic;
@@ -22,8 +23,8 @@ namespace BuildingManagementApi.Controllers
         }
 
         [HttpPost]
-        [ServiceFilter(typeof(AuthenticationFilter))]
-        [AuthorizationFilter(_currentRole = Roles.Administrator)]
+        //[ServiceFilter(typeof(AuthenticationFilter))]
+        //[AuthorizationFilter(_currentRole = Roles.Administrator)]
         public IActionResult CreateAdministrator([FromBody] AdministratorRequest adminToCreate)
         {
             var admin = adminToCreate.ToEntity();
@@ -31,6 +32,23 @@ namespace BuildingManagementApi.Controllers
             AdministratorResponse response = new AdministratorResponse(resultAdmin);
 
             return CreatedAtAction(nameof(CreateAdministrator), new { id = response.Id }, response);
+        }
+
+        [HttpGet("managers")]
+        [ServiceFilter(typeof(AuthenticationFilter))]
+        [AuthorizationFilter(_currentRole = Roles.ConstructionCompanyAdmin)]
+        public IActionResult GetAllManagers()
+        {
+            IEnumerable<UserResponse> response = _userLogic.GetAllManagers().Select(m => new UserResponse(m)).ToList();
+            return Ok(response);
+        }
+
+        [HttpGet("maintenance")]
+        [ServiceFilter(typeof(AuthenticationFilter))]
+        public IActionResult GetAllMaintenancePersons()
+        {
+            IEnumerable<UserResponse> response = _userLogic.GetAllMaintenancePersons().Select(m => new UserResponse(m)).ToList();
+            return Ok(response);
         }
     }
 }

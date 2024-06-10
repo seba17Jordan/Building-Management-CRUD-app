@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Domain.@enum;
 using IDataAccess;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +18,16 @@ namespace DataAccess
             _context.Set<User>().Add(user);
             _context.SaveChanges();
             return user;
+        }
+
+        public IEnumerable<User> GetManagers()
+        {
+            return _context.Set<User>().Where(u => u.Role == Roles.Manager);
+        }
+
+        public IEnumerable<User> GetAllMaintenance()
+        {
+            return _context.Set<User>().Where(u => u.Role == Roles.Maintenance);
         }
 
         public User GetUserByEmail(string email)

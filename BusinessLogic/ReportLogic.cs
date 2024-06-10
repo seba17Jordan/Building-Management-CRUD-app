@@ -34,7 +34,7 @@ namespace BusinessLogic
                 throw new ObjectNotFoundException("Building not found.");
             }
 
-            if(currentBuilding.managerId != Managerid)
+            if(currentBuilding.Manager.Id != Managerid)
             {
                 throw new InvalidOperationException("Manager does not have access to this building.");
             }
@@ -49,10 +49,10 @@ namespace BusinessLogic
                 {
                     throw new ObjectNotFoundException("Maintenance person not found.");
                 }
-                serviceRequests = serviceRequests.Where(sr => sr.MaintainancePersonId == maintenancePerson.Id); 
+                serviceRequests = serviceRequests.Where(sr => sr.MaintenancePerson.Id == maintenancePerson.Id); 
             }
 
-            var groupedRequests = serviceRequests.GroupBy(sr => sr.MaintainancePersonId);
+            var groupedRequests = serviceRequests.GroupBy(sr => sr.MaintenancePerson.Id);
 
             List<(string, int, int, int, string)> reportList = new List<(string, int, int, int, string)>();
 
@@ -62,6 +62,7 @@ namespace BusinessLogic
                 double averageCompletionTime = 0;
                 averageCompletionTime = CalculateAverageCompletionTime(serviceRequestGroup);
 
+                bool hasMaintenancePerson = (Guid)serviceRequestGroup.Key != null;
                 Guid MaintenancePerson = (Guid)serviceRequestGroup.Key;
                 string maintenancePersonName = _userRepository.GetUserById(MaintenancePerson).Name;
                 int OpenRequests = serviceRequestGroup.Count(sr => sr.Status == ServiceRequestStatus.Open);
@@ -101,7 +102,7 @@ namespace BusinessLogic
 
         public IEnumerable<(string, int, int, int)> GetReport(Guid userId, string param)
         {
-            List<Building> buildings = _buildingRepository.GetAllBuildings(userId);
+            List<Building> buildings = _buildingRepository.GetAllBuildingsByManagerId(userId);
 
             if (param != null)
             {
@@ -131,7 +132,7 @@ namespace BusinessLogic
             {
 
                 IEnumerable<ServiceRequest> requests = _serviceRequestRepository.GetAllServiceRequests()
-                .Where(req => req.BuildingId == building.Id);
+                .Where(req => req.Building.Id == building.Id);
 
                 string buildingName = building.Name ?? "Unknown";
                 int openCount = requests.Count(req => req.Status == ServiceRequestStatus.Open);

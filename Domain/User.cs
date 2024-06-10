@@ -40,6 +40,24 @@ namespace Domain
             }
         }
 
+        public void SelfValidateData()
+        {
+            if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
+            {
+                throw new EmptyFieldException("There are empty fields");
+            }
+
+            if (Password.Length < 6)
+            {
+                throw new ArgumentException("Password must be at least 6 characters long");
+            }
+
+            if (!IsValidEmail(Email))
+            {
+                throw new ArgumentException("Invalid email format", nameof(Email));
+            }
+        }
+
         private bool IsValidEmail(string email)
         {
             string emailRegexPattern = @"^\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b$";

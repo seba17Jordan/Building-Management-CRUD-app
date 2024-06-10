@@ -49,11 +49,11 @@ namespace BusinessLogicTest
             var mockUserRepository = new Mock<IUserRepository>();
 
             InvitationLogic invitationLogic = new InvitationLogic(mockInvitationRepository.Object, mockUserRepository.Object);
-            mockInvitationRepository.Setup(x => x.GetInvitationById(It.IsAny<Guid>())).Returns(invitation);
+            mockInvitationRepository.Setup(x => x.GetInvitationByMail(It.IsAny<string>())).Returns(invitation);
             mockInvitationRepository.Setup(x => x.UpdateInvitation(It.IsAny<Invitation>()));
 
             // Act
-            invitationLogic.RejectInvitation(invitation.Id);
+            invitationLogic.RejectInvitation(invitation.Email);
 
             // Assert
             Assert.AreEqual(Status.Rejected, invitation.State);
@@ -121,7 +121,7 @@ namespace BusinessLogicTest
             var mockInvitationRepository = new Mock<IInvitationRepository>();
             var mockUserRepository = new Mock<IUserRepository>();
 
-            mockInvitationRepository.Setup(x => x.GetInvitationById(invitation.Id)).Returns(invitation);
+            mockInvitationRepository.Setup(x => x.GetInvitationByMail(invitation.Email)).Returns(invitation);
             mockInvitationRepository.Setup(x => x.UpdateInvitation(invitation));
             mockUserRepository.Setup(x => x.CreateUser(It.IsAny<User>())).Returns(expectedManager);
 
@@ -129,7 +129,7 @@ namespace BusinessLogicTest
 
 
             // Act
-            User result = invitationLogic.AcceptInvitation(invitation.Id, managerToCreate);
+            User result = invitationLogic.AcceptInvitation(managerToCreate);
 
             // Assert
             mockInvitationRepository.Verify();
@@ -242,12 +242,12 @@ namespace BusinessLogicTest
                 var mockInvitationRepository = new Mock<IInvitationRepository>();
                 var mockUserRepository = new Mock<IUserRepository>();
 
-                mockInvitationRepository.Setup(x => x.GetInvitationById(invitation.Id)).Returns(invitation);
+                mockInvitationRepository.Setup(x => x.GetInvitationByMail(invitation.Email)).Returns(invitation);
 
                 InvitationLogic invitationLogic = new InvitationLogic(mockInvitationRepository.Object, mockUserRepository.Object);
 
                 // Act
-                invitationLogic.AcceptInvitation(invitation.Id, managerToCreate);
+                invitationLogic.AcceptInvitation(managerToCreate);
             }
             catch (InvalidOperationException e)
             {
@@ -259,6 +259,46 @@ namespace BusinessLogicTest
             Assert.IsNotNull(specificEx);
             Assert.IsInstanceOfType(specificEx, typeof(InvalidOperationException));
             Assert.IsTrue(specificEx.Message.Contains("The invitation has expired"));
+        }
+
+        [TestMethod]
+        public void GetAllInvitationsCorrectTestLogic()
+        {
+            // Arrange
+            var invitations = new List<Invitation>
+            {
+                new Invitation {
+                    Id = Guid.NewGuid(),
+                    Name = "Manager 1",
+                    Role = Roles.Manager,
+                    Email = "",
+                    ExpirationDate = DateTime.Now.AddDays(6),
+                    State = Status.Pending
+                },
+                new Invitation {
+                    Id = Guid.NewGuid(),
+                    Name = "Manager 1",
+                    Role = Roles.Manager,
+                    Email = "dae",
+                    ExpirationDate = DateTime.Now.AddDays(6),
+                    State = Status.Accepted
+                }
+            };
+
+            Mock<IUserRepository> _userRepository = new Mock<IUserRepository>();
+            Mock<IInvitationRepository> _invitationRepository = new Mock<IInvitationRepository>();
+
+            _invitationRepository.Setup(x => x.GetAllInvitations()).Returns(invitations);
+
+            // Act
+            InvitationLogic _invitationLogic = new InvitationLogic(_invitationRepository.Object, _userRepository.Object);
+
+            var result = _invitationLogic.GetAllInvitations();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2, result.Count());
+            Assert.AreEqual("Manager 1", result.First().Name);
         }
     }
 }

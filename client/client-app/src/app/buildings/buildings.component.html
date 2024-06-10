@@ -1,0 +1,27 @@
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Your buildings:</h2>
+  <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="list-group">
+        <li *ngFor="let building of buildings" class="list-group-item mb-3 custom-input">
+          <div class="card p-3 building-card" (click)="selectBuilding(building)">
+            <div class="card-body">
+              <span><strong>Building name:</strong> </span> {{building.name}}
+              <br>
+              <span><strong>Address:</strong> </span> {{building.address}}
+              <br>
+              <span><strong>Common expenses:</strong> </span> {{building.commonExpenses}}
+              <br>
+              <div *ngIf="building.hasManager"> 
+                <span><strong>Manager:</strong> </span> {{building.managerName}}
+              </div>
+            </div>
+            <button type="button"  class="btn custom-btn-red-delete w-100 mt-3" title="delete building" (click)="delete(building); $event.stopPropagation()"> Delete building </button>
+          </div>
+        </li>
+      </ul>
+      <button type="button" class="btn custom-btn-red w-100 mt-3" routerLink="/buildings/create">Add building</button>
+    </div>
+  </div>
+</div>

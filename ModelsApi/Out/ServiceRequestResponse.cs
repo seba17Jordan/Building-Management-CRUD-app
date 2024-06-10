@@ -15,16 +15,26 @@ namespace ModelsApi.Out
     {
         public Guid Id { get; set; }
         public string Description { get; set; }
-        public Guid Apartment { get; set; }
-        public Guid Category { get; set; }
+        public ApartmentResponse Apartment { get; set; }
+        public CategoryResponse Category { get; set; }
         public ServiceRequestStatus Status { get; set; }
+        public UserResponse MaintenancePerson { get; set; }
+        public UserResponse Manager { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public decimal? TotalCost { get; set; }
 
         public ServiceRequestResponse (ServiceRequest expectedServiceRequest)
         {
             Id = expectedServiceRequest.Id;
             Description = expectedServiceRequest.Description;
-            Apartment = expectedServiceRequest.Apartment;
-            Category = expectedServiceRequest.Category;
+            if (expectedServiceRequest.Apartment != null) Apartment = new ApartmentResponse(expectedServiceRequest.Apartment);
+            if (expectedServiceRequest.Category != null) Category = new CategoryResponse(expectedServiceRequest.Category);
+            if (expectedServiceRequest.MaintenancePerson != null) MaintenancePerson = new UserResponse(expectedServiceRequest.MaintenancePerson);
+            if (expectedServiceRequest.Manager != null) Manager = new UserResponse(expectedServiceRequest.Manager);
+            if (expectedServiceRequest.StartDate != null) StartDate = expectedServiceRequest.StartDate;
+            if (expectedServiceRequest.EndDate != null) EndDate = expectedServiceRequest.EndDate;
+            if (expectedServiceRequest.TotalCost != null) TotalCost = expectedServiceRequest.TotalCost;
             Status = expectedServiceRequest.Status;
         }
 

@@ -1,5 +1,6 @@
 ﻿using CustomExceptions;
 using Domain;
+using Domain.@enum;
 using IDataAccess;
 using LogicInterface;
 using System.Globalization;
@@ -32,9 +33,19 @@ namespace BusinessLogic
             return _userRepository.CreateUser(user);
         }
 
+        public IEnumerable<User> GetAllManagers()
+        {
+            return _userRepository.GetManagers();
+        }
+
         private Func<User, bool> GetUsersByMail(string email)
         {
             return (User u) => email == "" || u.Email == email;
+        }
+
+        public IEnumerable<User> GetAllMaintenancePersons()
+        {
+            return _userRepository.GetAllMaintenance();
         }
     }
 }

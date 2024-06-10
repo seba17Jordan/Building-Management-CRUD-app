@@ -1,0 +1,35 @@
+[
+    {
+      "name": "Edificio 5",
+      "address": "Calle Principal 123",
+      "constructionCompany": "Constructora ABC",
+      "commonExpenses": 500,
+      "apartments": [
+        {
+          "floor": 5,
+          "number": 501,
+          "owner": { "name": "Juan", "lastName": "Pérez", "email": "juan.perez@example.com" },
+          "rooms": 5,
+          "bathrooms": 5,
+          "hasTerrace": true
+        }
+      ]
+    },
+    {
+      "name": "Edificio 6",
+      "address": "Avenida Secundaria 456",
+      "constructionCompany": "Constructora XYZ",
+      "commonExpenses": 600,
+      "apartments": [
+        {
+          "floor": 6,
+          "number": 601,
+          "owner": { "name": "Ana", "lastName": "García", "email": "ana.garcia@example.com" },
+          "rooms": 6,
+          "bathrooms": 6,
+          "hasTerrace": false
+        }
+      ]
+    }
+  ]
+  

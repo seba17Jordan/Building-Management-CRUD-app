@@ -49,5 +49,38 @@ namespace BuildingManagementApi.Tests.Controllers
 
             var categoryResponse = actionResult.Value as CategoryResponse;
             Assert.AreEqual(expectedMappedCategory, categoryResponse);        }
+
+        [TestMethod]
+        public void GetAllCategories_ReturnsCategories_Successfully()
+        {
+            // Arrange
+            var categories = new List<Category>
+            {
+                new Category { Id = Guid.NewGuid(), Name = "Category1" },
+                new Category { Id = Guid.NewGuid(), Name = "Category2" },
+                new Category { Id = Guid.NewGuid(), Name = "Category3" }
+            };
+
+            var expectedCategoryResponses = categories.Select(c => new CategoryResponse(c)).ToList();
+
+            _categoryLogicMock.Setup(l => l.GetAllCategories()).Returns(categories);
+
+            // Act
+            var actionResult = _controller.GetAllCategories() as OkObjectResult;
+
+            // Assert
+            Assert.IsNotNull(actionResult);
+
+            var categoryResponses = actionResult.Value as List<CategoryResponse>;
+            Assert.IsNotNull(categoryResponses);
+
+            Assert.AreEqual(expectedCategoryResponses.Count, categoryResponses.Count);
+
+            for (int i = 0; i < expectedCategoryResponses.Count; i++)
+            {
+                Assert.AreEqual(expectedCategoryResponses[i].Id, categoryResponses[i].Id);
+                Assert.AreEqual(expectedCategoryResponses[i].Name, categoryResponses[i].Name);
+            }
+        }
     }
 }

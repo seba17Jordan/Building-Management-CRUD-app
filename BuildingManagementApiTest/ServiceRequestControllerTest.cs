@@ -40,8 +40,8 @@ public class ServiceRequestControllerTest
         var serviceRequestToCreate = new ServiceRequestRequest
         {
             Description = "A description",
-            Apartment = apartment.Id,
-            Category = category.Id,
+            CategoryId = category.Id,
+            ApartmentId = apartment.Id,
             Status = ServiceRequestStatus.Open
         };
 
@@ -49,8 +49,8 @@ public class ServiceRequestControllerTest
         {
             Id = Guid.NewGuid(),
             Description = "A description",
-            Apartment = apartment.Id,
-            Category = category.Id,
+            Apartment = apartment,
+            Category = category,
             Status = ServiceRequestStatus.Open
         };
 
@@ -58,7 +58,7 @@ public class ServiceRequestControllerTest
 
         Mock<IServiceRequestLogic> serviceRequestLogic = new Mock<IServiceRequestLogic>(MockBehavior.Strict);
         Mock<ISessionService> sessionService = new Mock<ISessionService>(MockBehavior.Strict);
-        serviceRequestLogic.Setup(serviceRequestLogic => serviceRequestLogic.CreateServiceRequest(It.IsAny<ServiceRequest>())).Returns(expectedServiceRequest);
+        serviceRequestLogic.Setup(serviceRequestLogic => serviceRequestLogic.CreateServiceRequest(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<User>())).Returns(expectedServiceRequest);
         sessionService.Setup(p => p.GetUserByToken(It.IsAny<Guid>())).Returns(maintainanceUser);
         
         ServiceRequestController serviceRequestController = new ServiceRequestController(serviceRequestLogic.Object, sessionService.Object);
@@ -110,8 +110,10 @@ public class ServiceRequestControllerTest
             {
                 Id = Guid.NewGuid(),
                 Description = "A description",
-                Apartment = apartment.Id,
-                Category = category.Id,
+               
+                Apartment = apartment,
+                
+                Category = category,
                 Status = ServiceRequestStatus.Open
             }
         };
@@ -171,8 +173,10 @@ public class ServiceRequestControllerTest
         {
             Id = Guid.NewGuid(),
             Description = "A description",
-            Apartment = apartment.Id,
-            Category = category.Id,
+            
+            Apartment = apartment,
+            Category = category,
+            
             Status = ServiceRequestStatus.Open
         };
 
@@ -180,9 +184,9 @@ public class ServiceRequestControllerTest
         {
             Id = Guid.NewGuid(),
             Description = "A description",
-            Apartment = apartment.Id,
-            Category = category.Id,
-            MaintainancePersonId = maintenancePerson.Id,
+            Apartment = apartment,
+            Category = category,
+            MaintenancePerson = maintenancePerson,
             Status = ServiceRequestStatus.Attending
         };
 
@@ -197,7 +201,7 @@ public class ServiceRequestControllerTest
         .Returns(expectedServiceRequest).Callback<Guid, Guid>((requestId, maintenancePersonId) =>
         {
             serviceRequest.Status = ServiceRequestStatus.Attending;
-            serviceRequest.MaintainancePersonId = maintenancePersonId;
+            serviceRequest.MaintenancePerson = maintenancePerson;
         });
 
         ServiceRequestController serviceRequestController = new ServiceRequestController(serviceRequestLogic.Object, sessionService.Object);
@@ -247,9 +251,9 @@ public class ServiceRequestControllerTest
         {
             Id = Guid.NewGuid(),
             Description = "A description",
-            Apartment = apartment.Id,
-            Category = category.Id,
-            MaintainancePersonId = maintenancePerson.Id,
+            Apartment = apartment,
+            Category = category,
+            MaintenancePerson = maintenancePerson,
             Status = ServiceRequestStatus.Open
         };
 
@@ -257,9 +261,9 @@ public class ServiceRequestControllerTest
         {
             Id = Guid.NewGuid(),
             Description = "A description",
-            Apartment = apartment.Id,
-            Category = category.Id,
-            MaintainancePersonId = maintenancePerson.Id,
+            Apartment = apartment,
+            Category = category,
+            MaintenancePerson = maintenancePerson,
             Status = ServiceRequestStatus.Attending,
             //fecha especifica
             StartDate = new DateTime(2024, 4, 30)
@@ -332,9 +336,9 @@ public class ServiceRequestControllerTest
         {
             Id = Guid.NewGuid(),
             Description = "A description",
-            Apartment = apartment.Id,
-            Category = category.Id,
-            MaintainancePersonId = maintenancePerson.Id,
+            Apartment = apartment,
+            Category = category,
+            MaintenancePerson = maintenancePerson,
             Status = ServiceRequestStatus.Attending,
             StartDate = new DateTime(2024, 4, 30)
         };
@@ -343,9 +347,9 @@ public class ServiceRequestControllerTest
         {
             Id = Guid.NewGuid(),
             Description = "A description",
-            Apartment = apartment.Id,
-            Category = category.Id,
-            MaintainancePersonId = maintenancePerson.Id,
+            Apartment = apartment,
+            Category = category,
+            MaintenancePerson = maintenancePerson,
             Status = ServiceRequestStatus.Closed,
             TotalCost = 100,
             StartDate = new DateTime(2024, 4, 30),
@@ -420,9 +424,9 @@ public class ServiceRequestControllerTest
         {
             Id = Guid.NewGuid(),
             Description = "A description",
-            Apartment = apartment.Id,
-            Category = category.Id,
-            MaintainancePersonId = maintenancePerson.Id,
+            Apartment = apartment,
+            Category = category,
+            MaintenancePerson = maintenancePerson,
             Status = ServiceRequestStatus.Open
         };
 

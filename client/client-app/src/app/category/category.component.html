@@ -1,0 +1,12 @@
+<div class="d-flex justify-content-center align-items-center vh-100">
+  <div class="card p-4 category-container" style="width: 100%; max-width: 400px;">
+    <h2>Create category</h2>
+    <div class="mb-3">
+      <label for="categoryName">Name:</label>
+      <input type="text" id="categoryName" [(ngModel)]="newCategory.name" class="form-control custom-input"  placeholder="category name..." required>
+    </div>
+    <button (click)="createCategory()" class="btn custom-btn-red w-100">Create</button>
+    <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
+    <div *ngIf="success" class="alert alert-success mt-3">{{ success }}</div>
+  </div>
+</div>

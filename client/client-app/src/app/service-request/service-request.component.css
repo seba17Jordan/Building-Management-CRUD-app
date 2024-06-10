@@ -1,0 +1,25 @@
+.service-request-container {
+    background-color: #2F2F2F; /* Un gris claro */
+    padding: 2rem;
+    border-radius: 8px;
+    color: white;
+  }
+
+
+/* Estilo para los elementos de la lista */
+.list-group-item {
+  background-color: #2F2F2F;
+  color: white;
+  border: none;
+}
+
+.custom-input {
+  background-color: #2F2F2F !important;
+  color: white;
+  border: 1px solid #444444;
+  width: 100%;
+}
+
+.custom-input::placeholder {
+  color: #888888 !important;
+}

@@ -25,7 +25,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerFactory", "ServerFact
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessTest", "DataAccessTest\DataAccessTest.csproj", "{8B01575A-DE5A-4148-B37D-8D4DEF2D654B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomExceptions", "CustomExceptions\CustomExceptions.csproj", "{EAC4E7B0-99AB-4F3C-A220-75DEFAAC40C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomExceptions", "CustomExceptions\CustomExceptions.csproj", "{EAC4E7B0-99AB-4F3C-A220-75DEFAAC40C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImportersInterface", "Importers\ImportersInterface.csproj", "{713D7FB0-979E-4FE0-98EB-7767ECAAE8C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonImporter", "JsonImporter\JsonImporter.csproj", "{C5751C7C-E96B-4C03-9327-AD1DB5B24C22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImportersLogic", "ImportersLogic\ImportersLogic.csproj", "{489B5A49-7DD6-45E1-BD28-D6CE6AC91B86}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +87,18 @@ Global
 		{EAC4E7B0-99AB-4F3C-A220-75DEFAAC40C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EAC4E7B0-99AB-4F3C-A220-75DEFAAC40C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EAC4E7B0-99AB-4F3C-A220-75DEFAAC40C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{713D7FB0-979E-4FE0-98EB-7767ECAAE8C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{713D7FB0-979E-4FE0-98EB-7767ECAAE8C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{713D7FB0-979E-4FE0-98EB-7767ECAAE8C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{713D7FB0-979E-4FE0-98EB-7767ECAAE8C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5751C7C-E96B-4C03-9327-AD1DB5B24C22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5751C7C-E96B-4C03-9327-AD1DB5B24C22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5751C7C-E96B-4C03-9327-AD1DB5B24C22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5751C7C-E96B-4C03-9327-AD1DB5B24C22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{489B5A49-7DD6-45E1-BD28-D6CE6AC91B86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{489B5A49-7DD6-45E1-BD28-D6CE6AC91B86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{489B5A49-7DD6-45E1-BD28-D6CE6AC91B86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{489B5A49-7DD6-45E1-BD28-D6CE6AC91B86}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

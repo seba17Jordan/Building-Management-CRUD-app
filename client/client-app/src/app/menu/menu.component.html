@@ -1,0 +1,118 @@
+<!--Nav para usuario no logueado-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-custom" *ngIf="!authService.isLoggedIn()">    
+    <div class="container-fluid">
+      <a class="navbar-brand" routerLink="/">Building Management</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/invitations" routerLinkActive="active">I have an invitation</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+<!--Si quiero menu centrado entonces en el ul va me en vez de ms-->
+  
+<!--Nav para usuario logeado con rol 0 (o sea admin)-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-custom" *ngIf="authService.isLoggedIn() && authService.isAdmin()">    
+    <div class="container-fluid">
+      <a class="navbar-brand" routerLink="/home">Building Management</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/category">Categories</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/administrator">Administrator</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/create-invitation">Invitations</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" (click)="logout()">Logout</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+<!--Nav para usuario logeado con rol 1 (o sea es manager)-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-custom" *ngIf="authService.isLoggedIn() && authService.isManager()">    
+    <div class="container-fluid">
+      <a class="navbar-brand" routerLink="/home">Building Management</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/service-request">Service requests</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/maintenance">Maintenance people</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/reports">Reports</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" (click)="logout()">Logout</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+</nav>
+
+<!--Nav para usuario logeado con rol 2 (o sea es mantenimiento)-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-custom" *ngIf="authService.isLoggedIn() && authService.isMaintenance()">    
+    <div class="container-fluid">
+      <a class="navbar-brand" routerLink="/home">Building Management</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/service-request-maintenance">Service requests</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" (click)="logout()">Logout</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+</nav>
+
+<!--Nav para usuario logeado con rol 3 (o sea es admin de empresa constructora)-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-custom" *ngIf="authService.isLoggedIn() && authService.isCompanyAdmin()">    
+    <div class="container-fluid">
+      <a class="navbar-brand" routerLink="/home">Building Management</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/construction-company"> Construction company</a>
+            </li>
+            <li class="nav-item"> 
+                <a class="nav-link" routerLink="/buildings">Buildings</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/buildings/import">Import buildings</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" (click)="logout()">Logout</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+</nav>

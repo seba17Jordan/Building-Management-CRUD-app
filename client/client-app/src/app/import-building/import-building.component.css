@@ -1,0 +1,29 @@
+.custom-btn-red {
+    background-color: #e60000;
+    border-color: #e60000;
+    color: white;
+  }
+  
+  .custom-btn-red:hover {
+    background-color: #cc0000;
+    border-color: #cc0000;
+    color: white;
+  }
+  
+  .login-container {
+    background-color: #2F2F2F;
+    padding: 2rem;
+    border-radius: 8px;
+    color: white;
+  }
+  
+  .custom-input {
+    background-color: #2F2F2F !important;
+    color: white;
+    border: 1px solid #444444;
+  }
+  
+  .custom-input::placeholder {
+    color: #888888 !important;
+  }
+  

@@ -54,22 +54,18 @@ namespace BusinessLogic
                 throw new ObjectNotFoundException("Invitation not found");
             }
 
-            if(invitation.State != Status.Rejected)
+            if(invitation.State == Status.Accepted)
             {
-                throw new InvalidOperationException("You can only delete a rejected invitation");
+                throw new InvalidOperationException("This invitation is already accepted");
             }
 
             _invitationRepository.DeleteInvitation(id);
         }
 
-        public void RejectInvitation(Guid id)
+        public void RejectInvitation(string invitationEmail)
         {
-            if (id == Guid.Empty)
-            {
-                throw new EmptyFieldException("Invitation Id is Empty");
-            }
-
-            Invitation invitation = _invitationRepository.GetInvitationById(id);
+            
+            Invitation invitation = _invitationRepository.GetInvitationByMail(invitationEmail);
 
             if (invitation == null)
             {
@@ -85,14 +81,10 @@ namespace BusinessLogic
             _invitationRepository.UpdateInvitation(invitation);
         }
 
-        public User AcceptInvitation(Guid invitationId, User managerToCreate)
+        public User AcceptInvitation(User userToCreate)
         {
-            if (invitationId == Guid.Empty)
-            {
-                throw new EmptyFieldException("Invitation Id is Empty");
-            }
-
-            Invitation invitation = _invitationRepository.GetInvitationById(invitationId);
+            
+            Invitation invitation = _invitationRepository.GetInvitationByMail(userToCreate.Email);
 
             if (invitation == null)
             {
@@ -109,21 +101,24 @@ namespace BusinessLogic
                 throw new InvalidOperationException("You can only accept a pending invitation");
             }
 
-            if(invitation.Email != managerToCreate.Email)
+            if(invitation.Email != userToCreate.Email)
             {
                 throw new InvalidOperationException("The email of the invitation and the email of the user do not match");
             }
 
+            userToCreate.SelfValidateData();
             invitation.State = Status.Accepted;
             _invitationRepository.UpdateInvitation(invitation);
+            userToCreate.Name = invitation.Name;
+            userToCreate.Role = invitation.Role;
+            userToCreate.LastName = "";
 
-            managerToCreate.Name = invitation.Name;
-            managerToCreate.Role = Roles.Manager;
-            managerToCreate.LastName = "";
-            managerToCreate.SelfValidate();
+            return _userRepository.CreateUser(userToCreate);
+        }
 
-
-            return _userRepository.CreateUser(managerToCreate);
+        public IEnumerable<Invitation> GetAllInvitations()
+        {
+            return _invitationRepository.GetAllInvitations();
         }
     }
 }

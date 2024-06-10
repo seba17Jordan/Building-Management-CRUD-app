@@ -1,4 +1,6 @@
 ﻿using Domain;
+using Domain.@enum;
+using ModelsApi.Out;
 using System.Collections.Generic;
 
 namespace ModelsApi.In
@@ -11,33 +13,21 @@ namespace ModelsApi.In
         public int? CommonExpenses { get; set; }
         public List<ApartmentRequest>? Apartments { get; set; }
 
-        public Guid managerId { get; set; } //sacar esto, obtenerlo del token
+        //Por mas que no use lo defino:
+        public Guid Id { get; set; }
+        public bool? HasManager { get; set; }
+        public string? ManagerName { get; set; }
 
         public Building ToEntity()
         {
             var building = new Building();
+            var constructionCom = new ConstructionCompany(ConstructionCompany);
             building.Apartments = new List<Apartment>();
 
-            if (Name != null)
-            {
-                building.Name = Name;
-            }
-
-            if (Address != null)
-            {
-                building.Address = Address;
-            }
-
-            if (ConstructionCompany != null)
-            {
-                building.ConstructionCompany = ConstructionCompany;
-            }
-
-            if (CommonExpenses != null)
-            {
-                building.CommonExpenses = CommonExpenses.Value;
-            }
-        
+            if (Name != null) building.Name = Name;
+            if (Address != null) building.Address = Address;
+            if (ConstructionCompany != null) building.ConstructionCompany = constructionCom;
+            if (CommonExpenses != null) building.CommonExpenses = CommonExpenses.Value;
             if (Apartments != null)
             {
                 foreach (var apartmentReq in Apartments)
@@ -45,10 +35,6 @@ namespace ModelsApi.In
                     building.Apartments.Add(apartmentReq.ToEntity());
                 }
             }
-            if (managerId != null) { 
-                building.managerId = managerId;
-            }
-
             return building;
         }
     }

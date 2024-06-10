@@ -12,6 +12,87 @@ namespace BusinessLogicTest
         [TestMethod]
         public void CreateServiceRequestCorrectTestLogic()
         {
+            // Arrange
+
+            Category category = new Category()
+            {
+                Name = "Category 1",
+            };
+
+            Apartment apartment = new Apartment()
+            {
+                Floor = 1,
+                Number = 101,
+                Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "jane.doe@example.com" },
+                Rooms = 3,
+                Bathrooms = 2,
+                HasTerrace = true
+            };
+
+            User manager = new User()
+            {
+                Role = Roles.Manager
+            };
+
+            ServiceRequest expectedServiceRequest = new ServiceRequest()
+            {
+                Id = Guid.NewGuid(),
+                Description = "Service Request 1",
+                Category = category,
+                Apartment = apartment,
+                Status = ServiceRequestStatus.Open,
+                Building = new Building
+                {
+                    Address = "Address 1",
+                    Name = "Building 1",
+                    Apartments = new List<Apartment> { apartment }
+                },
+                Manager = manager
+            };
+
+            var building = new Building()
+            {
+                Address = "Address 1",
+                Name = "Building 1",
+                Apartments = new List<Apartment> { apartment }
+            };
+
+            Mock<IServiceRequestRepository> serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
+            Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
+            Mock<ICategoryRepository> categoryRepo = new Mock<ICategoryRepository>(MockBehavior.Strict);
+            Mock<IUserRepository> userRepository = new Mock<IUserRepository>(MockBehavior.Strict);
+
+            serviceRequestRepo.Setup(l => l.CreateServiceRequest(It.IsAny<ServiceRequest>())).Returns((ServiceRequest req) => req);
+            buildingRepo.Setup(l => l.ExistApartment(apartment.Id)).Returns(true);
+            buildingRepo.Setup(l => l.GetBuildingById(building.Id)).Returns(building);
+            categoryRepo.Setup(l => l.FindCategoryById(category.Id)).Returns(true);
+            categoryRepo.Setup(l => l.GetCategoryById(category.Id)).Returns(category);
+            buildingRepo.Setup(l => l.GetApartmentById(apartment.Id)).Returns(apartment);
+            buildingRepo.Setup(l => l.GetBuildingIdByApartment(apartment)).Returns(building.Id);
+
+            var requestLogic = new RequestLogic(serviceRequestRepo.Object, buildingRepo.Object, categoryRepo.Object, userRepository.Object);
+
+            // Act
+            ServiceRequest logicResult = null;
+            try
+            {
+                logicResult = requestLogic.CreateServiceRequest(apartment.Id, category.Id, expectedServiceRequest.Description, manager);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception caught: {ex.Message}");
+                throw;
+            }
+
+            // Assert
+            serviceRequestRepo.VerifyAll();
+            Assert.IsNotNull(logicResult);
+            Assert.AreEqual(logicResult, expectedServiceRequest);
+        }
+
+        [TestMethod]
+        public void AssigRequestToMaintainancePersonCorrectTestLogic()
+        {
             Category category = new Category()
             {
                 Id = Guid.NewGuid(),
@@ -23,77 +104,21 @@ namespace BusinessLogicTest
                 Id = Guid.NewGuid(),
                 Floor = 1,
                 Number = 101,
-                Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "jane.doe@example.com" },
-                Rooms = 3,
-                Bathrooms = 2,
-                HasTerrace = true
+                Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "" }
             };
-
-            //Arrange
-            ServiceRequest expectedServiceRequest = new ServiceRequest()
-            {
-                Id = Guid.NewGuid(),
-                Description = "Service Request 1",
-                Category = category.Id,
-                Apartment = apartment.Id
-            };
-
-            Mock<IServiceRequestRepository> serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
-            Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
-            Mock<ICategoryRepository> categoryRepo = new Mock<ICategoryRepository>(MockBehavior.Strict);
-            Mock<IUserRepository> userRepository = new Mock<IUserRepository>(MockBehavior.Strict);
-
-            serviceRequestRepo.Setup(l => l.CreateServiceRequest(It.IsAny<ServiceRequest>())).Returns(expectedServiceRequest);
-            buildingRepo.Setup(l => l.ExistApartment(It.IsAny<Guid>())).Returns(true);
-            categoryRepo.Setup(l => l.FindCategoryById(It.IsAny<Guid>())).Returns(true);
-            categoryRepo.Setup(l => l.GetCategoryById(It.IsAny<Guid>())).Returns(category);
-            buildingRepo.Setup(l => l.GetApartmentById(It.IsAny<Guid>())).Returns(apartment);
-            buildingRepo.Setup(l => l.GetBuildingIdByApartmentId(It.IsAny<Apartment>())).Returns(new Guid());
-
-            RequestLogic requestLogic = new RequestLogic(serviceRequestRepo.Object,buildingRepo.Object, categoryRepo.Object, userRepository.Object);
-
-            //Act
-            ServiceRequest logicResult = requestLogic.CreateServiceRequest(expectedServiceRequest);
-
-            //Assert
-            serviceRequestRepo.VerifyAll();
-            Assert.AreEqual(logicResult, expectedServiceRequest);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void CreateServiceRequestNullServiceRequestTestLogic()
-        {
-            //Arrange
-            ServiceRequest expectedServiceRequest = null;
-
-            Mock<IServiceRequestRepository> serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
-            Mock<IBuildingRepository> buildingRepo = new Mock<IBuildingRepository>(MockBehavior.Strict);
-            Mock<ICategoryRepository> categoryRepo = new Mock<ICategoryRepository>(MockBehavior.Strict);
-            Mock<IUserRepository> userRepository = new Mock<IUserRepository>(MockBehavior.Strict);
-
-            serviceRequestRepo.Setup(l => l.CreateServiceRequest(It.IsAny<ServiceRequest>())).Returns(expectedServiceRequest);
-
-            RequestLogic requestLogic = new RequestLogic(serviceRequestRepo.Object, buildingRepo.Object, categoryRepo.Object, userRepository.Object);
-
-            //Act
-            ServiceRequest logicResult = requestLogic.CreateServiceRequest(expectedServiceRequest);
-            serviceRequestRepo.VerifyAll();
-        }
-
-        [TestMethod]
-        public void AssigRequestToMaintainancePersonCorrectTestLogic()
-        {
             //Arrange
             ServiceRequest serviceRequest = new ServiceRequest()
             {
                 Id = Guid.NewGuid(),
                 Description = "Service Request 1",
-                Category = Guid.NewGuid(),
-                Apartment = Guid.NewGuid(),
+                Category = category,
+                Apartment = apartment,
                 Status = ServiceRequestStatus.Open
             };
-            Guid maintainancePersonId = Guid.NewGuid();
+            User maintenancePerons = new User()
+            {
+                Role = Roles.Maintenance
+            };
 
             ServiceRequest expectedServiceRequest = new ServiceRequest()
             {
@@ -102,7 +127,7 @@ namespace BusinessLogicTest
                 Category = serviceRequest.Category,
                 Apartment = serviceRequest.Apartment,
                 Status = ServiceRequestStatus.Attending,
-                MaintainancePersonId = maintainancePersonId
+                MaintenancePerson = maintenancePerons
             };
 
             Mock<IServiceRequestRepository> serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
@@ -115,14 +140,14 @@ namespace BusinessLogicTest
             serviceRequestRepo.Setup(l => l.UpdateServiceRequest(It.IsAny<ServiceRequest>())).Callback<ServiceRequest>((ServiceRequest) =>
             {
                 serviceRequest.Status = ServiceRequestStatus.Attending;
-                serviceRequest.MaintainancePersonId = maintainancePersonId;
+                serviceRequest.MaintenancePerson = maintenancePerons;
             });
 
 
             RequestLogic requestLogic = new RequestLogic(serviceRequestRepo.Object, buildingRepo.Object, categoryRepo.Object, userRepository.Object);
 
             //Act
-            ServiceRequest logicResult = requestLogic.AssignRequestToMaintainancePerson(expectedServiceRequest.Id, maintainancePersonId);
+            ServiceRequest logicResult = requestLogic.AssignRequestToMaintainancePerson(expectedServiceRequest.Id, maintenancePerons.Id);
 
             //Assert
             serviceRequestRepo.VerifyAll();
@@ -157,8 +182,8 @@ namespace BusinessLogicTest
             {
                 Id = Guid.NewGuid(),
                 Description = "A description",
-                Apartment = apartment.Id,
-                Category = category.Id,
+                Apartment = apartment,
+                Category = category,
                 Status = ServiceRequestStatus.Open
             }
         };
@@ -190,14 +215,28 @@ namespace BusinessLogicTest
                 Role = Roles.Maintenance
             };
 
+            Category category = new Category()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Category 1",
+            };
+
+            Apartment apartment = new Apartment()
+            {
+                Id = Guid.NewGuid(),
+                Floor = 1,
+                Number = 101,
+                Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "" }
+            };
+            
             ServiceRequest serviceRequest = new ServiceRequest()
             {
                 Id = Guid.NewGuid(),
                 Description = "Service Request 1",
-                Category = Guid.NewGuid(),
-                Apartment = Guid.NewGuid(),
+                Category = category,
+                Apartment = apartment,
                 Status = ServiceRequestStatus.Open,
-                MaintainancePersonId = maintenancePerson.Id
+                MaintenancePerson = maintenancePerson
             };
 
             ServiceRequest expectedServiceRequest = new ServiceRequest()
@@ -207,7 +246,7 @@ namespace BusinessLogicTest
                 Category = serviceRequest.Category,
                 Apartment = serviceRequest.Apartment,
                 Status = ServiceRequestStatus.Attending,
-                MaintainancePersonId = maintenancePerson.Id
+                MaintenancePerson = maintenancePerson
             };
 
             Mock<IServiceRequestRepository> serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
@@ -238,14 +277,28 @@ namespace BusinessLogicTest
                 Role = Roles.Maintenance
             };
 
+            Category category = new Category()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Category 1",
+            };
+
+            Apartment apartment = new Apartment()
+            {
+                Id = Guid.NewGuid(),
+                Floor = 1,
+                Number = 101,
+                Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "" }
+            };
+
             ServiceRequest serviceRequest = new ServiceRequest()
             {
                 Id = Guid.NewGuid(),
                 Description = "Service Request 1",
-                Category = Guid.NewGuid(),
-                Apartment = Guid.NewGuid(),
+                Category = category,
+                Apartment = apartment,
                 Status = ServiceRequestStatus.Attending,
-                MaintainancePersonId = maintenancePerson.Id
+                MaintenancePerson = maintenancePerson
             };
 
             ServiceRequest expectedServiceRequest = new ServiceRequest()
@@ -256,7 +309,7 @@ namespace BusinessLogicTest
                 Apartment = serviceRequest.Apartment,
                 Status = ServiceRequestStatus.Closed,
                 TotalCost = 100,
-                MaintainancePersonId = maintenancePerson.Id
+                MaintenancePerson = maintenancePerson
             };
 
             Mock<IServiceRequestRepository> serviceRequestRepo = new Mock<IServiceRequestRepository>(MockBehavior.Strict);
@@ -296,14 +349,28 @@ namespace BusinessLogicTest
                     Role = Roles.Maintenance
                 };
 
+                Category category = new Category()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Category 1",
+                };
+
+                Apartment apartment = new Apartment()
+                {
+                    Id = Guid.NewGuid(),
+                    Floor = 1,
+                    Number = 101,
+                    Owner = new Owner { Name = "Jane", LastName = "Doe", Email = "" }
+                };
+
                 ServiceRequest serviceRequest = new ServiceRequest()
                 {
                     Id = Guid.NewGuid(),
                     Description = "Service Request 1",
-                    Category = Guid.NewGuid(),
-                    Apartment = Guid.NewGuid(),
+                    Category = category,
+                    Apartment = apartment,
                     Status = ServiceRequestStatus.Open,
-                    MaintainancePersonId = maitenancePerson.Id
+                    MaintenancePerson = maitenancePerson
                 };
 
                 ServiceRequest expectedServiceRequest = new ServiceRequest()
@@ -314,7 +381,7 @@ namespace BusinessLogicTest
                     Apartment = serviceRequest.Apartment,
                     Status = ServiceRequestStatus.Closed,
                     TotalCost = 100,
-                    MaintainancePersonId = maitenancePerson.Id
+                    MaintenancePerson = maitenancePerson
                 };
 
                 serviceRequestRepo.Setup(l => l.GetServiceRequestById(It.IsAny<Guid>())).Returns(serviceRequest);
@@ -361,10 +428,10 @@ namespace BusinessLogicTest
             {
                 Id = Guid.NewGuid(),
                 Description = "A description",
-                Apartment = apartment.Id,
-                Category = category.Id,
+                Apartment = apartment,
+                Category = category,
                 Status = ServiceRequestStatus.Attending,
-                MaintainancePersonId = maintenancePerson.Id
+                MaintenancePerson = maintenancePerson
             };
 
             IEnumerable<ServiceRequest> expectedServiceRequests = new List<ServiceRequest>

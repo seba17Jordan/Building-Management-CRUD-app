@@ -30,9 +30,8 @@ namespace DataAccessTest
                 Id = Guid.NewGuid(),
                 Description = "Description 1",
                 Status = ServiceRequestStatus.Open,
-                Category = category.Id,
-                Apartment = apartment.Id,
-                CategoryName = category.Name
+                Category = category,
+                Apartment = apartment,
             };
 
             var context = CreateDbContext("CreateServiceRequestCorrectTestDataAccess");
@@ -67,9 +66,8 @@ namespace DataAccessTest
                 Id = Guid.NewGuid(),
                 Description = "Description 1",
                 Status = ServiceRequestStatus.Open,
-                Category = category.Id,
-                Apartment = apartment.Id,
-                CategoryName = category.Name
+                Category = category,
+                Apartment = apartment,
             };
 
             var context = CreateDbContext("ServiceRequestExistsTestDataAccess");
@@ -104,9 +102,8 @@ namespace DataAccessTest
                 Id = Guid.NewGuid(),
                 Description = "Description 1",
                 Status = ServiceRequestStatus.Open,
-                Category = category.Id,
-                Apartment = apartment.Id,
-                CategoryName = category.Name
+                Category = category,
+                Apartment = apartment,
             };
 
             var context = CreateDbContext("GetServiceRequestByIdTestDataAccess");
@@ -142,9 +139,8 @@ namespace DataAccessTest
                 Id = Guid.NewGuid(),
                 Description = "Description 1",
                 Status = ServiceRequestStatus.Open,
-                Category = category.Id,
-                Apartment = apartment.Id,
-                CategoryName = category.Name
+                Category = category,
+                Apartment = apartment,
             };
 
             var context = CreateDbContext("UpdateServiceRequestTestDataAccess");
@@ -153,7 +149,7 @@ namespace DataAccessTest
             context.Set<ServiceRequest>().Add(expectedServiceRequest);
             context.SaveChanges();
 
-            expectedServiceRequest.MaintainancePersonId = Guid.NewGuid();
+            expectedServiceRequest.MaintenanceId = new Guid(); 
             expectedServiceRequest.Status = ServiceRequestStatus.Attending;
 
             // Act
@@ -176,7 +172,8 @@ namespace DataAccessTest
                 Name = "John",
                 LastName = "Doe",
                 Email = "alekd@gmiail.com",
-                Role = Roles.Manager
+                Role = Roles.Manager,
+                Password = "1234"
             };
 
             Apartment apartment = new Apartment()
@@ -194,10 +191,9 @@ namespace DataAccessTest
                 Id = Guid.NewGuid(),
                 Description = "Description 1",
                 Status = ServiceRequestStatus.Open,
-                Category = category.Id,
-                CategoryName = category.Name,
-                Apartment = apartment.Id,
-                ManagerId = manager.Id
+                Category = category,
+                Apartment = apartment,
+                Manager = manager
             };
 
             ServiceRequest serviceRequest2 = new ServiceRequest()
@@ -205,10 +201,9 @@ namespace DataAccessTest
                 Id = Guid.NewGuid(),
                 Description = "Description 2",
                 Status = ServiceRequestStatus.Open,
-                Category = category.Id,
-                CategoryName = category.Name,
-                Apartment = apartment.Id,
-                ManagerId = manager.Id
+                Category = category,
+                Apartment = apartment,
+                Manager = manager
             };
 
             var context = CreateDbContext("GetAllServiceRequestsTestDataAccess");
@@ -240,7 +235,8 @@ namespace DataAccessTest
                 Name = "John",
                 LastName = "Doe",
                 Email = "safae@gmail.com",
-                Role = Roles.Manager
+                Role = Roles.Manager,
+                Password = "1234"
             };
 
             Apartment apartment = new Apartment()
@@ -258,10 +254,9 @@ namespace DataAccessTest
                 Id = Guid.NewGuid(),
                 Description = "Description 1",
                 Status = ServiceRequestStatus.Open,
-                Category = category1.Id,
-                CategoryName = category1.Name,
-                Apartment = apartment.Id,
-                ManagerId = manager.Id
+                Category = category1,
+                Apartment = apartment,
+                Manager = manager
             };
 
             ServiceRequest serviceRequest2 = new ServiceRequest()
@@ -269,10 +264,9 @@ namespace DataAccessTest
                 Id = Guid.NewGuid(),
                 Description = "Description 2",
                 Status = ServiceRequestStatus.Open,
-                Category = category2.Id,
-                CategoryName = category2.Name,
-                Apartment = apartment.Id,
-                ManagerId = manager.Id
+                Category = category2,
+                Apartment = apartment,
+                Manager = manager
             };
 
             var context = CreateDbContext("GetAllServiceRequestsFilterByNameTestDataAccess");
@@ -301,7 +295,8 @@ namespace DataAccessTest
                 Name = "John",
                 LastName = "Doe",
                 Email = "xs@gmail.com",
-                Role = Roles.Maintenance
+                Role = Roles.Maintenance,
+                Password = "1234"
             };
 
             User maintenancePerson2 = new User()
@@ -310,7 +305,8 @@ namespace DataAccessTest
                 Name = "John",
                 LastName = "Doe",
                 Email = "aeda@gmail.com",
-                Role = Roles.Maintenance
+                Role = Roles.Maintenance,
+                Password = "1234"
             };
 
             Category category = new Category { Name = "Category 1" };
@@ -330,10 +326,10 @@ namespace DataAccessTest
                 Id = Guid.NewGuid(),
                 Description = "Description 1",
                 Status = ServiceRequestStatus.Open,
-                Category = category.Id,
-                CategoryName = category.Name,
-                Apartment = apartment.Id,
-                MaintainancePersonId = maintenancePerson1.Id
+                Category = category,
+                Apartment = apartment,
+                MaintenancePerson = maintenancePerson1,
+                MaintenanceId = maintenancePerson1.Id
             };
 
             ServiceRequest serviceRequest2 = new ServiceRequest()
@@ -341,10 +337,10 @@ namespace DataAccessTest
                 Id = Guid.NewGuid(),
                 Description = "Description 2",
                 Status = ServiceRequestStatus.Open,
-                Category = category.Id,
-                CategoryName = category.Name,
-                Apartment = apartment.Id,
-                MaintainancePersonId  = maintenancePerson2.Id
+                Category = category,
+                Apartment = apartment,
+                MaintenancePerson = maintenancePerson2,
+                MaintenanceId = maintenancePerson2.Id
             };
 
             var context = CreateDbContext("GetAllServiceRequestsByMaintenanceUserIdTestDataAccess");
@@ -371,7 +367,9 @@ namespace DataAccessTest
                 Id = Guid.NewGuid(),
                 Name = "John",
                 LastName = "Doe",
-                Email = "daed@gmail.com"
+                Email = "daed@gmail.com",
+                Role = Roles.Maintenance,
+                Password = "1234"
             };
 
             Category category = new Category { Name = "Category 1" };
@@ -391,10 +389,9 @@ namespace DataAccessTest
                 Id = Guid.NewGuid(),
                 Description = "Description 1",
                 Status = ServiceRequestStatus.Open,
-                Category = category.Id,
-                CategoryName = category.Name,
-                Apartment = apartment.Id,
-                MaintainancePersonId = maintenancePerson.Id
+                Category = category,
+                Apartment = apartment,
+                MaintenancePerson = maintenancePerson
             };
 
             ServiceRequest serviceRequest2 = new ServiceRequest()
@@ -402,10 +399,9 @@ namespace DataAccessTest
                 Id = Guid.NewGuid(),
                 Description = "Description 2",
                 Status = ServiceRequestStatus.Open,
-                Category = category.Id,
-                CategoryName = category.Name,
-                Apartment = apartment.Id,
-                MaintainancePersonId = maintenancePerson.Id
+                Category = category,
+                Apartment = apartment,
+                MaintenancePerson = maintenancePerson
             };
 
             var context = CreateDbContext("GetAllServiceRequestsGeneralTestDataAccess");
@@ -450,10 +446,9 @@ namespace DataAccessTest
                 Id = Guid.NewGuid(),
                 Description = "Description 1",
                 Status = ServiceRequestStatus.Open,
-                Category = category.Id,
-                CategoryName = category.Name,
-                Apartment = apartment.Id,
-                BuildingId = building.Id
+                Category = category,
+                Apartment = apartment,
+                Building = building
             };
 
             ServiceRequest serviceRequest2 = new ServiceRequest()
@@ -461,10 +456,9 @@ namespace DataAccessTest
                 Id = Guid.NewGuid(),
                 Description = "Description 2",
                 Status = ServiceRequestStatus.Open,
-                Category = category.Id,
-                CategoryName = category.Name,
-                Apartment = apartment.Id,
-                BuildingId = building.Id
+                Category = category,
+                Apartment = apartment,
+                Building = building
             };
 
             var context = CreateDbContext("GetServiceReqByBuildingTestDataAccess");
@@ -480,7 +474,7 @@ namespace DataAccessTest
         }
 
         [TestMethod]
-        public void GetNoClosedServiceRequestsByBuildingIdTestDataAccess()
+        public void GetServiceRequestsByBuildingIdTestDataAccess()
         {
             Category category = new Category { Name = "Category 1" };
 
@@ -504,10 +498,9 @@ namespace DataAccessTest
                 Id = Guid.NewGuid(),
                 Description = "Description 1",
                 Status = ServiceRequestStatus.Open,
-                Category = category.Id,
-                CategoryName = category.Name,
-                Apartment = apartment.Id,
-                BuildingId = building.Id
+                Category = category,
+                Apartment = apartment,
+                Building = building
             };
 
             ServiceRequest serviceRequest2 = new ServiceRequest()
@@ -515,10 +508,9 @@ namespace DataAccessTest
                 Id = Guid.NewGuid(),
                 Description = "Description 2",
                 Status = ServiceRequestStatus.Closed,
-                Category = category.Id,
-                CategoryName = category.Name,
-                Apartment = apartment.Id,
-                BuildingId = building.Id
+                Category = category,
+                Apartment = apartment,
+                Building = building
             };
 
             var context = CreateDbContext("GetNoClosedServiceRequestsByBuildingIdTestDataAccess");
@@ -529,8 +521,8 @@ namespace DataAccessTest
             context.SaveChanges();
 
             // Act
-            List<ServiceRequest> serviceRequests = (List<ServiceRequest>)serviceRequestRepo.GetNoClosedServiceRequestsByBuildingId(building.Id);
-            Assert.AreEqual(1, serviceRequests.Count);
+            List<ServiceRequest> serviceRequests = (List<ServiceRequest>)serviceRequestRepo.GetServiceRequestsByBuildingId(building.Id);
+            Assert.AreEqual(2, serviceRequests.Count);
             Assert.AreEqual(serviceRequest1, serviceRequests[0]);
         }
 

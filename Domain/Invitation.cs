@@ -15,14 +15,16 @@ namespace Domain
         public string Email { get; set; }
         public string Name { get; set; }
         public DateTime ExpirationDate { get; set; }
+        public Roles Role { get; set; }
 
         public Invitation() { }
 
-        public Invitation(string email, string name, DateTime expirationDate)
+        public Invitation(string email, string name, DateTime expirationDate,Roles role)
         {
             Email = email;
             Name = name;
             ExpirationDate = expirationDate;
+            Role = role;
             State = Status.Pending;
         }
 

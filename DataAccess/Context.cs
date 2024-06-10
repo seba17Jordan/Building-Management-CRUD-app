@@ -18,6 +18,8 @@ namespace DataAccess
         public DbSet<Invitation> Invitations { get; set; }
         public DbSet<Category> Categories { get; set; }
 
+        public DbSet<ConstructionCompany> ConstructionCompanies { get; set; }
+
         public DbSet<ServiceRequest> ServiceRequests { get; set; }
         public Context(DbContextOptions options) : base(options) { }
 

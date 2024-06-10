@@ -16,6 +16,7 @@ namespace ModelsApi.In
         public Guid? id { get; set; }
         public Status State { get; set; }
         public string? NewPassword { get; set; }
+        public Roles Role { get; set; }
         public InvitationRequest()
         {
             State = Status.Pending;
@@ -27,7 +28,8 @@ namespace ModelsApi.In
                 Email = Email,
                 Name = Name,
                 ExpirationDate = (DateTime)ExpirationDate,
-                State = State
+                State = State,
+                Role = Role
             };
         }
     }

@@ -9,6 +9,8 @@ namespace ModelsApi.Out
         public string Address { get; set; }
         public string ConstructionCompany { get; set; }
         public int CommonExpenses { get; set; }
+        public bool HasManager { get; set; }
+        public string ManagerName { get; set; }
         public List<ApartmentResponse> Apartments { get; set; }
 
         public BuildingResponse(Building expectedBuilding)
@@ -16,8 +18,10 @@ namespace ModelsApi.Out
             Id = expectedBuilding.Id;
             Name = expectedBuilding.Name;
             Address = expectedBuilding.Address;
-            ConstructionCompany = expectedBuilding.ConstructionCompany;
+            ConstructionCompany = expectedBuilding.ConstructionCompany?.Name;
             CommonExpenses = (int)expectedBuilding.CommonExpenses;
+            HasManager = expectedBuilding.Manager != null;
+            ManagerName = expectedBuilding.Manager?.Name;
             Apartments = new List<ApartmentResponse>();
 
             if (expectedBuilding.Apartments != null)

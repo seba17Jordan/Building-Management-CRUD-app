@@ -70,16 +70,25 @@ namespace DataAccess.Migrations
                     b.Property<int?>("CommonExpenses")
                         .HasColumnType("int");
 
-                    b.Property<string>("ConstructionCompany")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("ConstructionCompanyAdminId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ConstructionCompanyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ManagerId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("managerId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("ConstructionCompanyAdminId");
+
+                    b.HasIndex("ConstructionCompanyId");
+
+                    b.HasIndex("ManagerId");
 
                     b.ToTable("Buildings");
                 });
@@ -99,6 +108,26 @@ namespace DataAccess.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("Domain.ConstructionCompany", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ConstructionCompanyAdminId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConstructionCompanyAdminId");
+
+                    b.ToTable("ConstructionCompanies");
+                });
+
             modelBuilder.Entity("Domain.Invitation", b =>
                 {
                     b.Property<Guid>("Id")
@@ -115,6 +144,9 @@ namespace DataAccess.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
 
                     b.Property<int>("State")
                         .HasColumnType("int");
@@ -153,18 +185,14 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("Apartment")
+                    b.Property<Guid?>("ApartmentId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BuildingId")
+                    b.Property<Guid?>("BuildingId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("Category")
+                    b.Property<Guid?>("CategoryId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -173,10 +201,13 @@ namespace DataAccess.Migrations
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("MaintainancePersonId")
+                    b.Property<Guid?>("MaintenanceId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ManagerId")
+                    b.Property<Guid?>("MaintenancePersonId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ManagerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("StartDate")
@@ -189,6 +220,16 @@ namespace DataAccess.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApartmentId");
+
+                    b.HasIndex("BuildingId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("MaintenancePersonId");
+
+                    b.HasIndex("ManagerId");
 
                     b.ToTable("ServiceRequests");
                 });
@@ -252,6 +293,73 @@ namespace DataAccess.Migrations
                         .HasForeignKey("OwnerId");
 
                     b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("Domain.Building", b =>
+                {
+                    b.HasOne("Domain.User", "ConstructionCompanyAdmin")
+                        .WithMany()
+                        .HasForeignKey("ConstructionCompanyAdminId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.ConstructionCompany", "ConstructionCompany")
+                        .WithMany()
+                        .HasForeignKey("ConstructionCompanyId");
+
+                    b.HasOne("Domain.User", "Manager")
+                        .WithMany()
+                        .HasForeignKey("ManagerId");
+
+                    b.Navigation("ConstructionCompany");
+
+                    b.Navigation("ConstructionCompanyAdmin");
+
+                    b.Navigation("Manager");
+                });
+
+            modelBuilder.Entity("Domain.ConstructionCompany", b =>
+                {
+                    b.HasOne("Domain.User", "ConstructionCompanyAdmin")
+                        .WithMany()
+                        .HasForeignKey("ConstructionCompanyAdminId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ConstructionCompanyAdmin");
+                });
+
+            modelBuilder.Entity("Domain.ServiceRequest", b =>
+                {
+                    b.HasOne("Domain.Apartment", "Apartment")
+                        .WithMany()
+                        .HasForeignKey("ApartmentId");
+
+                    b.HasOne("Domain.Building", "Building")
+                        .WithMany()
+                        .HasForeignKey("BuildingId");
+
+                    b.HasOne("Domain.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+
+                    b.HasOne("Domain.User", "MaintenancePerson")
+                        .WithMany()
+                        .HasForeignKey("MaintenancePersonId");
+
+                    b.HasOne("Domain.User", "Manager")
+                        .WithMany()
+                        .HasForeignKey("ManagerId");
+
+                    b.Navigation("Apartment");
+
+                    b.Navigation("Building");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("MaintenancePerson");
+
+                    b.Navigation("Manager");
                 });
 
             modelBuilder.Entity("Domain.Session", b =>

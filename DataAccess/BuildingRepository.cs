@@ -39,7 +39,11 @@ namespace DataAccess
         public Building GetBuildingById(Guid id)
         {
             return _context.Set<Building>()
-                .Include(b => b.Apartments).ThenInclude(o => o.Owner) 
+                .Include(m => m.Manager)
+                .Include(b => b.ConstructionCompanyAdmin)
+                .Include(c => c.ConstructionCompany)
+                .Include(b => b.Apartments)
+                .ThenInclude(o => o.Owner)
                 .FirstOrDefault(b => b.Id == id);
         }
 
@@ -48,8 +52,16 @@ namespace DataAccess
             return _context.Set<Apartment>().Any(a => a.Id == id);
         }
 
-        public List<Building> GetAllBuildings(Guid managerId) { 
-            return _context.Set<Building>().Where(b => b.managerId == managerId).ToList();
+        public List<Building> GetAllBuildings(Guid constructionCompanyAdminId) { 
+            return _context.Set<Building>()
+                .Where(b => b.ConstructionCompanyAdmin.Id == constructionCompanyAdminId)
+                .Include(m => m.Manager)
+                .ToList();
+        }
+
+        public List<Building> GetAllBuildingsByManagerId(Guid managerId)
+        {
+            return _context.Set<Building>().Where(b => b.Manager.Id == managerId).ToList();
         }
 
         public void Save()
@@ -62,7 +74,7 @@ namespace DataAccess
             _context.Set<Building>().Update(buildingToUpdate);
         }
 
-        public Guid GetBuildingIdByApartmentId(Apartment apartment)
+        public Guid GetBuildingIdByApartment(Apartment apartment)
         {
             return _context.Set<Building>().FirstOrDefault(b => b.Apartments.Contains(apartment)).Id;
         }
@@ -74,7 +86,26 @@ namespace DataAccess
 
         public Building GetBuildingByName(string buildingName)
         {
-            return _context.Set<Building>().FirstOrDefault(b => b.Name == buildingName);
+            return _context.Set<Building>()
+                .Include(m => m.Manager)
+                .FirstOrDefault(b => b.Name == buildingName);
+        }
+
+        public IEnumerable<Building> GetAllBuildingsByManager(Guid managerId)
+        {
+            return _context.Set<Building>()
+                .Where(b => b.Manager.Id == managerId)
+                .Include(b => b.Apartments)
+                .ThenInclude(o => o.Owner)
+                .ToList();
+        }
+
+        public IEnumerable<Building> GetAllBuildings()
+        {
+            return _context.Set<Building>()
+                .Include(b => b.Apartments)
+                .ThenInclude(o => o.Owner)
+                .ToList();
         }
     }
 }

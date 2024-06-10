@@ -7,6 +7,8 @@ using ModelsApi.In;
 using Moq;
 using Domain.@enum;
 using CustomExceptions;
+using ImportersInterface;
+using Microsoft.AspNetCore.Http;
 
 namespace BuildingManagementApiTest;
 
@@ -121,6 +123,49 @@ public class AdministratorControllerTest
             // Assert
             Assert.AreEqual("There is a missing field in the request's body", ex.Message);
         }
+    }
+
+    [TestMethod]
+    public void GetAllManagersTestController()
+    {
+        //Arrange
+        string token = "b4d9e6a4-466c-4a4f-91ea-6d7e7997584e";
+        
+        User manager = new User
+        {
+            Id = Guid.NewGuid(),
+            Role = Roles.Manager,
+            Name = "John",
+            LastName = "Doe"
+        };
+
+        IEnumerable<User> expectedManagers = new List<User>
+        {
+            manager
+        };
+
+        var expectedResponse = expectedManagers.Select(b => new UserResponse(b)).ToList();
+
+        Mock<IUserLogic> userLogic = new Mock<IUserLogic>(MockBehavior.Strict);
+
+        userLogic.Setup(x => x.GetAllManagers()).Returns(expectedManagers);
+
+        AdministratorController adminController = new AdministratorController(userLogic.Object);
+        adminController.ControllerContext.HttpContext = new DefaultHttpContext();
+        adminController.ControllerContext.HttpContext.Request.Headers["Authorization"] = token;
+
+        OkObjectResult expectedObjResult = new OkObjectResult(expectedResponse);
+
+        // Act
+        var constrollerResult = adminController.GetAllManagers();
+
+        // Assert
+        userLogic.VerifyAll();
+        OkObjectResult resultObj = constrollerResult as OkObjectResult;
+        List<UserResponse> resultResponse = resultObj.Value as List<UserResponse>;
+        Assert.IsNotNull(resultResponse);
+        Assert.AreEqual(resultObj.StatusCode, expectedObjResult.StatusCode);
+        Assert.AreEqual(resultResponse.First(), expectedResponse.First());
     }
 
 }

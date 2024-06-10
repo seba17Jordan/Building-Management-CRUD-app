@@ -8,17 +8,18 @@ namespace Domain
         public Guid Id { get; set; }
         public string? Name { get; set; }
         public string? Address { get; set; }
-        public string? ConstructionCompany { get; set; }
+        public ConstructionCompany? ConstructionCompany { get; set; }
         public int? CommonExpenses { get; set; }
         public List<Apartment>? Apartments { get; set; }
+        public User ConstructionCompanyAdmin { get; set; }
 
-        public Guid managerId { get; set; }
+        public User? Manager { get; set; }
 
         public Building() { }
 
         public void SelfValidate()
         {
-            if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Address) || string.IsNullOrWhiteSpace(ConstructionCompany))
+            if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Address))
             {
                 throw new EmptyFieldException("There are empty fields");
             }
@@ -32,6 +33,21 @@ namespace Domain
             {
                 throw new ArgumentException("Building must have at least one apartment");
             }
+
+            ConstructionCompany.SelfValidate();
+        }
+
+        public void SelfValidateUpdateData()
+        {
+            if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Address))
+            {
+                throw new EmptyFieldException("There are empty fields");
+            }
+
+            if (CommonExpenses < 0)
+            {
+                throw new ArgumentException("Common expenses must be greater than 0");
+            }
         }
 
         public override bool Equals(object building)
@@ -44,7 +60,7 @@ namespace Domain
 
             return Name == secondBuilding.Name &&
                    Address == secondBuilding.Address &&
-                   ConstructionCompany == secondBuilding.ConstructionCompany &&
+                   ConstructionCompany.Equals(secondBuilding.ConstructionCompany) &&
                    CommonExpenses == secondBuilding.CommonExpenses &&
                    Apartments.SequenceEqual(secondBuilding.Apartments);
         }

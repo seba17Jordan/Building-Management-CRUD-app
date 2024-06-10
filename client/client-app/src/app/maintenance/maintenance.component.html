@@ -1,0 +1,30 @@
+<div class="d-flex justify-content-center align-items-center vh-100">
+  <div class="card p-4 login-container" style="width: 100%; max-width: 400px;">
+    <h2 class="text-center">Create new maintenace person</h2>
+    <form (submit)="createMaintenance()">
+      <div class="mb-3">
+        <label for="name" class="form-label">Name:</label>
+        <input type="text" id="name" [(ngModel)]="newMaintenance.name" name="Name" class="form-control custom-input" placeholder="name..." required>
+      </div>
+
+      <div class="mb-3">
+        <label for="lastName" class="form-label">Last Name:</label>
+        <input type="text" id="lastName" [(ngModel)]="newMaintenance.lastName" name="LastName" class="form-control custom-input" placeholder="last name.." required>
+      </div>
+
+      <div class="mb-3">
+        <label for="email" class="form-label">Email:</label>
+        <input type="email" id="email" [(ngModel)]="newMaintenance.email" name="Email" class="form-control custom-input" placeholder="email..." required>
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Password:</label>
+        <input type="password" id="password" [(ngModel)]="newMaintenance.password" name="Password" class="form-control custom-input" placeholder="password..." required>
+      </div>
+
+      <button type="submit" class="btn custom-btn-red w-100">Create</button>
+      <div *ngIf="successMessage" class="alert alert-success mt-3">{{ successMessage }}</div>
+      <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
+    </form>
+  </div>
+</div>

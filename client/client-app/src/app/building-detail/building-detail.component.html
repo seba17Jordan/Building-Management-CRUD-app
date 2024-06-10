@@ -1,0 +1,45 @@
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+  <div class="container">
+      <div class="row">
+          <div class="col-md-6">
+              <div class="card p-4 building-container mt-4" style="width: 100%; max-width: 600px;">
+                  <div *ngIf="building">
+                      <h2 class="text-center">Building details: {{building.name}}</h2>
+                      <div class="mb-3">
+                          <label for="name" class="form-label">Name: </label>
+                          <input [(ngModel)]="building.name" placeholder="name" class="form-control custom-input"/>
+                      </div>
+                      <div class="mb-3">
+                          <label for="address" class="form-label">Address: </label>
+                          <input [(ngModel)]="building.address" placeholder="address" class="form-control custom-input"/>
+                      </div>
+                      <div class="mb-3">
+                          <label for="common-expenses" class="form-label">Common expenses: </label>
+                          <input [(ngModel)]="building.commonExpenses" placeholder="common expenses" class="form-control custom-input"/>
+                      </div>
+                      <div *ngIf="detailsError" class="alert alert-danger mt-3">{{ detailsError }}</div>
+                      <button class="btn custom-btn-red w-100 mb-2" (click)="save()">Save</button>
+                      <button class="btn btn-secondary w-100" (click)="goBack()">Back</button>
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-6">
+              <div class="card p-4 building-container mt-4" style="width: 100%; max-width: 600px;">
+                  <h2 class="text-center">Modify building manager</h2>
+                  <div *ngIf="building">
+                      <div *ngIf="building.managerName">
+                          <p>Current building manager: {{building.managerName}}</p> 
+                          <p> Here you can change the manager with other from the system:</p>
+                      </div>
+                      <label for="manager" class="form-label">Assign new manager: </label>
+                      <select id="manager" [(ngModel)]="selectedManager" class="form-select custom-input">
+                          <option *ngFor="let manager of managers" [ngValue]="manager">{{manager.email}}</option>
+                      </select>
+                      <div *ngIf="managerError" class="alert alert-danger mt-3">{{ managerError }}</div>
+                      <button class="btn custom-btn-red w-100 mt-3" (click)="assignManager(building.id!)">Assign</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

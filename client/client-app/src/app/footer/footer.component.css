@@ -1,0 +1,24 @@
+.footer-container {
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  margin-top: 40px;
+}
+
+.pie {
+  padding: 0;
+  margin: 0;
+}
+.pie p {
+  margin: 0;
+  padding: 0;
+}
+
+/* Estilos para el footer */
+footer {
+  background-color: #171717;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+}

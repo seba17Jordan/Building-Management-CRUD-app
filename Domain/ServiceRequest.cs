@@ -12,15 +12,13 @@ namespace Domain
     {
         public Guid Id { get; set; }
         public string Description { get; set; }
-        public Guid Apartment { get; set; }
-        public Guid Category { get; set; }
-        public string CategoryName { get; set; }
+        public Apartment? Apartment { get; set; }
+        public Category? Category { get; set; }
         public ServiceRequestStatus Status { get; set; }
-
-        public Guid BuildingId { get; set; }
-        public Guid ManagerId { get; set; }
-
-        public Guid? MaintainancePersonId { get; set; }
+        public Building? Building { get; set; }
+        public User? Manager { get; set; }
+        public User? MaintenancePerson { get; set; }
+        public Guid? MaintenanceId { get; set; }
         public decimal? TotalCost { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
@@ -29,7 +27,7 @@ namespace Domain
 
         public void SelfValidate()
         {
-            if (string.IsNullOrWhiteSpace(Description) || Apartment == Guid.Empty || Category == Guid.Empty)
+            if (string.IsNullOrWhiteSpace(Description))
             {
                 throw new EmptyFieldException("There are empty fields");
             }
@@ -42,12 +40,11 @@ namespace Domain
                 return false;
             }
             ServiceRequest serviceRequest = (ServiceRequest)obj;
-            return Id == serviceRequest.Id &&
+            return 
                 Description == serviceRequest.Description &&
-                Apartment == serviceRequest.Apartment &&
-                Category == serviceRequest.Category &&
-                Status == serviceRequest.Status &&
-                MaintainancePersonId == serviceRequest.MaintainancePersonId;
+                Apartment.Equals(serviceRequest.Apartment) &&
+                Category.Equals(serviceRequest.Category) &&
+                Status == serviceRequest.Status;
         }
     }
 }

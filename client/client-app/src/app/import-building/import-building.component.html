@@ -1,0 +1,21 @@
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="card p-4 login-container" style="width: 100%; max-width: 600px;">
+      <h1 class="text-center">Import buildings</h1>
+      <div class="mb-3">
+        <label for="importer" class="form-label">Select importer:</label>
+        <select id="importer" [(ngModel)]="selectedImporter" class="form-control custom-input">
+          <option *ngFor="let importer of importers" [value]="importer">{{importer}}</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="file" class="form-label">Select file with buildings to import:</label>
+        <select id="file" [(ngModel)]="selectedFile" class="form-control custom-input">
+          <option *ngFor="let file of files" [value]="file">{{file}}</option>
+        </select>
+      </div>
+      <button (click)="importBuilding()" class="btn custom-btn-red w-100">Import buildings</button>
+      <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
+      <div *ngIf="successMessage" class="alert alert-success mt-3">{{ successMessage }}</div>
+    </div>
+  </div>
+  

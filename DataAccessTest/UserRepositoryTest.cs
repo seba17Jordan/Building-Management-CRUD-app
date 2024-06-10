@@ -110,6 +110,27 @@ namespace DataAccessTest
             Assert.AreEqual(userFound, expectedUser);
         }
 
+        [TestMethod]
+        public void GetAllManagers()
+        {
+            User manager = new User
+            {
+                Name = "Manager",
+                LastName = "Manager",
+                Email = "acx@gail.com",
+                Password = "1234",
+                Role = Roles.Manager
+            };
+
+            var context = CreateDbContext("GetAllManagers");
+            UserRepository userRepo = new UserRepository(context);
+
+            userRepo.CreateUser(manager);
+            context.SaveChanges();
+
+            Assert.AreEqual(1, userRepo.GetManagers().Count());
+        }
+
         private DbContext CreateDbContext(string database)
         {
             var options = new DbContextOptionsBuilder<Context>().UseInMemoryDatabase(database).Options;

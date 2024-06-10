@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using BuildingManagementApi.Filters;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Domain.@enum;
+using BusinessLogic;
 
 namespace BuildingManagementApi.Controllers
 {
@@ -24,8 +25,8 @@ namespace BuildingManagementApi.Controllers
         }
 
         [HttpPost]
-        [ServiceFilter(typeof(AuthenticationFilter))]
-        [AuthorizationFilter(_currentRole = Roles.Administrator)]
+        //[ServiceFilter(typeof(AuthenticationFilter))]
+        //[AuthorizationFilter(_currentRole = Roles.Administrator)]
         public IActionResult CreateInvitation([FromBody] InvitationRequest invitationRequest)
         {
             var invitation = invitationRequest.ToEntity();
@@ -35,18 +36,18 @@ namespace BuildingManagementApi.Controllers
             return CreatedAtAction(nameof(CreateInvitation), new { id = response.Id }, response);
         }
 
-        [HttpPatch("{id}")]
-        public IActionResult RejectInvitationState([FromRoute] Guid id)
+        [HttpPatch]
+        public IActionResult RejectInvitationState([FromBody] EmailRequest invitationEmail)
         {
-            _invitationLogic.RejectInvitation(id);
-            return Ok("Invitation Rejected");
+            _invitationLogic.RejectInvitation(invitationEmail.Email);
+            return Ok(new { message = "Invitation rejected" });
         }
 
-        [HttpPost("{id}")]
-        public IActionResult AcceptInvitation([FromRoute] Guid id, [FromBody] UserLoginRequest managerRequest)
+        [HttpPost("accept")]
+        public IActionResult AcceptInvitation([FromBody] UserLoginRequest managerRequest)
         {
             var manager = managerRequest.ToEntity();
-            var createdManager = _invitationLogic.AcceptInvitation(id, manager);
+            var createdManager = _invitationLogic.AcceptInvitation(manager);
             var response = new UserResponse(createdManager);
             return CreatedAtAction(nameof(AcceptInvitation), new { id = response.Id }, response);
         }
@@ -58,6 +59,15 @@ namespace BuildingManagementApi.Controllers
         {
             _invitationLogic.DeleteInvitation(id);
             return Ok();
+        }
+
+        [HttpGet]
+        [ServiceFilter(typeof(AuthenticationFilter))]
+        [AuthorizationFilter(_currentRole = Roles.Administrator)]
+        public IActionResult GetAllInvitations()
+        {
+            IEnumerable<InvitationResponse> response = _invitationLogic.GetAllInvitations().Select(i => new InvitationResponse(i)).ToList();
+            return Ok(response);
         }
     }
 }
