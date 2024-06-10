@@ -81,49 +81,6 @@ namespace DataAccessTest
             Assert.IsTrue(buildingRepo.BuildingNameExists(createdBuilding.Name));
         }
 
-        /*
-        [TestMethod]
-        public void GetBuildingByIdTestDataAccess()
-        {
-            User comanyAdmin = new User
-            {
-                Name = "Company Admin",
-                LastName = "Company Admin",
-                Email = ""
-            };
-
-            ConstructionCompany constructionCompany = new ConstructionCompany("Construction Company");
-            constructionCompany.ConstructionCompanyAdmin = comanyAdmin;
-
-            // Arrange
-            Building expectedBuilding = new Building()
-            {
-                Name = "Building 1",
-                Address = "Address 1",
-                ConstructionCompany = constructionCompany,
-                CommonExpenses = 100,
-                Apartments = new List<Apartment>
-                {
-                    new Apartment()
-                    {
-                        Floor = 1,
-                        Number = 101,
-                        Owner = new Owner { Name = "Jane", LastName = "Doe", Email = ""}
-                    }
-                },
-                ConstructionCompanyAdmin = comanyAdmin,
-            };
-            var context = CreateDbContext("GetBuildingByIdTestDataAccess");
-            BuildingRepository buildingRepo = new BuildingRepository(context);
-
-            // Act
-            Building createdBuilding = buildingRepo.CreateBuilding(expectedBuilding);
-            context.Entry(createdBuilding).State = EntityState.Detached;
-            Building building = buildingRepo.GetBuildingById(createdBuilding.Id);
-            // Assert
-            Assert.AreEqual(createdBuilding, building);
-        }*/
-
         [TestMethod]
         public void DeleteBuildingTestDataAccess()
         {
